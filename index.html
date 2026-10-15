@@ -1,0 +1,407 @@
+<title>namigroove 公式サイト試作</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta property="og:title" content="なみぐる！ – namigroove official web site">
+<meta property="og:description" content="ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。いい波、起こします~(･ω･~)">
+<meta property="og:image" content="https://www.namigroove.com/img/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+/* Layout: 空(ヒーロー)→波打ち際→浅瀬(実績)→砂浜(作品)→深海(依頼)へ潜っていく縦一本のページ */
+:root{
+  --paper:#f5f8fe;
+  --ink:#101f45;
+  --ink-soft:#4a5a80;
+  --line:#d5e0f5;
+  --zunda:#2c5ccc;
+  --sea-2:#8fb2f2;
+  --zunda-wash:#e3ebfb;
+  --brass:#a2511f;
+  --night:#142a66;
+  --night-fg:#eaf0fd;
+  --chip:#ffffff;
+  --head:#396cdf;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;
+  --zunda:#7fa3f5;--sea-2:#2b4fa8;--zunda-wash:#142350;--brass:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--head:#396cdf;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;
+  --zunda:#7fa3f5;--sea-2:#2b4fa8;--zunda-wash:#142350;--brass:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--head:#396cdf;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;font-synthesis:none}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{text-wrap:balance;margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--zunda)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:4px}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#ffffff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;font-family:var(--f-display);font-size:20px;color:#ffffff}
+.logo img{display:block;height:32px;width:auto}
+nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+nav.main a{text-decoration:none;color:rgba(255,255,255,.82)}
+nav.main a:hover{color:#ffffff}
+@media (max-width:640px){nav.main{gap:12px;font-size:12px}nav.main .opt{display:none}}
+
+/* banner: 顔イラスト。ヘッダーと同じ青でつなげる */
+.banner{background:var(--head);display:flex;justify-content:center;overflow:hidden}
+.banner img{display:block;width:100%;max-width:1200px;height:auto}
+/* hero */
+.hero{padding-block:40px 8px;display:grid;grid-template-columns:minmax(0,1fr);gap:32px}
+.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(44px,9vw,92px);line-height:1;letter-spacing:-.01em}
+.hero h1 .en{display:block;font-family:var(--f-mono);font-size:clamp(14px,2vw,18px);letter-spacing:.3em;color:var(--ink-soft);margin-top:14px;font-weight:500}
+.hero p.lead{font-size:clamp(16px,2.2vw,19px);margin:22px 0 0;max-width:30em}
+.hero p.lead b{color:var(--zunda);font-weight:700}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid var(--ink)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.ghost{background:transparent}
+.btn:hover{transform:translateY(-1px)}
+@media (max-width:760px){.hero{padding-block:40px 0}}
+
+/* sea */
+.sea{display:block;width:100%;height:170px;margin-top:-20px}
+@media (max-width:640px){.sea{height:120px}}
+.tide{font-family:var(--f-mono);font-size:12px;color:var(--ink-soft);display:flex;gap:16px;flex-wrap:wrap;margin-top:18px}
+.tide b{color:var(--zunda);font-weight:500}
+#credits,#partners,#history{background:var(--zunda-wash)}
+#partners,#history{padding-top:8px}
+.wave-top{display:block;width:100%;height:48px;color:var(--night);margin-bottom:-1px}
+
+section{padding-block:56px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.sec-head h2{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,4vw,36px)}
+.sec-head p{margin:0;color:var(--ink-soft);font-size:13px}
+
+/* credits */
+.credits{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px 20px}
+.credit{display:flex;flex-direction:column;gap:6px;text-decoration:none;min-width:0}
+.credit:hover .c-title{color:var(--zunda)}
+.c-thumb{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:8px;overflow:hidden;margin-bottom:6px;display:flex;align-items:flex-end;padding:10px}
+.c-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.c-thumb b{font-family:var(--f-display);font-weight:400;font-size:15px;line-height:1.3;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.25)}
+.c-year{position:absolute;top:8px;left:8px;z-index:1;font-family:var(--f-mono);font-size:11px;background:rgba(255,255,255,.92);color:#101f45;padding:2px 8px;border-radius:999px;font-variant-numeric:tabular-nums}
+.c-client{font-size:12px;color:var(--brass);font-weight:700;letter-spacing:.04em}
+.c-title{font-weight:700;font-size:15px;line-height:1.5;min-width:0}
+.more-link{margin:28px 0 0;font-size:13px;text-align:right}
+.more-link a{color:var(--ink-soft)}
+.more-link a::after{content:" →"}
+.c-role{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
+
+/* partners */
+.partners{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px 32px}
+.partners h3{font-size:12px;font-family:var(--f-mono);letter-spacing:.12em;color:var(--brass);font-weight:500;margin-bottom:8px}
+.partners p{margin:0;display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.partners p span{font-size:13px;line-height:1.5;padding:4px 10px;border:1px solid var(--line);border-radius:6px;background:var(--chip)}
+
+/* history */
+.history{display:grid;grid-template-columns:minmax(0,760px);gap:40px}
+@media (max-width:760px){.history{grid-template-columns:1fr}}
+.ranks,.timeline{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--ink)}
+.ranks li{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:baseline;padding:12px 4px;border-bottom:1px solid var(--line)}
+.ranks .ev{font-size:14px}
+.ranks .ev small{display:block;font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
+.ranks .rk{font-family:var(--f-display);font-size:22px;color:var(--zunda);font-variant-numeric:tabular-nums}
+.ranks .rk small{font-family:var(--f-body);font-size:12px;color:var(--ink-soft);margin-left:2px}
+.timeline>li{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:12px 4px;border-bottom:1px solid var(--line)}
+.timeline .yr{font-family:var(--f-mono);font-size:14px;color:var(--zunda);font-weight:500}
+.timeline ul{margin:0;padding-left:1.1em;list-style:disc;font-size:14px;line-height:1.8;min-width:0}
+
+/* works */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filters button{font:500 13px var(--f-body);padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.filters .count{font-family:var(--f-mono);font-size:11px;opacity:.7;margin-left:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
+.work{text-decoration:none;display:flex;flex-direction:column;gap:8px;min-width:0}
+.jacket{aspect-ratio:1;max-width:100%;border-radius:6px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:12px}
+.jacket b{font-family:var(--f-display);font-weight:400;font-size:17px;line-height:1.25;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.25);word-break:break-word}
+.jacket img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.jacket i{z-index:1;position:absolute;top:10px;left:10px;font-style:normal;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;background:rgba(255,255,255,.92);color:#1c2340;padding:3px 8px;border-radius:999px}
+.work:hover .jacket{transform:translateY(-2px);transition:transform .15s}
+.w-title{font-weight:700;font-size:14px;line-height:1.45}
+.w-meta{font-size:12px;color:var(--ink-soft);display:flex;gap:8px;flex-wrap:wrap}
+.w-meta .yr{font-family:var(--f-mono)}
+.more{margin-top:24px;display:flex;justify-content:center}
+@media (max-width:480px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.jacket b{font-size:14px}}
+
+/* notes */
+.notes-band{background:var(--zunda-wash)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.note{background:var(--chip);border-radius:10px;padding:18px 20px;text-decoration:none;display:flex;flex-direction:column;gap:6px;border:1px solid var(--line)}
+.note time{font-family:var(--f-mono);font-size:12px;color:var(--ink-soft)}
+.note h3{font-size:16px;line-height:1.5}
+.note .tag{font-size:11px;color:var(--zunda);font-weight:700}
+.sample{font-family:var(--f-mono);font-size:11px;color:var(--brass);border:1px dashed var(--brass);border-radius:999px;padding:2px 10px}
+
+/* links */
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;border-top:1.5px solid var(--ink)}
+.links a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line);text-decoration:none}
+.links a span{font-weight:700}
+.links a small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
+.links a:hover span{color:var(--zunda)}
+
+/* contact */
+.contact{background:var(--night);color:var(--night-fg)}
+.contact .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
+.contact h2{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,44px);line-height:1.2}
+.contact ul{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.contact li{font-size:13px;border:1px solid color-mix(in srgb,var(--night-fg) 30%,transparent);border-radius:999px;padding:4px 12px}
+.contact .btn{border-color:var(--night-fg);background:var(--night-fg);color:var(--night)}
+.contact p{margin:0;color:color-mix(in srgb,var(--night-fg) 75%,transparent);font-size:14px}
+@media (max-width:760px){.contact .wrap{grid-template-columns:1fr}}
+
+footer{padding-block:28px;font-size:12px;color:var(--ink-soft)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer .mono{font-family:var(--f-mono)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top"><img src="https://www.namigroove.com/wp-content/uploads/2021/05/%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A-1.png" alt="なみぐる！" width="159" height="32" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="#credits">実績</a>
+      <a href="#works">作品</a>
+      <a href="#notes">お知らせ</a>
+      <a href="#links" class="opt">ショップ</a>
+      <a href="#contact">依頼</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="banner"><img src="img/header.webp" alt="" width="2576" height="859"></div>
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow">VOCALOID Producer / Sax DJ</p>
+      <h1>なみぐる<span class="en">NAMIGROOVE</span></h1>
+      <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。<b>ゲーム・アニメ・CM・VTuber</b>への楽曲提供、リミックス、作詞・調声まで手がけています。</p>
+      <div class="cta">
+        <a class="btn primary" href="#contact">制作を依頼する</a>
+        <a class="btn ghost" href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener">YouTube</a>
+        <a class="btn ghost" href="https://open.spotify.com/playlist/12Zt9i2yqbJyd22ppUAHLg" target="_blank" rel="noopener">Spotify</a>
+      </div>
+      <p class="tide"><span><b>SINCE</b> 2021</span><span>VOCALOID / R&amp;B / Electro Swing / Funk / Sax</span><span>いい波、起こします~(･ω･~)</span></p>
+    </div>
+  </div>
+
+  <canvas class="sea" id="sea" aria-hidden="true"></canvas>
+
+  <section id="credits">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Selected Credits</p><h2>主な実績</h2></div>
+        <p>依頼をご検討の方へ。代表的なお仕事を抜粋しています。</p>
+      </div>
+      <div class="credits" id="creditList"></div>
+      <p class="more-link"><a href="profile.html">年表・お取引先・出演などの実績一覧</a></p>
+    </div>
+  </section>
+
+  <section id="works" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Discography</p><h2>作品</h2></div>
+        <p>works.json に1行追加すると、ここに自動で並びます。</p>
+      </div>
+      <div class="filters" role="group" aria-label="作品の種類で絞り込み" id="filters"></div>
+      <div class="grid" id="workGrid"></div>
+      <div class="more"><button class="btn ghost" id="moreBtn" type="button">もっと見る</button></div>
+    </div>
+  </section>
+
+  <section id="notes" class="notes-band">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">News</p><h2>お知らせ</h2></div>
+        <p>WordPressの新着記事を自動で表示</p>
+      </div>
+      <div class="notes" id="noteList"></div>
+      <div class="more"><a class="btn ghost" href="https://www.namigroove.com/category/information/">お知らせ一覧</a></div>
+    </div>
+  </section>
+
+  <section id="links">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="eyebrow">Shop &amp; Links</p><h2>グッズ・リンク</h2></div></div>
+      <div class="links">
+        <a href="https://namigroove.booth.pm/" target="_blank" rel="noopener"><span>BOOTH</span><small>CD・グッズ</small></a>
+        <a href="https://suzuri.jp/namigroove" target="_blank" rel="noopener"><span>SUZURI</span><small>謎が解けなくても買える服</small></a>
+        <a href="https://store.line.me/stickershop/product/26675197/ja" target="_blank" rel="noopener"><span>LINEスタンプ</span><small>ずんだパーリナイ</small></a>
+        <a href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener"><span>YouTube</span><small>@namigroove</small></a>
+        <a href="https://x.com/namigroove" target="_blank" rel="noopener"><span>X</span><small>@namigroove</small></a>
+        <a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span>イベント予定</span><small>TimeTree</small></a>
+        <a href="https://lit.link/namigroove" target="_blank" rel="noopener"><span>Portfolio</span><small>lit.link</small></a>
+        <a href="https://namigroove.github.io/BPMmsCalculator/" target="_blank" rel="noopener"><span>BPMmsCalculator</span><small>制作ツール</small></a>
+      </div>
+    </div>
+  </section>
+
+  <svg class="wave-top" viewBox="0 0 1200 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 24 C 150 0 300 48 450 24 S 750 0 900 24 S 1100 44 1200 20 L1200 48 L0 48 Z" fill="currentColor"/></svg>
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow" style="color:var(--brass)">Commission</p>
+        <h2>楽曲制作・リミックスの<br>ご依頼はこちら</h2>
+        <ul>
+          <li>楽曲提供</li><li>リミックス</li><li>編曲</li><li>作詞・調声</li><li>CM・ゲーム音楽</li><li>DJ・サックス出演</li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <p>内容・納期・ご予算をフォームからお送りください。法人のお取引にも対応しています。</p>
+        <a class="btn" href="https://www.namigroove.com/contact/" target="_blank" rel="noopener">お問い合わせフォーム</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">© <span id="yr">2026</span> namigroove</span>
+  </div>
+</footer>
+
+<script>
+/* 作品データは data/works.json(1作品=1行)。YouTubeの新着は毎日自動で追加される */
+let WORKS = [];
+
+const CREDITS = [
+  {y:2026, client:"日清食品(タイ)", t:"初音ミク CM「激」シリーズ", img:"https://www.namigroove.com/wp-content/uploads/2026/02/thumb.png", role:"CM音楽制作"},
+  {y:2026, client:"日清焼そばU.F.O. 50周年", t:"U.F.O.50周年 vs はちゅねミク", img:"https://www.namigroove.com/wp-content/uploads/2026/08/1fc04743dfc121852b1816f25ccf24e9.png", role:"楽曲制作"},
+  {y:2025, client:"TVアニメ『ひみつのアイプリ』", t:"ひみつのふふふ / 超ときめき♡宣伝部", img:"https://www.namigroove.com/wp-content/uploads/2025/03/image-17.png", role:"アニメ楽曲提供"},
+  {y:2025, client:"電音部", t:"大賀ルキア(CV:星川サラ)「ガルルルルルル！」", img:"https://www.namigroove.com/wp-content/uploads/2025/03/Gl__hfSbEAAgU2X.jpg", role:"楽曲提供"},
+  {y:2025, client:"ホロライブ 大空スバル", t:"1st Album「Pleiades」", img:"https://www.namigroove.com/wp-content/uploads/2025/03/image-1.png", role:"楽曲提供"},
+  {y:2025, client:"Aiobahn & TAK", t:"DIVA feat. 初音ミク", img:"https://www.namigroove.com/wp-content/uploads/2025/11/maxresdefault-2.jpg", role:"作詞・初版調声"},
+  {y:2025, client:"CHUNITHM", t:"なみぐるコラボ / ちゅ、お注射。", img:"https://www.namigroove.com/wp-content/uploads/2025/09/image.png", role:"収録・コラボ"},
+  {y:2024, client:"maimai でらっくす", t:"のじゃロリック feat.ちょこ 桃寝ちのい", img:"https://www.namigroove.com/wp-content/uploads/2024/03/maxresdefault-2.jpg", role:"収録楽曲"},
+  {y:2024, client:"マクドナルド", t:"CMソング", role:"楽曲制作"},
+  {y:2024, client:"VOICEVOX", t:"公式テーマソング", role:"楽曲制作"},
+  {y:2023, client:"プロジェクトセカイ", t:"収録楽曲", role:"楽曲提供"},
+  {y:2026, client:"あおぎり高校", t:"アルバム収録曲", role:"楽曲提供"},
+].sort((a,b)=>b.y-a.y);
+
+
+const RANKS = [
+  {y:"2026 冬", c:"REMIX", r:2},
+  {y:"2025 夏", c:"REMIX", r:4},
+  {y:"2025 冬", c:"TOP100", r:3},
+  {y:"2024 冬", c:"TOP100", r:5},
+  {y:"2023 夏", c:"TOP100", r:2},
+  {y:"2023 春", c:"ルーキー", r:2},
+  {y:"2022 秋", c:"ルーキー", r:4},
+];
+
+
+/* WordPressが読めない時の控え(2026-10-16時点の最新3件) */
+const NOTES = [
+  {d:"2026-10-14", tag:"お知らせ", t:"BPMmsCalculatorを作りました", u:"https://www.namigroove.com/2026/10/14/post-9844/"},
+  {d:"2026-09-15", tag:"お知らせ", t:"#リアルずんだパーリナイ @定禅寺ジャズフェス2026", u:"https://www.namigroove.com/2026/09/15/post-9791/"},
+  {d:"2026-09-08", tag:"お知らせ", t:"『腰痛持ち、４つ打ち』ぬい・アクキーが登場だ！", u:"https://www.namigroove.com/2026/09/08/post-9777/"},
+];
+const WP_API = "https://www.namigroove.com/wp-json/wp/v2/posts?per_page=3&_fields=date,link,title";
+
+const TYPES = {all:"すべて", original:"オリジナル", provide:"提供・編曲", remix:"Remix", join:"参加"};
+const TAG = {original:"ORIGINAL", provide:"WORKS", remix:"REMIX", join:"COMPI"};
+
+/* ジャケ画像が読めない時は、曲名から決まる色のジャケットを表示 */
+function hash(s){let h=0;for(const c of s)h=(h*31+c.codePointAt(0))>>>0;return h}
+function jacketBg(s){
+  const h=hash(s), a=[214,220,226,232,206,16][h%6], b=(a+14+(h>>3)%30)%360;
+  return `radial-gradient(circle at ${20+(h%60)}% ${20+((h>>5)%50)}%, hsl(${b} 70% 62% / .9), transparent 60%), linear-gradient(${(h>>7)%360}deg, hsl(${a} 55% 38%), hsl(${b} 60% 50%))`;
+}
+
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+document.getElementById("creditList").innerHTML = CREDITS.map(c=>`
+  <div class="credit">
+    <div class="c-thumb" style="background:${jacketBg(c.client+c.t)}"><b>${esc(c.client)}</b>${c.img?`<img src="${c.img}" alt="${esc(c.t)}" loading="lazy" onerror="this.remove()">`:""}<span class="c-year">${c.y}</span></div>
+    <span class="c-client">${esc(c.client)}</span><span class="c-title">${esc(c.t)}</span><span class="c-role">${esc(c.role)}</span>
+  </div>`).join("");
+
+
+let filter="all", shown=12;
+function renderFilters(){
+  document.getElementById("filters").innerHTML = Object.entries(TYPES).map(([k,v])=>{
+    const n = k==="all"?WORKS.length:WORKS.filter(w=>w.type===k).length;
+    return `<button type="button" id="f-${k}" data-k="${k}" aria-pressed="${k===filter}">${v}<span class="count">${n}</span></button>`;
+  }).join("");
+}
+function renderWorks(){
+  const list = WORKS.filter(w=>filter==="all"||w.type===filter);
+  document.getElementById("workGrid").innerHTML = list.slice(0,shown).map(w=>`
+    <${w.url?`a href="${esc(w.url)}" target="_blank" rel="noopener"`:"div"} class="work">
+      <div class="jacket" style="background:${jacketBg(w.t)}"><b>${esc(w.t)}</b>${w.img?`<img src="${esc(w.img)}" alt="${esc(w.t)} ジャケット" loading="lazy" onerror="this.remove()">`:""}<i>${TAG[w.type]||"WORKS"}</i></div>
+      <div class="w-title">${esc(w.t)}</div>
+      <div class="w-meta"><span class="yr">${w.y}</span><span>${esc(w.by||"")}</span></div>
+    </${w.url?"a":"div"}>`).join("");
+  document.getElementById("moreBtn").hidden = list.length<=shown;
+}
+document.getElementById("filters").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  filter=b.dataset.k; shown=12; renderFilters(); renderWorks();
+fetch("data/works.json").then(r=>r.json()).then(d=>{
+  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
+  renderFilters(); renderWorks();
+}).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">作品一覧を読み込めませんでした。</p>'; });
+});
+document.getElementById("moreBtn").addEventListener("click",()=>{shown+=12;renderWorks();});
+renderFilters(); renderWorks();
+fetch("data/works.json").then(r=>r.json()).then(d=>{
+  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
+  renderFilters(); renderWorks();
+}).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">作品一覧を読み込めませんでした。</p>'; });
+
+function renderNews(list){
+  document.getElementById("noteList").innerHTML = list.map(n=>`
+  <a class="note" href="${esc(n.u)}"><span class="tag">${esc(n.tag)}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
+}
+renderNews(NOTES);
+const unhtml = s => { const d=document.createElement("textarea"); d.innerHTML=s; return d.value; };
+fetch(WP_API).then(r=>r.ok?r.json():Promise.reject()).then(posts=>{
+  if(!Array.isArray(posts)||!posts.length) return;
+  renderNews(posts.map(p=>({d:p.date.slice(0,10), tag:"お知らせ", t:unhtml(p.title.rendered), u:p.link})));
+}).catch(()=>{});
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+/* ヒーロー下の海:3層の波がゆっくり寄せる。最前列は次のセクション(浅瀬)の色 */
+(function(){
+  const cv=document.getElementById("sea"), ctx=cv.getContext("2d");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  let W=0,H=0;
+  function size(){
+    const d=Math.min(devicePixelRatio||1,2), r=cv.getBoundingClientRect();
+    W=r.width; H=r.height; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0);
+  }
+  const layers=[
+    {c:"--sea-2", y:.30, a:14, k:.006, s:.00035, p:0},
+    {c:"--zunda", y:.50, a:12, k:.009, s:-.00045, p:2},
+    {c:"--zunda-wash", y:.72, a:10, k:.012, s:.0006, p:4},
+  ];
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    for(const L of layers){
+      ctx.fillStyle=css(L.c); ctx.beginPath(); ctx.moveTo(0,H);
+      for(let x=0;x<=W+8;x+=8){
+        const y=H*L.y + Math.sin(x*L.k + t*L.s + L.p)*L.a + Math.sin(x*L.k*2.3 + t*L.s*1.7)*L.a*.35;
+        ctx.lineTo(x,y);
+      }
+      ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+    }
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  size(); addEventListener("resize",()=>{size(); if(reduce) draw(0);});
+  draw(0);
+})();
+</script>

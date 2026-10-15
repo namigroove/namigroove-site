@@ -1,0 +1,166 @@
+<title>なみぐる 制作依頼</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+/* Layout: 依頼前に知りたい3点 → フォーム → 流れ・FAQは畳む。トップと同じ海のトークン */
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--night:#142a66;--night-fg:#eaf0fd;--chip:#ffffff;--err:#b3261e;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--err:#ff8a80;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--err:#ff8a80;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+a{color:var(--sea)}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{text-wrap:balance;margin:0}
+header{padding-block:28px 8px}
+header a.back{font-size:13px;color:var(--ink-soft);text-decoration:none}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,6vw,44px);line-height:1.2;margin-top:12px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-block:24px 8px}
+.facts div{background:var(--wash);padding:14px 16px;min-width:0}
+.facts dt{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--ink-soft)}
+.facts dd{margin:2px 0 0;font-weight:700;font-size:15px;line-height:1.5}
+@media (max-width:560px){.facts{grid-template-columns:1fr}}
+.note{font-size:13px;color:var(--ink-soft);margin:0}
+section{padding-block:32px}
+h2{font-family:var(--f-display);font-weight:400;font-size:24px;margin-bottom:16px}
+form{display:grid;gap:18px;background:var(--chip);border:1px solid var(--line);border-radius:16px;padding:24px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:560px){.row{grid-template-columns:1fr}form{padding:18px}}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+label,.legend{font-weight:700;font-size:14px}
+.req{font-family:var(--f-mono);font-size:10px;color:var(--coral);border:1px solid var(--coral);border-radius:4px;padding:0 5px;margin-left:6px;font-weight:500;vertical-align:2px}
+input[type=text],input[type=email],input[type=url],select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-height:46px}
+textarea{min-height:140px;resize:vertical}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{font-weight:500;font-size:13px;display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;background:var(--paper);min-height:40px}
+.chips input{accent-color:var(--sea);margin:0}
+.chips label:has(input:checked){border-color:var(--sea);background:var(--wash)}
+.hint{font-size:12px;color:var(--ink-soft)}
+.agree{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:14px}
+.agree input{accent-color:var(--sea);margin-top:6px;width:18px;height:18px}
+button.send{font:700 16px var(--f-body);background:var(--night);color:var(--night-fg);border:0;border-radius:999px;min-height:52px;cursor:pointer}
+.msg{font-size:14px;margin:0;padding:12px 14px;border-radius:10px;background:var(--wash)}
+.msg.err{color:var(--err);background:transparent;border:1px solid var(--err)}
+.flow{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;counter-reset:s}
+.flow li{counter-increment:s;font-size:13px;padding:8px 12px;border-radius:999px;background:var(--wash);font-weight:500}
+.flow li::before{content:counter(s) " ";font-family:var(--f-mono);color:var(--sea);margin-right:2px}
+.pay{margin:14px 0 0;font-size:14px;color:var(--ink-soft)}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1.5px solid var(--ink)}
+summary{cursor:pointer;padding:14px 4px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";font-family:var(--f-mono);color:var(--sea)}
+details[open] summary::after{content:"−"}
+details p{margin:0 4px 16px;font-size:14px;color:var(--ink-soft)}
+footer{padding-block:24px 40px;font-size:12px;color:var(--ink-soft)}
+</style>
+
+<div class="wrap">
+  <header>
+    <a class="back" href="https://www.namigroove.com/">← なみぐる！トップ</a>
+    <p class="eyebrow" style="margin-top:20px">COMMISSION</p>
+    <h1>制作のご依頼・お問い合わせ</h1>
+    <dl class="facts">
+      <div><dt>対応内容</dt><dd>作編曲・リミックス・映像・BGM・サックス録音・出演</dd></div>
+      <div><dt>納期の目安</dt><dd>1〜3か月</dd></div>
+      <div><dt>お見積り</dt><dd>無料(有償案件のみ)</dd></div>
+    </dl>
+    <p class="note">法人・商用のご依頼を優先して対応しています。ファンの方からのご質問は <a href="https://lit.link/namigroove">lit.link</a> をご覧ください。</p>
+  </header>
+
+  <section id="form" style="padding-top:20px">
+    <form id="contactForm" novalidate>
+      <fieldset>
+        <span class="legend">ご依頼内容<span class="req">必須</span></span>
+        <div class="chips">
+          <label><input type="checkbox" name="kind" value="original">オリジナル楽曲</label>
+          <label><input type="checkbox" name="kind" value="remix">リミックス・編曲</label>
+          <label><input type="checkbox" name="kind" value="cover">カバー</label>
+          <label><input type="checkbox" name="kind" value="bgm">BGM・CM</label>
+          <label><input type="checkbox" name="kind" value="movie">映像制作</label>
+          <label><input type="checkbox" name="kind" value="rec">楽器録音</label>
+          <label><input type="checkbox" name="kind" value="event">イベント出演</label>
+          <label><input type="checkbox" name="kind" value="other">その他</label>
+        </div>
+      </fieldset>
+
+      <div class="row">
+        <div class="f"><label for="name">お名前・会社名<span class="req">必須</span></label><input type="text" id="name" name="name" autocomplete="organization" placeholder="例:株式会社〇〇 山田"></div>
+        <div class="f"><label for="email">メールアドレス<span class="req">必須</span></label><input type="email" id="email" name="email" autocomplete="email" placeholder="example@mail.com"></div>
+      </div>
+
+      <div class="row">
+        <div class="f"><label for="due">ご希望納期<span class="req">必須</span></label><input type="text" id="due" name="due" placeholder="例:2027年2月末 公開予定"></div>
+        <div class="f"><label for="budget">ご予算<span class="req">必須</span></label>
+          <select id="budget" name="budget">
+            <option value="">選択してください</option>
+            <option>〜10万円</option><option>10〜30万円</option><option>30〜50万円</option><option>50万円〜</option><option>相談して決めたい</option>
+          </select>
+        </div>
+      </div>
+
+      <fieldset>
+        <span class="legend">用途</span>
+        <div class="chips">
+          <label><input type="radio" name="use" value="commercial">商用(企業・販売・広告)</label>
+          <label><input type="radio" name="use" value="personal">個人・同人</label>
+          <label><input type="radio" name="use" value="unknown">未定</label>
+        </div>
+      </fieldset>
+
+      <div class="f"><label for="body">内容<span class="req">必須</span></label><textarea id="body" name="body" placeholder="作品の概要、使用先、参考曲などをお書きください"></textarea></div>
+      <div class="f"><label for="ref">参考URL</label><input type="url" id="ref" name="ref" placeholder="https://"><span class="hint">参考曲や企画書の共有リンクがあれば。ファイルは返信後にお送りください。</span></div>
+
+      <label class="agree"><input type="checkbox" id="agree" name="agree"><span><a href="https://www.namigroove.com/privacy-policy/">プライバシーポリシー</a>に同意して送信します</span></label>
+      <button class="send" type="submit">内容を送信する</button>
+      <p class="msg" id="msg" role="status" hidden></p>
+    </form>
+  </section>
+
+  <section>
+    <h2>制作の流れ</h2>
+    <ol class="flow">
+      <li>ご相談・お見積り</li><li>ラフデモ</li><li>作詞・歌入りデモ</li><li>仮ミックス</li><li>納品</li>
+    </ol>
+    <p class="pay">お支払いは納品後およそ1か月以内の銀行振込です。初めてのお取引では前払いをお願いする場合があります。納品後の修正は原則お受けしていません。</p>
+  </section>
+
+  <section style="padding-top:8px">
+    <h2>よくある質問</h2>
+    <details><summary>楽曲の権利はどうなりますか？</summary><p>原盤権は原則として当方保持、またはご相談のうえ共同管理とします。商用利用は可能です。</p></details>
+    <details><summary>料金の目安を知りたい</summary><p>内容とご予算をうかがってからお見積りします。お見積りは無料です。</p></details>
+    <details><summary>二次創作・歌ってみたに使っていいですか？</summary><p>非営利の個人利用は連絡不要です。原曲(YouTubeまたはニコニコ動画)のクレジットとリンクを記載してください。商用利用はJASRAC・NexToneの手続きをお願いします。</p></details>
+    <details><summary>苦手な依頼はありますか？</summary><p>作詞のみ、楽譜作成、ミックス・マスタリングのみのご依頼はお受けしにくい場合があります。</p></details>
+    <details><summary>依頼プラットフォームからも頼めますか？</summary><p>FEATからもご依頼いただけます。半額前払いで手数料が抑えられます。</p></details>
+  </section>
+</div>
+<footer><div class="wrap">© namigroove</div></footer>
+
+<script>
+const form=document.getElementById("contactForm"), msg=document.getElementById("msg");
+const f=form.elements;
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  const miss=[];
+  if(!form.querySelector('input[name=kind]:checked')) miss.push("ご依頼内容");
+  if(!f.name.value.trim()) miss.push("お名前・会社名");
+  if(!/^\S+@\S+\.\S+$/.test(f.email.value)) miss.push("メールアドレス");
+  if(!f.due.value.trim()) miss.push("ご希望納期");
+  if(!f.budget.value) miss.push("ご予算");
+  if(!f.body.value.trim()) miss.push("内容");
+  if(!f.agree.checked) miss.push("プライバシーポリシーへの同意");
+  msg.hidden=false;
+  if(miss.length){ msg.className="msg err"; msg.textContent="未入力の項目があります:"+miss.join("、"); return; }
+  msg.className="msg"; msg.textContent="試作のため送信はされません。本番ではこの内容がメールで届きます。";
+});
+</script>
