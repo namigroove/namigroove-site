@@ -1,4 +1,4 @@
-name: YouTubeの新着を作品一覧に追加
+name: 作品一覧を自動更新(YouTube・WordPress)
 
 on:
   schedule:
@@ -16,7 +16,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: 新着動画を取り込む
+      - name: WordPressのミュージック・ムービーを取り込む
+        run: node scripts/sync-wordpress.mjs
+      - name: YouTubeの新着動画を取り込む
         run: node scripts/sync-youtube.mjs
       - name: 変更があれば保存
         run: |
@@ -26,6 +28,6 @@ jobs:
             git config user.name "namigroove-bot"
             git config user.email "namigroove-bot@users.noreply.github.com"
             git add data/works.json
-            git commit -m "YouTubeの新着を作品一覧に追加"
+            git commit -m "作品一覧を自動更新"
             git push
           fi
