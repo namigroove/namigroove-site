@@ -343,9 +343,9 @@ function renderNews(){
   /* 出現情報タブの先頭には、予定がまとまったTimeTreeを常に表示 */
   const pin = newsFilter==="event" ? `
   <a class="note pin" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出演予定はカレンダーでチェック</h3><time>なみぐるの出現スケジュール →</time></a>` : "";
-  document.getElementById("noteList").innerHTML = pin + list.slice(0,newsShown).map(n=>`
+  document.getElementById("noteList").innerHTML = pin + list.slice(0,newsShown-(pin?1:0)).map(n=>`
   <a class="note" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag">${NEWS_T[n.type]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
-  document.getElementById("newsMore").hidden = list.length<=newsShown;
+  document.getElementById("newsMore").hidden = list.length<=newsShown-(pin?1:0);
 }
 document.getElementById("newsFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return; newsFilter=b.dataset.k; newsShown=6; renderNews();});
 document.getElementById("newsMore").addEventListener("click",()=>{newsShown+=6; renderNews();});
