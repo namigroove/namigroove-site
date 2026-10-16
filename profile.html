@@ -29,7 +29,10 @@ header.top{background:var(--head);color:#fff}
 header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
 .logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
 .logo img{display:block;height:32px;width:auto}
-header.top nav a{color:rgba(255,255,255,.85);text-decoration:none;font-size:13px}
+header.top nav.main{display:flex;gap:18px;font-size:13px;font-weight:500;white-space:nowrap}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px}}
 .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
 h1,h2{margin:0;text-wrap:balance}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
@@ -88,7 +91,12 @@ footer a{color:var(--sea)}
 <header class="top">
   <div class="wrap">
     <a class="logo" href="index.html"><img src="https://www.namigroove.com/wp-content/uploads/2021/05/%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A-1.png" alt="なみぐる！" width="159" height="32" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
-    <nav><a href="index.html#contact">ご依頼</a></nav>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="#works" aria-current="page">Works</a>
+      <a href="index.html#notes">₺ƾらせ</a>
+      <a href="index.html#links">リンク</a>
+      <a href="index.html#contact">依頼</a>
+    </nav>
   </div>
 </header>
 
