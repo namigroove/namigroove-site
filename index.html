@@ -233,7 +233,7 @@ footer .mono{font-family:var(--f-mono)}
     <a class="logo" href="#top"><img src="https://www.namigroove.com/wp-content/uploads/2021/05/%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A-1.png" alt="なみぐる！" width="159" height="32" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
     <nav class="main" aria-label="メインメニュー">
       <a href="#credits">Works</a>
-      <a href="#notes">₺ƾらせ</a>
+      <a href="#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
       <a href="#links" class="opt">リンク</a>
       <a href="#contact">依頼</a>
       <a href="#" class="lang" id="toEN" lang="en" title="Translate this page into English (Google Translate)">EN</a>
@@ -274,7 +274,7 @@ footer .mono{font-family:var(--f-mono)}
   <section id="notes" class="notes-band">
     <div class="wrap">
       <div class="sec-head">
-        <div><p class="eyebrow">Activity</p><h2>₺ƾらせ・出現情報</h2></div>
+        <div><p class="eyebrow">Activity</p><h2><span class="mochi" translate="no">₺ƾらせ</span>・出現情報</h2></div>
         <p>X(@namigroove)とブログの新着をまとめて表示</p>
       </div>
       <div class="filters" role="group" aria-label="お知らせの種類で絞り込み" id="newsFilters"></div>
@@ -434,6 +434,9 @@ fetch("data/credits.json").then(r=>r.json()).then(d=>{
 })();
 /* お知らせ・出現情報:X(data/x-posts.json)とWordPressの記事を日付順にまとめる */
 const NEWS_T = {all:"すべて", notice:"₺ƾらせ", release:"新曲", event:"出現情報", blog:"ブログ"};
+/* Google翻訳(英語)で見ているときは「₺ƾらせ」を mochinfo と表示 */
+const IS_EN = /translate\.goog$/.test(location.hostname);
+if (IS_EN) { NEWS_T.notice = "mochinfo"; document.querySelectorAll(".mochi").forEach(e=>e.textContent="mochinfo"); }
 let NEWS = NOTES.map(n=>({d:n.d, type:"notice", src:"wp", t:n.t, u:n.u})), newsFilter="all", newsShown=6;
 function renderNews(){
   NEWS.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:(a.src==="wp"?-1:b.src==="wp"?1:0));
@@ -446,7 +449,7 @@ function renderNews(){
   const pin = newsFilter==="event" ? `
   <a class="note pin k-event" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出演予定はカレンダーでチェック</h3><time>なみぐるの出現スケジュール →</time></a>` : "";
   document.getElementById("noteList").innerHTML = pin + list.slice(0,newsShown-(pin?1:0)).map(n=>`
-  <a class="note k-${n.type}" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag">${NEWS_T[n.type]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
+  <a class="note k-${n.type}" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag" translate="no">${NEWS_T[n.type]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
   document.getElementById("newsMore").hidden = list.length<=newsShown-(pin?1:0);
 }
 document.getElementById("newsFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return; newsFilter=b.dataset.k; newsShown=6; renderNews();});

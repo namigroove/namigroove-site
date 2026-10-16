@@ -119,7 +119,7 @@ footer a{color:var(--sea)}
     <a class="logo" href="index.html"><img src="https://www.namigroove.com/wp-content/uploads/2021/05/%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A-1.png" alt="なみぐる！" width="159" height="32" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
     <nav class="main" aria-label="メインメニュー">
       <a href="#works" aria-current="page">Works</a>
-      <a href="index.html#notes">₺ƾらせ</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
       <a href="index.html#links">リンク</a>
       <a href="index.html#contact">依頼</a>
       <a href="#" class="lang" id="toEN" lang="en" title="Translate this page into English (Google Translate)">EN</a>
@@ -180,7 +180,7 @@ for (const [id, names] of Object.entries(LIST))
   document.getElementById(id).innerHTML = names.map(n=>`<li>${esc(n)}</li>`).join("");
 document.getElementById("timeline").innerHTML = TIMELINE.map(t=>`<li><span class="yr">${t.y}</span><ul>${t.e.map(([m,x])=>`<li><span class="mo">${Number(m)}月</span><span>${x.split(" / ").map(esc).join("<br>")}</span></li>`).join("")}</ul></li>`).join("");
 fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
-  const K={notice:"₺ƾらせ",release:"新曲"};
+  const K={notice:/translate\.goog$/.test(location.hostname)?"mochinfo":"₺ƾらせ",release:"新曲"};
   document.getElementById("xlog").innerHTML = d.posts.filter(p=>p.type!=="event").map(p=>`<li><time datetime="${p.date}">${p.date.replaceAll("-",".")}</time><a href="https://x.com/namigroove/status/${p.id}" target="_blank" rel="noopener"><span class="k k-${p.type}">${K[p.type]}</span>${esc(p.text)}</a></li>`).join("");
   /* 最初は5件だけ。もっと見るで10件ずつ表示 */
   let xShown=5; const xItems=[...document.querySelectorAll("#xlog > li")], xBtn=document.getElementById("xlogMore");
@@ -237,6 +237,7 @@ document.getElementById("shareBtn").addEventListener("click",()=>{
   if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast("リンクをコピーしました"),()=>prompt("このURLをコピーしてね",url));
   else prompt("このURLをコピーしてね",url);
 });
+if(/translate\.goog$/.test(location.hostname)) document.querySelectorAll(".mochi").forEach(e=>e.textContent="mochinfo");
 /* EN:Google翻訳で英語表示 */
 (()=>{const a=document.getElementById("toEN"); if(!a) return; a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]); a.target="_blank"; a.rel="noopener"; if(/translate\.goog$/.test(location.hostname)) a.hidden=true;})();
 </script>

@@ -77,6 +77,12 @@
     a.style.cssText = "border:1px solid rgba(255,255,255,.6)!important;border-radius:999px!important;padding:0 8px!important;font-size:11px!important;line-height:1.6";
     li.appendChild(a); ul.appendChild(li);
   }
+  // Google翻訳(英語)で見ているときは「₺ƾらせ」を mochinfo と表示
+  function mochinfo() {
+    if (!/translate\.goog$/.test(location.hostname)) return;
+    document.querySelectorAll("#header-nav a").forEach(function (a) { if (/₺ƾらせ/.test(a.textContent)) { a.textContent = "mochinfo"; a.setAttribute("translate", "no"); } });
+  }
+  var _run0 = run; run = function () { _run0(); mochinfo(); };
   var _run = run; run = function () { _run(); addEN(); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
 })();
