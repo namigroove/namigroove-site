@@ -108,6 +108,12 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .c-client{font-size:12px;color:var(--brass);font-weight:700;letter-spacing:.04em}
 .c-title{font-weight:700;font-size:15px;line-height:1.5;min-width:0}
 .more-link{margin:28px 0 0;font-size:13px;text-align:right}
+.credits-more{display:none}
+@media (max-width:640px){
+  .credits:not(.open) .credit:nth-child(n+4){display:none}
+  .credits-more{display:flex;justify-content:center;margin-top:20px}
+  .credits.open+.credits-more{display:none}
+}
 .more-link a{color:var(--ink-soft)}
 .more-link a::after{content:" →"}
 .c-role{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
@@ -226,6 +232,7 @@ footer .mono{font-family:var(--f-mono)}
         <p>代表的なWorksをピックアップ</p>
       </div>
       <div class="credits" id="creditList"></div>
+      <div class="credits-more"><button class="btn ghost" type="button" onclick="document.getElementById('creditList').classList.add('open')">もっと見る</button></div>
       <p class="more-link"><a href="profile.html">すべてのWorks・年表・お取引先を見る</a></p>
     </div>
   </section>
