@@ -1,7 +1,7 @@
 {
  "note": "トップのWorks欄とWorksページの「代表作」タブの共通データ。pin:true が先頭、あとは年の新しい順に並ぶ",
  "credits": [
-  {"y":2025,"client":"Aiobahn & TAK","t":"DIVA feat. 初音ミク","u":"https://www.namigroove.com/movie/movie-8896/","img":"https://www.namigroove.com/wp-content/uploads/2025/11/maxresdefault-2.jpg","role":"作詞・初版調声"},
+  {"y":2023,"client":"1st Album","t":"ずんだもんがいっぱい","u":"https://www.namigroove.com/music/music-3218/","img":"https://www.namigroove.com/wp-content/uploads/2023/04/20375ced40379f1e8ea26f8e6c287f04.png","role":"楽曲製作 / ディスクユニオンでレコード化"},
   {"y":2024,"client":"SNOW MIKU(雪ミク)","t":"蟹っぽいな feat. 初音ミク 鏡音レン","u":"https://www.namigroove.com/movie/movie-4843/","img":"https://www.namigroove.com/wp-content/uploads/2024/02/maxresdefault.jpg","role":"MV・楽曲製作 / DJ出演"},
   {"y":2023,"pin":true,"client":"代表曲 / プロセカ・オンゲキ・maimai 収録","t":"ずんだパーリナイ feat.ずんだもん","u":"https://www.namigroove.com/movie/movie-2957/","img":"https://www.namigroove.com/wp-content/uploads/2023/03/jacket2.png","role":"MV・楽曲製作 / ボカコレ2023春 ルーキー2位"},
   {"y":2026,"client":"日清食品(タイ)","t":"初音ミク CM「激」シリーズ","u":"https://www.namigroove.com/movie/movie-9053/","img":"https://www.namigroove.com/wp-content/uploads/2026/02/thumb.png","role":"楽曲製作 / 京都アニものづくりアワード2026 銀賞"},
