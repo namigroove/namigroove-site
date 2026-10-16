@@ -51,7 +51,8 @@ figure.post-thumbnail img.post-top-thumbnail{position:static!important;display:b
 .media-section>.svg-wrap{display:none!important}
 .media-section,.media-section a,.media-section p,.media-section span,.media-section h2,.media-section h3,.media-section div{color:var(--ng-ink)!important;text-shadow:none!important}
 .media-section h2,.media-section h3{font-family:"MaruMinyaM","Zen Maru Gothic",sans-serif;font-weight:400}
-.media-section a:hover{color:var(--ng-sea)!important}
+html body #music *,html body #movie *{color:var(--ng-ink)!important;text-shadow:none!important}
+html body #music a:hover,html body #movie a:hover{color:var(--ng-sea)!important}
 
 /* フッター:波をやめて1行に */
 #site-bottom{background:var(--ng-paper)!important;border-top:1px solid var(--ng-line)}
