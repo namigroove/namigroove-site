@@ -119,3 +119,6 @@ a.twitter:not(.ng-share),a.facebook,a.hatebu,a.line:not(.ng-share){visibility:hi
 /* 記事一覧カードにサムネ画像を表示(16:9) */
 .card-wrap figure.post-thumbnail{display:block!important;position:relative!important;padding-top:56.25%!important;height:auto!important;overflow:hidden;background:var(--ng-wash)}
 .card-wrap figure.post-thumbnail img{position:absolute!important;inset:0;width:100%!important;height:100%!important;object-fit:cover}
+
+/* お問い合わせ: サイドバー非表示ぶんの空きをなくし、トップ画像と横幅をそろえる(PC) */
+.page-id-51 #contents-wrapper{width:100%!important;max-width:100%!important;flex:1 1 100%!important}
