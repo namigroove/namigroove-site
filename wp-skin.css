@@ -110,3 +110,7 @@ a.ng-story{background:linear-gradient(45deg,#f9a03f,#e1306c 50%,#833ab4)}
 a.ng-share svg{width:20px;height:20px}
 .ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:9999;transition:all .25s;max-width:90vw;text-align:center}
 .ng-toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* 読み込み直後に古いシェアアイコンが一瞬見えないよう、置き換え前は隠しておく(万一スクリプトが動かなくても3秒後には表示) */
+a.twitter:not(.ng-share),a.facebook,a.hatebu,a.line:not(.ng-share){visibility:hidden;animation:ng-reveal 0s 3s forwards}
+@keyframes ng-reveal{to{visibility:visible}}
