@@ -28,11 +28,11 @@ body,body#body{background:var(--ng-paper)!important;background-image:none!import
 #post-title .meta,#post-title time{color:var(--ng-soft)!important}
 /* アイキャッチ:不定形の切り抜きをやめて角丸の画像に */
 .post-thumbnail-shape{display:none!important}
-#main-column>.container{align-items:center;max-width:1080px}
-#main-column>.container .md6:has(.post-thumbnail){height:auto!important;margin:24px 0!important}
-#main-column>.container .md6>.t-0.b-0.r-0.l-0{position:static!important;padding:0 16px!important}
-#main-column>.container figure.post-thumbnail{height:auto!important;padding:0!important;overflow:hidden;border-radius:14px;margin:0;box-shadow:0 8px 24px rgba(16,31,69,.12)}
-#main-column>.container figure.post-thumbnail img.post-top-thumbnail{position:static!important;display:block;width:100%!important;height:auto!important;aspect-ratio:16/9;object-fit:cover}
+#main-column>.container:not(#main-container){align-items:center;max-width:1080px}
+#main-column>.container:not(#main-container) .md6:has(.post-thumbnail){height:auto!important;margin:24px 0!important}
+#main-column>.container:not(#main-container) .md6>.t-0.b-0.r-0.l-0{position:static!important;padding:0 16px!important}
+#main-column>.container:not(#main-container) figure.post-thumbnail{height:auto!important;padding:0!important;overflow:hidden;border-radius:14px;margin:0;box-shadow:0 8px 24px rgba(16,31,69,.12)}
+#main-column>.container:not(#main-container) figure.post-thumbnail img.post-top-thumbnail{position:static!important;display:block;width:100%!important;height:auto!important;aspect-ratio:16/9;object-fit:cover}
 .gradation-object::before,.gradation-object::after{display:none!important}
 
 /* 本文エリアを白いカードに */
