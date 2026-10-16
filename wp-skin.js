@@ -4,6 +4,7 @@
   var X_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
   var LINK_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>';
   var LINK_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>';
+  var LINE_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="5.4" fill="#06c755">LINE</text></svg>';
   var STORY_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg>';
 
   function toast(msg) {
@@ -52,7 +53,7 @@
       (a.parentElement && a.parentElement.children.length === 1 ? a.parentElement : a).remove();
     });
     document.querySelectorAll("a.line").forEach(function (a) {
-      a.classList.add("ng-share", "ng-line"); a.setAttribute("aria-label", "LINEで送る");
+      a.classList.add("ng-share", "ng-line"); a.setAttribute("aria-label", "LINEで送る"); a.innerHTML = LINE_ICON;
       // LINEの後ろに「リンクをコピー」ボタンを追加
       var wrap = a.parentElement, box = wrap.cloneNode(false);
       var b = document.createElement("a");
@@ -70,7 +71,7 @@
     });
     if (!document.getElementById("ng-share-style")) {
       var st = document.createElement("style"); st.id = "ng-share-style";
-      st.textContent = 'a.ng-copy{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#396cdf;cursor:pointer}a.ng-copy svg{width:20px;height:20px}';
+      st.textContent = 'a.ng-line{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#06c755}a.ng-line svg{width:22px;height:22px}a.ng-copy{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#396cdf;cursor:pointer}a.ng-copy svg{width:20px;height:20px}';
       document.head.appendChild(st);
     }
   }
