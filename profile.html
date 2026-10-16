@@ -58,7 +58,11 @@ h2 small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft);font-wei
 .log time{font-family:var(--f-mono);font-size:12px;color:var(--ink-soft);padding-top:2px}
 .log a{color:inherit;text-decoration:none;min-width:0}
 .log a:hover{color:var(--sea)}
-.log .k{font-size:11px;color:var(--sea);margin-right:6px}
+.log .k{font-size:11px;font-weight:700;color:var(--c,var(--sea));margin-right:8px;white-space:nowrap}
+.log .k::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c,var(--sea));margin-right:5px;vertical-align:1px}
+.k-notice{--c:#2c5ccc}.k-release{--c:#d0436b}.k-event{--c:#0e8a6c}.k-blog{--c:#7a52c7}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .k-notice{--c:#7fa3f5}:root:not([data-theme="light"]) .k-release{--c:#f48aa6}:root:not([data-theme="light"]) .k-event{--c:#4fd1ac}:root:not([data-theme="light"]) .k-blog{--c:#b79cf2}}
+:root[data-theme="dark"] .k-notice{--c:#7fa3f5}:root[data-theme="dark"] .k-release{--c:#f48aa6}:root[data-theme="dark"] .k-event{--c:#4fd1ac}:root[data-theme="dark"] .k-blog{--c:#b79cf2}
 /* works */
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .filters button{font:500 13px var(--f-body);padding:6px 13px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
@@ -150,7 +154,7 @@ for (const [id, names] of Object.entries(LIST))
 document.getElementById("timeline").innerHTML = TIMELINE.map(t=>`<li><span class="yr">${t.y}</span><ul>${t.e.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></li>`).join("");
 fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
   const K={notice:"₺ƾらせ",release:"新曲"};
-  document.getElementById("xlog").innerHTML = d.posts.filter(p=>p.type!=="event").map(p=>`<li><time datetime="${p.date}">${p.date.replaceAll("-",".")}</time><a href="https://x.com/namigroove/status/${p.id}" target="_blank" rel="noopener"><span class="k">${K[p.type]}</span>${esc(p.text)}</a></li>`).join("");
+  document.getElementById("xlog").innerHTML = d.posts.filter(p=>p.type!=="event").map(p=>`<li><time datetime="${p.date}">${p.date.replaceAll("-",".")}</time><a href="https://x.com/namigroove/status/${p.id}" target="_blank" rel="noopener"><span class="k k-${p.type}">${K[p.type]}</span>${esc(p.text)}</a></li>`).join("");
 }).catch(()=>{});
 document.getElementById("ranks").innerHTML = RANKS.map(([e,r])=>`<li><span>${esc(e)}</span><b>${r}位</b></li>`).join("");
 
