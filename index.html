@@ -190,8 +190,7 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .links a .ico{display:inline-flex;width:18px;height:18px;flex:none;align-self:center;color:var(--zunda)}
 .links a .ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .links a:hover .ico{color:var(--ink)}
-.links a .ico.brand{background:var(--c);-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .links a .ico.brand[style*="#111111"]{background:#e6ecfb}}
+.links a .ico.brand{background:currentColor;-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
 .links a small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
 .links a:hover span{color:var(--zunda)}
 
