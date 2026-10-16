@@ -162,15 +162,15 @@ function jacketBg(s){
   const h=hash(s), a=[214,220,226,232,206,16][h%6], b=(a+14+(h>>3)%30)%360;
   return `radial-gradient(circle at ${20+(h%60)}% ${20+((h>>5)%50)}%, hsl(${b} 70% 62% / .9), transparent 60%), linear-gradient(${(h>>7)%360}deg, hsl(${a} 55% 38%), hsl(${b} 60% 50%))`;
 }
-let WORKS = [], filter = "pick", shown = 12;
+let WORKS = [], PICKS = [], filter = "pick", shown = 12;
 function renderFilters(){
   document.getElementById("filters").innerHTML = Object.entries(TYPES).map(([k,v])=>{
-    const n = k==="all"?WORKS.length:k==="pick"?WORKS.filter(w=>w.pick).length:WORKS.filter(w=>w.type===k).length;
+    const n = k==="all"?WORKS.length:k==="pick"?PICKS.length:WORKS.filter(w=>w.type===k).length;
     return `<button type="button" data-k="${k}" aria-pressed="${k===filter}">${v}<span class="count">${n}</span></button>`;
   }).join("");
 }
 function renderWorks(){
-  const list = WORKS.filter(w=>filter==="all"||(filter==="pick"?w.pick:w.type===filter));
+  const list = filter==="pick" ? PICKS : WORKS.filter(w=>filter==="all"||w.type===filter);
   document.getElementById("workGrid").innerHTML = list.slice(0,shown).map(w=>`
     <${w.url?`a href="${esc(w.url)}"`:"div"} class="work">
       <div class="jacket" style="background:${jacketBg(w.t)}"><b>${esc(w.t)}</b>${w.img?`<img src="${esc(w.img)}" alt="${esc(w.t)} ジャケット" loading="lazy" onerror="this.remove()">`:""}<i>${TAG[w.type]||"WORKS"}</i></div>
@@ -184,10 +184,15 @@ document.getElementById("filters").addEventListener("click",e=>{
   filter=b.dataset.k; shown=12; renderFilters(); renderWorks();
 });
 document.getElementById("moreBtn").addEventListener("click",()=>{shown+=24;renderWorks();});
-fetch("data/works.json").then(r=>r.json()).then(d=>{
-  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url, pick:w.pick}));
+/* 代表作はトップのWorks欄と同じ data/credits.json を使う */
+Promise.all([
+  fetch("data/works.json").then(r=>r.json()),
+  fetch("data/credits.json").then(r=>r.json()).catch(()=>({credits:[]}))
+]).then(([d,c])=>{
+  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
+  PICKS = c.credits.sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.y-a.y).map(x=>({t:x.t, by:x.client+(x.role?" / "+x.role:""), type:"provide", y:x.y, img:x.img, url:x.u}));
   renderFilters(); renderWorks();
-}).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">作品一覧を読み込めませんでした。</p>'; });
+}).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">Works一覧を読み込めませんでした。</p>'; });
 </script>
 </body>
 </html>
