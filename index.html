@@ -303,7 +303,7 @@ const NOTES = [
   {d:"2026-09-15", tag:"お知らせ", t:"#リアルずんだパーリナイ @定禅寺ジャズフェス2026", u:"https://www.namigroove.com/2026/09/15/post-9791/"},
   {d:"2026-09-08", tag:"お知らせ", t:"『腰痛持ち、４つ打ち』ぬい・アクキーが登場だ！", u:"https://www.namigroove.com/2026/09/08/post-9777/"},
 ];
-const WP_API = "https://www.namigroove.com/wp-json/wp/v2/posts?per_page=50&_fields=date,link,title";
+const WP_API = "https://www.namigroove.com/wp-json/wp/v2/posts?per_page=50&_fields=date,link,title,categories";
 
 
 /* ジャケ画像が読めない時は、曲名から決まる色のジャケットを表示 */
@@ -324,7 +324,7 @@ document.getElementById("creditList").innerHTML = CREDITS.map(c=>`
 
 /* お知らせ・出現情報:X(data/x-posts.json)とWordPressの記事を日付順にまとめる */
 const NEWS_T = {all:"すべて", notice:"₺ƾらせ", release:"新曲", event:"出現情報", blog:"ブログ"};
-let NEWS = NOTES.map(n=>({d:n.d, type:"blog", t:n.t, u:n.u})), newsFilter="all", newsShown=6;
+let NEWS = NOTES.map(n=>({d:n.d, type:"notice", src:"wp", t:n.t, u:n.u})), newsFilter="all", newsShown=6;
 function renderNews(){
   NEWS.sort((a,b)=>a.d<b.d?1:-1);
   document.getElementById("newsFilters").innerHTML = Object.entries(NEWS_T).map(([k,v])=>{
@@ -333,14 +333,20 @@ function renderNews(){
   }).join("");
   const list = NEWS.filter(x=>newsFilter==="all"||x.type===newsFilter);
   document.getElementById("noteList").innerHTML = list.slice(0,newsShown).map(n=>`
-  <a class="note" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag">${NEWS_T[n.type]}${n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
+  <a class="note" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag">${NEWS_T[n.type]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
   document.getElementById("newsMore").hidden = list.length<=newsShown;
 }
 document.getElementById("newsFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return; newsFilter=b.dataset.k; newsShown=6; renderNews();});
 document.getElementById("newsMore").addEventListener("click",()=>{newsShown+=6; renderNews();});
 renderNews();
 const unhtml = s => { const d=document.createElement("textarea"); d.innerHTML=s; return d.value; };
-const WP = fetch(WP_API).then(r=>r.ok?r.json():Promise.reject()).then(posts=>posts.map(p=>({d:p.date.slice(0,10), type:"blog", t:unhtml(p.title.rendered), u:p.link}))).catch(()=>null);
+/* WordPressの投稿:カテゴリ「お知らせ」系は₺ƾらせ、それ以外(お役立ち・機材紹介・日記など)はブログ */
+const WP_CATS = fetch("https://www.namigroove.com/wp-json/wp/v2/categories?per_page=100&_fields=id,slug,name").then(r=>r.ok?r.json():[]).catch(()=>[]);
+const isNotice = c => /お知らせ|₺ƾらせ|ニュース/.test(c.name) || /^(news|info|information|notice|oshirase)$/.test(c.slug);
+const WP = Promise.all([fetch(WP_API).then(r=>r.ok?r.json():Promise.reject()), WP_CATS]).then(([posts,cats])=>{
+  const notice = new Set(cats.filter(isNotice).map(c=>c.id)), hide = new Set(cats.filter(c=>c.slug==="hidden").map(c=>c.id));
+  return posts.filter(p=>!(p.categories||[]).some(id=>hide.has(id))).map(p=>({d:p.date.slice(0,10), type:(p.categories||[]).some(id=>notice.has(id))?"notice":"blog", src:"wp", t:unhtml(p.title.rendered), u:p.link}));
+}).catch(()=>null);
 const XP = fetch("data/x-posts.json").then(r=>r.json()).then(d=>d.posts.map(p=>({d:p.date, type:p.type, t:p.text, u:"https://x.com/namigroove/status/"+p.id}))).catch(()=>[]);
 Promise.all([WP,XP]).then(([wp,xp])=>{ NEWS=[...(wp||NEWS), ...xp]; renderNews(); });
 
