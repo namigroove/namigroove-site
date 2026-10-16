@@ -100,4 +100,5 @@ div[data-position="fixed"]:has(label[for="slide-toggle"]),label[data-button="flo
 
 /* コピーライト表記をトップと同じ「© namigroove」に */
 #copyright span{font-size:0!important}
+#copyright span *{display:none!important}
 #copyright span::before{content:"© namigroove";font-size:12px;font-family:"DM Mono",ui-monospace,monospace}
