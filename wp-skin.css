@@ -114,3 +114,7 @@ a.ng-share svg{width:20px;height:20px}
 /* 読み込み直後に古いシェアアイコンが一瞬見えないよう、置き換え前は隠しておく(万一スクリプトが動かなくても3秒後には表示) */
 a.twitter:not(.ng-share),a.facebook,a.hatebu,a.line:not(.ng-share){visibility:hidden;animation:ng-reveal 0s 3s forwards}
 @keyframes ng-reveal{to{visibility:visible}}
+
+/* 記事一覧カードにサムネ画像を表示(16:9) */
+.card-wrap figure.post-thumbnail{display:block!important;position:relative!important;padding-top:56.25%!important;height:auto!important;overflow:hidden;background:var(--ng-wash)}
+.card-wrap figure.post-thumbnail img{position:absolute!important;inset:0;width:100%!important;height:100%!important;object-fit:cover}
