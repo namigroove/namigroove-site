@@ -4,7 +4,7 @@
   var X_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
   var LINK_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>';
   var LINK_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>';
-  var LINE_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="5.4" fill="#06c755">LINE</text></svg>';
+  var LINE_ICON = '<svg width="26" height="26" viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg>';
   var STORY_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg>';
 
   function toast(msg) {
@@ -61,7 +61,7 @@
     });
     if (!document.getElementById("ng-share-style")) {
       var st = document.createElement("style"); st.id = "ng-share-style";
-      st.textContent = 'a.ng-story{background:#396cdf!important}a.ng-line{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#06c755}a.ng-line svg{width:22px;height:22px}a.ng-copy{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#4a5a80;cursor:pointer}a.ng-copy svg{width:20px;height:20px}';
+      st.textContent = 'a.ng-story{background:#396cdf!important}a.ng-line{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#06c755}a.ng-line svg{width:26px;height:26px}a.ng-copy{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#4a5a80;cursor:pointer}a.ng-copy svg{width:20px;height:20px}';
       document.head.appendChild(st);
     }
   }
