@@ -13,7 +13,7 @@ body,body#body{background:var(--ng-paper)!important;background-image:none!import
 #header,#header-container{background:transparent!important}
 #header-container{max-width:1080px;margin:0 auto;padding:12px 16px!important;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:nowrap}
 #sitename{margin:0!important;flex:none}
-#sitename img.header-logo{content:url("img/logo.webp");height:36px!important;width:auto!important}
+#sitename img.header-logo{content:url("img/logo.webp");height:36px!important;width:auto!important;filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff)}
 #header-nav{width:auto!important;max-width:none!important;flex:0 1 auto;background:transparent!important}
 #header-nav ul{display:flex!important;gap:18px;margin:0!important;padding:0!important;justify-content:flex-end}
 #header-nav li{margin:0!important;padding:0!important}
