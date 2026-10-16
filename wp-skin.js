@@ -54,20 +54,10 @@
     });
     document.querySelectorAll("a.line").forEach(function (a) {
       a.classList.add("ng-share", "ng-line"); a.setAttribute("aria-label", "LINEで送る"); a.innerHTML = LINE_ICON;
-      // LINEの後ろに「リンクをコピー」ボタンを追加
-      var wrap = a.parentElement, box = wrap.cloneNode(false);
-      var b = document.createElement("a");
-      b.className = "l-h-100 ng-share ng-copy"; b.setAttribute("role", "button"); b.setAttribute("tabindex", "0");
-      b.setAttribute("aria-label", "リンクをコピー"); b.title = "リンクをコピー"; b.innerHTML = LINK_ICON;
-      var copy = function (e) {
-        e.preventDefault();
-        var done = function () { toast("リンクをコピーしました"); };
-        if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done, function () { prompt("このURLをコピーしてね", location.href); });
-        else prompt("このURLをコピーしてね", location.href);
-      };
-      b.addEventListener("click", copy);
-      b.addEventListener("keydown", function (e) { if (e.key === "Enter") copy(e); });
-      box.appendChild(b); wrap.after(box);
+      // 並び順:X → LINE → リンクを共有
+      var group = a.parentElement && a.parentElement.parentElement;
+      var story = group && group.querySelector("a.ng-story");
+      if (story && story.parentElement !== a.parentElement) a.parentElement.after(story.parentElement);
     });
     if (!document.getElementById("ng-share-style")) {
       var st = document.createElement("style"); st.id = "ng-share-style";
