@@ -295,6 +295,7 @@ footer .mono{font-family:var(--f-mono)}
 let WORKS = [];
 
 const CREDITS = [
+  {y:2023, pin:true, client:"代表曲 / プロセカ・オンゲキ・maimai 収録", t:"ずんだパーリナイ feat.ずんだもん", img:"https://www.namigroove.com/wp-content/uploads/2023/03/jacket2.png", role:"ボカコレ2023春 ルーキー2位"},
   {y:2026, client:"日清食品(タイ)", t:"初音ミク CM「激」シリーズ", img:"https://www.namigroove.com/wp-content/uploads/2026/02/thumb.png", role:"CM音楽制作"},
   {y:2026, client:"日清焼そばU.F.O. 50周年", t:"U.F.O.50周年 vs はちゅねミク", img:"https://www.namigroove.com/wp-content/uploads/2026/08/1fc04743dfc121852b1816f25ccf24e9.png", role:"楽曲制作"},
   {y:2025, client:"TVアニメ『ひみつのアイプリ』", t:"ひみつのふふふ / 超ときめき♡宣伝部", img:"https://www.namigroove.com/wp-content/uploads/2025/03/image-17.png", role:"アニメ楽曲提供"},
@@ -307,7 +308,7 @@ const CREDITS = [
   {y:2024, client:"VOICEVOX", t:"DREAMVOX(公式テーマソング)", img:"https://www.namigroove.com/wp-content/uploads/2024/07/jacket_v2.png", role:"MV・楽曲制作"},
   {y:2026, client:"プロジェクトセカイ", t:"とびだせ！わんだぴょい", img:"https://www.namigroove.com/wp-content/uploads/2026/02/maxresdefault-2.jpg", role:"書き下ろし楽曲"},
   {y:2026, client:"あおぎり高校", t:"コピペパペット(1st Album収録)", img:"https://www.namigroove.com/wp-content/uploads/2025/11/G6QqtBBacAcvBOK.jpg", role:"楽曲提供"},
-].sort((a,b)=>b.y-a.y);
+].sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.y-a.y);
 
 
 const RANKS = [
