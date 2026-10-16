@@ -93,3 +93,7 @@ html body #music a:hover,html body #movie a:hover{color:var(--ng-sea)!important}
 #contents-wrapper{padding:24px 16px!important}
 #sidebar{padding:24px 16px!important}
 @media (min-width:960px){#sidebar{position:sticky;top:72px;align-self:flex-start}}
+
+/* スマホ:ヘッダーにメニューを出しているので、右下の丸いメニューボタンは非表示(ページトップボタンだけ残す) */
+div[data-position="fixed"]:has(label[for="slide-toggle"]),label[data-button="floating"]{display:none!important}
+#header-nav{display:block!important}
