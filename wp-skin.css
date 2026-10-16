@@ -31,8 +31,8 @@ body,body#body{background:var(--ng-paper)!important;background-image:none!import
 #main-column>.container{align-items:center;max-width:1080px}
 #main-column>.container .md6:has(.post-thumbnail){height:auto!important;margin:24px 0!important}
 #main-column>.container .md6>.t-0.b-0.r-0.l-0{position:static!important;padding:0 16px!important}
-figure.post-thumbnail{height:auto!important;aspect-ratio:16/9;overflow:hidden;border-radius:14px;margin:0;box-shadow:0 8px 24px rgba(16,31,69,.12)}
-figure.post-thumbnail img.post-top-thumbnail{position:static!important;width:100%!important;height:100%!important;object-fit:cover}
+figure.post-thumbnail{height:auto!important;overflow:hidden;border-radius:14px;margin:0;box-shadow:0 8px 24px rgba(16,31,69,.12)}
+figure.post-thumbnail img.post-top-thumbnail{position:static!important;display:block;width:100%!important;height:auto!important;aspect-ratio:16/9;object-fit:cover}
 .gradation-object::before,.gradation-object::after{display:none!important}
 
 /* 本文エリアを白いカードに */
