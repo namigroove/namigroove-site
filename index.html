@@ -173,13 +173,16 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .foot-links{display:flex;gap:16px;flex-wrap:wrap;font-size:12px}
 .foot-links a{color:inherit;opacity:.8}
 
-.promo{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:var(--chip);border:1px solid var(--line);border-radius:16px;padding:20px;margin:0 0 36px}
+.promo{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;background:var(--chip);border:1px solid var(--line);border-radius:16px;padding:20px;margin:0 0 36px}
 .promo-video{position:relative;width:200px}
 .promo-video video{display:block;width:100%;aspect-ratio:360/840;object-fit:cover;border-radius:14px;background:#111;box-shadow:0 8px 24px rgba(16,31,69,.18)}
 .promo-sound{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);font:500 12px var(--f-body);padding:5px 12px;border-radius:999px;border:0;background:rgba(0,0,0,.6);color:#fff;cursor:pointer;white-space:nowrap}
 .promo-body h3{font-family:var(--f-display);font-weight:400;font-size:clamp(22px,3.4vw,30px);line-height:1.3;margin:0 0 18px}
 .promo-body p{margin:0 0 16px;color:var(--ink-soft);font-size:14px}
 .promo-body .btn{background:#06c755;border-color:#06c755;color:#fff}
+.promo-cards{display:grid;grid-template-columns:repeat(2,minmax(0,200px));gap:12px;align-self:center}
+.promo-cards img{display:block;width:100%;height:auto;border-radius:10px;box-shadow:0 6px 18px rgba(16,31,69,.15)}
+@media (max-width:900px){.promo{grid-template-columns:auto 1fr}.promo-cards{display:none}}
 @media (max-width:560px){.promo{grid-template-columns:1fr;justify-items:center;text-align:center}.promo-video{width:min(220px,70vw)}}
 
 /* links */
@@ -323,6 +326,10 @@ footer .mono{font-family:var(--f-mono)}
         <div class="promo-body">
           <h3>ずんだパーリナイ<br>LINEスタンプ 発売中</h3>
           <a class="btn" href="https://store.line.me/stickershop/product/26675197/ja" target="_blank" rel="noopener">LINE STOREで見る</a>
+        </div>
+        <div class="promo-cards" aria-hidden="true">
+          <a href="https://store.line.me/stickershop/product/26675197/ja" target="_blank" rel="noopener" tabindex="-1"><img src="img/line-stamp-card.webp" alt="ずんだパーリナイ LINEスタンプ 40種" loading="lazy" width="440" height="440"></a>
+          <img src="img/line-emoji-card.webp" alt="ずんだパーリナイ LINE絵文字 40種" loading="lazy" width="440" height="440">
         </div>
       </div>
       <div class="link-groups">
