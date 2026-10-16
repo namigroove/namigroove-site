@@ -144,22 +144,22 @@ fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
 document.getElementById("ranks").innerHTML = RANKS.map(([e,r])=>`<li><span>${esc(e)}</span><b>${r}位</b></li>`).join("");
 
 /* 作品一覧:data/works.json(WordPress・YouTubeから毎日自動更新) */
-const TYPES = {all:"すべて", original:"オリジナル", provide:"提供・編曲", remix:"Remix", join:"参加"};
+const TYPES = {pick:"代表作", all:"すべて", original:"オリジナル", provide:"提供・編曲", remix:"Remix", join:"参加"};
 const TAG = {original:"ORIGINAL", provide:"WORKS", remix:"REMIX", join:"COMPI"};
 function hash(s){let h=0;for(const c of s)h=(h*31+c.codePointAt(0))>>>0;return h}
 function jacketBg(s){
   const h=hash(s), a=[214,220,226,232,206,16][h%6], b=(a+14+(h>>3)%30)%360;
   return `radial-gradient(circle at ${20+(h%60)}% ${20+((h>>5)%50)}%, hsl(${b} 70% 62% / .9), transparent 60%), linear-gradient(${(h>>7)%360}deg, hsl(${a} 55% 38%), hsl(${b} 60% 50%))`;
 }
-let WORKS = [], filter = "all", shown = 12;
+let WORKS = [], filter = "pick", shown = 12;
 function renderFilters(){
   document.getElementById("filters").innerHTML = Object.entries(TYPES).map(([k,v])=>{
-    const n = k==="all"?WORKS.length:WORKS.filter(w=>w.type===k).length;
+    const n = k==="all"?WORKS.length:k==="pick"?WORKS.filter(w=>w.pick).length:WORKS.filter(w=>w.type===k).length;
     return `<button type="button" data-k="${k}" aria-pressed="${k===filter}">${v}<span class="count">${n}</span></button>`;
   }).join("");
 }
 function renderWorks(){
-  const list = WORKS.filter(w=>filter==="all"||w.type===filter);
+  const list = WORKS.filter(w=>filter==="all"||(filter==="pick"?w.pick:w.type===filter));
   document.getElementById("workGrid").innerHTML = list.slice(0,shown).map(w=>`
     <${w.url?`a href="${esc(w.url)}"`:"div"} class="work">
       <div class="jacket" style="background:${jacketBg(w.t)}"><b>${esc(w.t)}</b>${w.img?`<img src="${esc(w.img)}" alt="${esc(w.t)} ジャケット" loading="lazy" onerror="this.remove()">`:""}<i>${TAG[w.type]||"WORKS"}</i></div>
@@ -174,7 +174,7 @@ document.getElementById("filters").addEventListener("click",e=>{
 });
 document.getElementById("moreBtn").addEventListener("click",()=>{shown+=24;renderWorks();});
 fetch("data/works.json").then(r=>r.json()).then(d=>{
-  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
+  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url, pick:w.pick}));
   renderFilters(); renderWorks();
 }).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">作品一覧を読み込めませんでした。</p>'; });
 </script>
