@@ -102,3 +102,11 @@ div[data-position="fixed"]:has(label[for="slide-toggle"]),label[data-button="flo
 #copyright span{font-size:0!important}
 #copyright span *{display:none!important}
 #copyright span::before{content:"© namigroove";font-size:12px;font-family:"DM Mono",ui-monospace,monospace}
+
+/* シェアボタン(wp-skin.jsでX・インスタストーリーに置き換え) */
+a.ng-share{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;cursor:pointer}
+a.ng-x{background:#000}
+a.ng-story{background:linear-gradient(45deg,#f9a03f,#e1306c 50%,#833ab4)}
+a.ng-share svg{width:20px;height:20px}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:9999;transition:all .25s;max-width:90vw;text-align:center}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
