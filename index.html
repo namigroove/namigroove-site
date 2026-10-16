@@ -148,7 +148,9 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .sample{font-family:var(--f-mono);font-size:11px;color:var(--brass);border:1px dashed var(--brass);border-radius:999px;padding:2px 10px}
 
 /* links */
-.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;border-top:1.5px solid var(--ink)}
+.link-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px 40px}
+.link-group h3{font-size:13px;font-weight:700;color:var(--zunda);margin:0 0 6px;letter-spacing:.06em}
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:0 20px;border-top:1.5px solid var(--ink)}
 .links a{display:flex;justify-content:flex-start;align-items:baseline;gap:10px;padding:14px 4px;border-bottom:1px solid var(--line);text-decoration:none}
 .links a span{font-weight:700}
 .links a small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
@@ -234,15 +236,37 @@ footer .mono{font-family:var(--f-mono)}
   <section id="links">
     <div class="wrap">
       <div class="sec-head"><div><p class="eyebrow">Shop &amp; Links</p><h2>グッズ・リンク</h2></div></div>
-      <div class="links">
-        <a href="https://namigroove.booth.pm/" target="_blank" rel="noopener"><span>BOOTH</span><small>CD・グッズ</small></a>
-        <a href="https://suzuri.jp/namigroove" target="_blank" rel="noopener"><span>SUZURI</span><small>謎が解けなくても買える服</small></a>
-        <a href="https://store.line.me/stickershop/product/26675197/ja" target="_blank" rel="noopener"><span>LINEスタンプ</span><small>ずんだパーリナイ</small></a>
-        <a href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener"><span>YouTube</span><small>@namigroove</small></a>
-        <a href="https://x.com/namigroove" target="_blank" rel="noopener"><span>X</span><small>@namigroove</small></a>
-        <a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span>イベント予定</span><small>TimeTree</small></a>
-        <a href="https://lit.link/namigroove" target="_blank" rel="noopener"><span>Portfolio</span><small>lit.link</small></a>
-        <a href="https://namigroove.github.io/BPMmsCalculator/" target="_blank" rel="noopener"><span>BPMmsCalculator</span><small>制作ツール</small></a>
+      <div class="link-groups">
+        <div class="link-group"><h3>グッズ・CD</h3><div class="links">
+          <a href="https://namigroove.booth.pm/" target="_blank" rel="noopener"><span>BOOTH</span><small>同人グッズ・CD・音源</small></a>
+          <a href="https://ctctyo.com/collections/ctcrecored" target="_blank" rel="noopener"><span>CTC RECORDS</span><small>グッズ・CD</small></a>
+          <a href="https://diskunion.net/gamemusic/ct/list/0/0/132064" target="_blank" rel="noopener"><span>ディスクユニオン</span><small>フィジカルCD(公式・委託)</small></a>
+          <a href="https://namigroove.bandcamp.com/" target="_blank" rel="noopener"><span>Bandcamp</span><small>音源</small></a>
+          <a href="https://suzuri.jp/namigroove" target="_blank" rel="noopener"><span>SUZURI</span><small>謎が解けなくても買える服</small></a>
+          <a href="https://store.line.me/stickershop/product/26675197/ja" target="_blank" rel="noopener"><span>LINEスタンプ</span><small>ずんだパーリナイ</small></a>
+        </div></div>
+        <div class="link-group"><h3>音楽を聴く</h3><div class="links">
+          <a href="https://open.spotify.com/artist/32ljht9dPnlZACgqyVTn6c" target="_blank" rel="noopener"><span>Spotify</span><small></small></a>
+          <a href="https://music.apple.com/us/artist/namigroove/1594555837" target="_blank" rel="noopener"><span>Apple Music</span><small></small></a>
+          <a href="https://www.amazon.co.jp/music/player/artists/B09LSVRXM2/" target="_blank" rel="noopener"><span>Amazon Music</span><small></small></a>
+          <a href="https://soundcloud.com/namigroove" target="_blank" rel="noopener"><span>SoundCloud</span><small></small></a>
+          <a href="https://piapro.jp/namigroove" target="_blank" rel="noopener"><span>piapro</span><small>Off Vocal・歌詞</small></a>
+          <a href="https://namigroove.fanbox.cc/" target="_blank" rel="noopener"><span>pixivFANBOX</span><small>STEM配布</small></a>
+        </div></div>
+        <div class="link-group"><h3>SNS・予定</h3><div class="links">
+          <a href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener"><span>YouTube</span><small>@namigroove</small></a>
+          <a href="https://x.com/namigroove" target="_blank" rel="noopener"><span>X</span><small>@namigroove</small></a>
+          <a href="https://www.instagram.com/namigroove_music/" target="_blank" rel="noopener"><span>Instagram</span><small>@namigroove_music</small></a>
+          <a href="https://www.tiktok.com/@namigroove" target="_blank" rel="noopener"><span>TikTok</span><small>@namigroove</small></a>
+          <a href="https://space.bilibili.com/3546647380363709" target="_blank" rel="noopener"><span>bilibili</span><small></small></a>
+          <a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span>TimeTree</span><small>DJ出演・即売会の予定</small></a>
+        </div></div>
+        <div class="link-group"><h3>応援・その他</h3><div class="links">
+          <a href="https://ouen55.com/namigroove" target="_blank" rel="noopener"><span>ファンレター・プレゼント</span><small>宛先はこちら</small></a>
+          <a href="https://bit.ly/3O1mSgc" target="_blank" rel="noopener"><span>Amazonほしい物リスト</span><small>プレゼントを送れます</small></a>
+          <a href="https://lit.link/namigroove" target="_blank" rel="noopener"><span>lit.link</span><small>リンクまとめ</small></a>
+          <a href="https://namigroove.github.io/BPMmsCalculator/" target="_blank" rel="noopener"><span>BPMmsCalculator</span><small>制作ツール</small></a>
+        </div></div>
       </div>
     </div>
   </section>
