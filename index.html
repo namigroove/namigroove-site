@@ -194,6 +194,14 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 footer{padding-block:28px;font-size:12px;color:var(--ink-soft)}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 footer .mono{font-family:var(--f-mono)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -325,6 +333,12 @@ footer .mono{font-family:var(--f-mono)}
 </main>
 
 <footer>
+<div class="share-row">
+  <span class="share-label">このサイトをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81%20%E2%80%93%20namigroove%20official%20web%20site&amp;url=https%3A%2F%2Fwww.namigroove.com%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
   <div class="wrap">
     <span class="mono">© <span id="yr">2026</span> namigroove</span>
     <nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/links/">相互リンク</a><a href="https://www.namigroove.com/privacy-policy/">プライバシーポリシー</a></nav>
@@ -421,6 +435,14 @@ Promise.all([WP,XP]).then(([wp,xp])=>{
   NEWS=list; renderNews();
 });
 
+/* フッターのシェア:「リンクを共有」はスマホなら共有メニュー、PCならリンクをコピー */
+document.getElementById("shareBtn").addEventListener("click",()=>{
+  const url="https://www.namigroove.com/";
+  if(navigator.share){ navigator.share({title:document.title,url}).catch(()=>{}); return; }
+  const toast=m=>{const t=document.createElement("div");t.className="ng-toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.classList.add("show"),10);setTimeout(()=>{t.classList.remove("show");setTimeout(()=>t.remove(),300)},2400)};
+  if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast("リンクをコピーしました"),()=>prompt("このURLをコピーしてね",url));
+  else prompt("このURLをコピーしてね",url);
+});
 document.getElementById("yr").textContent = new Date().getFullYear();
 
 /* ヒーロー下の海:3層の波がゆっくり寄せる。最前列は次のセクション(浅瀬)の色 */
