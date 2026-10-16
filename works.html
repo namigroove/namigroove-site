@@ -137,7 +137,7 @@ footer a{color:var(--sea)}
     <div class="grid" id="workGrid"></div>
     <div class="more"><button type="button" id="moreBtn">もっと見る</button></div>
   </section>
-  <section><h2>最近の活動<small>Xの投稿より自動収集</small></h2><ol class="log" id="xlog"></ol></section>
+  <section><h2>最近の活動<small>Xの投稿より自動収集</small></h2><ol class="log" id="xlog"></ol><div class="more"><button type="button" id="xlogMore" hidden>もっと見る</button></div></section>
   <section><h2>年表</h2><ol class="timeline" id="timeline"></ol></section>
   <section class="fold"><details><summary><h2>企業・レーベル</h2></summary><ul class="tags" id="company"></ul></details></section>
   <section class="fold"><details><summary><h2>音楽ゲーム</h2></summary><ul class="tags" id="game"></ul></details></section>
@@ -180,6 +180,11 @@ document.getElementById("timeline").innerHTML = TIMELINE.map(t=>`<li><span class
 fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
   const K={notice:"₺ƾらせ",release:"新曲"};
   document.getElementById("xlog").innerHTML = d.posts.filter(p=>p.type!=="event").map(p=>`<li><time datetime="${p.date}">${p.date.replaceAll("-",".")}</time><a href="https://x.com/namigroove/status/${p.id}" target="_blank" rel="noopener"><span class="k k-${p.type}">${K[p.type]}</span>${esc(p.text)}</a></li>`).join("");
+  /* 最初は5件だけ。もっと見るで10件ずつ表示 */
+  let xShown=5; const xItems=[...document.querySelectorAll("#xlog > li")], xBtn=document.getElementById("xlogMore");
+  const xRender=()=>{ xItems.forEach((li,k)=>li.hidden=k>=xShown); xBtn.hidden=xItems.length<=xShown; };
+  xBtn.addEventListener("click",()=>{ xShown+=10; xRender(); });
+  xRender();
 }).catch(()=>{});
 document.getElementById("ranks").innerHTML = RANKS.map(([e,r])=>`<li><span>${esc(e)}</span><b>${r}位</b></li>`).join("");
 
