@@ -105,6 +105,7 @@ footer a{color:var(--sea)}
 .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .foot-links{display:flex;gap:16px;flex-wrap:wrap}
 .foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
@@ -121,6 +122,7 @@ footer a{color:var(--sea)}
       <a href="index.html#notes">₺ƾらせ</a>
       <a href="index.html#links">リンク</a>
       <a href="index.html#contact">依頼</a>
+      <a href="#" class="lang" id="toEN" lang="en" title="Translate this page into English (Google Translate)">EN</a>
     </nav>
   </div>
 </header>
@@ -235,6 +237,8 @@ document.getElementById("shareBtn").addEventListener("click",()=>{
   if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast("リンクをコピーしました"),()=>prompt("このURLをコピーしてね",url));
   else prompt("このURLをコピーしてね",url);
 });
+/* EN:Google翻訳で英語表示 */
+(()=>{const a=document.getElementById("toEN"); if(!a) return; a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]); a.target="_blank"; a.rel="noopener"; if(/translate\.goog$/.test(location.hostname)) a.hidden=true;})();
 </script>
 </body>
 </html>

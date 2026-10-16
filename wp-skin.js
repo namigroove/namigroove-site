@@ -66,5 +66,17 @@
     }
   }
 
+  // ヘッダーメニューの最後に「EN」(Google翻訳で英語表示)を追加
+  function addEN() {
+    var ul = document.querySelector("#header-nav ul");
+    if (!ul || document.getElementById("toEN") || /translate\.goog$/.test(location.hostname)) return;
+    var li = document.createElement("li"), a = document.createElement("a");
+    a.id = "toEN"; a.textContent = "EN"; a.lang = "en"; a.target = "_blank"; a.rel = "noopener";
+    a.title = "Translate this page into English (Google Translate)";
+    a.href = "https://translate.google.com/translate?sl=ja&tl=en&u=" + encodeURIComponent(location.href.split("#")[0]);
+    a.style.cssText = "border:1px solid rgba(255,255,255,.6)!important;border-radius:999px!important;padding:0 8px!important;font-size:11px!important;line-height:1.6";
+    li.appendChild(a); ul.appendChild(li);
+  }
+  var _run = run; run = function () { _run(); addEN(); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
 })();
