@@ -236,7 +236,21 @@ footer .mono{font-family:var(--f-mono)}
       <a href="#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
       <a href="#links" class="opt">リンク</a>
       <a href="#contact">依頼</a>
-      <a href="#" class="lang" id="toEN" lang="en" title="Translate this page into English (Google Translate)">EN</a><script>if(/translate\.goog$/.test(location.hostname))document.getElementById("toEN").style.display="none";</script>
+      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
+/* EN⇔JP:Google翻訳(英語)との切り替え */
+(()=>{const a=document.getElementById("toEN"); if(!a) return;
+ const tr=/\.translate\.goog$/.test(location.hostname);
+ if(tr){
+  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
+  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
+  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
+  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
+ } else {
+  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
+ }
+})();
+</script>
     </nav>
   </div>
 </header>
@@ -246,7 +260,7 @@ footer .mono{font-family:var(--f-mono)}
   <div class="wrap hero">
     <div>
       <p class="eyebrow">VOCALOID Producer / Sax DJ</p>
-      <h1>なみぐる<span class="en">NAMIGROOVE</span></h1>
+      <h1><span class="ngname" translate="no">なみぐる</span><span class="en">NAMIGROOVE</span></h1>
       <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。<b>ゲーム・アニメ・CM・VTuber</b>への楽曲提供、作曲、編曲、作詞、映像製作、楽器演奏まで手がけています。</p>
       <div class="cta">
         <a class="btn primary" href="#contact">製作を依頼する</a>
@@ -517,7 +531,6 @@ document.getElementById("yr").textContent = new Date().getFullYear();
 })();
 </script>
 <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js" defer>/* EN:Google翻訳で英語表示 */
-(()=>{const a=document.getElementById("toEN"); if(!a) return; a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]); a.target="_blank"; a.rel="noopener"; if(/translate\.goog$/.test(location.hostname)) a.hidden=true;})();
 </script>
 </body>
 </html>
