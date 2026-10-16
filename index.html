@@ -191,8 +191,8 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .promo-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-self:start}
 .promo-cards a{display:block;transition:transform .15s}.promo-cards a:hover{transform:translateY(-3px)}
 .promo-cards img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 6px 18px rgba(16,31,69,.15)}
-@media (max-width:900px){.promo{grid-template-rows:auto}.promo-video{width:200px}.promo-video{grid-row:auto}.promo-body{align-self:center}.promo-cards{display:none}}
-@media (max-width:560px){.promo{grid-template-columns:1fr;justify-items:center;text-align:center}.promo-btns{justify-content:center}.promo-video{width:min(220px,70vw)}}
+@media (max-width:900px){.promo{grid-template-rows:auto}.promo-video{width:200px}.promo-video{grid-row:auto}.promo-body{align-self:center}.promo-cards{grid-column:1/-1;width:100%;gap:12px}}
+@media (max-width:560px){.promo{grid-template-columns:1fr;justify-items:center;text-align:center}.promo-btns{justify-content:center}.promo-video{width:min(220px,70vw)}.promo-cards{gap:10px}}
 
 /* links */
 .link-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px 40px}
@@ -336,7 +336,7 @@ footer .mono{font-family:var(--f-mono)}
           <h3>ずんだパーリナイ<br>LINEスタンプ 発売中</h3>
           <div class="promo-btns"><a class="btn" href="https://store.line.me/stickershop/product/26675197/ja" target="_blank" rel="noopener">スタンプを見る</a><a class="btn" href="https://store.line.me/emojishop/product/665533fe22d33233cb37c327/ja" target="_blank" rel="noopener">絵文字を見る</a></div>
         </div>
-        <div class="promo-cards" aria-hidden="true">
+        <div class="promo-cards">
           <a href="https://store.line.me/stickershop/product/26675197/ja" target="_blank" rel="noopener" tabindex="-1"><img src="img/line-stamp-card.webp" alt="ずんだパーリナイ LINEスタンプ 40種" loading="lazy" width="440" height="440"></a>
           <a href="https://store.line.me/emojishop/product/665533fe22d33233cb37c327/ja" target="_blank" rel="noopener" tabindex="-1"><img src="img/line-emoji-card.webp" alt="ずんだパーリナイ LINE絵文字 40種" loading="lazy" width="440" height="440"></a>
         </div>
