@@ -12,10 +12,19 @@ const SKIP_WORDS = ["#shorts", "切り抜き", "告知", "配信アーカイブ"
 
 const xml = process.argv[2]
   ? readFileSync(process.argv[2], "utf8")
-  : await fetch(FEED_URL).then((r) => {
-      if (!r.ok) throw new Error(`YouTubeフィードを取得できませんでした (${r.status})`);
-      return r.text();
-    });
+  : await fetchFeed();
+
+// YouTubeのフィードはまれに一時エラーを返すので、少し待って最大3回試す
+async function fetchFeed() {
+  for (let i = 0; i < 3; i++) {
+    const r = await fetch(FEED_URL).catch(() => null);
+    if (r && r.ok) return r.text();
+    console.log(`YouTubeフィードの取得に失敗 (${r ? r.status : "通信エラー"})、再試行します`);
+    await new Promise((ok) => setTimeout(ok, 5000));
+  }
+  console.log("YouTubeフィードを取得できなかったので、今回はスキップします");
+  process.exit(0);
+}
 
 const decode = (s) =>
   s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")

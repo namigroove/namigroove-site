@@ -17,8 +17,10 @@ jobs:
         with:
           node-version: 20
       - name: WordPressのミュージック・ムービーを取り込む
+        continue-on-error: true
         run: node scripts/sync-wordpress.mjs
       - name: YouTubeの新着動画を取り込む
+        continue-on-error: true
         run: node scripts/sync-youtube.mjs
       - name: 変更があれば保存
         run: |
