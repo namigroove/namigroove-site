@@ -64,5 +64,5 @@ figure.post-thumbnail img.post-top-thumbnail{position:static!important;display:b
 #footer .global-nav a,#footer a{color:var(--ng-soft)!important;font-size:12px;text-decoration:underline;border:0!important}
 #footer .global-nav a i,#header-nav a i{display:none}
 #copyright{padding:0!important;font-size:12px;color:var(--ng-soft)!important}
-#footer .pb-5{display:none}
+#footer .container>.pb-5:not(#copyright){display:none}
 .page-top{background:var(--ng-head)!important;color:#fff!important;position:fixed!important;bottom:20px;right:20px;top:auto!important;border-radius:50%;box-shadow:0 4px 12px rgba(16,31,69,.2)}
