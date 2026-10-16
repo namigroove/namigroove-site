@@ -97,6 +97,9 @@ section{padding-block:56px}
 .credits{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px 20px}
 .credit{display:flex;flex-direction:column;gap:6px;text-decoration:none;min-width:0}
 .credit:hover .c-title{color:var(--zunda)}
+a.credit{color:inherit}
+a.credit:hover .c-thumb img{transform:scale(1.03)}
+.c-thumb img{transition:transform .25s}
 .c-thumb{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:8px;overflow:hidden;margin-bottom:6px;display:flex;align-items:flex-end;padding:10px}
 .c-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .c-thumb b{font-family:var(--f-display);font-weight:400;font-size:15px;line-height:1.3;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.25)}
@@ -295,20 +298,20 @@ footer .mono{font-family:var(--f-mono)}
 let WORKS = [];
 
 const CREDITS = [
-  {y:2025, client:"Aiobahn & TAK", t:"DIVA feat. 初音ミク", img:"https://www.namigroove.com/wp-content/uploads/2025/11/maxresdefault-2.jpg", role:"作詞・初版調声"},
-  {y:2024, client:"SNOW MIKU(雪ミク)", t:"蟹っぽいな feat. 初音ミク 鏡音レン", img:"https://www.namigroove.com/wp-content/uploads/2024/02/maxresdefault.jpg", role:"コンピ書き下ろし・DJ出演"},
-  {y:2023, pin:true, client:"代表曲 / プロセカ・オンゲキ・maimai 収録", t:"ずんだパーリナイ feat.ずんだもん", img:"https://www.namigroove.com/wp-content/uploads/2023/03/jacket2.png", role:"ボカコレ2023春 ルーキー2位"},
-  {y:2026, client:"日清食品(タイ)", t:"初音ミク CM「激」シリーズ", img:"https://www.namigroove.com/wp-content/uploads/2026/02/thumb.png", role:"CM音楽制作 / 京都アニものづくりアワード2026 銀賞"},
-  {y:2026, client:"日清焼そばU.F.O. 50周年", t:"U.F.O.50周年 vs はちゅねミク", img:"https://www.namigroove.com/wp-content/uploads/2026/08/1fc04743dfc121852b1816f25ccf24e9.png", role:"楽曲制作"},
-  {y:2025, client:"TVアニメ『ひみつのアイプリ』", t:"ひみつのふふふ / 超ときめき♡宣伝部", img:"https://www.namigroove.com/wp-content/uploads/2025/03/image-17.png", role:"アニメ楽曲提供"},
-  {y:2025, client:"電音部", t:"大賀ルキア(CV:星川サラ)「ガルルルルルル！」", img:"https://www.namigroove.com/wp-content/uploads/2025/03/Gl__hfSbEAAgU2X.jpg", role:"楽曲提供"},
-  {y:2025, client:"ホロライブ 大空スバル", t:"1st Album「Pleiades」", img:"https://www.namigroove.com/wp-content/uploads/2025/03/image-1.png", role:"楽曲提供"},
-  {y:2025, client:"CHUNITHM", t:"なみぐるコラボ / ちゅ、お注射。", img:"https://www.namigroove.com/wp-content/uploads/2025/09/image.png", role:"収録・コラボ"},
-  {y:2024, client:"maimai でらっくす", t:"のじゃロリック feat.ちょこ 桃寝ちのい", img:"https://www.namigroove.com/wp-content/uploads/2024/03/maxresdefault-2.jpg", role:"収録楽曲"},
-  {y:2024, client:"マクドナルド", t:"ずんだタコヤーキ(マックフラッペ CMソング)", img:"https://www.namigroove.com/wp-content/uploads/2024/02/maxresdefault-2.jpg", role:"CMソング"},
-  {y:2024, client:"VOICEVOX", t:"DREAMVOX(公式テーマソング)", img:"https://www.namigroove.com/wp-content/uploads/2024/07/jacket_v2.png", role:"MV・楽曲制作"},
-  {y:2026, client:"プロジェクトセカイ", t:"とびだせ！わんだぴょい", img:"https://www.namigroove.com/wp-content/uploads/2026/02/maxresdefault-2.jpg", role:"書き下ろし楽曲"},
-  {y:2026, client:"あおぎり高校", t:"コピペパペット(1st Album収録)", img:"https://www.namigroove.com/wp-content/uploads/2025/11/G6QqtBBacAcvBOK.jpg", role:"楽曲提供"},
+  {y:2025, client:"Aiobahn & TAK", t:"DIVA feat. 初音ミク", u:"https://www.namigroove.com/movie/movie-8896/", img:"https://www.namigroove.com/wp-content/uploads/2025/11/maxresdefault-2.jpg", role:"作詞・初版調声"},
+  {y:2024, client:"SNOW MIKU(雪ミク)", t:"蟹っぽいな feat. 初音ミク 鏡音レン", u:"https://www.namigroove.com/movie/movie-4843/", img:"https://www.namigroove.com/wp-content/uploads/2024/02/maxresdefault.jpg", role:"コンピ書き下ろし・DJ出演"},
+  {y:2023, pin:true, client:"代表曲 / プロセカ・オンゲキ・maimai 収録", t:"ずんだパーリナイ feat.ずんだもん", u:"https://www.namigroove.com/movie/movie-2957/", img:"https://www.namigroove.com/wp-content/uploads/2023/03/jacket2.png", role:"ボカコレ2023春 ルーキー2位"},
+  {y:2026, client:"日清食品(タイ)", t:"初音ミク CM「激」シリーズ", u:"https://www.namigroove.com/movie/movie-9053/", img:"https://www.namigroove.com/wp-content/uploads/2026/02/thumb.png", role:"CM音楽制作 / 京都アニものづくりアワード2026 銀賞"},
+  {y:2026, client:"日清焼そばU.F.O. 50周年", t:"U.F.O.50周年 vs はちゅねミク", u:"https://www.namigroove.com/movie/movie-9502/", img:"https://www.namigroove.com/wp-content/uploads/2026/08/1fc04743dfc121852b1816f25ccf24e9.png", role:"楽曲制作"},
+  {y:2025, client:"TVアニメ『ひみつのアイプリ』", t:"ひみつのふふふ / 超ときめき♡宣伝部", u:"https://www.namigroove.com/music/music-7574/", img:"https://www.namigroove.com/wp-content/uploads/2025/03/image-17.png", role:"アニメ楽曲提供"},
+  {y:2025, client:"電音部", t:"大賀ルキア(CV:星川サラ)「ガルルルルルル！」", u:"https://www.namigroove.com/music/music-7613/", img:"https://www.namigroove.com/wp-content/uploads/2025/03/Gl__hfSbEAAgU2X.jpg", role:"楽曲提供"},
+  {y:2025, client:"ホロライブ 大空スバル", t:"1st Album「Pleiades」", u:"https://www.namigroove.com/music/music-7356/", img:"https://www.namigroove.com/wp-content/uploads/2025/03/image-1.png", role:"楽曲提供"},
+  {y:2025, client:"CHUNITHM", t:"なみぐるコラボ / ちゅ、お注射。", u:"https://www.namigroove.com/movie/movie-9612/", img:"https://www.namigroove.com/wp-content/uploads/2025/09/image.png", role:"収録・コラボ"},
+  {y:2024, client:"maimai でらっくす", t:"のじゃロリック feat.ちょこ 桃寝ちのい", u:"https://www.namigroove.com/movie/movie-5198/", img:"https://www.namigroove.com/wp-content/uploads/2024/03/maxresdefault-2.jpg", role:"収録楽曲"},
+  {y:2024, client:"マクドナルド", t:"ずんだタコヤーキ(マックフラッペ CMソング)", u:"https://www.namigroove.com/movie/movie-4903/", img:"https://www.namigroove.com/wp-content/uploads/2024/02/maxresdefault-2.jpg", role:"CMソング"},
+  {y:2024, client:"VOICEVOX", t:"DREAMVOX(公式テーマソング)", u:"https://www.namigroove.com/movie/movie-5994/", img:"https://www.namigroove.com/wp-content/uploads/2024/07/jacket_v2.png", role:"MV・楽曲制作"},
+  {y:2026, client:"プロジェクトセカイ", t:"とびだせ！わんだぴょい", u:"https://www.namigroove.com/movie/movie-9213/", img:"https://www.namigroove.com/wp-content/uploads/2026/02/maxresdefault-2.jpg", role:"書き下ろし楽曲"},
+  {y:2026, client:"あおぎり高校", t:"コピペパペット(1st Album収録)", u:"https://www.namigroove.com/music/music-8838/", img:"https://www.namigroove.com/wp-content/uploads/2025/11/G6QqtBBacAcvBOK.jpg", role:"楽曲提供"},
 ].sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.y-a.y);
 
 
@@ -344,10 +347,10 @@ function jacketBg(s){
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 document.getElementById("creditList").innerHTML = CREDITS.map(c=>`
-  <div class="credit">
+  <${c.u?`a href="${c.u}"`:"div"} class="credit">
     <div class="c-thumb" style="background:${jacketBg(c.client+c.t)}"><b>${esc(c.client)}</b>${c.img?`<img src="${c.img}" alt="${esc(c.t)}" loading="lazy" onerror="this.remove()">`:""}<span class="c-year">${c.y}</span></div>
     <span class="c-client">${esc(c.client)}</span><span class="c-title">${esc(c.t)}</span><span class="c-role">${esc(c.role)}</span>
-  </div>`).join("");
+  </${c.u?"a":"div"}>`).join("");
 
 
 let filter="all", shown=12;
