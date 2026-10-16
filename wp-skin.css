@@ -27,7 +27,7 @@ body,body#body{background:var(--ng-paper)!important;background-image:none!import
 #post-title{text-align:left}
 #post-title .meta,#post-title time{color:var(--ng-soft)!important}
 #main-column>.container img{border-radius:10px}
-#main-column>.container [class*="blob"],#main-column>.container svg{display:none!important}
+.gradation-object::before,.gradation-object::after{display:none!important}
 
 /* 本文エリアを白いカードに */
 #contents-wrapper>*:first-child{background:var(--ng-chip);border:1px solid var(--ng-line);border-radius:14px}
