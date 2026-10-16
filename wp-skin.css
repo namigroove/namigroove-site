@@ -1,0 +1,60 @@
+/* なみぐる！ WordPressページ(記事・お問い合わせ・アーカイブ等)を新トップの見た目に寄せる上書きCSS
+   読み込み:WordPress「追加CSS」の @import。消せば元のテーマ(4536)の見た目に戻る */
+@font-face{font-family:"MaruMinyaM";src:url("https://namigroove.github.io/namigroove-site/fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{--ng-paper:#f5f8fe;--ng-ink:#101f45;--ng-soft:#4a5a80;--ng-line:#d5e0f5;--ng-sea:#2c5ccc;--ng-head:#396cdf;--ng-wash:#e3ebfb;--ng-chip:#fff}
+
+/* 背景・文字 */
+body,body#body{background:var(--ng-paper)!important;background-image:none!important;color:var(--ng-ink)}
+#main-container,.body-bg-color{background:transparent!important}
+
+/* ヘッダー:波・グラデーションをやめて細い青い帯に */
+#site-top{background:var(--ng-head)!important;position:sticky;top:0;z-index:50}
+#site-top>.svg-wrap,#site-top .svg-wrap{display:none!important}
+#header,#header-container{background:transparent!important}
+#header-container{max-width:1080px;margin:0 auto;padding:12px 16px!important;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:nowrap}
+#sitename{margin:0!important;flex:none}
+#sitename img.header-logo{height:32px!important;width:auto!important}
+#header-nav{width:auto!important;max-width:none!important;flex:0 1 auto;background:transparent!important}
+#header-nav ul{display:flex!important;gap:18px;margin:0!important;padding:0!important;justify-content:flex-end}
+#header-nav li{margin:0!important;padding:0!important}
+#header-nav a{color:rgba(255,255,255,.82)!important;font-size:13px!important;font-weight:500;text-decoration:none!important;padding:0!important;border:0!important;background:none!important}
+#header-nav a:hover,#header-nav .current-menu-item>a{color:#fff!important}
+#header-nav a::after,#header-nav a::before{display:none!important}
+@media (max-width:640px){#header-nav ul{gap:10px}#header-nav a{font-size:12px!important}}
+
+/* 記事タイトルまわり */
+#post-title h1,#post-title .entry-title{font-family:"MaruMinyaM","Zen Maru Gothic","M PLUS Rounded 1c",sans-serif;font-weight:400!important;color:var(--ng-ink)!important;line-height:1.35}
+#post-title{text-align:left}
+#post-title .meta,#post-title time{color:var(--ng-soft)!important}
+#main-column>.container img{border-radius:10px}
+#main-column>.container [class*="blob"],#main-column>.container svg{display:none!important}
+
+/* 本文エリアを白いカードに */
+#contents-wrapper>*:first-child{background:var(--ng-chip);border:1px solid var(--ng-line);border-radius:14px}
+#contents-wrapper .entry-content h2,#contents-wrapper .post-content h2,#contents-wrapper article h2{background:none!important;color:var(--ng-ink)!important;border:0!important;border-left:6px solid var(--ng-head)!important;border-radius:0!important;padding:6px 0 6px 14px!important;box-shadow:none!important;font-weight:700}
+#contents-wrapper .entry-content h2::before,#contents-wrapper .entry-content h2::after,#contents-wrapper article h2::before,#contents-wrapper article h2::after{display:none!important}
+#contents-wrapper article h3{background:none!important;border:0!important;border-bottom:2px solid var(--ng-line)!important;color:var(--ng-ink)!important;padding:0 0 6px!important}
+#contents-wrapper a{color:var(--ng-sea)}
+
+/* サイドバー */
+#sidebar .widget,#sidebar section{background:var(--ng-chip);border:1px solid var(--ng-line);border-radius:12px;padding:16px}
+#sidebar h2,#sidebar h3,#sidebar .widget-title,#sidebar .widgettitle{background:none!important;color:var(--ng-ink)!important;font-size:15px!important;border:0!important;border-bottom:2px solid var(--ng-line)!important;padding:0 0 6px!important}
+
+/* 下部の音楽・動画セクション:波をやめて淡い青の帯に */
+.media-section{background:var(--ng-wash)!important;margin-top:40px!important}
+.media-section>.svg-wrap{display:none!important}
+.media-section h2,.media-section h3{color:var(--ng-ink)!important;font-family:"MaruMinyaM","Zen Maru Gothic",sans-serif;font-weight:400}
+
+/* フッター:波をやめて1行に */
+#site-bottom{background:var(--ng-paper)!important;border-top:1px solid var(--ng-line)}
+#site-bottom .svg-wrap{display:none!important}
+#footer{background:transparent!important;color:var(--ng-soft)!important}
+#footer .container{max-width:1080px;margin:0 auto;display:flex;flex-direction:row-reverse;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:20px 16px 32px}
+#footer .global-nav{padding:0!important}
+#footer .global-nav ul{display:flex;gap:16px;margin:0;padding:0}
+#footer .global-nav li{margin:0;padding:0}
+#footer .global-nav a,#footer a{color:var(--ng-soft)!important;font-size:12px;text-decoration:underline;border:0!important}
+#footer .global-nav a i,#header-nav a i{display:none}
+#copyright{padding:0!important;font-size:12px;color:var(--ng-soft)!important}
+#footer .pb-5{display:none}
+.page-top{background:var(--ng-head)!important;color:#fff!important;position:fixed!important;bottom:20px;right:20px;top:auto!important;border-radius:50%;box-shadow:0 4px 12px rgba(16,31,69,.2)}
