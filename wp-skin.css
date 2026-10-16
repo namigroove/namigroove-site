@@ -135,3 +135,20 @@ a.twitter:not(.ng-share),a.facebook,a.hatebu,a.line:not(.ng-share){visibility:hi
 /* ヘッダーのEN/JPボタン: ほかのメニューと縦位置をそろえる */
 #header-nav li:has(#toEN){display:flex!important;align-items:center}
 #toEN{display:inline-flex!important;align-items:center;height:20px;line-height:1!important;box-sizing:border-box;vertical-align:middle}
+
+/* スマホ・タブレット: サイドバーを「…」ドロワーにせず記事の下にそのまま表示。ヘッダーの「…」ボタンは消す */
+@media (max-width:1023px){
+#header-slide-button{display:none!important}
+#sidebar{width:100%!important;max-width:100%!important;flex:1 1 100%!important;padding:8px 16px 24px!important}
+#sidebar>div.h-100{position:static!important;transform:none!important;width:auto!important;height:auto!important;max-width:none!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+#sidebar .close-button,#sidebar>.mask,#sidebar>input{display:none!important}
+#sidebar .sidebar-inner{background:#fff;border-radius:12px;padding:20px;box-sizing:border-box}
+}
+/* スマホ: ヘッダーメニューを全部見せる */
+@media (max-width:560px){
+#sitename img.header-logo{height:28px!important}
+#header-nav{flex:1 1 auto!important;max-width:none!important;overflow:visible!important}
+#header-nav ul{justify-content:flex-end;gap:8px!important;overflow:visible!important}
+#header-nav li{margin:0!important;padding:0!important}
+#header-nav li a{font-size:12px!important;padding:0!important}
+}
