@@ -81,6 +81,14 @@ h2 small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft);font-wei
 .more{margin-top:20px;display:flex;justify-content:center}
 .more button{font:500 13px var(--f-body);padding:9px 22px;border-radius:999px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
 @media (max-width:480px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+.fold{padding-block:0}
+.fold details>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0}
+.fold details>summary::-webkit-details-marker{display:none}
+.fold details>summary h2{margin:0}
+.fold details>summary::after{content:"＋";color:var(--sea);font-weight:700;font-size:16px}
+.fold details[open]>summary::after{content:"－"}
+.fold details[open]{padding-bottom:22px}
+.fold details>summary:hover h2{color:var(--sea)}
 footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
 footer a{color:var(--sea)}
 .share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
@@ -128,11 +136,11 @@ footer a{color:var(--sea)}
   </section>
   <section><h2>最近の活動<small>Xの投稿より自動収集</small></h2><ol class="log" id="xlog"></ol></section>
   <section><h2>年表</h2><ol class="timeline" id="timeline"></ol></section>
-  <section><h2>企業・レーベル</h2><ul class="tags" id="company"></ul></section>
-  <section><h2>音楽ゲーム</h2><ul class="tags" id="game"></ul></section>
-  <section><h2>クリエイター</h2><ul class="tags" id="creator"></ul></section>
-  <section><h2>出演イベント</h2><ul class="tags" id="stage"></ul></section>
-  <section><h2>ボカコレ<small>The VOCALOID Collection</small></h2><ul class="ranks" id="ranks"></ul></section>
+  <section class="fold"><details><summary><h2>企業・レーベル</h2></summary><ul class="tags" id="company"></ul></details></section>
+  <section class="fold"><details><summary><h2>音楽ゲーム</h2></summary><ul class="tags" id="game"></ul></details></section>
+  <section class="fold"><details><summary><h2>クリエイター</h2></summary><ul class="tags" id="creator"></ul></details></section>
+  <section class="fold"><details><summary><h2>出演イベント</h2></summary><ul class="tags" id="stage"></ul></details></section>
+  <section class="fold"><details><summary><h2>ボカコレ<small>The VOCALOID Collection</small></h2></summary><ul class="ranks" id="ranks"></ul></details></section>
 </main>
 
 <footer>
