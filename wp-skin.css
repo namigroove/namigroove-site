@@ -37,9 +37,9 @@ body,body#body{background:var(--ng-paper)!important;background-image:none!import
 
 /* 本文エリアを白いカードに */
 #contents-wrapper>*:first-child{background:var(--ng-chip);border:1px solid var(--ng-line);border-radius:14px}
-#contents-wrapper .entry-content h2,#contents-wrapper .post-content h2,#contents-wrapper article h2{background:none!important;color:var(--ng-ink)!important;border:0!important;border-left:6px solid var(--ng-head)!important;border-radius:0!important;padding:6px 0 6px 14px!important;box-shadow:none!important;font-weight:700}
-#contents-wrapper .entry-content h2::before,#contents-wrapper .entry-content h2::after,#contents-wrapper article h2::before,#contents-wrapper article h2::after{display:none!important}
-#contents-wrapper article h3{background:none!important;border:0!important;border-bottom:2px solid var(--ng-line)!important;color:var(--ng-ink)!important;padding:0 0 6px!important}
+#contents-wrapper .entry-content h2,#contents-wrapper .post-content h2,#contents-wrapper article h2:not(.card-title){background:none!important;color:var(--ng-ink)!important;border:0!important;border-left:6px solid var(--ng-head)!important;border-radius:0!important;padding:6px 0 6px 14px!important;box-shadow:none!important;font-weight:700}
+#contents-wrapper .entry-content h2::before,#contents-wrapper .entry-content h2::after,#contents-wrapper article h2:not(.card-title)::before,#contents-wrapper article h2:not(.card-title)::after{display:none!important}
+#contents-wrapper article h3:not(.card-title){background:none!important;border:0!important;border-bottom:2px solid var(--ng-line)!important;color:var(--ng-ink)!important;padding:0 0 6px!important}
 #contents-wrapper a{color:var(--ng-sea)}
 
 /* サイドバー */
