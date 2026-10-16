@@ -130,24 +130,6 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .timeline .yr{font-family:var(--f-mono);font-size:14px;color:var(--zunda);font-weight:500}
 .timeline ul{margin:0;padding-left:1.1em;list-style:disc;font-size:14px;line-height:1.8;min-width:0}
 
-/* works */
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.filters button{font:500 13px var(--f-body);padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
-.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.filters .count{font-family:var(--f-mono);font-size:11px;opacity:.7;margin-left:4px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
-.work{text-decoration:none;display:flex;flex-direction:column;gap:8px;min-width:0}
-.jacket{aspect-ratio:1;max-width:100%;border-radius:6px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:12px}
-.jacket b{font-family:var(--f-display);font-weight:400;font-size:17px;line-height:1.25;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.25);word-break:break-word}
-.jacket img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.jacket i{z-index:1;position:absolute;top:10px;left:10px;font-style:normal;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;background:rgba(255,255,255,.92);color:#1c2340;padding:3px 8px;border-radius:999px}
-.work:hover .jacket{transform:translateY(-2px);transition:transform .15s}
-.w-title{font-weight:700;font-size:14px;line-height:1.45}
-.w-meta{font-size:12px;color:var(--ink-soft);display:flex;gap:8px;flex-wrap:wrap}
-.w-meta .yr{font-family:var(--f-mono)}
-.more{margin-top:24px;display:flex;justify-content:center}
-@media (max-width:480px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.jacket b{font-size:14px}}
-
 /* notes */
 .notes-band{background:var(--zunda-wash)}
 .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
@@ -192,8 +174,8 @@ footer .mono{font-family:var(--f-mono)}
     <a class="logo" href="#top"><img src="https://www.namigroove.com/wp-content/uploads/2021/05/%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A-1.png" alt="なみぐる！" width="159" height="32" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
     <nav class="main" aria-label="メインメニュー">
       <a href="#credits">実績</a>
-      <a href="#works">作品</a>
-      <a href="#notes">お知らせ</a>
+      <a href="profile.html#works">作品</a>
+      <a href="#notes">₺ƾらせ</a>
       <a href="#links" class="opt">ショップ</a>
       <a href="#contact">依頼</a>
     </nav>
@@ -225,26 +207,14 @@ footer .mono{font-family:var(--f-mono)}
         <p>依頼をご検討の方へ。代表的なお仕事を抜粋しています。</p>
       </div>
       <div class="credits" id="creditList"></div>
-      <p class="more-link"><a href="profile.html">年表・お取引先・出演などの実績一覧</a></p>
-    </div>
-  </section>
-
-  <section id="works" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><p class="eyebrow">Discography</p><h2>作品</h2></div>
-        <p>works.json に1行追加すると、ここに自動で並びます。</p>
-      </div>
-      <div class="filters" role="group" aria-label="作品の種類で絞り込み" id="filters"></div>
-      <div class="grid" id="workGrid"></div>
-      <div class="more"><button class="btn ghost" id="moreBtn" type="button">もっと見る</button></div>
+      <p class="more-link"><a href="profile.html">全作品・年表・お取引先などの実績一覧</a></p>
     </div>
   </section>
 
   <section id="notes" class="notes-band">
     <div class="wrap">
       <div class="sec-head">
-        <div><p class="eyebrow">Activity</p><h2>お知らせ・出現情報</h2></div>
+        <div><p class="eyebrow">Activity</p><h2>₺ƾらせ・出現情報</h2></div>
         <p>X(@namigroove)とブログの新着をまとめて表示</p>
       </div>
       <div class="filters" role="group" aria-label="お知らせの種類で絞り込み" id="newsFilters"></div>
@@ -294,8 +264,7 @@ footer .mono{font-family:var(--f-mono)}
 </footer>
 
 <script>
-/* 作品データは data/works.json(1作品=1行)。YouTubeの新着は毎日自動で追加される */
-let WORKS = [];
+/* 作品一覧は profile.html(実績一覧)に移動 */
 
 const CREDITS = [
   {y:2025, client:"Aiobahn & TAK", t:"DIVA feat. 初音ミク", u:"https://www.namigroove.com/movie/movie-8896/", img:"https://www.namigroove.com/wp-content/uploads/2025/11/maxresdefault-2.jpg", role:"作詞・初版調声"},
@@ -312,6 +281,8 @@ const CREDITS = [
   {y:2024, client:"VOICEVOX", t:"DREAMVOX(公式テーマソング)", u:"https://www.namigroove.com/movie/movie-5994/", img:"https://www.namigroove.com/wp-content/uploads/2024/07/jacket_v2.png", role:"MV・楽曲製作"},
   {y:2026, client:"プロジェクトセカイ", t:"とびだせ！わんだぴょい", u:"https://www.namigroove.com/movie/movie-9213/", img:"https://www.namigroove.com/wp-content/uploads/2026/02/maxresdefault-2.jpg", role:"MV・楽曲製作"},
   {y:2026, client:"あおぎり高校", t:"コピペパペット(1st Album収録)", u:"https://www.namigroove.com/music/music-8838/", img:"https://www.namigroove.com/wp-content/uploads/2025/11/G6QqtBBacAcvBOK.jpg", role:"楽曲製作"},
+  {y:2026, client:"吉本おじさん", t:"マチアプリンセス", u:"https://www.namigroove.com/movie/movie-9525/", img:"https://www.namigroove.com/wp-content/uploads/2026/06/maxresdefault.jpg", role:"編曲"},
+  {y:2024, client:"桃寝ちのい", t:"電脳眠眠猫", u:"https://www.namigroove.com/movie/movie-5297/", img:"https://www.namigroove.com/wp-content/uploads/2024/04/maxresdefault-1.jpg", role:"楽曲製作"},
 ].sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.y-a.y);
 
 
@@ -332,10 +303,8 @@ const NOTES = [
   {d:"2026-09-15", tag:"お知らせ", t:"#リアルずんだパーリナイ @定禅寺ジャズフェス2026", u:"https://www.namigroove.com/2026/09/15/post-9791/"},
   {d:"2026-09-08", tag:"お知らせ", t:"『腰痛持ち、４つ打ち』ぬい・アクキーが登場だ！", u:"https://www.namigroove.com/2026/09/08/post-9777/"},
 ];
-const WP_API = "https://www.namigroove.com/wp-json/wp/v2/posts?per_page=10&_fields=date,link,title";
+const WP_API = "https://www.namigroove.com/wp-json/wp/v2/posts?per_page=50&_fields=date,link,title";
 
-const TYPES = {all:"すべて", original:"オリジナル", provide:"提供・編曲", remix:"Remix", join:"参加"};
-const TAG = {original:"ORIGINAL", provide:"WORKS", remix:"REMIX", join:"COMPI"};
 
 /* ジャケ画像が読めない時は、曲名から決まる色のジャケットを表示 */
 function hash(s){let h=0;for(const c of s)h=(h*31+c.codePointAt(0))>>>0;return h}
@@ -353,40 +322,8 @@ document.getElementById("creditList").innerHTML = CREDITS.map(c=>`
   </${c.u?"a":"div"}>`).join("");
 
 
-let filter="all", shown=12;
-function renderFilters(){
-  document.getElementById("filters").innerHTML = Object.entries(TYPES).map(([k,v])=>{
-    const n = k==="all"?WORKS.length:WORKS.filter(w=>w.type===k).length;
-    return `<button type="button" id="f-${k}" data-k="${k}" aria-pressed="${k===filter}">${v}<span class="count">${n}</span></button>`;
-  }).join("");
-}
-function renderWorks(){
-  const list = WORKS.filter(w=>filter==="all"||w.type===filter);
-  document.getElementById("workGrid").innerHTML = list.slice(0,shown).map(w=>`
-    <${w.url?`a href="${esc(w.url)}" target="_blank" rel="noopener"`:"div"} class="work">
-      <div class="jacket" style="background:${jacketBg(w.t)}"><b>${esc(w.t)}</b>${w.img?`<img src="${esc(w.img)}" alt="${esc(w.t)} ジャケット" loading="lazy" onerror="this.remove()">`:""}<i>${TAG[w.type]||"WORKS"}</i></div>
-      <div class="w-title">${esc(w.t)}</div>
-      <div class="w-meta"><span class="yr">${w.y}</span><span>${esc(w.by||"")}</span></div>
-    </${w.url?"a":"div"}>`).join("");
-  document.getElementById("moreBtn").hidden = list.length<=shown;
-}
-document.getElementById("filters").addEventListener("click",e=>{
-  const b=e.target.closest("button"); if(!b) return;
-  filter=b.dataset.k; shown=12; renderFilters(); renderWorks();
-fetch("data/works.json").then(r=>r.json()).then(d=>{
-  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
-  renderFilters(); renderWorks();
-}).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">作品一覧を読み込めませんでした。</p>'; });
-});
-document.getElementById("moreBtn").addEventListener("click",()=>{shown+=12;renderWorks();});
-renderFilters(); renderWorks();
-fetch("data/works.json").then(r=>r.json()).then(d=>{
-  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
-  renderFilters(); renderWorks();
-}).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">作品一覧を読み込めませんでした。</p>'; });
-
 /* お知らせ・出現情報:X(data/x-posts.json)とWordPressの記事を日付順にまとめる */
-const NEWS_T = {all:"すべて", notice:"お知らせ", release:"新曲", event:"出現情報", blog:"ブログ"};
+const NEWS_T = {all:"すべて", notice:"₺ƾらせ", release:"新曲", event:"出現情報", blog:"ブログ"};
 let NEWS = NOTES.map(n=>({d:n.d, type:"blog", t:n.t, u:n.u})), newsFilter="all", newsShown=6;
 function renderNews(){
   NEWS.sort((a,b)=>a.d<b.d?1:-1);

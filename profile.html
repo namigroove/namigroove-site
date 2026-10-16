@@ -55,6 +55,24 @@ h2 small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft);font-wei
 .log a{color:inherit;text-decoration:none;min-width:0}
 .log a:hover{color:var(--sea)}
 .log .k{font-size:11px;color:var(--sea);margin-right:6px}
+/* works */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filters button{font:500 13px var(--f-body);padding:6px 13px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.filters .count{font-family:var(--f-mono);font-size:11px;opacity:.7;margin-left:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.work{text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:6px;min-width:0}
+.jacket{aspect-ratio:1;border-radius:6px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:10px}
+.jacket b{font-family:var(--f-display);font-weight:400;font-size:15px;line-height:1.25;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.25);word-break:break-word}
+.jacket img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.jacket i{z-index:1;position:absolute;top:8px;left:8px;font-style:normal;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;background:rgba(255,255,255,.92);color:#1c2340;padding:2px 7px;border-radius:999px}
+.work:hover .jacket{transform:translateY(-2px);transition:transform .15s}
+.w-title{font-weight:700;font-size:13px;line-height:1.45}
+.w-meta{font-size:11px;color:var(--ink-soft);display:flex;gap:8px;flex-wrap:wrap}
+.w-meta .yr{font-family:var(--f-mono)}
+.more{margin-top:20px;display:flex;justify-content:center}
+.more button{font:500 13px var(--f-body);padding:9px 22px;border-radius:999px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+@media (max-width:480px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
 footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
 footer a{color:var(--sea)}
 </style>
@@ -76,9 +94,14 @@ footer a{color:var(--sea)}
   <div class="intro">
     <p class="eyebrow">WORKS LIST</p>
     <h1>これまでのお仕事</h1>
-    <p class="lead">これまでの歩みと、一緒にお仕事させていただいた皆さま、出演させていただいた場所の一覧です。敬称略・順不同。</p>
+    <p class="lead">これまでの作品と歩み、一緒にお仕事させていただいた皆さま、出演させていただいた場所の一覧です。敬称略・順不同。</p>
   </div>
 
+  <section id="works"><h2>作品<small>Discography</small></h2>
+    <div class="filters" role="group" aria-label="作品の種類で絞り込み" id="filters"></div>
+    <div class="grid" id="workGrid"></div>
+    <div class="more"><button type="button" id="moreBtn">もっと見る</button></div>
+  </section>
   <section><h2>最近の活動<small>Xの投稿より自動収集</small></h2><ol class="log" id="xlog"></ol></section>
   <section><h2>年表</h2><ol class="timeline" id="timeline"></ol></section>
   <section><h2>企業・レーベル</h2><ul class="tags" id="company"></ul></section>
@@ -115,10 +138,45 @@ for (const [id, names] of Object.entries(LIST))
   document.getElementById(id).innerHTML = names.map(n=>`<li>${esc(n)}</li>`).join("");
 document.getElementById("timeline").innerHTML = TIMELINE.map(t=>`<li><span class="yr">${t.y}</span><ul>${t.e.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></li>`).join("");
 fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
-  const K={notice:"お知らせ",release:"新曲"};
+  const K={notice:"₺ƾらせ",release:"新曲"};
   document.getElementById("xlog").innerHTML = d.posts.filter(p=>p.type!=="event").map(p=>`<li><time datetime="${p.date}">${p.date.replaceAll("-",".")}</time><a href="https://x.com/namigroove/status/${p.id}" target="_blank" rel="noopener"><span class="k">${K[p.type]}</span>${esc(p.text)}</a></li>`).join("");
 }).catch(()=>{});
 document.getElementById("ranks").innerHTML = RANKS.map(([e,r])=>`<li><span>${esc(e)}</span><b>${r}位</b></li>`).join("");
+
+/* 作品一覧:data/works.json(WordPress・YouTubeから毎日自動更新) */
+const TYPES = {all:"すべて", original:"オリジナル", provide:"提供・編曲", remix:"Remix", join:"参加"};
+const TAG = {original:"ORIGINAL", provide:"WORKS", remix:"REMIX", join:"COMPI"};
+function hash(s){let h=0;for(const c of s)h=(h*31+c.codePointAt(0))>>>0;return h}
+function jacketBg(s){
+  const h=hash(s), a=[214,220,226,232,206,16][h%6], b=(a+14+(h>>3)%30)%360;
+  return `radial-gradient(circle at ${20+(h%60)}% ${20+((h>>5)%50)}%, hsl(${b} 70% 62% / .9), transparent 60%), linear-gradient(${(h>>7)%360}deg, hsl(${a} 55% 38%), hsl(${b} 60% 50%))`;
+}
+let WORKS = [], filter = "all", shown = 12;
+function renderFilters(){
+  document.getElementById("filters").innerHTML = Object.entries(TYPES).map(([k,v])=>{
+    const n = k==="all"?WORKS.length:WORKS.filter(w=>w.type===k).length;
+    return `<button type="button" data-k="${k}" aria-pressed="${k===filter}">${v}<span class="count">${n}</span></button>`;
+  }).join("");
+}
+function renderWorks(){
+  const list = WORKS.filter(w=>filter==="all"||w.type===filter);
+  document.getElementById("workGrid").innerHTML = list.slice(0,shown).map(w=>`
+    <${w.url?`a href="${esc(w.url)}"`:"div"} class="work">
+      <div class="jacket" style="background:${jacketBg(w.t)}"><b>${esc(w.t)}</b>${w.img?`<img src="${esc(w.img)}" alt="${esc(w.t)} ジャケット" loading="lazy" onerror="this.remove()">`:""}<i>${TAG[w.type]||"WORKS"}</i></div>
+      <div class="w-title">${esc(w.t)}</div>
+      <div class="w-meta"><span class="yr">${w.y}</span><span>${esc(w.by||"")}</span></div>
+    </${w.url?"a":"div"}>`).join("");
+  document.getElementById("moreBtn").hidden = list.length<=shown;
+}
+document.getElementById("filters").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  filter=b.dataset.k; shown=12; renderFilters(); renderWorks();
+});
+document.getElementById("moreBtn").addEventListener("click",()=>{shown+=24;renderWorks();});
+fetch("data/works.json").then(r=>r.json()).then(d=>{
+  WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
+  renderFilters(); renderWorks();
+}).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">作品一覧を読み込めませんでした。</p>'; });
 </script>
 </body>
 </html>

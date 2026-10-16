@@ -7,7 +7,7 @@ const SITE = "https://www.namigroove.com";
 const WORKS_PATH = new URL("../data/works.json", import.meta.url);
 
 // 作品一覧に入れないタイトル(まとめページなど)
-const SKIP_TITLES = ["なみぐる_Works"];
+const SKIP_TITLES = ["なみぐる_Works", "なみぐる – ずんだバンド2025"];
 
 async function fetchAll(type) {
   let out = [];
@@ -35,24 +35,30 @@ const decode = (s) => s
   .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
   .replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/[​⁡]/g, "").trim();
 
-// 曲名の比較用(記号・空白・【】・feat以降を無視)
+// 曲名の比較用(【】・カッコ書き・feat以降・remix表記・記号を無視して、ひらがな/カナ/漢字/英数だけ残す)
 const key = (s) => decode(s).toLowerCase()
-  .replace(/【[^】]*】/g, "")
-  .split(/\s+(?:\/|／)\s+|\s+feat[.\s]|\s+–\s+namigroove|\s+-\s+namigroove/)[0]
-  .replace(/[\s()（）\-–—_~〜・、。！!？?「」『』☆&＆\/／:：.]/g, "");
+  .replace(/【[^】]*】/g, " ")
+  .replace(/\((?:official|original)[^)]*\)/g, " ")
+  .split(/\s+(?:\/|／)\s+|\s+feat[.\s]/)[0]
+  .replace(/namigroove\s*(?:remix|flip)|electro swing remix|remix|なみぐる/g, " ")
+  .replace(/[^a-z0-9ぁ-んァ-ヶー一-龠々]/g, "");
+const sameSong = (a, b) => a.length >= 3 && b.length >= 3 && (a.startsWith(b) || b.startsWith(a));
 
 function parse(raw) {
   const title0 = decode(raw);
-  const tag = (title0.match(/^【([^】]*)】/) || [])[1] || "";
+  const tags = [...title0.matchAll(/【([^】]*)】/g)].map((m) => m[1]).join(" ");
   let type = "original";
-  if (/提供|編曲|作詞|客演|アニメ|MV/.test(tag)) type = "provide";
-  else if (/参加/.test(tag)) type = "join";
-  else if (/remix|flip|リミックス/i.test(title0) && !/Remix EP/i.test(tag)) type = "remix";
-  const noTag = title0.replace(/^【[^】]*】\s*/, "");
-  const [head, ...rest] = noTag.split(/\s+(?:\/|／)\s+/);
-  let by = rest.join(" / ").replace(/^なみぐる\s*/, "").replace(/なみぐる|namigroove/gi, "").trim();
-  if (!by && /EP|Album|Single/i.test(tag)) by = tag.replace(/_/g, " ");
-  return { title: head.trim(), by: by.replace(/^[\s\-–&]+|[\s\-–&]+$/g, ""), type };
+  if (/提供|編曲|作詞|客演|アニメ|MV/.test(tags)) type = "provide";
+  else if (/参加/.test(tags)) type = "join";
+  else if (/remix|flip|リミックス/i.test(title0) && !/Remix EP/i.test(tags)) type = "remix";
+  const clean = title0
+    .replace(/【[^】]*】/g, " ")
+    .replace(/\((?:Official|Original)[^)]*\)/gi, " ")
+    .replace(/\s+/g, " ").trim();
+  const [head, ...rest] = clean.split(/\s+(?:\/|／)\s+|／/);
+  let by = rest.join(" / ").replace(/なみぐる|namigroove/gi, "").replace(/^[\s\-–&]+|[\s\-–&]+$/g, "").trim();
+  if (!by && /EP|Album|Single/i.test(tags)) by = tags.replace(/_/g, " ");
+  return { title: head.replace(/\s+なみぐる\s+feat\..*$/, "").trim(), by, type };
 }
 
 function thumb(p) {
@@ -74,11 +80,11 @@ for (const p of posts) {
   if (SKIP_TITLES.some((t) => decode(raw).includes(t))) continue;
   if (works.some((w) => w.wp === p.id)) continue;
   const parsed = parse(raw);
-  const k = key(parsed.title);
+  const k = key(raw);
   if (!k) continue;
 
   // すでに一覧にある曲なら、WordPressのページへのリンクと画像だけ補う
-  const same = works.find((w) => key(w.title) === k);
+  const same = works.find((w) => sameSong(key(w.title), k));
   if (same) {
     if (!same.wp) {
       same.wp = p.id;
