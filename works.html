@@ -205,8 +205,8 @@ fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
 document.getElementById("ranks").innerHTML = RANKS.map(([e,r])=>`<li><span>${esc(e)}</span><b>${r}位</b></li>`).join("");
 
 /* 作品一覧:data/works.json(WordPress・YouTubeから毎日自動更新) */
-const TYPES = {pick:"代表作", all:"すべて", original:"オリジナル", provide:"提供・編曲", remix:"Remix", join:"参加"};
-const TAG = {original:"ORIGINAL", provide:"WORKS", remix:"REMIX", join:"COMPI"};
+const TYPES = {pick:"代表作", all:"すべて", original:"オリジナル", provide:"提供・編曲", remix:"Remix", perform:"演奏", join:"参加"};
+const TAG = {original:"ORIGINAL", provide:"WORKS", remix:"REMIX", perform:"PLAY", join:"COMPI"};
 function hash(s){let h=0;for(const c of s)h=(h*31+c.codePointAt(0))>>>0;return h}
 function jacketBg(s){
   const h=hash(s), a=[214,220,226,232,206,16][h%6], b=(a+14+(h>>3)%30)%360;

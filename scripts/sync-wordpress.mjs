@@ -48,7 +48,8 @@ function parse(raw) {
   const title0 = decode(raw);
   const tags = [...title0.matchAll(/【([^】]*)】/g)].map((m) => m[1]).join(" ");
   let type = "original";
-  if (/提供|編曲|作詞|客演|アニメ|MV/.test(tags)) type = "provide";
+  if (/演奏/.test(tags)) type = "perform";
+  else if (/提供|編曲|作詞|客演|アニメ|MV/.test(tags)) type = "provide";
   else if (/参加/.test(tags)) type = "join";
   else if (/remix|flip|リミックス/i.test(title0) && !/Remix EP/i.test(tags)) type = "remix";
   const clean = title0

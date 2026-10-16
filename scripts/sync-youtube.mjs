@@ -42,7 +42,8 @@ const videos = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map(([, e]) => (
 function parse(raw) {
   const lower = raw.toLowerCase();
   let type = "original";
-  if (/【(提供|編曲|作詞|客演|アニメ楽曲提供)/.test(raw)) type = "provide";
+  if (/【演奏】/.test(raw)) type = "perform";
+  else if (/【(提供|編曲|作詞|客演|アニメ楽曲提供)/.test(raw)) type = "provide";
   else if (/remix|flip|リミックス/.test(lower)) type = "remix";
   else if (/【参加】/.test(raw)) type = "join";
 
