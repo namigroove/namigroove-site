@@ -130,6 +130,13 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .timeline .yr{font-family:var(--f-mono);font-size:14px;color:var(--zunda);font-weight:500}
 .timeline ul{margin:0;padding-left:1.1em;list-style:disc;font-size:14px;line-height:1.8;min-width:0}
 
+/* filter buttons(₺ƾらせ・出現情報) */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filters button{font:500 13px var(--f-body);padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.filters .count{font-family:var(--f-mono);font-size:11px;opacity:.7;margin-left:4px}
+.more{margin-top:24px;display:flex;justify-content:center}
+
 /* notes */
 .notes-band{background:var(--zunda-wash)}
 .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
