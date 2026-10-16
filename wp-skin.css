@@ -152,3 +152,9 @@ a.twitter:not(.ng-share),a.facebook,a.hatebu,a.line:not(.ng-share){visibility:hi
 #header-nav li{margin:0!important;padding:0!important}
 #header-nav li a{font-size:12px!important;padding:0!important}
 }
+@media (max-width:400px){
+#sitename img.header-logo{height:24px!important}
+#header-nav ul{gap:7px!important}
+#header-nav li a{font-size:11.5px!important}
+#header-container{padding-left:12px!important;padding-right:12px!important}
+}
