@@ -27,6 +27,7 @@ html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{dis
   --ink-soft:#4a5a80;
   --line:#d5e0f5;
   --zunda:#2c5ccc;
+  --c-notice:#2c5ccc;--c-release:#d0436b;--c-event:#0e8a6c;--c-blog:#7a52c7;
   --sea-2:#8fb2f2;
   --zunda-wash:#e3ebfb;
   --brass:#a2511f;
@@ -40,10 +41,10 @@ html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{dis
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;
-  --zunda:#7fa3f5;--sea-2:#2b4fa8;--zunda-wash:#142350;--brass:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--head:#396cdf;color-scheme:dark}}
+  --zunda:#7fa3f5;--c-notice:#7fa3f5;--c-release:#f48aa6;--c-event:#4fd1ac;--c-blog:#b79cf2;--sea-2:#2b4fa8;--zunda-wash:#142350;--brass:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--head:#396cdf;color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;
-  --zunda:#7fa3f5;--sea-2:#2b4fa8;--zunda-wash:#142350;--brass:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--head:#396cdf;color-scheme:dark}
+  --zunda:#7fa3f5;--c-notice:#7fa3f5;--c-release:#f48aa6;--c-event:#4fd1ac;--c-blog:#b79cf2;--sea-2:#2b4fa8;--zunda-wash:#142350;--brass:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--head:#396cdf;color-scheme:dark}
 
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;font-synthesis:none}
@@ -143,8 +144,14 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .note{background:var(--chip);border-radius:10px;padding:18px 20px;text-decoration:none;display:flex;flex-direction:column;gap:6px;border:1px solid var(--line)}
 .note time{font-family:var(--f-mono);font-size:12px;color:var(--ink-soft)}
 .note h3{font-size:16px;line-height:1.5}
-.note.pin{border:1.5px solid var(--zunda)}
-.note .tag{font-size:11px;color:var(--zunda);font-weight:700}
+.note.pin{border:1.5px solid var(--c-event);border-top-width:3px}
+.note .tag{font-size:11px;color:var(--c,var(--zunda));font-weight:700;display:flex;align-items:center;gap:6px}
+.note .tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c,var(--zunda));flex:none}
+.note{border-top:3px solid var(--c,var(--line))}
+.k-notice{--c:var(--c-notice)}.k-release{--c:var(--c-release)}.k-event{--c:var(--c-event)}.k-blog{--c:var(--c-blog)}
+#newsFilters button[data-k]:not([data-k="all"])::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:1px}
+#newsFilters button[aria-pressed="true"]:not([data-k="all"]){background:var(--c);border-color:var(--c);color:#fff}
+#newsFilters button[aria-pressed="true"]:not([data-k="all"])::before{background:#fff}
 .sample{font-family:var(--f-mono);font-size:11px;color:var(--brass);border:1px dashed var(--brass);border-radius:999px;padding:2px 10px}
 
 .foot-links{display:flex;gap:16px;flex-wrap:wrap;font-size:12px}
@@ -365,14 +372,14 @@ function renderNews(){
   NEWS.sort((a,b)=>a.d<b.d?1:-1);
   document.getElementById("newsFilters").innerHTML = Object.entries(NEWS_T).map(([k,v])=>{
     const n = k==="all"?NEWS.length:NEWS.filter(x=>x.type===k).length;
-    return n||k==="all" ? `<button type="button" data-k="${k}" aria-pressed="${k===newsFilter}">${v}<span class="count">${n}</span></button>` : "";
+    return n||k==="all" ? `<button type="button" class="k-${k}" data-k="${k}" aria-pressed="${k===newsFilter}">${v}<span class="count">${n}</span></button>` : "";
   }).join("");
   const list = NEWS.filter(x=>newsFilter==="all"||x.type===newsFilter);
   /* 出現情報タブの先頭には、予定がまとまったTimeTreeを常に表示 */
   const pin = newsFilter==="event" ? `
-  <a class="note pin" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出演予定はカレンダーでチェック</h3><time>なみぐるの出現スケジュール →</time></a>` : "";
+  <a class="note pin k-event" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出演予定はカレンダーでチェック</h3><time>なみぐるの出現スケジュール →</time></a>` : "";
   document.getElementById("noteList").innerHTML = pin + list.slice(0,newsShown-(pin?1:0)).map(n=>`
-  <a class="note" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag">${NEWS_T[n.type]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
+  <a class="note k-${n.type}" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag">${NEWS_T[n.type]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
   document.getElementById("newsMore").hidden = list.length<=newsShown-(pin?1:0);
 }
 document.getElementById("newsFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return; newsFilter=b.dataset.k; newsShown=6; renderNews();});
