@@ -122,3 +122,12 @@ a.twitter:not(.ng-share),a.facebook,a.hatebu,a.line:not(.ng-share){visibility:hi
 
 /* お問い合わせ: サイドバー非表示ぶんの空きをなくし、トップ画像と横幅をそろえる(PC) */
 .page-id-51 #contents-wrapper{width:100%!important;max-width:100%!important;flex:1 1 100%!important}
+
+/* サイドバー(最近の投稿・サイト内検索): PCでは本文と同じ幅で下に横並び */
+@media (min-width:1024px){
+#sidebar{width:100%!important;max-width:100%!important;flex:1 1 100%!important;padding:24px 17px!important}
+#sidebar .sidebar-inner{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);column-gap:32px;align-items:start;background:#fff;border-radius:12px;padding:24px 28px;box-sizing:border-box}
+#sidebar .sidebar-inner>.recent-posts-2{grid-column:1;grid-row:1/span 2;margin-bottom:0!important}
+#sidebar .sidebar-inner>.block-97{grid-column:2;grid-row:1}
+#sidebar .sidebar-inner>.search-2{grid-column:2;grid-row:2}
+}
