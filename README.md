@@ -3,7 +3,7 @@
 なみぐる！公式サイト(namigroove.com)の新トップまわりのファイル。
 
 - `index.html` トップ
-- `works.html` Works(代表作・Discography・年表・お取引先・出演・ボカコレ)※namigroove.com/history/ で表示
+- `works.html` Works(代表作・Discography・年表・お取引先・出演・ボカコレ)※namigroove.com/works/ で表示
 - `profile.html` 旧ファイル名。works.html へ転送するだけ
 - `contact.html` 制作依頼ページの試作(本番は WordPress の /contact/ を Contact Form 7 で運用)
 - `data/works.json` 作品一覧。1作品=1行。手で足すときもこのファイルに1行追加
