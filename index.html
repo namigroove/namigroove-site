@@ -144,6 +144,15 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .filters .count{font-family:var(--f-mono);font-size:11px;opacity:.7;margin-left:4px}
 .more{margin-top:24px;display:flex;justify-content:center}
 
+.schedule{margin-top:44px}
+.sched-title{font-family:var(--f-display);font-weight:400;font-size:22px;margin:0 0 14px}
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.sched-card{background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
+.sched-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 10px;font-weight:700;font-size:14px}
+.sched-head a{font-size:12px;font-weight:500;color:var(--zunda);text-decoration:none}
+.sched-card iframe{display:block;width:100%;height:560px;border:0;border-radius:8px}
+.bit-wrap{max-height:560px;overflow:auto}
+
 /* notes */
 .notes-band{background:var(--zunda-wash)}
 .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
@@ -269,6 +278,21 @@ footer .mono{font-family:var(--f-mono)}
       <div class="filters" role="group" aria-label="お知らせの種類で絞り込み" id="newsFilters"></div>
       <div class="notes" id="noteList"></div>
       <div class="more"><button class="btn ghost" id="newsMore" type="button">もっと見る</button></div>
+      <div class="schedule">
+        <h3 class="sched-title">スケジュール</h3>
+        <div class="sched-grid">
+          <div class="sched-card">
+            <p class="sched-head">カレンダー<a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener">TimeTreeで見る →</a></p>
+            <iframe title="なみぐるの出演カレンダー(TimeTree)" src="https://timetreeapp.com/public_calendars/namigroove/embed?calendar_name=true&amp;frame_color=%232ecc87" loading="lazy"></iframe>
+          </div>
+          <div class="sched-card">
+            <p class="sched-head">出演予定<a href="https://www.bandsintown.com/a/15592125-_namigroove" target="_blank" rel="noopener">Bandsintownで見る →</a></p>
+            <div class="bit-wrap">
+              <a class="bit-widget-initializer" data-artist-name="id_15592125" data-display-local-dates="false" data-display-past-dates="true" data-display-limit="6" data-auto-style="false" data-background-color="rgba(0,0,0,0)" data-separator-color="rgba(57,108,223,0.2)" data-text-color="#101f45" data-link-color="#396cdf" data-link-text-color="#ffffff" data-font="Helvetica" data-display-details="false" data-display-lineup="false" data-social-share-icon="false" data-language="ja"></a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -487,5 +511,6 @@ document.getElementById("yr").textContent = new Date().getFullYear();
   draw(0);
 })();
 </script>
+<script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js" defer></script>
 </body>
 </html>
