@@ -52,7 +52,10 @@ h2 small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft);font-wei
 .timeline>li{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:10px 0;border-bottom:1px dashed var(--line)}
 .timeline>li:last-child{border-bottom:0}
 .timeline .yr{font-family:var(--f-mono);font-size:14px;color:var(--sea);font-weight:500}
-.timeline ul{margin:0;padding-left:1.1em;font-size:14px;line-height:1.8;min-width:0}
+.timeline ul{margin:0;padding:0;list-style:none;font-size:14px;line-height:1.75;min-width:0}
+.timeline ul li{display:grid;grid-template-columns:3.2em 1fr;gap:8px;padding:5px 0;border-bottom:1px dotted var(--line)}
+.timeline ul li:last-child{border-bottom:0}
+.timeline .mo{font-family:var(--f-mono);font-size:12px;color:var(--ink-soft);padding-top:2px}
 .log{list-style:none;margin:0;padding:0}
 .log li{display:grid;grid-template-columns:84px 1fr;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px;line-height:1.7}
 .log time{font-family:var(--f-mono);font-size:12px;color:var(--ink-soft);padding-top:2px}
@@ -162,18 +165,18 @@ const RANKS = [
   ["2023 夏 TOP100",2],["2023 春 ルーキー",2],["2022 秋 ルーキー",4],
 ];
 const TIMELINE = [
-  {y:2026, e:["日清焼そばU.F.O. 50周年企画","初音ミク タイ日清食品CM","あおぎり高校 アルバム参加","プロジェクトセカイ 書き下ろし"]},
-  {y:2025, e:["プロジェクトセカイほか 書き下ろし","ソウル・北京で海外公演"]},
-  {y:2024, e:["maimai でらっくす 収録","マクドナルド CMソング","VOICEVOX 公式テーマ","大空スバル(ホロライブ)楽曲提供"]},
-  {y:2023, e:["1st Album「ずんだもんがいっぱい」","プロジェクトセカイ 楽曲収録"]},
-  {y:2022, e:["ずんだもん楽曲が2か月連続でニコニコ殿堂入り","CeVIO AI 双葉湊音 初の公式楽曲"]},
-  {y:2021, e:["7月「戻るボタン feat.可不」でボカロPデビュー"]},
+  {y:2026, e:[["09", "定禅寺ジャズフェス公式連携「#リアルずんだパーリナイ」第2回 / 韓国「TETRAPOD」出演 / 「暴力的にカワイイ'26」出演 / NIGHT HIKE POP UP STORE 一日店長"], ["08", "「MOGRA 17th Anniversary」出演 / 「FOUND Vol.0」出演 / ボカコレ2026夏 REMIX 1位"], ["07", "「マジカルミライ2026」浜松 出展 / 「V2NiTE」出演"], ["05", "「NIGHT HIKE -scramble- '26」出演(平田義久・梓川・A4。・さぶれ・DJ Heero Yuy・吉本おじさんとコラボ) / 日清焼そばU.F.O. 50周年×初音ミク 企画プロデュース&作曲"], ["02", "タイ日清食品 初音ミクCM「激」シリーズ / プロジェクトセカイ カラフルステージ！「とびだせ！わんだぴょい」書き下ろし / ボカコレ2026冬 REMIX 1位「みむかｩわナイストライ - namigroove remix -」"], ["01", "あおぎり高校 1st Album「コピペパペット」収録"]]},
+  {y:2025, e:[["11", "ずんだバンド公演「ネリぐる」@下北沢MoSaic"], ["09", "定禅寺ジャズフェス公式連携イベント「#リアルずんだパーリナイ」主催 / 「CHUNITHM 10th」イベント出演"], ["08", "「MOGRA」周年イベント出演"], ["07", "マジカルミライ 仙台 東北ずん子プロジェクト楽曲公募 入賞"], ["05", "「オールナイト・オブ・ナイツ」REMIX提供 / 「Strawberry Music Festival」中国・北京公演 / 「GOLD DISC 2nd Anniversary」出演"], ["04", "「TETRAPOD」韓国・ソウル公演 / サウンド＆レコーディング・マガジン 2025年5月号 ODISEI MUSIC Travel Sax 2 レビュー掲載"], ["03", "青は止まれ「しじまのはて」提供楽曲MV公開 / をとは「オツキミ超えてオツキアイ」MV公開 / VoiSona LeuR「ルウルウル」MV&楽曲製作 / ひみつのアイプリ&超ときめき♡宣伝部「ひみつのふふふ」楽曲製作 / 電音部 大賀ルキア「ガルルルルルル！」楽曲製作"], ["02", "cut(e)ライブ @Spotify O-nest / 知声の輪っか ボカニコ出演 / 「ずんだレンジャー」ボカコレ2025冬 TOP100 3位"], ["01", "「GRAYSCALE」clubasia・「NEOMIX」出演 / cut(e)リリースパーティー @渋谷7th FLOOR / N高等学校 講義"]]},
+  {y:2024, e:[["12", "VoiSona公式「溶けちゃいそう」MV&楽曲製作 / サントリー×VOICEVOX公式「ぞんぞんずんだエナジー」楽曲製作"], ["09", "「ずんだパーリナイ」maimai でらっくす 収録 / ホロライブ 大空スバル「ホットダック！」MV&楽曲製作"], ["08", "VOICEVOX公式テーマソング「DREAMVOX」MV&楽曲製作 / YouTube Music Weekend「ずんだバンド」出演"], ["07", "「ずんだタコヤーキ」マクドナルド マックフラッペ CMソングに"], ["05", "「ずんだパーリナイ」オンゲキ 収録"], ["04", "桃寝ちのい「電脳眠眠猫」/ ちょこ「無限ダラダラガンダーラ」/ をとは「オツキミ超えてオツキアイ」楽曲製作"], ["03", "東北ずん子・ずんだもん公式「ずんパラじお」出演 / すとぷり 莉犬「わんぬ」MV&楽曲製作 / maimai でらっくす「のじゃロリック」MV&楽曲製作"], ["02", "「SNOW MIKU」コンピ書き下ろし&DJ出演 / 「ずんだタコヤーキ」ボカコレ2024冬 TOP100 5位 / 「Voca Nico Japan 2024 powered by ボカコレ」出演"], ["01", "「あなたは世界の終わりにずんだを食べるのだ」maimai でらっくす 収録"]]},
+  {y:2023, e:[["12", "「はいぱーぽっぴっぽー(namigroove remix)」ニコニコ動画公式 / 1st Album「ずんだもんがいっぱい」ディスクユニオンよりレコード化 / 「ずんパラじお」ジングル製作 / 「ぽん！」ニコニコ動画 1枚絵選手権 4位"], ["11", "Aiobahn「しあわせなんかにならないで」リリースイベント DJ出演"], ["10", "MOTTO MUSIC「クソデカマジカルマジックマッシュルーム feat.ちょこ」"], ["09", "「あなたは世界の終わりにずんだを食べるのだ」CHUNITHM 収録 / 1st Remix EP「ずんだエビフライ メガ盛り弁当」DIG8 RECORDSよりリリース"], ["08", "「ずんだパーリナイ」プロジェクトセカイ 収録 / 「ずんだシェイキング」ボカコレ2023夏 TOP100 2位"], ["04", "1st Album「ずんだもんがいっぱい」リリース / 夢乃ゆき「太陽ポカポカで草」楽曲製作"], ["03", "ダンスユニット「しいたけあられ」楽曲製作 / 「ずんだパーリナイ」ボカコレ2023春 ルーキー2位 / 「キッカイケッタイ -Electro Swing Remix-」ボカコレ2023春 REMIX 4位"], ["01", "「ずんだエビフライ」8小節アワード BuzzG(審査員賞)受賞"]]},
+  {y:2022, e:[["12", "FM NACK5「ラジオのアナ～ラジアナ～」出演・オリジナルジングル製作"], ["11", "CeVIO AI「双葉湊音」公式デモソング「雲隠」製作"], ["10", "「ウニクラゲ」ボカコレ2022秋 ルーキー4位 / 「墨流し」星界楽曲コンテスト 運営賞(花譜・ヰ世界情緒 本人歌唱)"], ["07", "「ずんだダンシング」投稿14日で2作連続 殿堂入り"], ["05", "「あなたは世界の終わりにずんだを食べるのだ」投稿9日で初の殿堂入り(ニコニコ動画10万再生)"]]},
+  {y:2021, e:[["07", "「戻るボタン feat.可不」でボカロPデビュー"]]},
 ];
 
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 for (const [id, names] of Object.entries(LIST))
   document.getElementById(id).innerHTML = names.map(n=>`<li>${esc(n)}</li>`).join("");
-document.getElementById("timeline").innerHTML = TIMELINE.map(t=>`<li><span class="yr">${t.y}</span><ul>${t.e.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></li>`).join("");
+document.getElementById("timeline").innerHTML = TIMELINE.map(t=>`<li><span class="yr">${t.y}</span><ul>${t.e.map(([m,x])=>`<li><span class="mo">${Number(m)}月</span><span>${x.split(" / ").map(esc).join("<br>")}</span></li>`).join("")}</ul></li>`).join("");
 fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
   const K={notice:"₺ƾらせ",release:"新曲"};
   document.getElementById("xlog").innerHTML = d.posts.filter(p=>p.type!=="event").map(p=>`<li><time datetime="${p.date}">${p.date.replaceAll("-",".")}</time><a href="https://x.com/namigroove/status/${p.id}" target="_blank" rel="noopener"><span class="k k-${p.type}">${K[p.type]}</span>${esc(p.text)}</a></li>`).join("");
