@@ -398,7 +398,7 @@ document.getElementById("creditList").innerHTML = CREDITS.map(c=>`
 const NEWS_T = {all:"すべて", notice:"₺ƾらせ", release:"新曲", event:"出現情報", blog:"ブログ"};
 let NEWS = NOTES.map(n=>({d:n.d, type:"notice", src:"wp", t:n.t, u:n.u})), newsFilter="all", newsShown=6;
 function renderNews(){
-  NEWS.sort((a,b)=>a.d<b.d?1:-1);
+  NEWS.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:(a.src==="wp"?-1:b.src==="wp"?1:0));
   document.getElementById("newsFilters").innerHTML = Object.entries(NEWS_T).map(([k,v])=>{
     const n = k==="all"?NEWS.length:NEWS.filter(x=>x.type===k).length;
     return n||k==="all" ? `<button type="button" class="k-${k}" data-k="${k}" aria-pressed="${k===newsFilter}">${v}<span class="count">${n}</span></button>` : "";
@@ -423,7 +423,16 @@ const WP = Promise.all([fetch(WP_API).then(r=>r.ok?r.json():Promise.reject()), W
   return posts.filter(p=>!(p.categories||[]).some(id=>hide.has(id))).map(p=>({d:p.date.slice(0,10), type:(p.categories||[]).some(id=>notice.has(id))?"notice":"blog", src:"wp", t:unhtml(p.title.rendered), u:p.link}));
 }).catch(()=>null);
 const XP = fetch("data/x-posts.json").then(r=>r.json()).then(d=>d.posts.map(p=>({d:p.date, type:p.type, t:p.text, u:"https://x.com/namigroove/status/"+p.id}))).catch(()=>[]);
-Promise.all([WP,XP]).then(([wp,xp])=>{ NEWS=[...(wp||NEWS), ...xp]; renderNews(); });
+/* 重複をまとめる:サイト記事を優先し、同じ話題のXポスト(前後10日・文面が半分以上一致)は載せない */
+const normT = s => s.toLowerCase().replace(/https?:\/\/\S+/g,"").replace(/#\S+/g,"").replace(/[^0-9a-zぁ-んァ-ヶー一-龠々]/g,"");
+const grams = s => { const n=normT(s), g=new Set(); for(let i=0;i<n.length-1;i++) g.add(n.slice(i,i+2)); return g; };
+const simT = (a,b) => { const A=grams(a), B=grams(b); if(!A.size||!B.size) return 0; let k=0; A.forEach(x=>{ if(B.has(x)) k++; }); return k/Math.min(A.size,B.size); };
+const near = (a,b) => Math.abs(new Date(a)-new Date(b))/864e5 <= 10;
+Promise.all([WP,XP]).then(([wp,xp])=>{
+  const list=[...(wp||NEWS)];
+  for(const x of xp){ if(!list.some(o=>near(o.d,x.d) && simT(o.t,x.t)>=0.5)) list.push(x); }
+  NEWS=list; renderNews();
+});
 
 document.getElementById("yr").textContent = new Date().getFullYear();
 
