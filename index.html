@@ -181,6 +181,8 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .links a .ico{display:inline-flex;width:18px;height:18px;flex:none;align-self:center;color:var(--zunda)}
 .links a .ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .links a:hover .ico{color:var(--ink)}
+.links a .ico.brand{background:var(--c);-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .links a .ico.brand[style*="#111111"]{background:#e6ecfb}}
 .links a small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
 .links a:hover span{color:var(--zunda)}
 
@@ -292,11 +294,11 @@ footer .mono{font-family:var(--f-mono)}
           <a href="https://store.line.me/stickershop/product/26675197/ja" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></i><span>LINEスタンプ</span><small>ずんだパーリナイ</small></a>
         </div></div>
         <div class="link-group"><h3>音楽を聴く</h3><div class="links">
-          <a href="https://open.spotify.com/artist/32ljht9dPnlZACgqyVTn6c" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="15" width="4" height="6" rx="1.5"/><rect x="17" y="15" width="4" height="6" rx="1.5"/></svg></i><span>Spotify</span><small></small></a>
-          <a href="https://music.apple.com/us/artist/namigroove/1594555837" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="15" width="4" height="6" rx="1.5"/><rect x="17" y="15" width="4" height="6" rx="1.5"/></svg></i><span>Apple Music</span><small></small></a>
-          <a href="https://www.amazon.co.jp/music/player/artists/B09LSVRXM2/" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="15" width="4" height="6" rx="1.5"/><rect x="17" y="15" width="4" height="6" rx="1.5"/></svg></i><span>Amazon Music</span><small></small></a>
-          <a href="https://soundcloud.com/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></i><span>SoundCloud</span><small></small></a>
-          <a href="https://piapro.jp/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></i><span>piapro</span><small>Off Vocal・歌詞</small></a>
+          <a href="https://open.spotify.com/artist/32ljht9dPnlZACgqyVTn6c" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/spotify.svg);--c:#1DB954"></i><span>Spotify</span><small></small></a>
+          <a href="https://music.apple.com/us/artist/namigroove/1594555837" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/apple.svg);--c:#FA243C"></i><span>Apple Music</span><small></small></a>
+          <a href="https://www.amazon.co.jp/music/player/artists/B09LSVRXM2/" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/amazonmusic.svg);--c:#25D1DA"></i><span>Amazon Music</span><small></small></a>
+          <a href="https://soundcloud.com/namigroove" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/soundcloud.svg);--c:#FF5500"></i><span>SoundCloud</span><small></small></a>
+          <a href="https://piapro.jp/namigroove" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/piapro.svg);--c:#111111"></i><span>piapro</span><small>Off Vocal・歌詞</small></a>
           <a href="https://namigroove.fanbox.cc/" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg></i><span>pixivFANBOX</span><small>STEM配布</small></a>
         </div></div>
         <div class="link-group"><h3>SNS・予定</h3><div class="links">
