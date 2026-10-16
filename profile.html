@@ -75,6 +75,8 @@ h2 small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft);font-wei
 @media (max-width:480px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
 footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
 footer a{color:var(--sea)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
@@ -111,7 +113,7 @@ footer a{color:var(--sea)}
   <section><h2>ボカコレ<small>The VOCALOID Collection</small></h2><ul class="ranks" id="ranks"></ul></section>
 </main>
 
-<footer><div class="wrap"><a href="index.html">← トップへ戻る</a></div></footer>
+<footer><div class="wrap foot"><a href="index.html">← トップへ戻る</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/links/">相互リンク</a><a href="https://www.namigroove.com/privacy-policy/">プライバシーポリシー</a></nav></div></footer>
 
 <script>
 const LIST = {
