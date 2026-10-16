@@ -31,8 +31,8 @@ body,body#body{background:var(--ng-paper)!important;background-image:none!import
 #main-column>.container{align-items:center;max-width:1080px}
 #main-column>.container .md6:has(.post-thumbnail){height:auto!important;margin:24px 0!important}
 #main-column>.container .md6>.t-0.b-0.r-0.l-0{position:static!important;padding:0 16px!important}
-figure.post-thumbnail{height:auto!important;padding:0!important;overflow:hidden;border-radius:14px;margin:0;box-shadow:0 8px 24px rgba(16,31,69,.12)}
-figure.post-thumbnail img.post-top-thumbnail{position:static!important;display:block;width:100%!important;height:auto!important;aspect-ratio:16/9;object-fit:cover}
+#main-column>.container figure.post-thumbnail{height:auto!important;padding:0!important;overflow:hidden;border-radius:14px;margin:0;box-shadow:0 8px 24px rgba(16,31,69,.12)}
+#main-column>.container figure.post-thumbnail img.post-top-thumbnail{position:static!important;display:block;width:100%!important;height:auto!important;aspect-ratio:16/9;object-fit:cover}
 .gradation-object::before,.gradation-object::after{display:none!important}
 
 /* 本文エリアを白いカードに */
@@ -67,3 +67,29 @@ html body #music a:hover,html body #movie a:hover{color:var(--ng-sea)!important}
 #copyright{padding:0!important;font-size:12px;color:var(--ng-soft)!important}
 #footer .container>.pb-5:not(#copyright){display:none}
 .page-top{background:var(--ng-head)!important;color:#fff!important;position:fixed!important;bottom:20px;right:20px;top:auto!important;border-radius:50%;box-shadow:0 4px 12px rgba(16,31,69,.2)}
+
+/* 一覧(アーカイブ・カテゴリ)の記事カード:トップの₺ƾらせカードに合わせる */
+.archive-wrap{gap:0}
+.card-wrap .card{background:var(--ng-chip)!important;border:1px solid var(--ng-line)!important;border-radius:12px!important;box-shadow:none!important;overflow:hidden;transition:transform .15s,border-color .15s}
+.card-wrap .card:hover{transform:translateY(-2px);border-color:var(--ng-head)!important}
+.card-wrap .post-thumbnail{border-radius:0!important;margin:0!important}
+.card-wrap .card-content{padding:14px 18px 6px!important}
+.card-wrap .card-content .meta,.card-wrap .card-content .meta a{font-size:11px!important;font-weight:700;color:var(--ng-sea)!important;text-align:left}
+.card-wrap .card-title{font-size:16px!important;line-height:1.5!important;border:0!important;padding:0!important;background:none!important;margin:6px 0 0!important}
+.card-wrap .card-title::before,.card-wrap .card-title::after{display:none!important}
+.card-wrap .card-title a{color:var(--ng-ink)!important}
+.card-wrap .card-meta{padding:6px 18px 14px!important;display:flex;align-items:center;justify-content:space-between}
+.card-wrap .card-meta .meta{font-family:"DM Mono",ui-monospace,monospace;font-size:12px!important;color:var(--ng-soft)!important}
+.card-wrap .card-meta>a{background:none!important;color:var(--ng-sea)!important;border:0!important;box-shadow:none!important;padding:0!important;font-size:12px!important;font-weight:700}
+.card-wrap .card-meta>a::after{content:" →"}
+/* ページ送り */
+#contents-wrapper .gradation.current{background:var(--ng-head)!important;color:#fff!important;border-radius:999px}
+#contents-wrapper .mt-3.mb-2 a{border:1px solid var(--ng-line);border-radius:999px;color:var(--ng-ink)!important;background:var(--ng-chip)}
+/* 汎用ボタン(テーマの青グラデーション) */
+#contents-wrapper .gradation:not(.current){background:var(--ng-head)!important}
+
+/* 本文エリア:サイドバーと並べたときの余白を調整 */
+#main-container{max-width:1080px!important;gap:24px}
+#contents-wrapper{padding:24px 16px!important}
+#sidebar{padding:24px 16px!important}
+@media (min-width:960px){#sidebar{position:sticky;top:72px;align-self:flex-start}}
