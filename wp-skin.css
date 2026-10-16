@@ -63,7 +63,8 @@ html body #music a:hover,html body #movie a:hover{color:var(--ng-sea)!important}
 #footer .global-nav ul{display:flex;gap:16px;margin:0;padding:0}
 #footer .global-nav li{margin:0;padding:0}
 #footer .global-nav a,#footer a{color:var(--ng-soft)!important;font-size:12px;text-decoration:underline;border:0!important}
-#footer .global-nav a i,#header-nav a i{display:none}
+#header-nav a i{display:none}
+#footer .global-nav a i{margin-right:3px}
 #copyright{padding:0!important;font-size:12px;color:var(--ng-soft)!important}
 #footer .container>.pb-5:not(#copyright){display:none}
 .page-top{background:var(--ng-head)!important;color:#fff!important;position:fixed!important;bottom:20px;right:20px;top:auto!important;border-radius:50%;box-shadow:0 4px 12px rgba(16,31,69,.2)}
