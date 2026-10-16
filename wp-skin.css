@@ -81,7 +81,7 @@ html body #music a:hover,html body #movie a:hover{color:var(--ng-sea)!important}
 .card-wrap .card-title a{color:var(--ng-ink)!important}
 .card-wrap .card-meta{padding:6px 18px 14px!important;display:flex;align-items:center;justify-content:space-between}
 .card-wrap .card-meta .meta{font-family:"DM Mono",ui-monospace,monospace;font-size:12px!important;color:var(--ng-soft)!important}
-.card-wrap .card-meta>a{background:none!important;color:var(--ng-sea)!important;border:0!important;box-shadow:none!important;padding:0!important;font-size:12px!important;font-weight:700}
+.card-wrap .card-meta>a{font-family:"MaruMinyaM","Zen Maru Gothic","M PLUS Rounded 1c",sans-serif!important;background:none!important;color:var(--ng-sea)!important;border:0!important;box-shadow:none!important;padding:0!important;font-size:12px!important;font-weight:700}
 .card-wrap .card-meta>a::after{content:" →"}
 /* ページ送り */
 #contents-wrapper .gradation.current{background:var(--ng-head)!important;color:#fff!important;border-radius:999px}
