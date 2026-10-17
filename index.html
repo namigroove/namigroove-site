@@ -477,6 +477,8 @@ if (IS_EN) { NEWS_T.notice = "mochinfo"; document.querySelectorAll(".mochi").for
 let NEWS = NOTES.map(n=>({d:n.d, type:"notice", src:"wp", t:n.t, u:n.u})), newsFilter="all", newsShown=6;
 /* ブログタブにはサイトの「投稿」をすべて出す(お知らせカテゴリの投稿も含む) */
 const inTab = (x,k) => k==="all" || x.type===k || (k==="blog" && x.post);
+/* ブログタブを見ているときは、投稿のラベルを「ブログ」で表示 */
+const tabType = n => newsFilter==="blog" && n.post ? "blog" : n.type;
 function renderNews(){
   NEWS.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:(a.src==="wp"?-1:b.src==="wp"?1:0));
   document.getElementById("newsFilters").innerHTML = Object.entries(NEWS_T).map(([k,v])=>{
@@ -488,7 +490,7 @@ function renderNews(){
   const pin = newsFilter==="event" ? `
   <a class="note pin k-event" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出演予定はカレンダーでチェック</h3><time>なみぐるの出現スケジュール →</time></a>` : "";
   document.getElementById("noteList").innerHTML = pin + list.slice(0,newsShown-(pin?1:0)).map(n=>`
-  <a class="note k-${n.type}" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag" translate="no">${NEWS_T[n.type]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
+  <a class="note k-${tabType(n)}" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag" translate="no">${NEWS_T[tabType(n)]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
   document.getElementById("newsMore").hidden = list.length<=newsShown-(pin?1:0);
 }
 document.getElementById("newsFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return; newsFilter=b.dataset.k; newsShown=6; renderNews();});
