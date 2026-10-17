@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ギター・ベース コード表 – なみぐる！</title>
+<meta name="description" content="ギターとベースのコード表。コード名から押さえ方を調べる順引きと、押さえた形からコード名を調べる逆引き。カポ・ベースの構成音表示にも対応。">
+<meta property="og:title" content="ギター・ベース コード表 – なみぐる！">
+<meta property="og:description" content="ギター・ベースのコードを順引き・逆引きで調べられるコード表。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/chords/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-180x180.png">
+<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tools.webmanifest">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+/* コード表 */
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+.tabs.fam{margin-bottom:16px}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 2px}}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.ch-pick{display:flex;flex-direction:column;gap:8px;margin:14px 0 6px;align-items:center}
+.ch-pick .seg{justify-content:center}
+.ch-pick .roots button{min-width:44px}
+.ch-head{display:flex;flex-direction:column;align-items:center;gap:4px;margin:12px 0 6px;text-align:center}
+.ch-name{font-family:var(--f-display);font-size:clamp(40px,10vw,60px);line-height:1.1;min-height:1.1em}
+.ch-name .dim{font-size:15px;color:var(--ink-soft);font-family:var(--f-body)}
+.ch-sub{font-size:13px;color:var(--ink-soft);min-height:1.5em}
+.ch-sub b{color:var(--sea)}
+.vo{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.vo-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
+.vo-c:hover{border-color:var(--sea)}
+.vo-c.main{border:2px solid var(--sea)}
+.vo-c small{font-size:11px;color:var(--ink-soft)}
+.cd{width:120px;height:auto;display:block}
+.cd .st{stroke:var(--ink-soft);stroke-width:1}
+.cd .fr{stroke:var(--line);stroke-width:1.2}
+.cd .nut{stroke:var(--ink);stroke-width:4}
+.cd .dot{fill:var(--sea)}
+.cd .dot.r{fill:var(--coral)}
+.cd .bar{fill:var(--sea);opacity:.9}
+.cd .mk{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.cd .pos{font:10px var(--f-mono);fill:var(--ink-soft)}
+.fb-wrap{overflow-x:auto;margin-top:10px}
+.fb{min-width:640px}
+.fb svg{display:block;width:100%;height:auto}
+.fb .str{stroke:var(--ink-soft)}
+.fb .fw{stroke:var(--line);stroke-width:1.5}
+.fb .nutl{stroke:var(--ink);stroke-width:4}
+.fb .inl{fill:var(--wash)}
+.fb .nd{stroke:var(--panel);stroke-width:1.5}
+.fb .nt{font:10px var(--f-mono);fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.fb .fn{font:10px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.fb-leg{font-size:12px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
+.fb-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
+.rev-grid{display:flex;justify-content:center;margin:14px 0 4px}
+.rev-grid svg{width:min(100%,300px);height:auto;touch-action:manipulation;user-select:none}
+.rev-grid .cell{fill:transparent;cursor:pointer}
+.rev-grid .cell:hover{fill:var(--wash)}
+.rev-grid .om{font:16px var(--f-mono);fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;cursor:pointer}
+.rev-grid .omh{fill:transparent;cursor:pointer}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html">Works</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
+/* EN⇔JP:Google翻訳(英語)との切り替え */
+(()=>{const a=document.getElementById("toEN"); if(!a) return;
+ const tr=/\.translate\.goog$/.test(location.hostname);
+ if(tr){
+  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
+  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
+  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
+  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
+ } else {
+  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
+ }
+})();
+</script>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>ギター・ベース コード表</h1>
+    <p class="lead">コード名から押さえ方を調べる「順引き」と、押さえた形からコード名を調べる「逆引き」ができます。カポにも対応しています。</p>
+  </div>
+
+  <div class="tabs fam" id="modeTabs" role="tablist" aria-label="モード">
+    <button type="button" data-m="fwd" aria-selected="true">順引き(コード → 押さえ方)</button>
+    <button type="button" data-m="rev" aria-selected="false">逆引き(押さえ方 → コード)</button>
+  </div>
+
+  <section class="panel" id="fwd" aria-label="順引き">
+    <div class="row">
+      <span class="seg" id="instSeg" role="group" aria-label="楽器">
+        <button type="button" data-i="gt" aria-pressed="true">ギター</button>
+        <button type="button" data-i="b4" aria-pressed="false">ベース(4弦)</button>
+        <button type="button" data-i="b5" aria-pressed="false">ベース(5弦)</button>
+      </span>
+      <div class="ctl">カポ <select id="capo" class="sel" aria-label="カポの位置"></select></div>
+    </div>
+    <div class="ch-pick">
+      <div class="seg roots" id="rootSeg" role="group" aria-label="ルート"></div>
+      <div class="seg types" id="typeSeg" role="group" aria-label="コードの種類"></div>
+    </div>
+    <div class="ch-head" aria-live="polite">
+      <div class="ch-name" id="chName">C</div>
+      <div class="ch-sub" id="chSub"></div>
+      <button class="btn" type="button" id="playBtn">♪ 音を聴く</button>
+    </div>
+    <div class="vo" id="voicings"></div>
+    <div class="fb-wrap" id="fbWrap" hidden><div class="fb" id="fb"></div><p class="fb-leg" id="fbLeg"></p></div>
+  </section>
+
+  <section class="panel" id="rev" aria-label="逆引き" hidden>
+    <div class="row">
+      <div class="ctl">カポ <select id="capo2" class="sel" aria-label="カポの位置"></select></div>
+      <div class="ctl">ポジション
+        <button class="btn round" type="button" id="posDown" aria-label="ポジションを下げる">‹</button>
+        <b class="num" id="posLbl">1</b>
+        <button class="btn round" type="button" id="posUp" aria-label="ポジションを上げる">›</button>
+      </div>
+      <button class="btn" type="button" id="revClear">リセット</button>
+    </div>
+    <div class="rev-grid" id="revGrid" role="group" aria-label="指板"></div>
+    <div class="ch-head" aria-live="polite">
+      <div class="ch-name" id="revName"><span class="dim">指板をタップして押さえてみてね</span></div>
+      <div class="ch-sub" id="revSub"></div>
+      <button class="btn" type="button" id="revPlay">♪ 音を聴く</button>
+    </div>
+    <p class="note-s">弦の上の ○/× をタップすると、開放弦とミュートを切り替えられます。</p>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>ギターの押さえ方は、よく使うローコードと、指が届く範囲(4フレット以内)で弾ける形を自動で探して並べています。左ほど弾きやすい形です。</li>
+      <li>ダイヤグラムは左が6弦(太い弦)、右が1弦です。○は開放弦、×は弾かない弦、数字は何フレット目からの図かを表します。</li>
+      <li>ベースは指板の上にコードの構成音を色分けで出します(R=ルート、3・5・7など)。</li>
+      <li>カポを付けると、順引きでは「その形で押さえるとこのコードが鳴る」押さえ方を、逆引きでは実際に鳴るコード名を表示します。</li>
+      <li>チューニングはレギュラー(ギター EADGBE、ベース EADG / BEADG)です。</li>
+      <li>鍵盤で和音を確かめたいときは <a href="piano.html">ピアノ</a> もどうぞ。</li>
+    </ul>
+  </section>
+</main>
+
+
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%82%AE%E3%82%BF%E3%83%BC%E3%83%BB%E3%83%99%E3%83%BC%E3%82%B9%20%E3%82%B3%E3%83%BC%E3%83%89%E8%A1%A8%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fchords%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fchords%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
+const pc=m=>((m%12)+12)%12;
+const ROOTS=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
+const TYPES=[["",[0,4,7]],["m",[0,3,7]],["7",[0,4,7,10]],["M7",[0,4,7,11]],["m7",[0,3,7,10]],["sus4",[0,5,7]],["sus2",[0,2,7]],["7sus4",[0,5,7,10]],["6",[0,4,7,9]],["m6",[0,3,7,9]],["add9",[0,2,4,7]],["9",[0,2,4,7,10]],["dim",[0,3,6]],["dim7",[0,3,6,9]],["aug",[0,4,8]],["m7(♭5)",[0,3,6,10]],["mM7",[0,3,7,11]]];
+const DEG={0:"R",1:"♭9",2:"9",3:"♭3",4:"3",5:"4",6:"♭5",7:"5",8:"♯5",9:"6",10:"♭7",11:"7"};
+const DCOL={0:"#d0436b",3:"#2c5ccc",4:"#2c5ccc",7:"#0e8a6c",6:"#0e8a6c",8:"#0e8a6c",10:"#8a5cf0",11:"#8a5cf0",9:"#8a5cf0"};
+const TUN={gt:[40,45,50,55,59,64],b4:[28,33,38,43],b5:[23,28,33,38,43]};
+const ENN=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
+let inst=store.get("chInst","gt"), root=store.get("chRoot",0), type=store.get("chType",0), capo=store.get("chCapo",0);
+if(!TUN[inst])inst="gt"; if(!TYPES[type])type=0;
+
+/* ===== ギターの押さえ方を探す ===== */
+function voicings(r,iv){
+  const tun=TUN.gt, need=new Set(iv.map(x=>pc(r+x))), rootPc=pc(r);
+  const opt5=iv.length>=4&&iv.includes(7); /* 4和音以上なら5度は省略してもよい */
+  const req=new Set([...need].filter(p=>!(opt5&&p===pc(r+7))));
+  const out=[], seen=new Set();
+  /* 定番の形(6弦ルートのEフォーム・5弦ルートのAフォーム)は優先する */
+  const SH={"0,4,7":[[0,2,2,1,0,0],[-1,0,2,2,2,0]],"0,3,7":[[0,2,2,0,0,0],[-1,0,2,2,1,0]],"0,4,7,10":[[0,2,0,1,0,0],[-1,0,2,0,2,0]],"0,3,7,10":[[0,2,0,0,0,0],[-1,0,2,0,1,0]],
+    "0,4,7,11":[[0,-1,1,1,0,-1],[-1,0,2,1,2,0]],"0,5,7":[[0,2,2,2,0,0],[-1,0,2,2,3,0]],"0,5,7,10":[[0,2,0,2,0,0],[-1,0,2,0,3,0]],"0,3,6,10":[[0,-1,0,0,-1,-1],[-1,0,1,0,1,-1]],
+    "0,3,6,9":[[0,-1,-1,0,-1,0],[-1,0,1,2,1,2]],"0,4,7,9":[[0,-1,-1,1,2,0],[-1,0,2,2,2,2]],"0,3,7,9":[[0,-1,-1,0,2,0],[-1,0,2,2,1,2]]};
+  const pref=new Set();(SH[iv.join(",")]||[]).forEach((sh,k)=>{const s0=k===0?tun[0]:tun[1];const off=pc(r-s0);[off,off+12].forEach(o=>{if(o>12)return;pref.add(sh.map(f=>f<0?-1:f+o).join(","));});});
+  for(let base=0;base<=12;base++){
+    const lo=base===0?1:base, hi=lo+3;
+    const opts=tun.map(s=>{const o=[-1];if(base<=3&&need.has(pc(s)))o.push(0);for(let f=lo;f<=hi;f++)if(need.has(pc(s+f)))o.push(f);return o;});
+    const cur=[0,0,0,0,0,0];
+    (function rec(i){
+      if(i===6){
+        const fr=cur.slice(), snd=fr.map((f,k)=>f<0?null:tun[k]+f);
+        const first=fr.findIndex(f=>f>=0); if(first<0)return;
+        let last=5;while(fr[last]<0)last--;
+        const key=fr.join(","), isPref=pref.has(key);
+        if(5-last>1&&!isPref)return; /* 高い側のミュートは1本まで(定番の形は例外) */
+        for(let k=first;k<=last;k++)if(fr[k]<0&&!isPref)return; /* 途中の弦はミュートしない */
+        const count=fr.filter(f=>f>=0).length; if(count<Math.min(4,iv.length+1)&&count<4)return;
+        if(pc(snd[first])!==rootPc)return;
+        const have=new Set(snd.filter(x=>x!=null).map(pc)); for(const p of req)if(!have.has(p))return;
+        const fretted=fr.map((f,k)=>[f,k]).filter(([f])=>f>0); if(!fretted.length&&base>0)return;
+        const minF=fretted.length?Math.min(...fretted.map(x=>x[0])):0, maxF=fretted.length?Math.max(...fretted.map(x=>x[0])):0;
+        if(maxF-minF>3)return;
+        const atMin=fretted.filter(x=>x[0]===minF).map(x=>x[1]);
+        let fingers=fretted.length, barre=null;
+        if(atMin.length>=2){const a=Math.min(...atMin),b=Math.max(...atMin);let ok=true;for(let k=a;k<=b;k++)if(fr[k]<minF)ok=false;if(ok){fingers=fretted.length-atMin.length+1;barre=[minF,a,b];}}
+        if(fingers>4)return;
+        if(seen.has(key))return;seen.add(key);
+        const opens=fr.filter(f=>f===0).length, mutes=6-count;
+        const topMute=fr[5]<0?1.2:0;
+        const score=minF*2.2+fingers*1.1+mutes*1.3+topMute+(barre?0.8:0)-opens*0.5+(maxF-minF)*0.4-(have.size===need.size?0.6:0)-(isPref?(base===0?3:4.2):0)+(base>0&&opens?1.5:0);
+        out.push({fr,barre,score,minF});
+        return;
+      }
+      for(const f of opts[i]){cur[i]=f;rec(i+1);}
+    })(0);
+  }
+  out.sort((a,b)=>a.score-b.score);
+  /* 似たポジションばかりにならないよう、位置がちがう形を優先して選ぶ */
+  const pick=[];for(const v of out){if(pick.length>=5)break;if(pick.some(p=>Math.abs(p.minF-v.minF)<2&&p.fr.filter((f,i)=>f===v.fr[i]).length>=3))continue;pick.push(v);}
+  return pick;
+}
+
+/* ===== ダイヤグラム(左が6弦) ===== */
+function diagram(fr,barre,rp){
+  const W=120,H=150,x0=22,dx=16,y0=30,dy=22,N=5;
+  const fretted=fr.filter(f=>f>0), minF=fretted.length?Math.min(...fretted):1, maxF=fretted.length?Math.max(...fretted):1;
+  const start=maxF<=5?1:minF;
+  let s=`<svg class="cd" viewBox="0 0 ${W} ${H}" role="img" aria-label="押さえ方 ${fr.map(f=>f<0?"x":f).join(" ")}">`;
+  for(let i=0;i<6;i++)s+=`<line class="st" x1="${x0+i*dx}" y1="${y0}" x2="${x0+i*dx}" y2="${y0+N*dy}"/>`;
+  for(let j=0;j<=N;j++)s+=`<line class="${j===0&&start===1?"nut":"fr"}" x1="${x0}" y1="${y0+j*dy}" x2="${x0+5*dx}" y2="${y0+j*dy}"/>`;
+  if(start>1)s+=`<text class="pos" x="${x0+5*dx+6}" y="${y0+dy*0.65}">${start}</text>`;
+  if(barre&&barre[0]>0){const yy=y0+(barre[0]-start+0.5)*dy;s+=`<rect class="bar" x="${x0+barre[1]*dx-6}" y="${yy-6}" width="${(barre[2]-barre[1])*dx+12}" height="12" rx="6"/>`;}
+  fr.forEach((f,i)=>{const x=x0+i*dx;
+    if(f<0)s+=`<text class="mk" x="${x}" y="${y0-9}">×</text>`;
+    else if(f===0)s+=`<text class="mk" x="${x}" y="${y0-9}">○</text>`;
+    else{const isR=rp!=null&&pc(TUN.gt[i]+f)===rp;s+=`<circle class="dot${isR?" r":""}" cx="${x}" cy="${y0+(f-start+0.5)*dy}" r="6"/>`;}
+  });
+  return s+"</svg>";
+}
+
+/* ===== ベースの指板 ===== */
+function fretboard(tun,r,iv){
+  const F=12,x0=34,dx=50,y0=18,dy=26,n=tun.length,W=x0+F*dx+16,H=y0+(n-1)*dy+30;
+  const ps=new Map(iv.map(x=>[pc(r+x),x]));
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="指板">`;
+  [3,5,7,9].forEach(f=>s+=`<rect class="inl" x="${x0+(f-1)*dx}" y="${y0}" width="${dx}" height="${(n-1)*dy}"/>`);
+  s+=`<rect class="inl" x="${x0+11*dx}" y="${y0}" width="${dx}" height="${(n-1)*dy}"/>`;
+  for(let f=0;f<=F;f++)s+=`<line class="${f===0?"nutl":"fw"}" x1="${x0+f*dx}" y1="${y0}" x2="${x0+f*dx}" y2="${y0+(n-1)*dy}"/>`;
+  for(let i=0;i<n;i++){const y=y0+(n-1-i)*dy;s+=`<line class="str" x1="${x0}" y1="${y}" x2="${x0+F*dx}" y2="${y}" stroke-width="${1+(n-1-i)*0.3}"/>`;}
+  for(let f=1;f<=F;f++)s+=`<text class="fn" x="${x0+(f-0.5)*dx}" y="${y0+(n-1)*dy+20}">${f}</text>`;
+  for(let i=0;i<n;i++){const y=y0+(n-1-i)*dy;for(let f=0;f<=F;f++){const p=pc(tun[i]+f);if(!ps.has(p))continue;const d=ps.get(p),x=f===0?x0-16:x0+(f-0.5)*dx;
+    s+=`<circle class="nd" cx="${x}" cy="${y}" r="10" fill="${DCOL[d]||"#888"}"/><text class="nt" x="${x}" y="${y}">${DEG[d]}</text>`;}}
+  return s+"</svg>";
+}
+
+/* ===== 音(はじいた弦っぽい音) ===== */
+let ac=null;
+function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();}if(ac.state!=="running")ac.resume();return ac;}
+function pluck(midis,gap,bass){
+  const a=audio(),t0=a.currentTime+0.02;
+  midis.forEach((m,i)=>{const t=t0+i*gap,f=440*Math.pow(2,(m-69)/12);
+    const o=a.createOscillator(),o2=a.createOscillator(),lp=a.createBiquadFilter(),g=a.createGain();
+    o.type="sawtooth";o.frequency.value=f;o2.type="triangle";o2.frequency.value=f*2;o2.detune.value=3;
+    lp.type="lowpass";lp.frequency.setValueAtTime(Math.min(9000,f*(bass?6:10)),t);lp.frequency.exponentialRampToValueAtTime(Math.max(200,f*1.6),t+0.6);
+    g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(bass?0.32:0.12,t+0.004);g.gain.setTargetAtTime(0.0001,t+0.01,bass?0.5:0.7);
+    const g2=a.createGain();g2.gain.value=0.25;o.connect(lp);o2.connect(g2);g2.connect(lp);lp.connect(g);g.connect(a.destination);
+    o.start(t);o2.start(t);o.stop(t+3);o2.stop(t+3);});
+}
+
+/* ===== 順引き ===== */
+let vlist=[], vsel=0;
+function chordName(r,t){return ROOTS[pc(r)]+TYPES[t][0];}
+function renderFwd(){
+  const iv=TYPES[type][1], isG=inst==="gt", c=isG?capo:0, shapeRoot=pc(root-c);
+  $("chName").textContent=chordName(root,type);
+  [...$("rootSeg").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===root));
+  [...$("typeSeg").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===type));
+  $("capo").parentNode.hidden=!isG;
+  const tones=iv.map(x=>ROOTS[pc(root+x)]+"("+DEG[x]+")").join(" ");
+  if(isG){
+    vlist=voicings(shapeRoot+48,iv);vsel=0;
+    $("chSub").innerHTML=(c?`カポ${c}:<b>${chordName(shapeRoot,type)}</b> の形で弾くと ${chordName(root,type)} が鳴ります<br>`:"")+"構成音 "+tones;
+    $("voicings").innerHTML=vlist.length?vlist.map((v,i)=>`<button type="button" class="vo-c${i===0?" main":""}" data-i="${i}">${diagram(v.fr,v.barre,shapeRoot)}<small>${v.fr.map(f=>f<0?"x":f).join("")}</small></button>`).join(""):'<p class="note-s">この範囲では押さえやすい形が見つかりませんでした</p>';
+    $("voicings").hidden=false;$("fbWrap").hidden=true;
+  }else{
+    $("chSub").innerHTML="構成音 "+tones;
+    $("fb").innerHTML=fretboard(TUN[inst],root,iv);
+    $("fbLeg").innerHTML='<i style="background:#d0436b"></i>R ルート<i style="background:#2c5ccc"></i>3度<i style="background:#0e8a6c"></i>5度<i style="background:#8a5cf0"></i>6・7度';
+    $("voicings").hidden=true;$("fbWrap").hidden=false;
+  }
+  store.set("chRoot",root);store.set("chType",type);
+}
+function playFwd(){
+  const iv=TYPES[type][1];
+  if(inst==="gt"){const v=vlist[vsel];if(!v)return;pluck(v.fr.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filter(x=>x!=null),0.035,false);}
+  else{const lowR=TUN[inst][0]+pc(root-TUN[inst][0]);pluck([lowR],0,true);setTimeout(()=>pluck(iv.map(x=>lowR+12+x),0.12,true),350);}
+}
+$("rootSeg").innerHTML=ROOTS.map((n,i)=>`<button type="button" data-r="${i}">${n}</button>`).join("");
+$("typeSeg").innerHTML=TYPES.map((t,i)=>`<button type="button" data-t="${i}">${t[0]||"M(メジャー)"}</button>`).join("");
+$("rootSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b){root=+b.dataset.r;renderFwd();}});
+$("typeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b){type=+b.dataset.t;renderFwd();}});
+$("voicings").addEventListener("click",e=>{const b=e.target.closest(".vo-c");if(!b)return;vsel=+b.dataset.i;[...$("voicings").children].forEach(x=>x.classList.toggle("main",x===b));playFwd();});
+$("playBtn").onclick=playFwd;
+function segInit(el,key,v,on){[...el.children].forEach(b=>b.setAttribute("aria-pressed",b.dataset[key]===String(v)));
+  el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...el.children].forEach(x=>x.setAttribute("aria-pressed",x===b));on(b.dataset[key]);});}
+segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("chInst",inst);renderFwd();});
+["capo","capo2"].forEach(id=>{const s=$(id);s.innerHTML=Array.from({length:10},(_,i)=>`<option value="${i}">${i?i+"フレット":"なし"}</option>`).join("");s.value=String(capo);
+  s.addEventListener("change",()=>{capo=+s.value;store.set("chCapo",capo);$("capo").value=$("capo2").value=String(capo);renderFwd();renderRev();});});
+
+/* ===== 逆引き ===== */
+const TPL=[["",[0,4,7]],["m",[0,3,7]],["7",[0,4,7,10]],["M7",[0,4,7,11]],["m7",[0,3,7,10]],["7",[0,4,10]],["M7",[0,4,11]],["m7",[0,3,10]],
+  ["dim",[0,3,6]],["aug",[0,4,8]],["sus4",[0,5,7]],["sus2",[0,2,7]],["7sus4",[0,5,7,10]],["mM7",[0,3,7,11]],["m7(♭5)",[0,3,6,10]],["dim7",[0,3,6,9]],
+  ["6",[0,4,7,9]],["m6",[0,3,7,9]],["add9",[0,2,4,7]],["madd9",[0,2,3,7]],["9",[0,2,4,7,10]],["M9",[0,2,4,7,11]],["m9",[0,2,3,7,10]],["5",[0,7]],["aug7",[0,4,8,10]],["7(♭9)",[0,1,4,7,10]],["7(♯9)",[0,3,4,7,10]],["add9",[0,2,4]],["m(add9)",[0,2,3]]];
+const IV=["完全1度","短2度","長2度","短3度","長3度","完全4度","増4度","完全5度","短6度","長6度","短7度","長7度"];
+function chordOf(ms){
+  const bass=ms[0], set=[...new Set(ms.map(pc))];
+  if(set.length<2) return null;
+  let best=null;
+  for(const r of set){const iv=set.map(p=>pc(p-r)).sort((a,b)=>a-b).join(",");
+    for(const [name,t] of TPL){if(t.join(",")===iv){const s=(r===pc(bass)?0:1);if(!best||s<best.s)best={r,name,s};break;}}}
+  if(!best) return null;
+  return ROOTS[pc(best.r)]+best.name+(best.s?"/"+ROOTS[pc(bass)]:"");
+}
+let rf=store.get("chRev",[-1,-1,-1,-1,-1,-1]), pos=store.get("chPos",1);
+if(!Array.isArray(rf)||rf.length!==6)rf=[-1,-1,-1,-1,-1,-1];
+function renderRev(){
+  const x0=40,dx=40,y0=52,dy=44,N=5,W=x0+5*dx+40,H=y0+N*dy+20;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="指板(タップして押さえる)">`;
+  for(let i=0;i<6;i++)s+=`<line class="st" stroke="var(--ink-soft)" x1="${x0+i*dx}" y1="${y0}" x2="${x0+i*dx}" y2="${y0+N*dy}"/>`;
+  for(let j=0;j<=N;j++)s+=`<line stroke="${j===0&&pos===1?"var(--ink)":"var(--line)"}" stroke-width="${j===0&&pos===1?5:1.5}" x1="${x0}" y1="${y0+j*dy}" x2="${x0+5*dx}" y2="${y0+j*dy}"/>`;
+  if(pos>1)s+=`<text x="${x0+5*dx+10}" y="${y0+dy*0.6}" font-size="13" font-family="DM Mono,monospace" fill="var(--ink-soft)">${pos}</text>`;
+  for(let i=0;i<6;i++){const x=x0+i*dx,f=rf[i];
+    s+=`<rect class="omh" data-s="${i}" data-o="1" x="${x-16}" y="${y0-40}" width="32" height="32"/><text class="om" data-s="${i}" data-o="1" x="${x}" y="${y0-24}">${f===0?"○":f<0?"×":""}</text>`;
+    for(let j=0;j<N;j++){const fret=pos+j;s+=`<rect class="cell" data-s="${i}" data-f="${fret}" x="${x-dx/2}" y="${y0+j*dy}" width="${dx}" height="${dy}"/>`;
+      if(f===fret)s+=`<circle cx="${x}" cy="${y0+(j+0.5)*dy}" r="11" fill="var(--sea)" pointer-events="none"/>`;}
+  }
+  s+=`<text x="${x0}" y="${H-2}" font-size="10" fill="var(--ink-soft)" text-anchor="middle">6弦</text><text x="${x0+5*dx}" y="${H-2}" font-size="10" fill="var(--ink-soft)" text-anchor="middle">1弦</text>`;
+  $("revGrid").innerHTML=s+"</svg>";
+  $("posLbl").textContent=pos;
+  const ms=rf.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filter(x=>x!=null);
+  if(!ms.length){$("revName").innerHTML='<span class="dim">指板をタップして押さえてみてね</span>';$("revSub").textContent="";}
+  else{
+    const c=chordOf(ms), names=ms.map(m=>ROOTS[pc(m)]).join(" ・ ");
+    if(c)$("revName").textContent=c;
+    else if(ms.length===2){const d=Math.abs(ms[1]-ms[0]);$("revName").textContent=d%12===0?"オクターブ":IV[d%12];}
+    else $("revName").innerHTML='<span class="dim">コード名がわからない形です</span>';
+    $("revSub").innerHTML=(capo?`カポ${capo}込みの実際の音 ・ `:"")+"鳴っている音 "+names;
+  }
+  store.set("chRev",rf);store.set("chPos",pos);
+}
+$("revGrid").addEventListener("click",e=>{const t=e.target.closest("[data-s]");if(!t)return;const i=+t.dataset.s;
+  if(t.dataset.o){rf[i]=rf[i]===0?-1:0;}else{const f=+t.dataset.f;rf[i]=rf[i]===f?-1:f;}
+  renderRev();});
+$("posDown").onclick=()=>{if(pos>1){pos--;renderRev();}};
+$("posUp").onclick=()=>{if(pos<15){pos++;renderRev();}};
+$("revClear").onclick=()=>{rf=[-1,-1,-1,-1,-1,-1];renderRev();};
+$("revPlay").onclick=()=>{const ms=rf.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filter(x=>x!=null);if(ms.length)pluck(ms,0.035,false);};
+
+/* モード */
+let mode=store.get("chMode","fwd");
+function setMode(m){mode=m;store.set("chMode",m);$("fwd").hidden=m!=="fwd";$("rev").hidden=m!=="rev";[...$("modeTabs").children].forEach(b=>b.setAttribute("aria-selected",b.dataset.m===m));}
+$("modeTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setMode(b.dataset.m);});
+renderFwd();renderRev();setMode(mode==="rev"?"rev":"fwd");
+
+const sb=$("shareBtn");
+if(sb) sb.addEventListener("click",async()=>{
+  const data={title:document.title,url:"https://www.namigroove.com/tools/chords/"};
+  try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);const d=document.createElement("div");d.className="ng-toast";d.textContent="リンクをコピーしました";document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}catch(e){}
+});
+})();
+</script>
+</body>
+</html>
