@@ -58,9 +58,7 @@
   F[96] = [f(["h1", "h2", "h3", "gs", "h4"])];
   var INST = {
     fl: { n: "フルート", k: "C", d: 0 },
-    picc: { n: "ピッコロ", k: "C", d: 12 },
-    alto: { n: "アルトフルート", k: "G", d: -5 },
-    bass: { n: "バスフルート", k: "C", d: -12 }
+    picc: { n: "ピッコロ", k: "C", d: 12 }
   };
   function svg(keys, opt) {
     opt = opt || {};

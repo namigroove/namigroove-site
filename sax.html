@@ -157,6 +157,7 @@ footer a{color:var(--sea)}
 /* サックス運指表 */
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
 .eb-link:hover{border-bottom-style:solid}
+.tabs.fam{grid-template-columns:repeat(3,1fr);margin-bottom:16px}
 .sx-top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;margin-bottom:14px}
 .sx-head{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 6px}
 .sx-name{text-align:center;min-width:6em}
@@ -231,12 +232,12 @@ footer a{color:var(--sea)}
   </div>
 
   <section class="panel" aria-label="運指表">
+    <div class="tabs fam" id="famSeg" role="tablist" aria-label="楽器の種類">
+      <button type="button" data-f="sax" aria-selected="true">サックス</button>
+      <button type="button" data-f="cl" aria-selected="false">クラリネット</button>
+      <button type="button" data-f="fl" aria-selected="false">フルート</button>
+    </div>
     <div class="sx-top">
-      <span class="seg" id="famSeg" role="group" aria-label="楽器の種類">
-        <button type="button" data-f="sax" aria-pressed="true">サックス</button>
-        <button type="button" data-f="cl" aria-pressed="false">クラリネット</button>
-        <button type="button" data-f="fl" aria-pressed="false">フルート</button>
-      </span>
       <span class="seg" id="instSeg" role="group" aria-label="楽器"></span>
       <span class="seg" id="nameSeg" role="group" aria-label="音名の表記">
         <button type="button" data-n="en" aria-pressed="true">CDE</button>
@@ -297,7 +298,7 @@ const EN=["C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"], JA=["ド","ド#
 const pc=m=>((m%12)+12)%12, oct=m=>Math.floor(m/12)-1;
 const nm=m=>(names==="ja"?JA:EN)[pc(m)].replace("#","♯").replace(/b$/,"♭");
 const fings=m=>S.F[m]||S.A[m]||[];
-function noteBtns(el,lo,hi){const d=S.INST[inst].d;let h="";for(let m=lo;m<=hi;m++){const c=m+d;h+=`<button type="button" data-m="${m}" class="${[1,3,6,8,10].includes(pc(c))?"blk":""}" title="記譜 ${nm(m)}${oct(m)}">${nm(c)}<sub>${oct(c)}</sub><small>${nm(m)}</small></button>`;}el.innerHTML=h;}
+function noteBtns(el,lo,hi){const d=S.INST[inst].d;let h="";for(let m=lo;m<=hi;m++){const c=m+d;h+=`<button type="button" data-m="${m}" class="${[1,3,6,8,10].includes(pc(c))?"blk":""}" title="記譜 ${nm(m)}${oct(m)}">${nm(c)}<sub>${oct(c)}</sub>${d%12?`<small>${nm(m)}</small>`:""}</button>`;}el.innerHTML=h;}
 function allBtns(){noteBtns($("notes"),S.LOW,S.HIGH);noteBtns($("altNotes"),S.ALT_LOW,S.ALT_HIGH);}
 function render(){
   const I=S.INST[inst], c=cur+I.d, isAlt=cur>=S.ALT_LOW;
@@ -338,7 +339,7 @@ $("instSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(
 function legend(){$("legend").innerHTML=Object.keys(S.KEYS).map(k=>`<li>${S.KEYS[k].n}</li>`).join("");}
 function setFam(f){fam=f;S=FAM[f].D;store.set("fingFam",f);inst=store.get(FAM[f].ik,FAM[f].def);if(!S.INST[inst])inst=FAM[f].def;cur=store.get(FAM[f].nk,FAM[f].dn);if(!fings(cur).length)cur=FAM[f].dn;
   $("altLabel").textContent=$("altLabel2").textContent=FAM[f].alt;$("altBox").hidden=S.ALT_LOW>S.ALT_HIGH;instBtns();allBtns();legend();render();}
-segInit($("famSeg"),"f",fam,v=>setFam(v));
+{const fs=$("famSeg");const mark=()=>[...fs.children].forEach(b=>b.setAttribute("aria-selected",b.dataset.f===fam));mark();fs.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;setFam(b.dataset.f);mark();});}
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);allBtns();render();});
 setFam(fam);
 
