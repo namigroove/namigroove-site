@@ -82,7 +82,7 @@ nav.main a:hover{color:#ffffff}
 @keyframes puniBoing{0%{transform:scale(1.18,.78)}25%{transform:scale(.88,1.14)}45%{transform:scale(1.07,.93)}65%{transform:scale(.97,1.04)}82%{transform:scale(1.015,.985)}100%{transform:scale(1,1)}}
 @media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:center}.puni-pc{display:block;width:100%}}
 /* スマホ:文字の右に回り込ませて、文字と重ならないように */
-@media (max-width:899px){.puni-sp{display:block;float:right;width:min(34vw,150px);margin:28px 0 8px 10px;shape-outside:margin-box}}
+@media (max-width:899px){.puni-sp{display:block;float:right;width:min(30vw,150px);margin:-6px 0 6px 8px}.hero h1 .ngname{white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){.puni img{animation:none}}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .btn{font-family:var(--f-body);display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid var(--ink)}
@@ -289,8 +289,8 @@ footer .mono{font-family:var(--f-mono)}
   <div class="banner"><img src="img/header.webp" alt="" width="2576" height="859"></div>
   <div class="wrap hero">
     <div>
-      <button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"></button>
       <p class="eyebrow">VOCALOID Producer / Sax DJ</p>
+      <button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"></button>
       <h1><span class="ngname" translate="no">なみぐる</span><span class="en">NAMIGROOVE</span></h1>
       <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。<b>ゲーム・アニメ・CM・VTuber</b>への楽曲提供、作曲、編曲、作詞、映像製作、楽器演奏まで手がけています。</p>
       <div class="cta">
