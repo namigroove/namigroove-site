@@ -700,19 +700,16 @@ var taps=[];
 function tapBpm(){var now=performance.now();if(taps.length&&now-taps[taps.length-1]>2000)taps=[];taps.push(now);if(taps.length>9)taps.shift();
   var txt="BPM ---";if(taps.length>=2){var iv=(taps[taps.length-1]-taps[0])/(taps.length-1);txt="BPM "+Math.round(60000/iv);}
   document.querySelectorAll(".puni .bpm").forEach(function(e){e.textContent=txt;e.classList.add("on");});}
-/* カウベル(808っぽい音をWeb Audioで合成) */
-function cowbell(ac){
-  var t=ac.currentTime, out=ac.createGain(), bp=ac.createBiquadFilter();
-  bp.type="bandpass"; bp.frequency.value=2200; bp.Q.value=0.9;
-  out.gain.setValueAtTime(0.0001,t);
-  out.gain.linearRampToValueAtTime(0.45,t+0.002);
-  out.gain.exponentialRampToValueAtTime(0.14,t+0.05);
-  out.gain.exponentialRampToValueAtTime(0.0001,t+0.42);
-  bp.connect(out); out.connect(ac.destination);
-  [587,845].forEach(f=>{var o=ac.createOscillator();o.type="square";o.frequency.value=f;o.connect(bp);o.start(t);o.stop(t+0.45);});
+/* カウベル:メトロノームの「カウベル」と同じ音(level 2=アクセント 1=拍 0=分割) */
+function cowSound(ac,dest,time,level){
+  var g=ac.createGain(), amp=[0.35,0.7,1][level];
+  var o1=ac.createOscillator(),o2=ac.createOscillator(),bp=ac.createBiquadFilter();o1.type=o2.type="square";
+  var k=level===2?1.12:level===0?0.9:1;o1.frequency.value=540*k;o2.frequency.value=800*k;bp.type="bandpass";bp.frequency.value=900*k;bp.Q.value=1.5;
+  g.gain.setValueAtTime(0.0001,time);g.gain.exponentialRampToValueAtTime(amp*0.5,time+0.002);g.gain.exponentialRampToValueAtTime(0.0001,time+0.18);
+  o1.connect(bp);o2.connect(bp);bp.connect(g).connect(dest);o1.start(time);o2.start(time);o1.stop(time+0.2);o2.stop(time+0.2);
 }
 var namiAC=null;
-function namiBell(){try{if(!namiAC){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;namiAC=new AC({latencyHint:"interactive"});}if(namiAC.state!=="running")namiAC.resume();cowbell(namiAC);}catch(e){}}
+function namiBell(){try{if(!namiAC){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;namiAC=new AC({latencyHint:"interactive"});}if(namiAC.state!=="running")namiAC.resume();var g=namiAC.createGain();g.gain.value=0.8;g.connect(namiAC.destination);cowSound(namiAC,g,namiAC.currentTime,1);}catch(e){}}
 document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){namiBell();tapBpm();b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
 </script>
 </body>
