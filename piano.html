@@ -398,7 +398,8 @@ function show(){
   pn.textContent=ms.map(m=>nm(m,true)).join(" ・ ");
   const c=chordOf(ms);
   if(c){ ch.innerHTML=c(0); }
-  else if(ms.length===2&&ms[0]!==ms[1]){ const d=ms[1]-ms[0]; ch.innerHTML=(d===12?"オクターブ":d>12?IV[d%12]+"<small>(+1oct)</small>":IV[d]); }
+  else if(ms.length===2){ const d=ms[1]-ms[0]; ch.innerHTML=(d%12===0?"オクターブ":d>12?IV[d%12]+"<small>(+1oct)</small>":IV[d]); }
+  else if(ms.length>2&&new Set(ms.map(pc)).size<=2){ const o=ms.find(m=>pc(m)!==pc(ms[0])); ch.innerHTML=o==null?"オクターブ":IV[pc(o-ms[0])]; }
   else if(ms.length===1){ ch.innerHTML=pretty(EN[pc(ms[0])])+"<small>"+(Math.floor(ms[0]/12)-1)+"</small>"; }
   else ch.innerHTML="&nbsp;";
   if(trans){
