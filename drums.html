@@ -191,6 +191,14 @@ footer a{color:var(--sea)}
 @media (max-width:560px){.lanes{grid-template-columns:repeat(16,1fr);gap:2px}}
 .seq-opts{margin-top:12px}
 .seq-opts select{font:500 13px var(--f-body);padding:5px 8px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.btn.recb[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff;animation:recBlink 1s steps(2) infinite}
+@keyframes recBlink{50%{opacity:.75}}
+.take{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--wash);display:flex;flex-direction:column;align-items:center;gap:8px}
+.take audio{width:100%;max-width:520px}
+.take-b{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
+.take-len{font:12px var(--f-mono);color:var(--ink-soft)}
+.take{max-width:560px;margin-left:auto;margin-right:auto}
+.dr-top .recb{margin-left:auto}
 .midi-st{font-size:12px;color:var(--ink-soft)}
 .smp{max-width:560px;margin:14px auto 0;padding:10px 12px;border-radius:12px;background:var(--wash);text-align:center}
 .smp-t{margin:0 0 8px;font-size:13px;color:var(--ink-soft)}
@@ -247,6 +255,7 @@ footer a{color:var(--sea)}
         <button type="button" data-k="808" aria-pressed="true">808</button>
         <button type="button" data-k="909" aria-pressed="false">909</button>
       </span>
+      <button class="btn recb" type="button" id="recBtn" aria-pressed="false" title="叩いた音やシーケンサーの音を録音して、MP3やWAVで保存できます">● 演奏を録音</button>
       <span class="dr-sel" id="selName">キック</span>
     </div>
     <div class="pads" id="pads" role="group" aria-label="パッド"></div>
@@ -259,11 +268,19 @@ footer a{color:var(--sea)}
       </div>
       <p class="err" id="smpErr" hidden></p>
     </div>
+    <div class="take" id="take" hidden>
+      <audio id="takeAudio" controls preload="auto"></audio>
+      <div class="take-b"><span class="take-len" id="takeLen"></span>
+        <button class="btn" type="button" id="saveMp3">MP3で保存</button>
+        <button class="btn" type="button" id="saveWav">WAVで保存</button>
+        <button class="btn" type="button" id="takeDel">消す</button>
+      </div>
+    </div>
 
     <div class="seq">
       <div class="seq-head">
         <button class="go" type="button" id="playBtn" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg><span>スタート</span></button>
-        <button class="btn rec" type="button" id="recBtn" aria-pressed="false" title="再生中にパッドを叩くと、そのタイミングで打ち込みます">● REC</button>
+        <button class="btn rec" type="button" id="stepRecBtn" aria-pressed="false" title="再生中にパッドを叩くと、そのタイミングで打ち込みます">● 打ち込み</button>
         <div class="bpm-box">
           <button class="btn round" type="button" id="bpmDown" aria-label="BPMを1下げる">−</button>
           <label class="bpm-v"><output id="bpmOut" class="num">120</output><small>BPM</small></label>
@@ -305,8 +322,9 @@ footer a{color:var(--sea)}
     <h2>使い方のメモ</h2>
     <ul>
       <li>パッドは真ん中を叩くと強く、端だと弱く鳴ります。スマホでは複数の指で同時に叩けます。</li>
-      <li>シーケンサーは、パッドを叩いて音を選んでから、下の16マスをタップして打ち込みます。RECをオンにして再生中にパッドを叩くと、そのまま打ち込めます。</li>
+      <li>シーケンサーは、パッドを叩いて音を選んでから、下の16マスをタップして打ち込みます。「● 打ち込み」をオンにして再生中にパッドを叩くと、そのまま打ち込めます。</li>
       <li>サンプラー:パッドを選んで「ファイルから読み込む」か「録音」で、そのパッドの音を好きな音に差し替えられます。頭の無音は自動でカットします。読み込んだ音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
+      <li>「● 演奏を録音」を押すと、パッドやシーケンサーの音をそのまま録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。</li>
       <li>組んだパターンとBPMもこのブラウザに保存されます。</li>
       <li>MIDIパッド・キーボードはChrome・Edgeで使えます(GMドラムの音番号に対応)。</li>
       <li>iPhoneで音が出ないときは、本体のマナーモードを解除してみてください。</li>
@@ -487,7 +505,7 @@ function stop(){clearInterval(timer);cancelAnimationFrame(raf);playing=false;que
   [...stepsEl.children].forEach(b=>b.classList.remove("now"));[...lanesEl.children].forEach(x=>x.classList.remove("now"));
   const b=$("playBtn");b.setAttribute("aria-pressed","false");b.querySelector("span").textContent="スタート";b.querySelector("path").setAttribute("d","M7 4.5v15l13-7.5z");}
 $("playBtn").onclick=()=>playing?stop():start();
-$("recBtn").onclick=()=>{rec=!rec;$("recBtn").setAttribute("aria-pressed",rec);};
+$("stepRecBtn").onclick=()=>{rec=!rec;$("stepRecBtn").setAttribute("aria-pressed",rec);};
 /* REC:叩いたタイミングにいちばん近いステップへ打ち込む */
 function recordHit(id){
   const t=ac.currentTime-(ac.outputLatency||0)*0.5, d=stepDur();
@@ -557,6 +575,63 @@ $("smpRec").onclick=async()=>{smpErr("");if(!SM)return;const b=$("smpRec");
   }catch(e){smpErr(typeof e==="string"?e:"マイクが使えませんでした。ブラウザのマイク許可を確認してね");}};
 $("smpReset").onclick=()=>{delete samples[sel];if(SM)SM.remove("drums:"+sel);smpView();play(sel,0.9);};
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing)stop();});
+
+/* ===== 演奏の録音(MP3・WAVで保存) ===== */
+let tap=null, recL=[], recR=[], recOn=false, recStart=0, take=null, takeURL="";
+const recBtn=$("recBtn");
+function recToggle(){
+  if(recOn){recStop();return;}
+  const a=audio(); recL=[];recR=[];
+  tap=a.createScriptProcessor(4096,2,2);
+  tap.onaudioprocess=e=>{if(!recOn)return;const ib=e.inputBuffer;recL.push(new Float32Array(ib.getChannelData(0)));recR.push(new Float32Array(ib.numberOfChannels>1?ib.getChannelData(1):ib.getChannelData(0)));
+    const o=e.outputBuffer;for(let c=0;c<o.numberOfChannels;c++)o.getChannelData(c).fill(0);
+    if(a.currentTime-recStart>600)recStop();};
+  master.connect(tap); tap.connect(a.destination);
+  recOn=true; recStart=a.currentTime; recBtn.setAttribute("aria-pressed","true"); recBtn.textContent="■ 録音を止める";
+}
+function recStop(){
+  recOn=false; recBtn.setAttribute("aria-pressed","false"); recBtn.textContent="● 演奏を録音";
+  try{master.disconnect(tap);tap.disconnect();}catch(e){} tap=null;
+  const n=recL.reduce((x,b)=>x+b.length,0); if(!n) return;
+  const L=new Float32Array(n),R=new Float32Array(n);let o=0;recL.forEach((b,i)=>{L.set(b,o);R.set(recR[i],o);o+=b.length;});recL=recR=[];
+  /* 最初の音の前と、最後の音のあとの無音を切る */
+  const th=0.0015;let s=0,e=n-1;while(s<n&&Math.abs(L[s])<th&&Math.abs(R[s])<th)s++;while(e>s&&Math.abs(L[e])<th&&Math.abs(R[e])<th)e--;
+  if(s>=e){toast("音が入っていませんでした");return;}
+  const sr=ac.sampleRate; s=Math.max(0,s-Math.floor(sr*0.02)); e=Math.min(n-1,e+Math.floor(sr*0.3));
+  take={L:L.slice(s,e),R:R.slice(s,e),sr};
+  if(takeURL)URL.revokeObjectURL(takeURL); takeURL=URL.createObjectURL(wavBlob(take));
+  $("takeAudio").src=takeURL; $("take").hidden=false;
+  const sec=take.L.length/sr; $("takeLen").textContent=Math.floor(sec/60)+":"+String(Math.floor(sec%60)).padStart(2,"0");
+}
+function wavBlob(t){
+  const n=t.L.length,buf=new ArrayBuffer(44+n*4),dv=new DataView(buf),w=(o,x)=>{for(let i=0;i<x.length;i++)dv.setUint8(o+i,x.charCodeAt(i));};
+  w(0,"RIFF");dv.setUint32(4,36+n*4,true);w(8,"WAVE");w(12,"fmt ");dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,2,true);
+  dv.setUint32(24,t.sr,true);dv.setUint32(28,t.sr*4,true);dv.setUint16(32,4,true);dv.setUint16(34,16,true);w(36,"data");dv.setUint32(40,n*4,true);
+  for(let i=0,p=44;i<n;i++,p+=4){dv.setInt16(p,Math.max(-1,Math.min(1,t.L[i]))*32767,true);dv.setInt16(p+2,Math.max(-1,Math.min(1,t.R[i]))*32767,true);}
+  return new Blob([buf],{type:"audio/wav"});
+}
+function fname(ext){const d=new Date(),z=x=>String(x).padStart(2,"0");return "namigroove-drums-"+d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+"-"+z(d.getHours())+z(d.getMinutes())+"."+ext;}
+function download(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);}
+let lameP=null;
+function loadLame(){ /* MP3にする部品は、保存するときだけ読み込む */
+  if(window.lamejs)return Promise.resolve();
+  if(!lameP)lameP=new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js";sc.onload=res;sc.onerror=()=>{lameP=null;rej();};document.head.appendChild(sc);});
+  return lameP;
+}
+async function mp3Blob(t){
+  await loadLame();
+  const enc=new lamejs.Mp3Encoder(2,t.sr,192),out=[],B=1152,toI=f=>{const a=new Int16Array(f.length);for(let i=0;i<f.length;i++)a[i]=Math.max(-1,Math.min(1,f[i]))*32767;return a;};
+  const L=toI(t.L),R=toI(t.R);
+  for(let i=0;i<L.length;i+=B){const b=enc.encodeBuffer(L.subarray(i,i+B),R.subarray(i,i+B));if(b.length)out.push(new Uint8Array(b));if(i%(B*400)===0)await new Promise(r=>setTimeout(r));}
+  const f=enc.flush();if(f.length)out.push(new Uint8Array(f));
+  return new Blob(out,{type:"audio/mpeg"});
+}
+recBtn.onclick=recToggle;
+$("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
+$("saveMp3").onclick=async()=>{if(!take)return;const b=$("saveMp3"),t0=b.textContent;b.disabled=true;b.textContent="変換中…";
+  try{download(await mp3Blob(take),fname("mp3"));}catch(e){toast("MP3に変換できませんでした。WAVで保存してね");}
+  b.disabled=false;b.textContent=t0;};
+$("takeDel").onclick=()=>{take=null;if(takeURL)URL.revokeObjectURL(takeURL);takeURL="";$("takeAudio").removeAttribute("src");$("take").hidden=true;};
 
 /* シェア */
 const sb=$("shareBtn");
