@@ -221,6 +221,13 @@ footer a{color:var(--sea)}
 .cl-pg .chips button{font:500 14px var(--f-body);padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer}
 .cl-pg .chips button.now{background:var(--coral);border-color:var(--coral);color:#fff}
 .cl-pg .pg-play{float:right;font-size:12px;padding:3px 10px}
+.cl-mini{position:sticky;top:64px;z-index:3;background:var(--panel);padding:6px 0 8px;margin-bottom:6px}
+.cl-mini svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
+.cl-mini .mw{fill:#fff;stroke:#9aa7c6;stroke-width:1}
+.cl-mini .mb{fill:#1d2a4d}
+.cl-mini .mw.on{fill:#ffc79a}
+.cl-mini .mb.on{fill:#e07b3a}
+.cl-mini .ml{font:9px var(--f-mono);fill:#7a87a8;text-anchor:middle}
 .kb .w.hint{background:linear-gradient(#ffe7d1,#ffc79a)}
 .kb .b.hint{background:linear-gradient(#f0a36b,#d9783a)}
 .midi-st{font-size:12px;color:var(--ink-soft)}
@@ -370,6 +377,7 @@ footer a{color:var(--sea)}
       <button type="button" data-m="name" aria-selected="true">コード名から</button>
       <button type="button" data-m="prog" aria-selected="false">おしゃれ進行</button>
     </div>
+    <div class="cl-mini" id="clMini" aria-hidden="true"></div>
     <div id="clName">
       <div class="seg cl-roots" id="clRoot" role="group" aria-label="ルート"></div>
       <div class="seg cl-types" id="clType" role="group" aria-label="コードの種類"></div>
@@ -817,7 +825,16 @@ const CLR=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let clRoot=store.get("clRoot",0), clType=store.get("clType",12), clVo=0;
 if(!CL_TYPES[clType])clType=0;
 let hintKeys=[];
-function hint(ms){
+function mini(ms){
+  const lo=ms.length?Math.min(...ms):48,hi=ms.length?Math.max(...ms):72;
+  let a=12*Math.floor(lo/12),b=12*Math.ceil((hi+1)/12);if(b-a<24)b=a+24;
+  const wh=[];for(let m=a;m<b;m++)if(![1,3,6,8,10].includes(pc(m)))wh.push(m);
+  const W=wh.length*20,on=new Set(ms);let sv=`<svg viewBox="0 0 ${W} 74">`;
+  wh.forEach((m,i)=>{sv+=`<rect class="mw${on.has(m)?" on":""}" x="${i*20}" y="0" width="20" height="70" rx="2"/>`;if(pc(m)===0)sv+=`<text class="ml" x="${i*20+10}" y="64">C${Math.floor(m/12)-1}</text>`;});
+  for(let m=a;m<b;m++)if([1,3,6,8,10].includes(pc(m))){const i=wh.indexOf(m-1);sv+=`<rect class="mb${on.has(m)?" on":""}" x="${i*20+13}" y="0" width="14" height="42" rx="2"/>`;}
+  $("clMini").innerHTML=sv+"</svg>";
+}
+function hint(ms){mini(ms);
   hintKeys.forEach(k=>k.classList.remove("hint"));hintKeys=[];
   if(!ms.length)return;
   const lo=Math.min(...ms),hi=Math.max(...ms),kLo=12*(startOct+1),kHi=kLo+12*octaves();
@@ -871,7 +888,7 @@ $("clProgs").addEventListener("click",e=>{const pl=e.target.closest("[data-play]
 $("clProgPlay").onclick=()=>{clearTimeout(progTimer);let p=0,j=0;const step=()=>{playChord(p,j);j++;if(j>=PROGS[p].c.length){p++;j=0;}if(p<PROGS.length)progTimer=setTimeout(step,1500);};step();};
 $("clKey").addEventListener("change",()=>{clKey=+$("clKey").value;store.set("clKey",clKey);progRender();});
 $("clTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const m=b.dataset.m;[...$("clTabs").children].forEach(x=>x.setAttribute("aria-selected",x===b));$("clName").hidden=m!=="name";$("clProg").hidden=m!=="prog";clearTimeout(progTimer);});
-clRender();progRender();
+clRender();progRender();mini(clNotes());
 
 /* シェア */
 const sb=$("shareBtn");
