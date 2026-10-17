@@ -178,3 +178,8 @@ details[id]{scroll-margin-top:90px}
 .ng-404-btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:0}
 .ng-404-btns a{display:inline-block;padding:10px 20px;border-radius:999px;border:1.5px solid #101f45;color:#101f45!important;text-decoration:none;font-family:"MaruMinyaM",sans-serif;font-size:14px}
 .ng-404-btns a:first-child{background:#101f45;color:#fff!important}
+
+/* Music・Movie一覧の「一覧を見る」 */
+.ng-media-more{text-align:center;margin:18px 0 0!important}
+html body .ng-media-more a{display:inline-block;padding:8px 22px;border:1.5px solid var(--ng-sea);border-radius:999px;background:var(--ng-chip);color:var(--ng-sea)!important;font-weight:700;font-size:14px;text-decoration:none}
+html body .ng-media-more a:hover{background:var(--ng-sea);color:#fff!important}

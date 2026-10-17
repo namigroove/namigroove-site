@@ -129,4 +129,18 @@
     host.appendChild(box);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", page404); else page404();
+  // ページ下のMusic・Movie一覧(最新12件)の下に「一覧を見る」リンク
+  function mediaMore() {
+    [["music", "/music/"], ["movie", "/movie/"]].forEach(function (m) {
+      var sec = document.getElementById(m[0]);
+      if (!sec || sec.querySelector(".ng-media-more")) return;
+      var box = sec.querySelector(".scroll-container");
+      if (!box) return;
+      var p = document.createElement("p");
+      p.className = "ng-media-more";
+      p.innerHTML = '<a href="' + m[1] + '">' + (m[0] === "music" ? "Music" : "Movie") + 'の一覧を見る →</a>';
+      box.parentNode.appendChild(p);
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mediaMore); else mediaMore();
 })();
