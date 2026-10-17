@@ -265,7 +265,7 @@ document.getElementById("moreBtn").addEventListener("click",()=>{shown+=24;rende
 /* 代表作はトップのWorks欄と同じ data/credits.json を使う */
 Promise.all([
   fetch("data/works.json").then(r=>r.json()),
-  fetch("data/credits.json").then(r=>r.json()).catch(()=>({credits:[]}))
+  fetch("data/credits.json",{cache:"no-cache"}).then(r=>r.json()).catch(()=>({credits:[]}))
 ]).then(([d,c])=>{
   WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
   PICKS = c.credits.map((x,i)=>({...x,_i:i})).sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||a._i-b._i).map(x=>({t:x.t, by:x.client+(x.role?" / "+x.role:""), type:"provide", y:x.y, img:x.img, url:x.u}));

@@ -144,6 +144,8 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .credits.open+.credits-more{display:none}
 .credits:not(.open) .credit:nth-child(n+9){display:none}
 @media (max-width:1011px){.credits:not(.open) .credit:nth-child(n+7){display:none}}
+/* 3列のとき、全部開いて最後の1件(今はずんだもんがいっぱい)だけ段からはみ出すなら隠す */
+@media (min-width:762px) and (max-width:1011px){.credits.open .credit:last-child:nth-child(3n+1){display:none}}
 @media (max-width:761px){.credits:not(.open) .credit:nth-child(n+5){display:none}}
 @media (max-width:511px){.credits:not(.open) .credit:nth-child(n+4){display:none}}
 .more-link a{color:var(--ink-soft)}
@@ -516,7 +518,7 @@ function jacketBg(s){
 
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-fetch("data/credits.json").then(r=>r.json()).then(d=>{
+fetch("data/credits.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{
   CREDITS = d.credits.map((c,i)=>({...c,_i:i})).sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||a._i-b._i);
   document.getElementById("creditList").innerHTML = CREDITS.map(c=>`
   <${c.u?`a href="${c.u}"`:"div"} class="credit">
