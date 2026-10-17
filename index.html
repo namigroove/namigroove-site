@@ -180,7 +180,9 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .sched-card iframe{display:block;width:100%;height:560px;border:0;border-radius:8px}
 /* 出現先のお天気 */
 .wx{margin-top:16px}
-.wx-place{font-size:12px;font-weight:500;color:var(--zunda)}
+.wx-tabs{display:inline-flex;border:1.5px solid var(--zunda);border-radius:999px;overflow:hidden}
+.wx-tabs button{font:inherit;font-size:12px;font-weight:500;padding:3px 12px;border:0;background:transparent;color:var(--zunda);cursor:pointer}
+.wx-tabs button[aria-pressed="true"]{background:var(--zunda);color:#fff}
 .wx-next{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:10px 12px;border-radius:8px;background:var(--zunda-wash);font-size:14px;line-height:1.5;margin:0 0 12px}
 .wx-next b{font-weight:700}
 .wx-next .lbl{font-family:var(--f-mono);font-size:11px;color:var(--zunda);letter-spacing:.06em}
@@ -371,7 +373,7 @@ footer .mono{font-family:var(--f-mono)}
           </div>
         </div>
         <div class="sched-card wx" id="wx" hidden>
-          <p class="sched-head">出現先のお天気<span class="wx-place" id="wxPlace"></span></p>
+          <p class="sched-head">出現先のお天気<span class="wx-tabs" id="wxTabs" role="group" aria-label="地域の切り替え" hidden><button type="button" data-m="venue" aria-pressed="true">会場</button><button type="button" data-m="tokyo" aria-pressed="false">東京</button></span></p>
           <p class="wx-next" id="wxNext"></p>
           <ol class="wx-days" id="wxDays" aria-label="1週間の天気予報"></ol>
           <p class="wx-note" id="wxNote"></p>
@@ -635,38 +637,50 @@ document.getElementById("yr").textContent = new Date().getFullYear();
   function md(iso){var d=new Date(iso+"T00:00:00");return (d.getMonth()+1)+"/"+d.getDate()+"("+WD[d.getDay()]+")";}
   function jsonp(url){return new Promise(function(res,rej){var cb="nmWx"+Date.now(),s=document.createElement("script");window[cb]=function(d){res(d);delete window[cb];s.remove();};s.onerror=rej;s.src=url+(url.indexOf("?")<0?"?":"&")+"callback="+cb;document.head.appendChild(s);setTimeout(function(){rej("timeout")},8000);});}
   function todayJST(){return new Date(Date.now()+9*3600e3).toISOString().slice(0,10);}
+  var EV=null, DATA={}, MODE="venue";
+  function wx(lat,lon){return fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16").then(function(r){return r.json();}).then(function(w){return w.daily;});}
+  function load(mode){
+    if(DATA[mode]) return Promise.resolve(DATA[mode]);
+    var p=mode==="venue"&&EV?wx(EV.venue.latitude,EV.venue.longitude):wx(35.6812,139.7671);
+    return p.then(function(d){DATA[mode]=d;return d;});
+  }
   function run(){
     var today=todayJST();
     jsonp("https://rest.bandsintown.com/V4/artists/id_15592125/events/?app_id=js_"+location.hostname)
       .then(function(ev){return (ev||[]).filter(function(e){return e.venue&&e.venue.latitude&&e.datetime.slice(0,10)>=today;}).sort(function(a,b){return a.datetime<b.datetime?-1:1;})[0]||null;},function(){return null;})
-      .then(function(e){
-        var lat=e?e.venue.latitude:35.6812, lon=e?e.venue.longitude:139.7671;
-        var place=e?(e.venue.city||e.venue.name):"東京";
-        return fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16")
-          .then(function(r){return r.json();}).then(function(w){show(e,place,w.daily);});
-      }).catch(function(){});
+      .then(function(e){EV=e; if(!e) MODE="tokyo"; return load(MODE);})
+      .then(render).catch(function(){});
+  }
+  function setMode(m){
+    if(m===MODE) return; MODE=m;
+    [].forEach.call(document.querySelectorAll("#wxTabs button"),function(b){b.setAttribute("aria-pressed",b.dataset.m===m);});
+    load(m).then(render).catch(function(){});
   }
   function cell(dl,i,cls,tag){
     var dt=new Date(dl.time[i]+"T00:00:00"),wd=dt.getDay();
     return '<li class="'+cls+'"><span class="d">'+(dt.getMonth()+1)+'/'+dt.getDate()+'</span><span class="w'+(wd===6?" sat":wd===0?" sun":"")+'">'+WD[wd]+'</span>'+icon(dl.weather_code[i])+
       '<span><span class="hi">'+Math.round(dl.temperature_2m_max[i])+'</span>/<span class="lo">'+Math.round(dl.temperature_2m_min[i])+'</span></span><span class="pr">☂'+(dl.precipitation_probability_max[i]==null?"-":dl.precipitation_probability_max[i])+'%</span>'+(tag?'<span class="tag">'+tag+'</span>':"")+'</li>';
   }
-  function show(e,place,dl){
-    if(!dl||!dl.time) return;
-    var evDay=e?e.datetime.slice(0,10):null, ei=evDay?dl.time.indexOf(evDay):-1;
+  function render(){
+    var e=EV, dl=DATA[MODE]; if(!dl||!dl.time) return;
+    var place=e?(e.venue.city||e.venue.name):"東京";
+    var vd=DATA.venue, evDay=e?e.datetime.slice(0,10):null, ei=evDay&&vd?vd.time.indexOf(evDay):-1;
     var next=document.getElementById("wxNext");
-    if(e){
+    if(e&&vd){
       var name=e.title||e.venue.name;
-      var fc=ei>=0?'<span class="fc">当日 '+icon(dl.weather_code[ei])+'<span class="hi">'+Math.round(dl.temperature_2m_max[ei])+'℃</span>/<span class="lo">'+Math.round(dl.temperature_2m_min[ei])+'℃</span> ☂'+dl.precipitation_probability_max[ei]+'%</span>'
+      var fc=ei>=0?'<span class="fc">当日 '+icon(vd.weather_code[ei])+'<span class="hi">'+Math.round(vd.temperature_2m_max[ei])+'℃</span>/<span class="lo">'+Math.round(vd.temperature_2m_min[ei])+'℃</span> ☂'+vd.precipitation_probability_max[ei]+'%</span>'
                   :'<span class="fc na">当日の予報は2週間前ごろから出ます</span>';
       next.innerHTML='<span class="lbl">NEXT</span><span><b>'+md(evDay)+'</b> '+esc(name)+'<br><small>@ '+esc(e.venue.name)+'('+esc(place)+')</small></span>'+fc;
-    } else next.innerHTML='<span class="lbl">NEXT</span><span>次の出現情報は準備中。東京の天気を表示しています</span>';
-    var h="";for(var i=0;i<7&&i<dl.time.length;i++) h+=cell(dl,i,i===ei?"ev":"",i===ei?"出現日":(i===0?"今日":""));
+    } else if(!e) next.innerHTML='<span class="lbl">NEXT</span><span>次の出現情報は準備中。東京の天気を表示しています</span>';
+    var hi=MODE==="venue"?ei:-1;
+    var h="";for(var i=0;i<7&&i<dl.time.length;i++) h+=cell(dl,i,i===hi?"ev":"",i===hi?"出現日":(i===0?"今日":""));
     document.getElementById("wxDays").innerHTML=h;
-    document.getElementById("wxPlace").textContent=place+"の1週間";
+    var tabs=document.getElementById("wxTabs");
+    if(e){tabs.hidden=false; tabs.querySelector('[data-m="venue"]').textContent=place;}
     document.getElementById("wxNote").innerHTML='天気予報:<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> / 予定:Bandsintown';
     box.hidden=false;
   }
+  document.getElementById("wxTabs").addEventListener("click",function(ev){var b=ev.target.closest("button");if(b)setMode(b.dataset.m);});
   if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();run();}},{rootMargin:"600px"});io.observe(box.parentNode);} else run();
 })();
 </script>
