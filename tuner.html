@@ -509,6 +509,16 @@ $("vol").value=vol;$("vol").addEventListener("input",e=>{vol=+e.target.value;sto
 $("accent").checked=accentOn;$("accent").addEventListener("change",e=>{accentOn=e.target.checked;store.set("accent",accentOn);renderDots();});
 
 function out(){const ac=audio();if(!master){master=ac.createGain();master.gain.value=vol;master.connect(ac.destination);}return ac;}
+/* なみぐるの「ぷにっ」:短く上がるサイン波+小さなアタック。リリース短めでビートがわかる音 */
+function puniSound(ac,dest,t){
+  const o=ac.createOscillator(),g=ac.createGain(),o2=ac.createOscillator(),g2=ac.createGain();
+  o.type="sine";o.frequency.setValueAtTime(420,t);o.frequency.exponentialRampToValueAtTime(980,t+0.045);o.frequency.exponentialRampToValueAtTime(760,t+0.11);
+  g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(0.55,t+0.004);g.gain.setTargetAtTime(0.0001,t+0.035,0.03);
+  o2.type="triangle";o2.frequency.setValueAtTime(1700,t);o2.frequency.exponentialRampToValueAtTime(900,t+0.02);
+  g2.gain.setValueAtTime(0.0001,t);g2.gain.linearRampToValueAtTime(0.18,t+0.001);g2.gain.setTargetAtTime(0.0001,t+0.002,0.008);
+  o.connect(g);g.connect(dest);o2.connect(g2);g2.connect(dest);o.start(t);o2.start(t);o.stop(t+0.25);o2.stop(t+0.06);
+}
+function namiPuni(){const ac=out();puniSound(ac,master,ac.currentTime);}
 function tapBell(){const ac=out();cowSound(ac,master,ac.currentTime,1);}
 function click(time,level){ /* level: 2=アクセント 1=拍 0=分割 */
   const ac=out(), g=ac.createGain(), amp=[0.35,0.7,1][level];
@@ -573,9 +583,9 @@ function tap(){
 }
 function tapFx(el){el.style.transform="scale(.94)";setTimeout(()=>el.style.transform="",80);}
 function namiFx(){const n=$("nami");n.classList.remove("hop","acc");void n.offsetWidth;n.classList.add("hop","acc");}
-for(const [id,fx] of [["tapBtn",()=>tapFx($("tapBtn"))],["namiBtn",namiFx]]){
-  $(id).addEventListener("pointerdown",e=>{e.preventDefault();tapBell();tap();fx();});
-  $(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();tapBell();tap();fx();}});
+for(const [id,fx,snd] of [["tapBtn",()=>tapFx($("tapBtn")),tapBell],["namiBtn",namiFx,namiPuni]]){
+  $(id).addEventListener("pointerdown",e=>{e.preventDefault();snd();tap();fx();});
+  $(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();snd();tap();fx();}});
 }
 
 document.addEventListener("keydown",e=>{
