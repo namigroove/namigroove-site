@@ -68,7 +68,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);l
 .row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
 .ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
 .seg{display:inline-flex;flex-wrap:wrap;gap:4px}
-.sel{font:500 13px var(--f-body);padding:5px 8px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);max-width:100%}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;min-width:4.5em;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);max-width:100%}
 #toneSeg{justify-content:center;max-width:420px}
 #toneSeg button{min-width:44px;padding:6px 8px}
 .seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
@@ -229,20 +229,20 @@ footer a{color:var(--sea)}
     <details class="opts" open>
       <summary>設定</summary>
       <div class="row">
-        <div class="ctl">楽器
-          <select id="transSel" class="sel" aria-label="楽器の調">
-            <option value="0">C(実音)</option>
-            <option value="-1">D♭管</option>
-            <option value="-2">D管</option>
-            <option value="9">E♭管(アルト・バリトンサックス)</option>
-            <option value="8">E管</option>
-            <option value="7">F管(ホルンなど)</option>
-            <option value="6">G♭管</option>
-            <option value="5">G管</option>
-            <option value="4">A♭管</option>
-            <option value="3">A管(Aクラリネットなど)</option>
-            <option value="2">B♭管(テナー・ソプラノサックス、トランペット、クラリネット)</option>
-            <option value="1">B管</option>
+        <div class="ctl">キー
+          <select id="transSel" class="sel" aria-label="キー">
+            <option value="0">C</option>
+            <option value="-1">D♭</option>
+            <option value="-2">D</option>
+            <option value="9">E♭</option>
+            <option value="8">E</option>
+            <option value="7">F</option>
+            <option value="6">G♭</option>
+            <option value="5">G</option>
+            <option value="4">A♭</option>
+            <option value="3">A</option>
+            <option value="2">B♭</option>
+            <option value="1">B</option>
           </select>
         </div>
       </div>
@@ -264,7 +264,7 @@ footer a{color:var(--sea)}
         <span class="seg" id="toneSeg" role="group" aria-label="基準音の高さ"></span>
       </div>
     </details>
-    <p class="note-s">楽器の調は12キーすべてから選べます。サックスはE♭管(アルト・バリトン)かB♭管(テナー・ソプラノ)を選ぶと、楽譜どおりの音名で表示します。基準音も12音すべて鳴らせます。</p>
+    <p class="note-s">キーを変えると、その楽器の楽譜どおりの音名で表示します(アルトサックスはE♭、テナーはB♭)。</p>
   </section>
 
   <!-- ▼ メトロノーム -->
