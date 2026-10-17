@@ -155,14 +155,6 @@ footer a{color:var(--sea)}
 .foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
 .eb-link:hover{border-bottom-style:solid}
-.sx-live{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;min-height:118px}
-.sx-live .sxf{width:62px;height:auto}
-.sx-live .sx-l{font-size:12px;color:var(--ink-soft);text-align:left;line-height:1.6}
-.sx-live .sx-l a{color:var(--sea)}
-.sxf-rod{stroke:var(--line);stroke-width:2}
-.sxf-sep{stroke:var(--ink-soft);stroke-width:1.5;stroke-dasharray:3 3}
-.sxf-k{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
-.sxf-k.on{fill:var(--sea);stroke:var(--sea)}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
@@ -225,7 +217,6 @@ footer a{color:var(--sea)}
       <div class="flag" id="flag"><span class="lo">♭ 低い</span><span class="ok">ばっちり</span><span class="hi">高い ♯</span></div>
       <div class="sub-read"><span><b class="num" id="cents">±0</b> セント</span><span><b class="num" id="hz">---</b> Hz</span></div>
       <div class="concert" id="concert"></div>
-      <div class="sx-live" id="saxLive" hidden></div>
     </div>
     <div class="level" aria-hidden="true"><i id="lvl"></i></div>
     <div class="row">
@@ -243,15 +234,6 @@ footer a{color:var(--sea)}
             <button type="button" data-t="7" aria-pressed="false" title="ホルン、イングリッシュホルンなど">F</button>
           </span>
         </div>
-      </div>
-      <div class="row">
-        <label class="ctl" style="cursor:pointer"><input type="checkbox" id="saxOn">サックスの運指を表示</label>
-        <span class="seg" id="saxSeg" role="group" aria-label="サックスの種類">
-          <button type="button" data-s="alto" aria-pressed="true">アルト</button>
-          <button type="button" data-s="tenor" aria-pressed="false">テナー</button>
-          <button type="button" data-s="soprano" aria-pressed="false">ソプラノ</button>
-          <button type="button" data-s="bari" aria-pressed="false">バリトン</button>
-        </span>
       </div>
       <div class="row">
         <div class="ctl">基準 A =
@@ -329,9 +311,9 @@ footer a{color:var(--sea)}
     <ul>
       <li>チューナーはマイクを使います。初回はブラウザの許可を求められるので「許可」を選んでください。音声は端末の中だけで処理し、どこにも送信しません。</li>
       <li>iPhoneでメトロノームの音が出ないときは、本体のマナーモードを解除してみてください。</li>
+      <li>サックスの運指は <a href="sax.html">サックス運指表</a> へ。</li>
       <li>音を確かめたいときは <a href="piano.html">ピアノ</a> もどうぞ。コード名やサックスでの音名も出ます。</li>
       <li>リズム練習やビート作りには <a href="drums.html">ドラムパッド</a> もどうぞ。</li>
-      <li>「サックスの運指を表示」をオンにすると、吹いている音の運指が出ます。くわしくは <a href="sax.html">サックス運指表</a> へ。</li>
       <li>BPMとミリ秒の換算は <a href="bpmms.html">BPMmsCalculator</a> もどうぞ。</li>
     </ul>
   </section>
@@ -346,7 +328,6 @@ footer a{color:var(--sea)}
 </div>
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 
-<script src="https://namigroove.github.io/namigroove-site/sax-fingering.js"></script>
 <script>
 (()=>{
 "use strict";
@@ -426,34 +407,13 @@ $("toneBtn").onclick=()=>{
   $("toneBtn").setAttribute("aria-pressed","true");$("toneBtn").textContent="■ 基準音を止める";
 };
 
-/* サックスの運指(運指表と共通のデータ) */
-let saxOn=store.get("saxOn",false), saxInst=store.get("saxInst","alto"), saxLast=null;
-const SAX_T={alto:9,bari:9,tenor:2,soprano:2};
-function saxShow(near){
-  const el=$("saxLive"), S=window.NamiSax;
-  if(!saxOn||!S){el.hidden=true;saxLast=null;return;}
-  el.hidden=false;
-  if(near==null){if(saxLast!=="idle"){el.innerHTML='<span class="sx-l">吹くと、ここに運指が出ます<br><a href="sax.html">運指表を開く ›</a></span>';saxLast="idle";}return;}
-  const w=near-S.INST[saxInst].d; if(w===saxLast)return; saxLast=w;
-  const f=S.F[w]||S.A[w];
-  el.innerHTML=f?S.svg(f[0].keys,{bare:true,label:"運指"})+'<span class="sx-l">'+S.INST[saxInst].n+'の運指<br>記譜 <b>'+concertName(w)+'</b>'+(S.A[w]?'(フラジオの一例)':'')+'<br><a href="sax.html">運指表で見る ›</a></span>':'<span class="sx-l">'+S.INST[saxInst].n+'の音域外の音です</span>';
-}
-function saxSet(){
-  $("saxOn").checked=saxOn; $("saxSeg").style.opacity=saxOn?1:.45;
-  if(saxOn&&trans!==SAX_T[saxInst]){ trans=SAX_T[saxInst]; store.set("trans",trans); [...$("transSeg").children].forEach(b=>b.setAttribute("aria-pressed",+b.dataset.t===trans)); buildToneSeg(); }
-  saxLast=undefined; if(tunerEl.classList.contains("idle")) idleView();
-}
-
 /* マイクと音程検出(YIN) */
 let stream=null, analyser=null, buf=null, raf=0, lastT=0, hist=[], lastHeard=0, yinD=null;
 function idleView(){
   tunerEl.classList.add("idle");tunerEl.classList.remove("in-tune");
   $("noteName").innerHTML=noteHTML(69+trans,trans===0);$("hz").textContent="---";$("cents").textContent="±0";
-  $("flag").className="flag";$("concert").textContent="";saxShow(null);$("needle").style.transform="rotate(0deg)";$("lvl").style.width="0";
+  $("flag").className="flag";$("concert").textContent="";$("needle").style.transform="rotate(0deg)";$("lvl").style.width="0";
 }
-$("saxOn").addEventListener("change",e=>{saxOn=e.target.checked;store.set("saxOn",saxOn);saxSet();});
-segInit($("saxSeg"),"s",saxInst,v=>{saxInst=v;store.set("saxInst",saxInst);if(!saxOn){saxOn=true;store.set("saxOn",true);}saxSet();});
-saxSet();
 idleView();
 async function startMic(){
   $("micErr").hidden=true;
@@ -518,7 +478,6 @@ function loop(t){
   $("hz").textContent=f.toFixed(1);
   $("flag").className="flag "+(ok?"ok":cents<0?"lo":"hi");
   $("concert").textContent=trans?"実音 "+concertName(near):"";
-  saxShow(near);
   $("needle").style.transform=`rotate(${Math.max(-50,Math.min(50,cents))/50*55}deg)`;
 }
 function median(a){const s=[...a].sort((x,y)=>x-y);return s[s.length>>1];}
