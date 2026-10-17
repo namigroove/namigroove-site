@@ -395,7 +395,7 @@ function show(){
   const ms=[...down.keys()].sort((a,b)=>a-b);
   const ch=$("chord"), pn=$("pnotes"), pt=$("ptrans");
   if(!ms.length){return;}
-  pn.textContent=ms.map(m=>nm(m,true)).join(" ・ ");
+  pn.textContent=ms.length>1?ms.map(m=>nm(m,true)).join(" ・ "):(names==="ja"?nm(ms[0],true):"\u00a0");
   const c=chordOf(ms);
   if(c){ ch.innerHTML=c(0); }
   else if(ms.length===2){ const d=ms[1]-ms[0]; ch.innerHTML=(d%12===0?"オクターブ":d>12?IV[d%12]+"<small>(+1oct)</small>":IV[d]); }
