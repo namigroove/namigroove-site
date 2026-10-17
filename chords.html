@@ -195,7 +195,7 @@ footer a{color:var(--sea)}
 .fb-leg{font-size:12px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
 .fb-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
 .rev-grid{display:flex;justify-content:center;margin:14px 0 4px}
-.rev-grid svg{width:min(100%,300px);height:auto;touch-action:manipulation;user-select:none}
+.rev-grid svg{width:min(100%,300px);max-height:none;height:auto;touch-action:manipulation;user-select:none}
 .rev-grid .cell{fill:transparent;cursor:pointer}
 .rev-grid .cell:hover{fill:var(--wash)}
 .rev-grid .om{font:16px var(--f-mono);fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;cursor:pointer}
@@ -285,7 +285,7 @@ footer a{color:var(--sea)}
       <div class="ch-sub" id="revSub"></div>
       <button class="btn" type="button" id="revPlay">♪ 音を聴く</button>
     </div>
-    <p class="note-s">弦の上の ○/× をタップすると、開放弦とミュートを切り替えられます。</p>
+    <p class="note-s">押さえた弦の音がその場で鳴ります。弦の上の ○/× をタップすると、開放弦とミュートを切り替えられます。</p>
   </section>
 
   <section class="how">
@@ -293,6 +293,7 @@ footer a{color:var(--sea)}
     <ul>
       <li>ギターの押さえ方は、よく使うローコードと、指が届く範囲(4フレット以内)で弾ける形を自動で探して並べています。左ほど弾きやすい形です。</li>
       <li>ダイヤグラムは左が6弦(太い弦)、右が1弦です。○は開放弦、×は弾かない弦、数字は何フレット目からの図かを表します。</li>
+      <li>ダイヤグラムの弦や、ベースの指板の丸をタップすると、その音が鳴ります。カードの下の数字をタップすると、ジャラーンと全部鳴ります。</li>
       <li>ベースは指板の上にコードの構成音を色分けで出します(R=ルート、3・5・7など)。</li>
       <li>カポを付けると、順引きでは「その形で押さえるとこのコードが鳴る」押さえ方を、逆引きでは実際に鳴るコード名を表示します。</li>
       <li>チューニングはレギュラー(ギター EADGBE、ベース EADG / BEADG)です。</li>
@@ -390,6 +391,7 @@ function diagram(fr,barre,rp){
     else if(f===0)s+=`<text class="mk" x="${x}" y="${y0-9}">○</text>`;
     else{const isR=rp!=null&&pc(TUN.gt[i]+f)===rp;s+=`<circle class="dot${isR?" r":""}" cx="${x}" cy="${y0+(f-start+0.5)*dy}" r="6"/>`;}
   });
+  for(let i=0;i<6;i++)s+=`<rect class="hit" data-str="${i}" x="${x0+i*dx-dx/2}" y="${y0-22}" width="${dx}" height="${N*dy+22}" fill="transparent"/>`;
   return s+"</svg>";
 }
 
@@ -404,7 +406,7 @@ function fretboard(tun,r,iv){
   for(let i=0;i<n;i++){const y=y0+(n-1-i)*dy;s+=`<line class="str" x1="${x0}" y1="${y}" x2="${x0+F*dx}" y2="${y}" stroke-width="${1+(n-1-i)*0.3}"/>`;}
   for(let f=1;f<=F;f++)s+=`<text class="fn" x="${x0+(f-0.5)*dx}" y="${y0+(n-1)*dy+20}">${f}</text>`;
   for(let i=0;i<n;i++){const y=y0+(n-1-i)*dy;for(let f=0;f<=F;f++){const p=pc(tun[i]+f);if(!ps.has(p))continue;const d=ps.get(p),x=f===0?x0-16:x0+(f-0.5)*dx;
-    s+=`<circle class="nd" cx="${x}" cy="${y}" r="10" fill="${DCOL[d]||"#888"}"/><text class="nt" x="${x}" y="${y}">${DEG[d]}</text>`;}}
+    s+=`<circle class="nd" data-midi="${tun[i]+f}" style="cursor:pointer" cx="${x}" cy="${y}" r="10" fill="${DCOL[d]||"#888"}"/><text class="nt" x="${x}" y="${y}">${DEG[d]}</text>`;}}
   return s+"</svg>";
 }
 
@@ -454,7 +456,12 @@ $("rootSeg").innerHTML=ROOTS.map((n,i)=>`<button type="button" data-r="${i}">${n
 $("typeSeg").innerHTML=TYPES.map((t,i)=>`<button type="button" data-t="${i}">${t[0]||"M(メジャー)"}</button>`).join("");
 $("rootSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b){root=+b.dataset.r;renderFwd();}});
 $("typeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b){type=+b.dataset.t;renderFwd();}});
-$("voicings").addEventListener("click",e=>{const b=e.target.closest(".vo-c");if(!b)return;vsel=+b.dataset.i;[...$("voicings").children].forEach(x=>x.classList.toggle("main",x===b));playFwd();});
+$("voicings").addEventListener("click",e=>{const b=e.target.closest(".vo-c");if(!b)return;const i=+b.dataset.i;
+  if(vsel!==i){vsel=i;[...$("voicings").children].forEach(x=>x.classList.toggle("main",x===b));}
+  const h=e.target.closest("[data-str]");
+  if(h){const st=+h.dataset.str,f=vlist[i].fr[st];if(f>=0)pluck([TUN.gt[st]+f+capo],0,false);return;}
+  playFwd();});
+$("fb").addEventListener("click",e=>{const d=e.target.closest("[data-midi]");if(d)pluck([+d.dataset.midi],0,true);});
 $("playBtn").onclick=playFwd;
 function segInit(el,key,v,on){[...el.children].forEach(b=>b.setAttribute("aria-pressed",b.dataset[key]===String(v)));
   el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...el.children].forEach(x=>x.setAttribute("aria-pressed",x===b));on(b.dataset[key]);});}
@@ -479,15 +486,15 @@ function chordOf(ms){
 let rf=store.get("chRev",[-1,-1,-1,-1,-1,-1]), pos=store.get("chPos",1);
 if(!Array.isArray(rf)||rf.length!==6)rf=[-1,-1,-1,-1,-1,-1];
 function renderRev(){
-  const x0=40,dx=40,y0=52,dy=44,N=5,W=x0+5*dx+40,H=y0+N*dy+20;
+  const x0=40,dx=40,y0=52,dy=34,N=12,W=x0+5*dx+40,H=y0+N*dy+20;
   let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="指板(タップして押さえる)">`;
   for(let i=0;i<6;i++)s+=`<line class="st" stroke="var(--ink-soft)" x1="${x0+i*dx}" y1="${y0}" x2="${x0+i*dx}" y2="${y0+N*dy}"/>`;
   for(let j=0;j<=N;j++)s+=`<line stroke="${j===0&&pos===1?"var(--ink)":"var(--line)"}" stroke-width="${j===0&&pos===1?5:1.5}" x1="${x0}" y1="${y0+j*dy}" x2="${x0+5*dx}" y2="${y0+j*dy}"/>`;
-  if(pos>1)s+=`<text x="${x0+5*dx+10}" y="${y0+dy*0.6}" font-size="13" font-family="DM Mono,monospace" fill="var(--ink-soft)">${pos}</text>`;
+  for(let j=0;j<N;j++){const fr=pos+j;if([3,5,7,9,12,15,17,19,21].includes(fr)||j===0)s+=`<text x="${x0+5*dx+12}" y="${y0+(j+0.5)*dy+4}" font-size="11" font-family="DM Mono,monospace" fill="var(--ink-soft)">${fr}</text>`;}
   for(let i=0;i<6;i++){const x=x0+i*dx,f=rf[i];
     s+=`<rect class="omh" data-s="${i}" data-o="1" x="${x-16}" y="${y0-40}" width="32" height="32"/><text class="om" data-s="${i}" data-o="1" x="${x}" y="${y0-24}">${f===0?"○":f<0?"×":""}</text>`;
     for(let j=0;j<N;j++){const fret=pos+j;s+=`<rect class="cell" data-s="${i}" data-f="${fret}" x="${x-dx/2}" y="${y0+j*dy}" width="${dx}" height="${dy}"/>`;
-      if(f===fret)s+=`<circle cx="${x}" cy="${y0+(j+0.5)*dy}" r="11" fill="var(--sea)" pointer-events="none"/>`;}
+      if(f===fret)s+=`<circle cx="${x}" cy="${y0+(j+0.5)*dy}" r="10" fill="var(--sea)" pointer-events="none"/>`;}
   }
   s+=`<text x="${x0}" y="${H-2}" font-size="10" fill="var(--ink-soft)" text-anchor="middle">6弦</text><text x="${x0+5*dx}" y="${H-2}" font-size="10" fill="var(--ink-soft)" text-anchor="middle">1弦</text>`;
   $("revGrid").innerHTML=s+"</svg>";
@@ -505,9 +512,10 @@ function renderRev(){
 }
 $("revGrid").addEventListener("click",e=>{const t=e.target.closest("[data-s]");if(!t)return;const i=+t.dataset.s;
   if(t.dataset.o){rf[i]=rf[i]===0?-1:0;}else{const f=+t.dataset.f;rf[i]=rf[i]===f?-1:f;}
+  if(rf[i]>=0)pluck([TUN.gt[i]+rf[i]+capo],0,false);
   renderRev();});
 $("posDown").onclick=()=>{if(pos>1){pos--;renderRev();}};
-$("posUp").onclick=()=>{if(pos<15){pos++;renderRev();}};
+$("posUp").onclick=()=>{if(pos<12){pos++;renderRev();}};
 $("revClear").onclick=()=>{rf=[-1,-1,-1,-1,-1,-1];renderRev();};
 $("revPlay").onclick=()=>{const ms=rf.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filter(x=>x!=null);if(ms.length)pluck(ms,0.035,false);};
 
