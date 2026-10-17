@@ -114,7 +114,8 @@ details.opts[open] summary{margin-bottom:8px}
 .bpm-sub b{font-weight:500;color:var(--ink)}
 input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
 .stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
-.nami{width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
 .nami.hop{animation:hop .18s ease-out}
 .nami.hop.acc{animation:hopBig .22s ease-out}
 @keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
@@ -258,7 +259,7 @@ footer a{color:var(--sea)}
     <div class="bpm-sub"><b id="tempoName">Allegro</b> ・ 1拍 <b class="num" id="msOut">500</b> ms</div>
     <input type="range" id="bpmRange" min="30" max="300" step="1" value="120" aria-label="BPM">
     <div class="stage">
-      <img class="nami" id="nami" src="img/namigroove-3d.webp" alt="" width="640" height="565">
+      <button type="button" class="nami-btn" id="namiBtn" aria-label="なみぐるをタップしてBPMを計測" title="タップでBPM計測"><img class="nami" id="nami" src="img/namigroove-3d.webp" alt="" width="640" height="565"></button>
       <div class="dots" id="dots" aria-hidden="true"></div>
     </div>
     <div class="row">
@@ -293,7 +294,7 @@ footer a{color:var(--sea)}
         <div class="ctl"><label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="accent" checked>1拍目を強く</label></div>
         <div class="ctl">音量 <input type="range" id="vol" min="0" max="1" step="0.05" value="0.8" style="width:110px;margin:0" aria-label="音量"></div>
       </div>
-      <p class="note-s" style="margin-top:12px">丸をタップすると、その拍だけミュートできます。</p>
+      <p class="note-s" style="margin-top:12px">なみぐるをタップしてもBPMを計れます。丸をタップすると、その拍だけミュートできます。</p>
     </details>
     <p class="kbd"><kbd>Space</kbd>スタート/ストップ <kbd>←</kbd><kbd>→</kbd>BPM±1 <kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd>±10 <kbd>T</kbd>タップ</p>
   </section>
@@ -554,17 +555,20 @@ function tap(){
   const t=performance.now();if(taps.length&&t-taps[taps.length-1]>2000)taps=[];
   taps.push(t);if(taps.length>8)taps.shift();
   if(taps.length>=2)setBpm(60000/((taps[taps.length-1]-taps[0])/(taps.length-1)));
-  const b=$("tapBtn");b.style.transform="scale(.94)";setTimeout(()=>b.style.transform="",80);
 }
-$("tapBtn").addEventListener("pointerdown",e=>{e.preventDefault();tap();});
-$("tapBtn").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();tap();}});
+function tapFx(el){el.style.transform="scale(.94)";setTimeout(()=>el.style.transform="",80);}
+function namiFx(){const n=$("nami");n.classList.remove("hop","acc");void n.offsetWidth;n.classList.add("hop","acc");}
+for(const [id,fx] of [["tapBtn",()=>tapFx($("tapBtn"))],["namiBtn",namiFx]]){
+  $(id).addEventListener("pointerdown",e=>{e.preventDefault();tap();fx();});
+  $(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();tap();fx();}});
+}
 
 document.addEventListener("keydown",e=>{
   if($("metronome").hidden||e.target.closest("input,textarea,select")||e.metaKey||e.ctrlKey||e.altKey)return;
   if(e.code==="Space"){e.preventDefault();playing?stop():start();}
   else if(e.key==="ArrowRight"||e.key==="ArrowUp"){e.preventDefault();setBpm(bpm+(e.shiftKey?10:1));}
   else if(e.key==="ArrowLeft"||e.key==="ArrowDown"){e.preventDefault();setBpm(bpm-(e.shiftKey?10:1));}
-  else if(e.key==="t"||e.key==="T"){tap();}
+  else if(e.key==="t"||e.key==="T"){tap();tapFx($("tapBtn"));}
 });
 
 /* 最初に開くタブ(#metronome 付きのリンクならメトロノーム) */
