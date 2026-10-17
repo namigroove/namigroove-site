@@ -73,6 +73,15 @@ nav.main a:hover{color:#ffffff}
 .hero h1 .en{display:block;font-family:var(--f-mono);font-size:clamp(14px,2vw,18px);letter-spacing:.3em;color:var(--ink-soft);margin-top:14px;font-weight:500}
 .hero p.lead{font-size:clamp(16px,2.2vw,19px);margin:22px 0 0;max-width:30em}
 .hero p.lead b{color:var(--zunda);font-weight:700}
+/* PCだけ右になみぐる。タップ/クリックでぷにぷに */
+.puni{display:none;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;justify-self:center}
+.puni img{display:block;width:100%;height:auto;transform-origin:50% 92%;animation:puniIdle 3.2s ease-in-out infinite;filter:drop-shadow(0 18px 22px rgba(16,31,69,.18));user-select:none;-webkit-user-drag:none}
+.puni:active img{transform:scale(1.1,.86);animation:none;transition:transform .08s}
+.puni.boing img{animation:puniBoing .75s cubic-bezier(.3,1.6,.5,1)}
+@keyframes puniIdle{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975) translateY(2px)}}
+@keyframes puniBoing{0%{transform:scale(1.18,.78)}25%{transform:scale(.88,1.14)}45%{transform:scale(1.07,.93)}65%{transform:scale(.97,1.04)}82%{transform:scale(1.015,.985)}100%{transform:scale(1,1)}}
+@media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:center}.puni{display:block;width:100%}}
+@media (prefers-reduced-motion:reduce){.puni img{animation:none}}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .btn{font-family:var(--f-body);display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid var(--ink)}
 .btn.primary{background:var(--ink);color:var(--paper)}
@@ -288,6 +297,7 @@ footer .mono{font-family:var(--f-mono)}
       </div>
       <p class="tide"><span><b>SINCE</b> 2021</span><span>VOCALOID / R&amp;B / Electro Swing / Funk / Sax</span><span>いい波、起こします~(･ω･~)</span></p>
     </div>
+    <button class="puni" type="button" id="puni" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"></button>
   </div>
 
   <canvas class="sea" id="sea" aria-hidden="true"></canvas>
@@ -557,6 +567,10 @@ document.getElementById("yr").textContent = new Date().getFullYear();
 })();
 </script>
 <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js" defer>/* EN:Google翻訳で英語表示 */
+</script>
+<script>
+/* なみぐるをぷにぷに */
+(function(){var b=document.getElementById("puni");if(!b)return;b.addEventListener("click",function(){b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(){b.classList.remove("boing");});})();
 </script>
 </body>
 </html>
