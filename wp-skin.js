@@ -117,16 +117,14 @@
   // 404ページ:なみぐるの案内と、主なページへのボタン
   function page404() {
     if (!document.body.classList.contains("error404") || document.querySelector(".ng-404")) return;
-    var host = document.querySelector("#main article, #main, main") || document.body;
+    var host = document.querySelector("#main .post") || document.querySelector("#main article, #main, main") || document.body;
     var box = document.createElement("div");
     box.className = "ng-404";
     box.innerHTML =
-      '<img src="https://namigroove.github.io/namigroove-site/img/cursor-nami.webp" alt="" width="128" height="116">' +
-      '<p class="ng-404-code">404</p>' +
       '<p class="ng-404-msg">お探しのページは、波にさらわれてしまったみたいです。</p>' +
       '<p class="ng-404-sub">URLが変わったか、ページが移動した可能性があります。</p>' +
       '<p class="ng-404-btns"><a href="/">トップページへ</a><a href="/works/">Works</a><a href="/contact/">お問い合わせ</a></p>';
-    host.insertBefore(box, host.firstChild);
+    host.appendChild(box);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", page404); else page404();
 })();

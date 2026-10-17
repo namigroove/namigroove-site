@@ -170,7 +170,7 @@ a.twitter:not(.ng-share),a.facebook,a.hatebu,a.line:not(.ng-share){visibility:hi
 details[id]{scroll-margin-top:90px}
 
 /* 404ページ */
-.ng-404{text-align:center;padding:40px 16px 24px}
+.ng-404{text-align:center;padding:8px 16px 16px}
 .ng-404 img{width:112px;height:auto;image-rendering:pixelated}
 .ng-404-code{font-family:"MaruMinyaM",sans-serif;font-size:56px;line-height:1;margin:10px 0 6px;color:var(--ng-head,#396cdf)}
 .ng-404-msg{font-family:"MaruMinyaM",sans-serif;font-size:18px;margin:0 0 6px}
