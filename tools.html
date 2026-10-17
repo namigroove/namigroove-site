@@ -156,8 +156,19 @@ footer a{color:var(--sea)}
 
 /* ツール一覧 */
 .hub-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
-.hub-intro img{width:110px;height:auto;flex:none;margin-bottom:-6px}
-@media (max-width:480px){.hub-intro img{width:76px}}
+.hub-intro .puni{width:110px;flex:none;margin-bottom:-6px}
+@media (max-width:480px){.hub-intro .puni{width:80px}.hub-intro .puni .bpm{font-size:10px}}
+.puni{display:block;width:100%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;justify-self:center}
+.puni img{display:block;width:100%;height:auto;transform-origin:50% 92%;animation:puniIdle 3.2s ease-in-out infinite;filter:drop-shadow(0 18px 22px rgba(16,31,69,.18));user-select:none;-webkit-user-drag:none}
+.puni:active img{transform:scale(1.1,.86);animation:none;transition:transform .08s}
+.puni.boing img{animation:puniBoing .75s cubic-bezier(.3,1.6,.5,1)}
+.puni .bpm{display:block;margin-top:6px;text-align:center;font-family:var(--f-display);font-size:13px;letter-spacing:.06em;color:var(--ink-soft);opacity:.75;font-variant-numeric:tabular-nums;white-space:nowrap}
+.puni .bpm.on{color:var(--sea);opacity:1}
+.pw-sp .bpm{font-size:11px;margin-top:2px}
+@keyframes puniIdle{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975) translateY(2px)}}
+@keyframes puniBoing{0%{transform:scale(1.18,.78)}25%{transform:scale(.88,1.14)}45%{transform:scale(1.07,.93)}65%{transform:scale(.97,1.04)}82%{transform:scale(1.015,.985)}100%{transform:scale(1,1)}}
+@media (prefers-reduced-motion:reduce){.puni img{animation:none}}
+
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin:8px 0 28px;padding:0;list-style:none}
 .card{display:flex;gap:14px;align-items:flex-start;padding:18px 16px;border-radius:16px;border:1px solid var(--line);background:var(--panel);text-decoration:none;color:var(--ink);transition:transform .15s,box-shadow .15s,border-color .15s;height:100%}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(16,31,69,.1);border-color:var(--sea)}
@@ -211,7 +222,7 @@ footer a{color:var(--sea)}
       <h1>なみぐる！のツール</h1>
       <p class="lead">ブラウザだけで使える音楽ツールです。インストールも登録もいりません。練習に、曲作りに、ちょっとした音遊びにどうぞ。</p>
     </div>
-    <img src="img/namigroove-3d.webp" alt="" width="640" height="565">
+    <button class="puni" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button>
   </div>
   <ul class="cards">
     <li><a class="card" href="tuner.html#tuner"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0 1 16 0"/><path d="m12 16 4-5"/></svg></span><div><h2>チューナー</h2><p>マイクで音程をチェック。サックスなど移調楽器の音名にも対応。</p><span class="tags"><span>マイク</span><span>B♭・E♭・F</span><span>基準音</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
@@ -238,6 +249,25 @@ if(location.hash==="#tuner"||location.hash==="#metronome") location.replace("tun
 (()=>{const sb=document.getElementById("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{const data={title:document.title,url:"https://www.namigroove.com/tools/"};
   try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);const d=document.createElement("div");d.className="ng-toast";d.textContent="リンクをコピーしました";document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}catch(e){}});})();
+</script>
+<script>
+/* なみぐるをぷにぷに */
+/* タップした間隔からBPMを計測(2秒あくとリセット、直近8回の平均) */
+var taps=[];
+function tapBpm(){var now=performance.now();if(taps.length&&now-taps[taps.length-1]>2000)taps=[];taps.push(now);if(taps.length>9)taps.shift();
+  var txt="BPM ---";if(taps.length>=2){var iv=(taps[taps.length-1]-taps[0])/(taps.length-1);txt="BPM "+Math.round(60000/iv);}
+  document.querySelectorAll(".puni .bpm").forEach(function(e){e.textContent=txt;e.classList.add("on");});}
+/* カウベル:メトロノームの「カウベル」と同じ音(level 2=アクセント 1=拍 0=分割) */
+function cowSound(ac,dest,time,level){
+  var g=ac.createGain(), amp=[0.35,0.7,1][level];
+  var o1=ac.createOscillator(),o2=ac.createOscillator(),bp=ac.createBiquadFilter();o1.type=o2.type="square";
+  var k=level===2?1.12:level===0?0.9:1;o1.frequency.value=540*k;o2.frequency.value=800*k;bp.type="bandpass";bp.frequency.value=900*k;bp.Q.value=1.5;
+  g.gain.setValueAtTime(0.0001,time);g.gain.exponentialRampToValueAtTime(amp*0.5,time+0.002);g.gain.exponentialRampToValueAtTime(0.0001,time+0.18);
+  o1.connect(bp);o2.connect(bp);bp.connect(g).connect(dest);o1.start(time);o2.start(time);o1.stop(time+0.2);o2.stop(time+0.2);
+}
+var namiAC=null;
+function namiBell(){try{if(!namiAC){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;namiAC=new AC({latencyHint:"interactive"});}if(namiAC.state!=="running")namiAC.resume();var g=namiAC.createGain();g.gain.value=0.8;g.connect(namiAC.destination);cowSound(namiAC,g,namiAC.currentTime,1);}catch(e){}}
+document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){namiBell();tapBpm();b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
 </script>
 </body>
 </html>
