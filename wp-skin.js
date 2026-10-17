@@ -94,7 +94,9 @@
   }
   var _run0 = run; run = function () { _run0(); mochinfo(); };
   var _run = run; run = function () { _run(); addEN(); };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
+  // ページによって要素がなくても、あとの処理(404など)が止まらないように
+  var safeRun = function () { try { run(); } catch (e) {} };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", safeRun); else safeRun();
 
   // ページ内リンク(#faq など)の飛び先が折りたたみなら開いてから移動
   function openHash(h) {
