@@ -203,6 +203,26 @@ footer a{color:var(--sea)}
 .take-b{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
 .take-len{font:12px var(--f-mono);color:var(--ink-soft)}
 .sel{font:500 14px var(--f-mono);padding:5px 10px;min-width:4.5em;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);max-width:100%}
+.cl-panel .ph h2{font-family:var(--f-display);font-weight:400;font-size:22px;margin:0 0 10px}
+.cl-panel .tabs.fam{margin-bottom:14px}
+.cl-roots,.cl-types{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-bottom:8px}
+.cl-roots button{min-width:42px}
+.cl-types button.fancy{border-color:var(--coral);color:var(--coral)}
+.cl-types button.fancy[aria-pressed="true"]{background:var(--coral);color:#fff}
+.cl-out{text-align:center;margin-top:8px}
+.cl-big{font-family:var(--f-display);font-size:clamp(36px,9vw,54px);line-height:1.1}
+.cl-tones{font:13px var(--f-mono);color:var(--ink-soft);margin:4px 0}
+.cl-desc{font-size:13px;color:var(--coral);min-height:1.4em;margin:2px 0 10px}
+.cl-progs{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.cl-pg{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
+.cl-pg h3{margin:0 0 2px;font-size:15px}
+.cl-pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
+.cl-pg .chips{display:flex;flex-wrap:wrap;gap:6px}
+.cl-pg .chips button{font:500 14px var(--f-body);padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer}
+.cl-pg .chips button.now{background:var(--coral);border-color:var(--coral);color:#fff}
+.cl-pg .pg-play{float:right;font-size:12px;padding:3px 10px}
+.kb .w.hint{background:linear-gradient(#ffe7d1,#ffc79a)}
+.kb .b.hint{background:linear-gradient(#f0a36b,#d9783a)}
 .midi-st{font-size:12px;color:var(--ink-soft)}
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
 .eb-link:hover{border-bottom-style:solid}
@@ -344,12 +364,36 @@ footer a{color:var(--sea)}
     <p class="kbd">PCのキーボードでも弾けます <kbd>A</kbd>〜<kbd>K</kbd>白鍵 <kbd>W</kbd><kbd>E</kbd><kbd>T</kbd><kbd>Y</kbd><kbd>U</kbd>黒鍵 <kbd>Z</kbd><kbd>X</kbd>オクターブ <kbd>Space</kbd>ペダル ・ 左のホイールを上下に動かすとピッチベンド</p>
   </section>
 
+  <section class="panel cl-panel" id="chordLook" aria-label="コードを調べる">
+    <div class="ph"><h2>コードを調べる</h2></div>
+    <div class="tabs fam" id="clTabs" role="tablist" aria-label="調べ方">
+      <button type="button" data-m="name" aria-selected="true">コード名から</button>
+      <button type="button" data-m="prog" aria-selected="false">おしゃれ進行</button>
+    </div>
+    <div id="clName">
+      <div class="seg cl-roots" id="clRoot" role="group" aria-label="ルート"></div>
+      <div class="seg cl-types" id="clType" role="group" aria-label="コードの種類"></div>
+      <div class="cl-out" aria-live="polite">
+        <div class="cl-big" id="clBig">C</div>
+        <div class="cl-tones" id="clTones"></div>
+        <p class="cl-desc" id="clDesc"></p>
+        <div class="row"><button class="btn" type="button" id="clPlay">♪ 鍵盤に出して鳴らす</button>
+          <span class="seg" id="clVo" role="group" aria-label="ボイシング"><button type="button" data-v="0" aria-pressed="true">基本形</button><button type="button" data-v="1" aria-pressed="false">第1転回</button><button type="button" data-v="2" aria-pressed="false">第2転回</button></span></div>
+      </div>
+    </div>
+    <div id="clProg" hidden>
+      <div class="row"><div class="ctl">キー <select id="clKey" class="sel" aria-label="キー"></select></div><button class="btn" type="button" id="clProgPlay">▶ 通して鳴らす</button></div>
+      <div class="cl-progs" id="clProgs"></div>
+    </div>
+  </section>
+
   <section class="how">
     <h2>使い方のメモ</h2>
     <ul>
       <li>鍵盤の下の方をタップすると強く、上の方だと弱く鳴ります。スマホでは複数の指で和音も弾けます。</li>
       <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
       <li>「● 演奏を録音」を押して弾くと、演奏を録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。録音はこの端末の中だけで処理します。</li>
+      <li>「コードを調べる」では、コード名を選ぶと鍵盤にオレンジで押さえる場所を出して鳴らします。オレンジの枠のボタンはおしゃれ系のコードです。「おしゃれ進行」では定番進行をテンション入りのボイシングで聴けます(キーも変えられます)。</li>
       <li>鍵盤の左のホイールを上下にドラッグするとピッチベンド。離すと元の高さに戻ります。幅は設定で±1・±2・±12半音から選べます。</li>
       <li>MIDIキーボードはChrome・Edgeで使えます(Safariは非対応)。ベロシティ、サステインペダル、ピッチベンドにも対応しています。</li>
       <li>iPhoneで音が出ないときは、本体のマナーモードを解除してみてください。</li>
@@ -758,6 +802,76 @@ function onMidi(ev){
 segInit($("bendSeg"),"b",bendRange,v=>{bendRange=+v;store.set("pianoBend",bendRange);setBend(bend);});
 build();
 let rt=0;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(build,150);});
+
+/* ===== コードを調べる(順引き・おしゃれ進行) ===== */
+const CL_TYPES=[
+  ["",[0,4,7],""],["m",[0,3,7],""],["7",[0,4,7,10],""],["M7",[0,4,7,11],"やわらかく都会的。ポップスでもジャズでも万能"],["m7",[0,3,7,10],"落ち着いた大人っぽいマイナー"],
+  ["6",[0,4,7,9],"ほんのりレトロで明るい"],["m6",[0,3,7,9],"切なさとおしゃれさが同居"],["sus4",[0,5,7],"宙ぶらりんの緊張感。3度に戻ると落ち着く"],["7sus4",[0,5,7,10],"浮遊感のあるドミナント。シティポップの定番"],
+  ["add9",[0,4,7,14],"シンプルに爽やかでキラッと"],["madd9",[0,3,7,14],"透明感のある切ないマイナー"],["6/9",[0,4,7,9,14],"明るく開放的。曲の最後に置くと決まる"],
+  ["M9",[0,4,7,11,14],"浮遊感のあるキラキラ。シティポップの王道"],["m9",[0,3,7,10,14],"やわらかくて切ない。R&Bやバラードに"],["9",[0,4,7,10,14],"ファンキーで厚みのあるドミナント"],
+  ["13",[0,4,10,14,21],"ジャジーでゴージャスなドミナント"],["m11",[0,3,10,14,17],"ネオソウル・R&Bの定番。広がりのある響き"],["M7(♯11)",[0,4,7,11,18],"リディアンの透明感。映画音楽っぽい"],
+  ["7(♭9)",[0,4,7,10,13],"マイナーへ解決する前のスパイス"],["7(♯9)",[0,4,7,10,15],"ブルージーでファンキー(通称ジミヘンコード)"],["7(♯11)",[0,4,10,14,18],"ふわっと浮くドミナント"],
+  ["mM7",[0,3,7,11],"怪しげでミステリアス。映画的"],["m7(♭5)",[0,3,6,10],"マイナーキーのツーファイブの入口"],["dim7",[0,3,6,9],"つなぎの経過和音に。ドラマチック"],["aug",[0,4,8],"不思議な浮遊感。次のコードへ押し出す"]
+];
+const CLR=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
+let clRoot=store.get("clRoot",0), clType=store.get("clType",12), clVo=0;
+if(!CL_TYPES[clType])clType=0;
+let hintKeys=[];
+function hint(ms){
+  hintKeys.forEach(k=>k.classList.remove("hint"));hintKeys=[];
+  if(!ms.length)return;
+  const lo=Math.min(...ms),hi=Math.max(...ms),kLo=12*(startOct+1),kHi=kLo+12*octaves();
+  if(lo<kLo||hi>kHi){let o=Math.max(1,Math.min(7-octaves(),Math.floor(lo/12)-1));if(o!==startOct){startOct=o;store.set("pianoOct",startOct);built="";build();}}
+  ms.forEach(m=>{const k=keyEl.get(m);if(k){k.classList.add("hint");hintKeys.push(k);}});
+}
+function sound(ms,dur){ms.forEach(m=>noteOn(m,0.7));setTimeout(()=>ms.forEach(m=>release(m,true)),dur||1100);}
+function clNotes(){const iv=CL_TYPES[clType][1];let ms=iv.map(x=>48+clRoot+x);
+  for(let i=0;i<clVo;i++){const a=ms.shift();ms.push(a+12);}return ms;}
+function clRender(){
+  [...$("clRoot").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===clRoot));
+  [...$("clType").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===clType));
+  [...$("clVo").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===clVo));
+  const t=CL_TYPES[clType],DG={0:"R",2:"9",3:"♭3",4:"3",5:"4",6:"♭5",7:"5",8:"♯5",9:"6",10:"♭7",11:"7",13:"♭9",14:"9",15:"♯9",17:"11",18:"♯11",21:"13"};
+  $("clBig").textContent=CLR[clRoot]+t[0];
+  $("clTones").textContent=t[1].map(x=>CLR[(clRoot+x)%12]+"("+(DG[x]||x)+")").join("  ");
+  $("clDesc").textContent=t[2];
+  store.set("clRoot",clRoot);store.set("clType",clType);
+}
+$("clRoot").innerHTML=CLR.map((n,i)=>`<button type="button" data-r="${i}">${n}</button>`).join("");
+$("clType").innerHTML=CL_TYPES.map((t,i)=>`<button type="button" data-t="${i}" class="${t[1].length>4||/[♯♭]|11|13|6\/9|M9|m9|sus|add|mM7/.test(t[0])?"fancy":""}" title="${t[2]}">${t[0]||"M"}</button>`).join("");
+const clGo=()=>{audio();const ms=clNotes();hint(ms);sound(ms);};
+$("clRoot").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clRoot=+b.dataset.r;clRender();clGo();});
+$("clType").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clType=+b.dataset.t;clVo=0;clRender();clGo();});
+$("clVo").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clVo=+b.dataset.v;clRender();clGo();});
+$("clPlay").onclick=clGo;
+/* おしゃれ進行(キーCでの音。左手ベース+右手) */
+const PROGS=[
+  {n:"王道進行(おしゃれ版)",d:"Ⅳ→Ⅴ→Ⅲ→Ⅵ。J-POPの泣きの定番を、テンションでキラッと",c:[[5,"M9",[41,52,55,57,60]],[7,"13",[43,53,57,59,64]],[4,"m7",[40,50,55,59,62]],[9,"m9",[45,55,59,60,64]]]},
+  {n:"丸サ進行",d:"Ⅳ△7→Ⅲ7→Ⅵm7→Ⅴm7 Ⅰ7。シティポップ・ネオソウルの超定番",c:[[5,"M7",[41,52,57,60,64]],[4,"7(♭9)",[40,50,53,56,59]],[9,"m7",[45,55,60,64,67]],[7,"m7",[43,53,58,62,65]],[0,"9",[48,52,58,62]]]},
+  {n:"ツーファイブワン",d:"Ⅱm→Ⅴ→Ⅰ。ジャズの基本を9th・13thでリッチに",c:[[2,"m9",[38,53,57,60,64]],[7,"13",[43,53,57,59,64]],[0,"M9",[36,52,55,59,62]]]},
+  {n:"小室進行",d:"Ⅵm→Ⅳ→Ⅴ→Ⅰ。疾走感のある90年代の黄金進行",c:[[9,"m7",[45,55,60,64,67]],[5,"M7",[41,52,57,60,64]],[7,"add9",[43,55,57,59,62]],[0,"add9",[48,55,62,64,67]]]},
+  {n:"カノン進行(おしゃれ版)",d:"ベースが1音ずつ下がっていく、どこか懐かしい進行",c:[[0,"add9",[48,55,62,64,67]],[7,"/B",[47,55,62,67]],[9,"m7",[45,55,60,64,67]],[4,"m/G",[43,55,59,64]],[5,"M7",[41,52,57,60,64]],[0,"/E",[40,55,60,64,67]],[2,"m9",[38,53,57,60,64]],[7,"7sus4",[43,53,60,62]]]},
+  {n:"サブドミナントマイナー",d:"Ⅳ△7→Ⅳm6→Ⅰ△9。最後にほろっと泣かせる終わり方",c:[[5,"M7",[41,52,57,60,64]],[5,"m6",[41,50,56,60]],[0,"M9",[36,52,55,59,62]]]}
+];
+const CLKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
+let clKey=store.get("clKey",0);
+$("clKey").innerHTML=CLKEY.map((n,i)=>`<option value="${i}">${n}</option>`).join("");$("clKey").value=String(clKey);
+const kOff=()=>clKey>6?clKey-12:clKey;
+const chName=(c)=>{const r=CLKEY[(c[0]+clKey)%12];if(c[1][0]==="/"){const bn=CLKEY[(c[2][0]+clKey)%12];return r+"/"+bn;}if(c[1].startsWith("m/")){return r+"m/"+CLKEY[(c[2][0]+clKey)%12];}return r+c[1];};
+function progRender(){
+  $("clProgs").innerHTML=PROGS.map((p,i)=>`<div class="cl-pg" data-p="${i}"><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button><h3>${p.n}</h3><p>${p.d}</p><div class="chips">${p.c.map((c,j)=>`<button type="button" data-c="${j}">${chName(c)}</button>`).join("")}</div></div>`).join("");
+}
+let progTimer=0;
+function playChord(p,j){const c=PROGS[p].c[j],ms=c[2].map(m=>m+kOff());audio();hint(ms);sound(ms,1300);
+  document.querySelectorAll(".cl-pg .chips button").forEach(b=>b.classList.remove("now"));
+  const el=document.querySelector(`.cl-pg[data-p="${p}"] [data-c="${j}"]`);if(el)el.classList.add("now");}
+function playProg(p){clearTimeout(progTimer);let j=0;const n=PROGS[p].c.length;const step=()=>{playChord(p,j);j++;if(j<n)progTimer=setTimeout(step,1500);};step();}
+$("clProgs").addEventListener("click",e=>{const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
+  const b=e.target.closest("[data-c]");if(!b)return;const p=+b.closest(".cl-pg").dataset.p;clearTimeout(progTimer);playChord(p,+b.dataset.c);});
+$("clProgPlay").onclick=()=>{clearTimeout(progTimer);let p=0,j=0;const step=()=>{playChord(p,j);j++;if(j>=PROGS[p].c.length){p++;j=0;}if(p<PROGS.length)progTimer=setTimeout(step,1500);};step();};
+$("clKey").addEventListener("change",()=>{clKey=+$("clKey").value;store.set("clKey",clKey);progRender();});
+$("clTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const m=b.dataset.m;[...$("clTabs").children].forEach(x=>x.setAttribute("aria-selected",x===b));$("clName").hidden=m!=="name";$("clProg").hidden=m!=="prog";clearTimeout(progTimer);});
+clRender();progRender();
 
 /* シェア */
 const sb=$("shareBtn");
