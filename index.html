@@ -475,7 +475,7 @@ const NEWS_T = {all:"すべて", notice:"₺ƾらせ", release:"新曲", event:"
 const IS_EN = /translate\.goog$/.test(location.hostname);
 if (IS_EN) { NEWS_T.notice = "mochinfo"; document.querySelectorAll(".mochi").forEach(e=>e.textContent="mochinfo"); }
 let NEWS = NOTES.map(n=>({d:n.d, type:"notice", src:"wp", t:n.t, u:n.u})), newsFilter="all", newsShown=6;
-/* タブの絞り込み(お知らせカテゴリの投稿は₺ƾらせのみ、それ以外の投稿はブログ) */
+/* タブの絞り込み */
 const inTab = (x,k) => k==="all" || x.type===k;
 const tabType = n => n.type;
 function renderNews(){
@@ -496,12 +496,12 @@ document.getElementById("newsFilters").addEventListener("click",e=>{const b=e.ta
 document.getElementById("newsMore").addEventListener("click",()=>{newsShown+=6; renderNews();});
 renderNews();
 const unhtml = s => { const d=document.createElement("textarea"); d.innerHTML=s; return d.value; };
-/* WordPressの投稿:カテゴリ「お知らせ」系は₺ƾらせ、それ以外(お役立ち・機材紹介・日記など)はブログ */
+/* WordPressの投稿はすべて「ブログ」(₺ƾらせタブはXのお知らせのみ) */
 const WP_CATS = fetch("https://www.namigroove.com/wp-json/wp/v2/categories?per_page=100&_fields=id,slug,name").then(r=>r.ok?r.json():[]).catch(()=>[]);
 const isNotice = c => /お知らせ|₺ƾらせ|ニュース/.test(c.name) || /^(news|info|information|notice|oshirase)$/.test(c.slug);
 const WP = Promise.all([fetch(WP_API).then(r=>r.ok?r.json():Promise.reject()), WP_CATS]).then(([posts,cats])=>{
   const notice = new Set(cats.filter(isNotice).map(c=>c.id)), hide = new Set(cats.filter(c=>c.slug==="hidden").map(c=>c.id));
-  return posts.filter(p=>!(p.categories||[]).some(id=>hide.has(id))).map(p=>({d:p.date.slice(0,10), type:(p.categories||[]).some(id=>notice.has(id))?"notice":"blog", src:"wp", post:true, t:unhtml(p.title.rendered), u:p.link}));
+  return posts.filter(p=>!(p.categories||[]).some(id=>hide.has(id))).map(p=>({d:p.date.slice(0,10), type:"blog", src:"wp", post:true, t:unhtml(p.title.rendered), u:p.link}));
 }).catch(()=>null);
 const XP = fetch("data/x-posts.json").then(r=>r.json()).then(d=>d.posts.map(p=>({d:p.date, type:p.type, t:p.text, u:"https://x.com/namigroove/status/"+p.id}))).catch(()=>[]);
 /* 重複をまとめる:サイト記事を優先し、同じ話題のXポスト(前後10日・文面が半分以上一致)は載せない */
