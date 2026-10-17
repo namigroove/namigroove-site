@@ -382,7 +382,7 @@ const IV=["完全1度","短2度","長2度","短3度","長3度","完全4度","増
 const CH=["C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"].map(pretty);
 function chordOf(ms){
   const bass=ms[0], set=[...new Set(ms.map(pc))];
-  if(set.length<2) return null;
+  if(set.length<3) return null; /* 2音までは音程で表示 */
   let best=null;
   for(const r of set){
     const iv=set.map(p=>pc(p-r)).sort((a,b)=>a-b).join(",");
@@ -398,7 +398,7 @@ function show(){
   pn.textContent=ms.map(m=>nm(m,true)).join(" ・ ");
   const c=chordOf(ms);
   if(c){ ch.innerHTML=c(0); }
-  else if(ms.length===2){ const d=ms[1]-ms[0]; ch.innerHTML=(d===12?"オクターブ":d>12?IV[d%12]+"<small>(+1oct)</small>":IV[d]); }
+  else if(ms.length===2&&ms[0]!==ms[1]){ const d=ms[1]-ms[0]; ch.innerHTML=(d===12?"オクターブ":d>12?IV[d%12]+"<small>(+1oct)</small>":IV[d]); }
   else if(ms.length===1){ ch.innerHTML=pretty(EN[pc(ms[0])])+"<small>"+(Math.floor(ms[0]/12)-1)+"</small>"; }
   else ch.innerHTML="&nbsp;";
   if(trans){
