@@ -43,7 +43,7 @@
     67: [{ keys: L.slice() }],
     68: [{ keys: L.concat(["gs"]) }],
     69: [{ keys: ["k1", "k2"] }],
-    70: [{ name: "ビスB♭", keys: ["k1", "bis"] }, { name: "1-1(ワン・アンド・ワン)", keys: ["k1", "k4"] }, { name: "サイドB♭", keys: ["k1", "sBb"] }],
+    70: [{ name: "ビスB♭", keys: ["k1", "bis"] }, { name: "1-1", keys: ["k1", "k4"] }, { name: "サイドB♭", keys: ["k1", "sBb"] }],
     71: [{ keys: ["k1"] }],
     72: [{ keys: ["k2"] }, { name: "サイドC", keys: ["k1", "sC"] }],
     73: [{ name: "すべて開放", keys: [] }]
