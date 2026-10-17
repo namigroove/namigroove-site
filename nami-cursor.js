@@ -1,3 +1,73 @@
+/* クリック・タップした場所で、ドット絵の泡がふくらんで弾ける */
+(function () {
+  if (window.namiBubble) return; window.namiBubble = true;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var PX = 3;                       // ドット1粒の大きさ
+  var COLORS = ["#6fb7e5", "#9fd6ff", "#ffffff", "#396cdf"];
+  var cv, ctx, items = [], raf = 0, dpr = 1;
+  function setup() {
+    cv = document.createElement("canvas");
+    cv.setAttribute("aria-hidden", "true");
+    cv.style.cssText = "position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:2147483646";
+    document.body.appendChild(cv); ctx = cv.getContext("2d"); resize();
+    window.addEventListener("resize", resize);
+  }
+  function resize() { dpr = Math.min(2, window.devicePixelRatio || 1); cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; }
+  function dot(x, y, c) { ctx.fillStyle = c; ctx.fillRect(Math.round(x / PX) * PX, Math.round(y / PX) * PX, PX, PX); }
+  // ドットで描いた円(泡)
+  function ring(cx, cy, r, alpha) {
+    ctx.globalAlpha = alpha;
+    var n = Math.max(8, Math.round(r * 1.6));
+    for (var i = 0; i < n; i++) { var a = i / n * Math.PI * 2; dot(cx + Math.cos(a) * r, cy + Math.sin(a) * r, "#6fb7e5"); }
+    dot(cx - r * 0.45, cy - r * 0.45, "#ffffff"); dot(cx - r * 0.45 + PX, cy - r * 0.45, "#ffffff"); dot(cx - r * 0.45, cy - r * 0.45 + PX, "#ffffff");
+    ctx.globalAlpha = 1;
+  }
+  function spawn(x, y) {
+    items.push({ kind: "bubble", x: x, y: y, t: 0 });
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function pop(b) {
+    var n = 10;
+    for (var i = 0; i < n; i++) {
+      var a = i / n * Math.PI * 2 + Math.random() * 0.4, sp = 1.6 + Math.random() * 1.8;
+      items.push({ kind: "bit", x: b.x + Math.cos(a) * 12, y: b.y + Math.sin(a) * 12, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 0.6, t: 0,
+        c: COLORS[i % COLORS.length], s: Math.random() < 0.35 ? 2 : 1 });
+    }
+  }
+  function tick() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, innerWidth, innerHeight);
+    var next = [];
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i]; it.t++;
+      if (it.kind === "bubble") {
+        var k = it.t / 12;                       // 約0.2秒でふくらむ
+        var r = 4 + 10 * (1 - Math.pow(1 - Math.min(1, k), 2));
+        ring(it.x, it.y - it.t * 0.4, r, 1);
+        if (it.t >= 12) { it.y -= it.t * 0.4; pop(it); } else next.push(it);
+      } else {
+        it.x += it.vx; it.y += it.vy; it.vy += 0.06; it.vx *= 0.96;
+        var life = 1 - it.t / 32;
+        if (life > 0) {
+          ctx.globalAlpha = life;
+          for (var dx = 0; dx < it.s; dx++) for (var dy = 0; dy < it.s; dy++) dot(it.x + dx * PX, it.y + dy * PX, it.c);
+          ctx.globalAlpha = 1; next.push(it);
+        }
+      }
+    }
+    items = next;
+    raf = items.length ? requestAnimationFrame(tick) : 0;
+    if (!raf) ctx.clearRect(0, 0, innerWidth, innerHeight);
+  }
+  function onDown(e) {
+    if (e.button && e.button !== 0) return;
+    if (!cv) setup();
+    if (items.length > 120) return;
+    spawn(e.clientX, e.clientY);
+  }
+  function start() { document.addEventListener("pointerdown", onDown, { passive: true }); }
+  if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
+})();
+
 /* なみぐるカーソル:ページ読み込み中(Now Loading)と404ページで、マウスカーソルをなみぐるにする */
 (function () {
   if (window.namiCursor) return;
