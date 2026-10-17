@@ -44,6 +44,23 @@ const key = (s) => decode(s).toLowerCase()
   .replace(/[^a-z0-9ぁ-んァ-ヶー一-龠々]/g, "");
 const sameSong = (a, b) => a.length >= 3 && b.length >= 3 && (a.startsWith(b) || b.startsWith(a));
 
+// 表記の統一(Remixは「曲名 - namigroove remix -」、feat.は「feat. ○○」)
+function tidyTitle(t, type) {
+  t = t.replace(/\s*（/g, " (").replace(/）/g, ")").replace(/[–—]/g, "-");
+  if (type === "remix" || /namigroove\s+(remix|flip)/i.test(t)) {
+    t = t.replace(/\s*\(\s*namigroove\s+(remix|flip)\s*\)/i, (_, k) => ` - namigroove ${k.toLowerCase()} -`)
+         .replace(/\s*-\s*namigroove\s+remix\s*-/i, " - namigroove remix -");
+  }
+  // 「み む か わ」のような1文字ずつの空白を詰める
+  const [head, ...tail] = t.split(" - ");
+  const tok = head.trim().split(/\s+/);
+  if (tok.length >= 4 && tok.filter((x) => [...x].length <= 2).length / tok.length >= 0.8) {
+    t = [tok.join(""), ...tail].join(" - ");
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
+const tidyBy = (b) => (b || "").replace(/feat\.\s*/gi, "feat. ").trim();
+
 function parse(raw) {
   const title0 = decode(raw);
   const tags = [...title0.matchAll(/【([^】]*)】/g)].map((m) => m[1]).join(" ");
@@ -59,7 +76,7 @@ function parse(raw) {
   const [head, ...rest] = clean.split(/\s+(?:\/|／)\s+|／/);
   let by = rest.join(" / ").replace(/なみぐる|namigroove/gi, "").replace(/^[\s\-–&]+|[\s\-–&]+$/g, "").trim();
   if (!by && /EP|Album|Single/i.test(tags)) by = tags.replace(/_/g, " ");
-  return { title: head.replace(/\s+なみぐる\s+feat\..*$/, "").trim(), by, type };
+  return { title: tidyTitle(head.replace(/\s+なみぐる\s+feat\..*$/, "").trim(), type), by: tidyBy(by), type };
 }
 
 function thumb(p) {

@@ -39,6 +39,23 @@ const videos = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map(([, e]) => (
 })).filter((v) => v.id);
 
 // 「【提供】曲名 / なみぐる feat.〇〇」→ 曲名・クレジット・種別に分ける
+// 表記の統一(Remixは「曲名 - namigroove remix -」、feat.は「feat. ○○」)
+function tidyTitle(t, type) {
+  t = t.replace(/\s*（/g, " (").replace(/）/g, ")").replace(/[–—]/g, "-");
+  if (type === "remix" || /namigroove\s+(remix|flip)/i.test(t)) {
+    t = t.replace(/\s*\(\s*namigroove\s+(remix|flip)\s*\)/i, (_, k) => ` - namigroove ${k.toLowerCase()} -`)
+         .replace(/\s*-\s*namigroove\s+remix\s*-/i, " - namigroove remix -");
+  }
+  // 「み む か わ」のような1文字ずつの空白を詰める
+  const [head, ...tail] = t.split(" - ");
+  const tok = head.trim().split(/\s+/);
+  if (tok.length >= 4 && tok.filter((x) => [...x].length <= 2).length / tok.length >= 0.8) {
+    t = [tok.join(""), ...tail].join(" - ");
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
+const tidyBy = (b) => (b || "").replace(/feat\.\s*/gi, "feat. ").trim();
+
 function parse(raw) {
   const lower = raw.toLowerCase();
   let type = "original";
@@ -53,7 +70,7 @@ function parse(raw) {
     .replace(/なみぐる|namigroove/gi, "")
     .replace(/^[\s\-–&]+|[\s\-–&]+$/g, "")
     .trim();
-  return { title: head.trim(), by, type };
+  return { title: tidyTitle(head.trim(), type), by: tidyBy(by), type };
 }
 
 const norm = (s) => s.toLowerCase().replace(/【[^】]*】/g, "")
