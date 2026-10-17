@@ -384,9 +384,14 @@ const SND={
   ohh(t,v){const hp=filt("highpass",7000),bp=filt("bandpass",10000,0.8);
     if(kit==="909"){noise(t,1.2,hp);metal(t,1.2,hp,1.6);}else metal(t,1.2,hp);
     hp.connect(bp);const g=vca(t,(kit==="909"?0.3:0.26)*v,0.17);bp.connect(g);ohhGain=g;},
-  ride(t,v){const hp=filt("highpass",4500),bp=filt("bandpass",7500,0.7);metal(t,2.5,hp,kit==="909"?2.2:1.8);hp.connect(bp);bp.connect(vca(t,0.12*v,0.6));
-    const b2=filt("bandpass",3800,3);tone("sine",3800,t,0.4,b2);b2.connect(vca(t,0.06*v,0.15));},
-  crash(t,v){const hp=filt("highpass",5000);noise(t,3,hp);metal(t,3,hp,2.4);hp.connect(vca(t,0.16*v,0.75,0.004));},
+  ride(t,v){ /* 金属音は高域を削って控えめに、ノイズのシャーッで包む(丸めの音) */
+    const mh=filt("highpass",2400),ml=filt("lowpass",kit==="909"?7000:6000,0.5),mg=ac.createGain();mg.gain.value=0.45;
+    metal(t,2.5,mh,kit==="909"?2.2:1.8);mh.connect(ml);ml.connect(mg);mg.connect(vca(t,0.12*v,0.55,0.003));
+    const nb=filt("bandpass",5500,0.6),nl=filt("lowpass",8000);noise(t,2.5,nb);nb.connect(nl);nl.connect(vca(t,0.07*v,0.45,0.004));
+    const b2=filt("bandpass",2600,4);tone("sine",2600,t,0.5,b2);b2.connect(vca(t,0.05*v,0.18));},
+  crash(t,v){ /* ノイズ中心にして高域をなだらかに。立ち上がりも少しやわらかく */
+    const nb=filt("bandpass",5000,0.45),nl=filt("lowpass",kit==="909"?9500:8500,0.4);noise(t,3,nb);nb.connect(nl);nl.connect(vca(t,0.2*v,0.7,0.008));
+    const mh=filt("highpass",3000),ml=filt("lowpass",6500,0.5);metal(t,2,mh,2.4);mh.connect(ml);ml.connect(vca(t,0.035*v,0.45,0.008));},
   tomh(t,v){tom(t,v,kit==="909"?220:180);},tomm(t,v){tom(t,v,kit==="909"?160:130);},toml(t,v){tom(t,v,kit==="909"?115:95);},
   tamb(t,v){const hp=filt("highpass",6500),bp=filt("bandpass",9000,2);
     [0,0.015,0.03].forEach((d,i)=>{noise(t+d,0.2,hp);metal(t+d,0.2,hp,3);});hp.connect(bp);bp.connect(vca(t,0.4*v,0.06));},
