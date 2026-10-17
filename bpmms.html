@@ -188,7 +188,9 @@ footer a{color:var(--sea)}
 .ro .val small{font-family:var(--f-mono);font-size:13px;color:var(--ink-soft);margin-left:4px}
 .ro .hint{font-size:11px;color:var(--ink-soft)}
 .ro.copied .hint{color:var(--sea);font-weight:700}
-@media (max-width:400px){.readouts,.rev{grid-template-columns:1fr}}
+.readouts{grid-template-columns:repeat(3,1fr)}
+@media (max-width:640px){.readouts{grid-template-columns:1fr 1fr}.readouts .ro.main{grid-column:1/-1}}
+@media (max-width:400px){.rev{grid-template-columns:1fr}}
 .ph{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .ph h2{font-family:var(--f-display);font-weight:400;font-size:22px}
 table{width:100%;border-collapse:collapse;font-size:14px}
@@ -272,6 +274,7 @@ tr.hl td{color:var(--sea);font-weight:700}
 
   <div class="readouts">
     <button class="ro main" type="button" id="beat"><span class="name">1拍<em>4分音符</em></span><span class="val"><span id="v-beat">400</span><small>ms</small></span><span class="hint">タップでコピー</span></button>
+    <button class="ro" type="button" id="half"><span class="name">半拍<em>8分音符</em></span><span class="val"><span id="v-half">200</span><small>ms</small></span><span class="hint">タップでコピー</span></button>
     <button class="ro" type="button" id="dot8"><span class="name">付点8分<em>ディレイの定番</em></span><span class="val"><span id="v-dot8">300</span><small>ms</small></span><span class="hint">タップでコピー</span></button>
   </div>
 
@@ -347,7 +350,7 @@ const show=ms=>unit==="hz"?fmt(1000/ms):fmt(ms);
 function render(){
   const b=parseFloat(bpmIn.value); if(!(b>0)) return;
   const beat=60000/b;
-  $("v-beat").textContent=fmt(beat); $("v-dot8").textContent=fmt(beat*0.75);
+  $("v-beat").textContent=fmt(beat); $("v-half").textContent=fmt(beat/2); $("v-dot8").textContent=fmt(beat*0.75);
   $("rows").innerHTML=NOTES.map(([n,s,m])=>{const t=beat*m,c=v=>`<td><button class="cp" type="button" data-v="${show(v)}" title="タップでコピー">${show(v)}</button></td>`;
     return `<tr class="${m===1||m===.5?"hl":""}"><td>${n}<span class="n">${s}</span></td>${c(t)}${c(t*1.5)}${c(t*2/3)}</tr>`;}).join("");
   document.querySelector("thead th:nth-child(2)").textContent="通常("+(unit==="hz"?"Hz":"ms")+")";
@@ -406,7 +409,7 @@ function copyRo(el,valId){
 $("rows").addEventListener("click",e=>{const b=e.target.closest(".cp");if(!b)return;const v=b.dataset.v;
   const done=()=>{b.classList.add("done");b.textContent="コピー";setTimeout(()=>{b.classList.remove("done");b.textContent=v},1000);};
   try{navigator.clipboard.writeText(v).then(done,()=>{})}catch(err){}});
-[["beat","v-beat"],["dot8","v-dot8"],["rvPre","v-pre"],["rvDec","v-dec"]].forEach(([b,v])=>$(b).onclick=()=>copyRo($(b),v));
+[["beat","v-beat"],["half","v-half"],["dot8","v-dot8"],["rvPre","v-pre"],["rvDec","v-dec"]].forEach(([b,v])=>$(b).onclick=()=>copyRo($(b),v));
 
 /* 切り替え */
 function segInit(el,key,cur,on){
