@@ -500,14 +500,17 @@ const WP = Promise.all([fetch(WP_API).then(r=>r.ok?r.json():Promise.reject()), W
   const notice = new Set(cats.filter(isNotice).map(c=>c.id)), hide = new Set(cats.filter(c=>c.slug==="hidden").map(c=>c.id));
   return posts.filter(p=>!(p.categories||[]).some(id=>hide.has(id))).map(p=>({d:p.date.slice(0,10), type:(p.categories||[]).some(id=>notice.has(id))?"notice":"blog", src:"wp", t:unhtml(p.title.rendered), u:p.link}));
 }).catch(()=>null);
+/* ミュージック・ムービーの投稿もブログとして載せる(固定ページ以外はすべてコンテンツ) */
+const WP_MEDIA = Promise.all(["music","movie"].map(t=>fetch(`https://www.namigroove.com/wp-json/wp/v2/${t}?per_page=100&_fields=date,link,title`).then(r=>r.ok?r.json():[]).catch(()=>[])))
+  .then(a=>a.flat().map(p=>({d:p.date.slice(0,10), type:"blog", src:"wp", t:unhtml(p.title.rendered), u:p.link})));
 const XP = fetch("data/x-posts.json").then(r=>r.json()).then(d=>d.posts.map(p=>({d:p.date, type:p.type, t:p.text, u:"https://x.com/namigroove/status/"+p.id}))).catch(()=>[]);
 /* 重複をまとめる:サイト記事を優先し、同じ話題のXポスト(前後10日・文面が半分以上一致)は載せない */
 const normT = s => s.toLowerCase().replace(/https?:\/\/\S+/g,"").replace(/#\S+/g,"").replace(/[^0-9a-zぁ-んァ-ヶー一-龠々]/g,"");
 const grams = s => { const n=normT(s), g=new Set(); for(let i=0;i<n.length-1;i++) g.add(n.slice(i,i+2)); return g; };
 const simT = (a,b) => { const A=grams(a), B=grams(b); if(!A.size||!B.size) return 0; let k=0; A.forEach(x=>{ if(B.has(x)) k++; }); return k/Math.min(A.size,B.size); };
 const near = (a,b) => Math.abs(new Date(a)-new Date(b))/864e5 <= 10;
-Promise.all([WP,XP]).then(([wp,xp])=>{
-  const list=[...(wp||NEWS)];
+Promise.all([WP,WP_MEDIA,XP]).then(([wp,media,xp])=>{
+  const list=[...(wp||NEWS), ...media];
   for(const x of xp){ if(!list.some(o=>near(o.d,x.d) && simT(o.t,x.t)>=0.5)) list.push(x); }
   NEWS=list; renderNews();
 });
