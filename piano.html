@@ -179,6 +179,8 @@ footer a{color:var(--sea)}
 .kb .lb{position:absolute;left:0;right:0;bottom:8px;text-align:center;font:11px var(--f-mono);color:#7a87a8;pointer-events:none;white-space:nowrap}
 .kb .b .lb{bottom:6px;color:#c9d3e8;font-size:9px}
 .kb .w.on .lb{color:var(--ink)}
+.inst-row{display:flex;justify-content:center;margin-bottom:12px}
+.inst-row .seg{justify-content:center}
 .midi-st{font-size:12px;color:var(--ink-soft)}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
@@ -229,6 +231,15 @@ footer a{color:var(--sea)}
       <div class="ptrans" id="ptrans">&nbsp;</div>
     </div>
 
+    <div class="inst-row"><span class="seg" id="instSeg" role="group" aria-label="音色">
+      <button type="button" data-i="piano" aria-pressed="true">ピアノ</button>
+      <button type="button" data-i="epiano" aria-pressed="false">エレピ</button>
+      <button type="button" data-i="organ" aria-pressed="false">オルガン</button>
+      <button type="button" data-i="pad" aria-pressed="false">パッド</button>
+      <button type="button" data-i="lead" aria-pressed="false">リード</button>
+      <button type="button" data-i="chip" aria-pressed="false">8bit</button>
+      <button type="button" data-i="bell" aria-pressed="false">ベル</button>
+    </span></div>
     <div class="kb-bar">
       <button class="btn round" type="button" id="octDown" aria-label="1オクターブ下へ">‹</button>
       <span class="oct num" id="octLbl">C3〜</span>
@@ -331,37 +342,105 @@ function audio(){
   return ac;
 }
 const voices=new Map(); /* midi -> voice */
+let inst=store.get("pianoInst","piano");
+const waves={};
+function pwave(key,amps){ /* 倍音の強さの並びから波形を作る(作ったら使い回す) */
+  if(!waves[key]){const re=new Float32Array(amps.length+1),im=new Float32Array(amps.length+1);amps.forEach((a,i)=>im[i+1]=a);waves[key]=ac.createPeriodicWave(re,im);}
+  return waves[key];
+}
+function osc(a,type,f,t,dest,detune){const o=a.createOscillator();if(typeof type==="string")o.type=type;else o.setPeriodicWave(type);o.frequency.value=f;if(detune)o.detune.value=detune;o.connect(dest);o.start(t);return o;}
+function noiseHit(a,t,dest,freq,amt,len){
+  const nb=a.createBuffer(1,Math.floor(a.sampleRate*len),a.sampleRate),nd=nb.getChannelData(0);
+  for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*Math.pow(1-i/nd.length,6);
+  const ns=a.createBufferSource(),nf=a.createBiquadFilter(),ng=a.createGain();ns.buffer=nb;nf.type="bandpass";nf.frequency.value=freq;nf.Q.value=0.8;ng.gain.value=amt;
+  ns.connect(nf).connect(ng).connect(dest);ns.start(t);return ns;
+}
+/* 音色ごとの作り方:{env(音量), srcs(止める音源), rel(離したときの消え方), rev(響きの量)} を返す */
+const INST={
+  piano(a,f,v,t,env){
+    const lp=a.createBiquadFilter();lp.type="lowpass";lp.Q.value=0.4;
+    const bright=Math.min(14000,f*(5+v*12)), dark=Math.min(9000,Math.max(f*2.2,600));
+    const tau=Math.max(0.35,Math.min(4.5,2.6*Math.pow(440/f,0.55)));
+    lp.frequency.setValueAtTime(bright,t);lp.frequency.setTargetAtTime(dark,t+0.01,tau*0.35);
+    const peak=0.28*Math.pow(v,1.4)*Math.min(1.3,Math.pow(261/f,0.18));
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(peak,t+0.004);
+    env.gain.setTargetAtTime(peak*0.45,t+0.005,0.09);env.gain.setTargetAtTime(0.0001,t+0.12,tau);
+    const w=pwave("piano",Array.from({length:24},(_,i)=>{const n=i+1;return (1/Math.pow(n,1.35))*(n%2?1:0.82)*(n===1?1.25:1);}));
+    const s=[osc(a,w,f,t,lp,-1.8),osc(a,w,f,t,lp,1.8),noiseHit(a,t,env,Math.min(6000,f*3),0.05*v,0.03)];
+    lp.connect(env);
+    return {srcs:s,rel:0.07,rev:1,end:t+tau*7+0.2};
+  },
+  epiano(a,f,v,t,env){ /* FM:サイン波をサイン波で揺らす(ローズっぽい) */
+    const tau=Math.max(0.5,Math.min(3.5,1.8*Math.pow(440/f,0.4)));
+    const car=a.createOscillator();car.type="sine";car.frequency.value=f;
+    const mod=a.createOscillator();mod.type="sine";mod.frequency.value=f;const mg=a.createGain();
+    mg.gain.setValueAtTime(f*(0.6+2.2*v),t);mg.gain.setTargetAtTime(f*0.25,t,0.25);mod.connect(mg).connect(car.frequency);
+    const tine=a.createOscillator();tine.type="sine";tine.frequency.value=f*14;const tg=a.createGain(); /* 打鍵の「チン」 */
+    tg.gain.setValueAtTime(f*1.5*v,t);tg.gain.setTargetAtTime(0,t,0.02);tine.connect(tg).connect(car.frequency);
+    car.connect(env);[car,mod,tine].forEach(o=>o.start(t));
+    const peak=0.32*Math.pow(v,1.2);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(peak,t+0.003);env.gain.setTargetAtTime(0.0001,t+0.01,tau);
+    return {srcs:[car,mod,tine],rel:0.09,rev:0.9,end:t+tau*7};
+  },
+  organ(a,f,v,t,env){ /* ドローバー風:倍音を足し算。押している間ずっと鳴る */
+    const w=pwave("organ",[1,0.75,0.5,0.45,0,0.3,0,0.25]);
+    const s=[osc(a,w,f,t,env,-3),osc(a,w,f,t,env,3),osc(a,"sine",f/2,t,env),noiseHit(a,t,env,3000,0.04,0.012)];
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.11,t+0.006);
+    return {srcs:s,rel:0.03,rev:0.7};
+  },
+  pad(a,f,v,t,env){ /* ノコギリ波を少しずつずらして重ねる。ふわっと出て、ふわっと消える */
+    const lp=a.createBiquadFilter();lp.type="lowpass";lp.Q.value=0.6;
+    lp.frequency.setValueAtTime(f*1.5,t);lp.frequency.linearRampToValueAtTime(Math.min(8000,f*5),t+0.8);
+    const s=[-9,0,9].map(d=>osc(a,"sawtooth",f,t,lp,d));lp.connect(env);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.07*(0.6+0.4*v),t+0.35);
+    return {srcs:s,rel:0.45,rev:1.6};
+  },
+  lead(a,f,v,t,env){ /* ノコギリ波2本+ちょっとビブラート */
+    const lp=a.createBiquadFilter();lp.type="lowpass";lp.Q.value=3;
+    lp.frequency.setValueAtTime(Math.min(12000,f*10),t);lp.frequency.setTargetAtTime(Math.min(9000,f*4),t,0.15);
+    const s=[osc(a,"sawtooth",f,t,lp,-6),osc(a,"sawtooth",f,t,lp,6),osc(a,"square",f/2,t,lp)];
+    const lfo=a.createOscillator(),lg=a.createGain();lfo.frequency.value=5.5;lg.gain.setValueAtTime(0,t);lg.gain.linearRampToValueAtTime(9,t+0.5);
+    lfo.connect(lg);s.forEach(o=>lg.connect(o.detune));lfo.start(t);s.push(lfo);
+    lp.connect(env);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.09*(0.6+0.4*v),t+0.008);env.gain.setTargetAtTime(0.065*(0.6+0.4*v),t+0.01,0.2);
+    return {srcs:s,rel:0.06,rev:0.8};
+  },
+  chip(a,f,v,t,env){ /* ファミコンっぽい矩形波(デューティ25%) */
+    const w=pwave("pulse25",Array.from({length:40},(_,i)=>{const n=i+1;return Math.sin(Math.PI*n*0.25)/n;}));
+    const s=[osc(a,w,f,t,env)];
+    env.gain.setValueAtTime(0.085,t);env.gain.setValueAtTime(0.07,t+0.06);
+    return {srcs:s,rel:0.012,rev:0.35};
+  },
+  bell(a,f,v,t,env){ /* FM:はんぱな比率で揺らして金属っぽく */
+    const tau=Math.max(0.6,Math.min(4,2.4*Math.pow(440/f,0.3)));
+    const car=a.createOscillator();car.type="sine";car.frequency.value=f*2;
+    const mod=a.createOscillator();mod.type="sine";mod.frequency.value=f*2*3.5;const mg=a.createGain();
+    mg.gain.setValueAtTime(f*2*(1.2+2*v),t);mg.gain.setTargetAtTime(f*0.4,t,tau*0.4);mod.connect(mg).connect(car.frequency);
+    const fund=a.createOscillator();fund.type="sine";fund.frequency.value=f*2;const fg=a.createGain();fg.gain.value=0.5;fund.connect(fg).connect(env);
+    car.connect(env);[car,mod,fund].forEach(o=>o.start(t));
+    const peak=0.2*Math.pow(v,1.1);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(peak,t+0.002);env.gain.setTargetAtTime(0.0001,t+0.005,tau);
+    return {srcs:[car,mod,fund],rel:0.25,rev:1.4,end:t+tau*7};
+  }
+};
 function noteOn(m,vel){
   const a=audio(), t=a.currentTime, f=440*Math.pow(2,(m-69)/12);
   if(voices.has(m)) release(m,true);
   const v=Math.max(0.12,Math.min(1,vel));
-  const out=a.createGain(), lp=a.createBiquadFilter(), env=a.createGain();
-  lp.type="lowpass"; lp.Q.value=0.4;
-  const bright=Math.min(14000,f*(5+v*12)), dark=Math.min(9000,Math.max(f*2.2,600));
-  const tau=Math.max(0.35,Math.min(4.5,2.6*Math.pow(440/f,0.55))); /* 低い音ほど長く響く */
-  lp.frequency.setValueAtTime(bright,t); lp.frequency.setTargetAtTime(dark,t+0.01,tau*0.35);
-  const peak=0.28*Math.pow(v,1.4)*Math.min(1.3,Math.pow(261/f,0.18));
-  env.gain.setValueAtTime(0.0001,t); env.gain.linearRampToValueAtTime(peak,t+0.004);
-  env.gain.setTargetAtTime(peak*0.45,t+0.005,0.09); /* 打鍵直後にすっと下がって */
-  env.gain.setTargetAtTime(0.0001,t+0.12,tau);       /* そのあと長く減衰 */
-  const oscs=[];
-  for(const d of [-1.8,1.8]){const o=a.createOscillator();o.setPeriodicWave(wave);o.frequency.value=f;o.detune.value=d;o.connect(lp);o.start(t);oscs.push(o);}
-  /* ハンマーの「コツッ」 */
-  const nb=a.createBuffer(1,Math.floor(a.sampleRate*0.03),a.sampleRate),nd=nb.getChannelData(0);
-  for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*Math.pow(1-i/nd.length,6);
-  const ns=a.createBufferSource(),nf=a.createBiquadFilter(),ng=a.createGain();ns.buffer=nb;nf.type="bandpass";nf.frequency.value=Math.min(6000,f*3);nf.Q.value=0.8;ng.gain.value=0.05*v;
-  ns.connect(nf).connect(ng).connect(env);ns.start(t);
-  lp.connect(env); env.connect(out); out.gain.value=0.5; out.connect(comp); out.connect(rev);
-  const stopAt=t+tau*7+0.2; oscs.forEach(o=>o.stop(stopAt));
-  voices.set(m,{env,oscs,held:true,t});
+  const env=a.createGain(), out=a.createGain(), rg=a.createGain();
+  const vc=(INST[inst]||INST.piano)(a,f,v,t,env);
+  env.connect(out); out.gain.value=0.5; out.connect(comp);
+  rg.gain.value=vc.rev; out.connect(rg); rg.connect(rev);
+  if(vc.end) vc.srcs.forEach(o=>{try{o.stop(vc.end)}catch(e){}});
+  voices.set(m,{env,srcs:vc.srcs,rel:vc.rel,held:true,t});
 }
 function release(m,force){
   const vc=voices.get(m); if(!vc) return;
   vc.held=false;
   if(sustain&&!force) return;
   const t=ac.currentTime;
-  vc.env.gain.cancelScheduledValues(t); vc.env.gain.setValueAtTime(vc.env.gain.value,t); vc.env.gain.setTargetAtTime(0.0001,t,0.07);
-  vc.oscs.forEach(o=>{try{o.stop(t+0.6)}catch(e){}});
+  vc.env.gain.cancelScheduledValues(t); vc.env.gain.setValueAtTime(Math.max(0.0001,vc.env.gain.value),t); vc.env.gain.setTargetAtTime(0.0001,t,vc.rel);
+  vc.srcs.forEach(o=>{try{o.stop(t+vc.rel*8+0.05)}catch(e){}});
   voices.delete(m);
 }
 function setSustain(on){
@@ -472,6 +551,7 @@ function segInit(el,key,cur,on){
 segInit($("transSeg"),"t",trans,v=>{trans=+v;store.set("trans",trans);build();show();});
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);build();show();});
 segInit($("lblSeg"),"l",lbl,v=>{lbl=v;store.set("pianoLbl",lbl);build();});
+segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("pianoInst",inst);});
 $("vol").value=vol;$("vol").addEventListener("input",e=>{vol=+e.target.value;store.set("pianoVol",vol);if(master)master.gain.value=vol*0.9;});
 
 /* MIDIキーボード */
