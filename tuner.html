@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>チューナー&amp;メトロノーム – なみぐる！</title>
+<meta name="description" content="ブラウザだけで使える無料のチューナーとメトロノーム。インストール不要、サックスなどの移調楽器表示、タップテンポ、拍子・分割にも対応。">
+<meta property="og:title" content="チューナー&amp;メトロノーム – なみぐる！">
+<meta property="og:description" content="ブラウザだけで使える無料のチューナーとメトロノーム。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/tuner/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-180x180.png">
+<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tools.webmanifest">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html">Works</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
+/* EN⇔JP:Google翻訳(英語)との切り替え */
+(()=>{const a=document.getElementById("toEN"); if(!a) return;
+ const tr=/\.translate\.goog$/.test(location.hostname);
+ if(tr){
+  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
+  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
+  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
+  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
+ } else {
+  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
+ }
+})();
+</script>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow">TOOLS</p>
+    <h1>チューナー&amp;メトロノーム</h1>
+    <p class="lead">ブラウザだけで使えます。インストールも登録もいりません。練習や本番前のチューニングにどうぞ。</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="ツールの切り替え">
+    <button type="button" role="tab" id="tab-tuner" aria-controls="tuner" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0 1 16 0"/><path d="m12 16 4-5"/></svg>チューナー</button>
+    <button type="button" role="tab" id="tab-metronome" aria-controls="metronome" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l4 18H5z"/><path d="m12 15 5-9"/></svg>メトロノーム</button>
+  </div>
+
+  <!-- ▼ チューナー -->
+  <section class="panel tuner idle" id="tuner" role="tabpanel" aria-labelledby="tab-tuner">
+    <div class="meter">
+      <svg viewBox="0 0 300 175" aria-hidden="true">
+        <g id="ticks"></g>
+        <path class="zone" d="M140.3 50.4 A110 110 0 0 1 159.7 50.4"/>
+        <text class="lbl" x="34" y="168">-50</text><text class="lbl" x="150" y="38">0</text><text class="lbl" x="266" y="168">+50</text>
+        <g id="needle"><line x1="150" y1="160" x2="150" y2="62"/><circle cx="150" cy="160" r="7"/></g>
+      </svg>
+    </div>
+    <div class="readout" aria-live="polite">
+      <div class="note" id="noteName">A<sub>4</sub></div>
+      <div class="flag" id="flag"><span class="lo">♭ 低い</span><span class="ok">ばっちり</span><span class="hi">高い ♯</span></div>
+      <div class="sub-read"><span><b class="num" id="cents">±0</b> セント</span><span><b class="num" id="hz">---</b> Hz</span></div>
+      <div class="concert" id="concert"></div>
+    </div>
+    <div class="level" aria-hidden="true"><i id="lvl"></i></div>
+    <div class="row">
+      <button class="go" type="button" id="micBtn" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5v-6a3.5 3.5 0 0 0-7 0v6A3.5 3.5 0 0 0 12 15zm6-3.5h-1.6a4.4 4.4 0 0 1-8.8 0H6a6 6 0 0 0 5.2 5.9V21h1.6v-3.6a6 6 0 0 0 5.2-5.9z"/></svg><span>マイクをオン</span></button>
+    </div>
+    <p class="err" id="micErr" hidden></p>
+    <details class="opts" open>
+      <summary>設定</summary>
+      <div class="row">
+        <div class="ctl">楽器
+          <span class="seg" id="transSeg" role="group" aria-label="楽器の調">
+            <button type="button" data-t="0" aria-pressed="true">C(実音)</button>
+            <button type="button" data-t="2" aria-pressed="false" title="テナー・ソプラノサックス、トランペット、クラリネットなど">B♭</button>
+            <button type="button" data-t="9" aria-pressed="false" title="アルト・バリトンサックスなど">E♭</button>
+            <button type="button" data-t="7" aria-pressed="false" title="ホルン、イングリッシュホルンなど">F</button>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="ctl">基準 A =
+          <button class="btn round" type="button" id="refDown" aria-label="基準ピッチを下げる">−</button>
+          <b class="num" id="refHz" style="font-size:16px;color:var(--ink);min-width:4.2em;text-align:center">440 Hz</b>
+          <button class="btn round" type="button" id="refUp" aria-label="基準ピッチを上げる">＋</button>
+        </div>
+        <div class="ctl">表記
+          <span class="seg" id="nameSeg" role="group" aria-label="音名の表記">
+            <button type="button" data-n="en" aria-pressed="true">CDE</button>
+            <button type="button" data-n="ja" aria-pressed="false">ドレミ</button>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn" type="button" id="toneBtn" aria-pressed="false">♪ 基準音を鳴らす</button>
+        <span class="seg" id="toneSeg" role="group" aria-label="基準音の高さ"></span>
+      </div>
+    </details>
+    <p class="note-s">サックスはE♭(アルト・バリトン)かB♭(テナー・ソプラノ)を選ぶと、楽譜どおりの音名で表示します。</p>
+  </section>
+
+  <!-- ▼ メトロノーム -->
+  <section class="panel metro" id="metronome" role="tabpanel" aria-labelledby="tab-metronome" hidden>
+    <div class="bpm-big">
+      <button class="btn round" type="button" id="bpmDown" aria-label="BPMを1下げる">−</button>
+      <output id="bpmOut" class="num" aria-live="polite">120</output>
+      <button class="btn round" type="button" id="bpmUp" aria-label="BPMを1上げる">＋</button>
+    </div>
+    <div class="bpm-sub"><b id="tempoName">Allegro</b> ・ 1拍 <b class="num" id="msOut">500</b> ms</div>
+    <input type="range" id="bpmRange" min="30" max="300" step="1" value="120" aria-label="BPM">
+    <div class="stage">
+      <button type="button" class="nami-btn" id="namiBtn" aria-label="なみぐるをタップしてBPMを計測" title="タップでBPM計測"><img class="nami" id="nami" src="img/namigroove-3d.webp" alt="" width="640" height="565"></button>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </div>
+    <div class="row">
+      <button class="go" type="button" id="playBtn" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg><span>スタート</span></button>
+      <button class="btn" type="button" id="tapBtn" style="padding:12px 22px;font-size:15px">タップ</button>
+    </div>
+    <details class="opts" open>
+      <summary>設定</summary>
+      <div class="row">
+        <div class="ctl">拍子
+          <button class="btn round" type="button" id="beatsDown" aria-label="拍数を減らす">−</button>
+          <b class="num" id="beatsOut" style="font-size:16px;color:var(--ink);min-width:3em;text-align:center">4拍</b>
+          <button class="btn round" type="button" id="beatsUp" aria-label="拍数を増やす">＋</button>
+        </div>
+        <div class="ctl">分割
+          <span class="seg" id="subSeg" role="group" aria-label="1拍の分割">
+            <button type="button" data-s="1" aria-pressed="true">♩</button>
+            <button type="button" data-s="2" aria-pressed="false">♪♪</button>
+            <button type="button" data-s="3" aria-pressed="false">3連</button>
+            <button type="button" data-s="4" aria-pressed="false">16分</button>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="ctl">音色
+          <span class="seg" id="sndSeg" role="group" aria-label="音色">
+            <button type="button" data-v="beep" aria-pressed="true">ピッ</button>
+            <button type="button" data-v="wood" aria-pressed="false">ウッド</button>
+            <button type="button" data-v="cow" aria-pressed="false">カウベル</button>
+          </span>
+        </div>
+        <div class="ctl"><label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="accent" checked>1拍目を強く</label></div>
+        <div class="ctl">音量 <input type="range" id="vol" min="0" max="1" step="0.05" value="0.8" style="width:110px;margin:0" aria-label="音量"></div>
+      </div>
+      <p class="note-s" style="margin-top:12px">なみぐるをタップしてもBPMを計れます。丸をタップすると、その拍だけミュートできます。</p>
+    </details>
+    <p class="kbd"><kbd>Space</kbd>スタート/ストップ <kbd>←</kbd><kbd>→</kbd>BPM±1 <kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd>±10 <kbd>T</kbd>タップ</p>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>チューナーはマイクを使います。初回はブラウザの許可を求められるので「許可」を選んでください。音声は端末の中だけで処理し、どこにも送信しません。</li>
+      <li>iPhoneでメトロノームの音が出ないときは、本体のマナーモードを解除してみてください。</li>
+      <li>音を確かめたいときは <a href="piano.html">ピアノ</a> もどうぞ。コード名やサックスでの音名も出ます。</li>
+      <li>リズム練習やビート作りには <a href="drums.html">ドラムパッド</a> もどうぞ。</li>
+      <li>BPMとミリ秒の換算は <a href="bpmms.html">BPMmsCalculator</a> もどうぞ。</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%83%81%E3%83%A5%E3%83%BC%E3%83%8A%E3%83%BC%26%E3%83%A1%E3%83%88%E3%83%AD%E3%83%8E%E3%83%BC%E3%83%A0%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Ftuner%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Ftuner%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
+let ctx=null;
+function audio(){
+  if(!ctx){const AC=window.AudioContext||window.webkitAudioContext;ctx=new AC({latencyHint:"interactive"});}
+  if(ctx.state!=="running") ctx.resume();
+  return ctx;
+}
+/* カウベル:メトロノームの「カウベル」と同じ音(level 2=アクセント 1=拍 0=分割) */
+function cowSound(ac,dest,time,level){
+  const g=ac.createGain(), amp=[0.35,0.7,1][level];
+  const o1=ac.createOscillator(),o2=ac.createOscillator(),bp=ac.createBiquadFilter();o1.type=o2.type="square";
+  const k=level===2?1.12:level===0?0.9:1;o1.frequency.value=540*k;o2.frequency.value=800*k;bp.type="bandpass";bp.frequency.value=900*k;bp.Q.value=1.5;
+  g.gain.setValueAtTime(0.0001,time);g.gain.exponentialRampToValueAtTime(amp*0.5,time+0.002);g.gain.exponentialRampToValueAtTime(0.0001,time+0.18);
+  o1.connect(bp);o2.connect(bp);bp.connect(g).connect(dest);o1.start(time);o2.start(time);o1.stop(time+0.2);o2.stop(time+0.2);
+}
+function segInit(el,key,cur,on){
+  const btns=[...el.querySelectorAll("button")];
+  const set=v=>btns.forEach(b=>b.setAttribute("aria-pressed",b.dataset[key]===String(v)));
+  set(cur);
+  el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;set(b.dataset[key]);on(b.dataset[key]);});
+}
+
+/* ===== タブ ===== */
+const tabs={tuner:$("tab-tuner"),metronome:$("tab-metronome")};
+function showTab(name,push){
+  for(const [k,b] of Object.entries(tabs)){const on=k===name;b.setAttribute("aria-selected",on);$(k).hidden=!on;}
+  if(name!=="tuner") stopMic();
+  if(push) history.replaceState(null,"","#"+name);
+}
+tabs.tuner.addEventListener("click",()=>showTab("tuner",true));
+tabs.metronome.addEventListener("click",()=>showTab("metronome",true));
+
+/* ===== チューナー ===== */
+const EN=["C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"];
+const JA=["ド","ド#","レ","ミb","ミ","ファ","ファ#","ソ","ラb","ラ","シb","シ"];
+let refA=store.get("refA",440), trans=store.get("trans",0), names=store.get("names","en");
+const tunerEl=$("tuner");
+/* 目盛り */
+(()=>{let s="";for(let c=-50;c<=50;c+=5){const a=(c/50)*55*Math.PI/180,big=c%25===0,r1=big?96:102,r2=112;
+  s+=`<line class="tick${big?" big":""}" x1="${(150+r1*Math.sin(a)).toFixed(1)}" y1="${(160-r1*Math.cos(a)).toFixed(1)}" x2="${(150+r2*Math.sin(a)).toFixed(1)}" y2="${(160-r2*Math.cos(a)).toFixed(1)}"/>`;}
+  $("ticks").innerHTML=s;})();
+function noteHTML(midi,withOct){
+  const n=((midi%12)+12)%12, nm=(names==="ja"?JA:EN)[n];
+  const base=nm.replace(/[#b]$/,""), acc=nm.endsWith("#")?"♯":nm.endsWith("b")?"♭":"";
+  return `${base}${acc?`<sup>${acc}</sup>`:""}${withOct?`<sub>${Math.floor(midi/12)-1}</sub>`:""}`;
+}
+function concertName(midi){const n=((midi%12)+12)%12;return (names==="ja"?JA:EN)[n].replace(/#$/,"♯").replace(/b$/,"♭")+(Math.floor(midi/12)-1);}
+function renderRef(){$("refHz").textContent=refA+" Hz";}
+renderRef();
+$("refDown").onclick=()=>{refA=Math.max(415,refA-1);store.set("refA",refA);renderRef();retone();};
+$("refUp").onclick=()=>{refA=Math.min(466,refA+1);store.set("refA",refA);renderRef();retone();};
+segInit($("transSeg"),"t",trans,v=>{trans=+v;store.set("trans",trans);buildToneSeg();idleView();});
+segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);buildToneSeg();idleView();});
+
+/* 基準音 */
+let toneMidi=store.get("toneMidi",69), toneOsc=null, toneGain=null;
+function buildToneSeg(){
+  const list=[60,62,64,65,67,69,70]; /* 実音 C4〜B♭4 */
+  if(!list.includes(toneMidi)) toneMidi=69;
+  $("toneSeg").innerHTML=list.map(m=>`<button type="button" data-m="${m}" aria-pressed="${m===toneMidi}" title="実音 ${concertName(m)}">${noteHTML(m+trans,false).replace(/<\/?sup>/g,"")}</button>`).join("");
+}
+$("toneSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;toneMidi=+b.dataset.m;store.set("toneMidi",toneMidi);
+  [...$("toneSeg").children].forEach(x=>x.setAttribute("aria-pressed",x===b));retone();});
+buildToneSeg();
+function midiHz(m){return refA*Math.pow(2,(m-69)/12);}
+function retone(){if(toneOsc) toneOsc.frequency.setTargetAtTime(midiHz(toneMidi),ctx.currentTime,0.01);}
+$("toneBtn").onclick=()=>{
+  const ac=audio();
+  if(toneOsc){toneGain.gain.setTargetAtTime(0,ac.currentTime,0.03);const o=toneOsc;setTimeout(()=>o.stop(),200);toneOsc=null;$("toneBtn").setAttribute("aria-pressed","false");$("toneBtn").textContent="♪ 基準音を鳴らす";return;}
+  toneOsc=ac.createOscillator();toneGain=ac.createGain();toneOsc.type="triangle";toneOsc.frequency.value=midiHz(toneMidi);
+  toneGain.gain.value=0;toneGain.gain.setTargetAtTime(0.25,ac.currentTime,0.03);
+  toneOsc.connect(toneGain).connect(ac.destination);toneOsc.start();
+  $("toneBtn").setAttribute("aria-pressed","true");$("toneBtn").textContent="■ 基準音を止める";
+};
+
+/* マイクと音程検出(YIN) */
+let stream=null, analyser=null, buf=null, raf=0, lastT=0, hist=[], lastHeard=0, yinD=null;
+function idleView(){
+  tunerEl.classList.add("idle");tunerEl.classList.remove("in-tune");
+  $("noteName").innerHTML=noteHTML(69+trans,trans===0);$("hz").textContent="---";$("cents").textContent="±0";
+  $("flag").className="flag";$("concert").textContent="";$("needle").style.transform="rotate(0deg)";$("lvl").style.width="0";
+}
+idleView();
+async function startMic(){
+  $("micErr").hidden=true;
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showErr("このブラウザではマイクが使えません。https のページで、Chrome・Safari・Edgeなどの最新版からお試しください。");return;}
+  try{
+    const ac=audio();
+    stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+    const src=ac.createMediaStreamSource(stream);
+    analyser=ac.createAnalyser();analyser.fftSize=4096;src.connect(analyser);
+    buf=new Float32Array(analyser.fftSize);
+    $("micBtn").setAttribute("aria-pressed","true");$("micBtn").querySelector("span").textContent="マイクをオフ";
+    hist=[];lastHeard=0;raf=requestAnimationFrame(loop);
+  }catch(e){
+    showErr(e&&e.name==="NotAllowedError"?"マイクの使用が許可されませんでした。アドレスバーの鍵マークなどからマイクを「許可」にして、もう一度押してください。":e&&e.name==="NotFoundError"?"マイクが見つかりませんでした。接続を確認してください。":"マイクを開始できませんでした("+(e&&e.name||"不明なエラー")+")。");
+    stopMic();
+  }
+}
+function showErr(t){$("micErr").textContent=t;$("micErr").hidden=false;}
+function stopMic(){
+  cancelAnimationFrame(raf);raf=0;
+  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+  analyser=null;$("micBtn").setAttribute("aria-pressed","false");$("micBtn").querySelector("span").textContent="マイクをオン";idleView();
+}
+$("micBtn").onclick=()=>stream?stopMic():startMic();
+
+function yin(x,sr){
+  const tauMin=Math.max(2,Math.floor(sr/1600)), tauMax=Math.min(Math.floor(sr/45),x.length>>1), W=x.length-tauMax;
+  if(!yinD||yinD.length<tauMax+2) yinD=new Float32Array(tauMax+2);
+  const d=yinD; d[0]=1; let run=0, best=-1;
+  for(let t=1;t<=tauMax;t++){
+    let s=0;for(let i=0;i<W;i++){const v=x[i]-x[i+t];s+=v*v;}
+    run+=s; d[t]=run?s*t/run:1;
+  }
+  for(let t=tauMin;t<tauMax;t++){
+    if(d[t]<0.12){while(t+1<tauMax&&d[t+1]<d[t])t++;best=t;break;}
+  }
+  if(best<0){let m=1;for(let t=tauMin;t<tauMax;t++)if(d[t]<m){m=d[t];best=t;}if(m>0.3)return null;}
+  const a=d[best-1],b=d[best],c=d[best+1]??b, den=a-2*b+c;
+  const shift=den?0.5*(a-c)/den:0;
+  return {f:sr/(best+shift),clarity:1-b};
+}
+function loop(t){
+  raf=requestAnimationFrame(loop);
+  if(t-lastT<45) return; lastT=t;
+  analyser.getFloatTimeDomainData(buf);
+  let rms=0;for(let i=0;i<buf.length;i++)rms+=buf[i]*buf[i];rms=Math.sqrt(rms/buf.length);
+  $("lvl").style.width=Math.min(100,rms*600)+"%";
+  const now=performance.now();
+  let r=rms>0.008?yin(buf,ctx.sampleRate):null;
+  if(r&&(r.f<40||r.f>2000)) r=null;
+  if(!r){ if(now-lastHeard>900){ if(!tunerEl.classList.contains("idle")) idleView(); hist=[]; } return; }
+  lastHeard=now;
+  const m=69+12*Math.log2(r.f/refA);
+  if(hist.length&&Math.abs(m-median(hist))>0.7) hist=[];
+  hist.push(m); if(hist.length>5) hist.shift();
+  const mm=median(hist), near=Math.round(mm), cents=(mm-near)*100;
+  const f=refA*Math.pow(2,(mm-69)/12);
+  tunerEl.classList.remove("idle");
+  const ok=Math.abs(cents)<=5; tunerEl.classList.toggle("in-tune",ok);
+  $("noteName").innerHTML=noteHTML(near+trans,trans===0);
+  const rc=Math.round(cents); $("cents").textContent=(rc>0?"+":rc<0?"−":"±")+Math.abs(rc);
+  $("hz").textContent=f.toFixed(1);
+  $("flag").className="flag "+(ok?"ok":cents<0?"lo":"hi");
+  $("concert").textContent=trans?"実音 "+concertName(near):"";
+  $("needle").style.transform=`rotate(${Math.max(-50,Math.min(50,cents))/50*55}deg)`;
+}
+function median(a){const s=[...a].sort((x,y)=>x-y);return s[s.length>>1];}
+
+/* ===== メトロノーム ===== */
+let bpm=store.get("bpm",120), beats=store.get("beats",4), sub=store.get("sub",1), snd=store.get("snd","beep"), vol=store.get("vol",0.8), accentOn=store.get("accent",true);
+let muted=new Set(store.get("muted",[]));
+let playing=false, nextTime=0, step=0, queue=[], worker=null, metroRaf=0, master=null, wakeLock=null, noiseBuf=null;
+const TEMPI=[[40,"Grave"],[60,"Largo"],[66,"Larghetto"],[76,"Adagio"],[108,"Andante"],[120,"Moderato"],[168,"Allegro"],[200,"Presto"],[999,"Prestissimo"]];
+function renderBpm(){
+  $("bpmOut").textContent=bpm;$("bpmRange").value=bpm;
+  $("msOut").textContent=(60000/bpm).toFixed(bpm%3===0||60000%bpm===0?0:1).replace(/\.0$/,"");
+  $("tempoName").textContent=TEMPI.find(([b])=>bpm<b)[1];
+}
+function setBpm(v){bpm=Math.max(30,Math.min(300,Math.round(v)));store.set("bpm",bpm);renderBpm();}
+function renderDots(){
+  $("beatsOut").textContent=beats+"拍";
+  $("dots").innerHTML=Array.from({length:beats},(_,i)=>`<i data-i="${i}" class="${i===0&&accentOn?"acc":""}${muted.has(i)?" mute":""}"></i>`).join("");
+}
+$("dots").addEventListener("click",e=>{const d=e.target.closest("i");if(!d)return;const i=+d.dataset.i;muted.has(i)?muted.delete(i):muted.add(i);store.set("muted",[...muted]);renderDots();});
+$("dots").setAttribute("aria-hidden","false");
+renderBpm();renderDots();
+$("bpmRange").addEventListener("input",e=>setBpm(+e.target.value));
+$("bpmDown").onclick=()=>setBpm(bpm-1);$("bpmUp").onclick=()=>setBpm(bpm+1);
+function setBeats(v){beats=Math.max(1,Math.min(12,v));store.set("beats",beats);muted=new Set([...muted].filter(i=>i<beats));store.set("muted",[...muted]);renderDots();if(step>=beats*sub)step=0;}
+$("beatsDown").onclick=()=>setBeats(beats-1);$("beatsUp").onclick=()=>setBeats(beats+1);
+segInit($("subSeg"),"s",sub,v=>{const b=Math.floor(step/sub);sub=+v;store.set("sub",sub);step=b*sub;});
+segInit($("sndSeg"),"v",snd,v=>{snd=v;store.set("snd",snd);if(!playing)preview();});
+$("vol").value=vol;$("vol").addEventListener("input",e=>{vol=+e.target.value;store.set("vol",vol);if(master)master.gain.value=vol;});
+$("accent").checked=accentOn;$("accent").addEventListener("change",e=>{accentOn=e.target.checked;store.set("accent",accentOn);renderDots();});
+
+function out(){const ac=audio();if(!master){master=ac.createGain();master.gain.value=vol;master.connect(ac.destination);}return ac;}
+function tapBell(){const ac=out();cowSound(ac,master,ac.currentTime,1);}
+function click(time,level){ /* level: 2=アクセント 1=拍 0=分割 */
+  const ac=out(), g=ac.createGain(), amp=[0.35,0.7,1][level];
+  if(snd==="wood"){
+    if(!noiseBuf){noiseBuf=ac.createBuffer(1,ac.sampleRate*0.05,ac.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,4);}
+    const n=ac.createBufferSource(), bp=ac.createBiquadFilter();n.buffer=noiseBuf;bp.type="bandpass";bp.Q.value=4;bp.frequency.value=[1800,2400,3200][level];
+    g.gain.setValueAtTime(amp*1.6,time);n.connect(bp).connect(g).connect(master);n.start(time);n.stop(time+0.05);
+  }else if(snd==="cow"){
+    cowSound(ac,master,time,level);
+  }else{
+    const o=ac.createOscillator();o.type="sine";o.frequency.value=[880,1320,1760][level];
+    g.gain.setValueAtTime(0.0001,time);g.gain.exponentialRampToValueAtTime(amp*0.6,time+0.002);g.gain.exponentialRampToValueAtTime(0.0001,time+0.05);
+    o.connect(g).connect(master);o.start(time);o.stop(time+0.06);
+  }
+}
+function preview(){const ac=out();click(ac.currentTime+0.02,1);}
+function scheduler(){
+  while(nextTime<ctx.currentTime+0.12){
+    const beat=Math.floor(step/sub), onBeat=step%sub===0;
+    const level=onBeat?(beat===0&&accentOn?2:1):0;
+    if(!muted.has(beat)) click(nextTime,level);
+    if(onBeat) queue.push({time:nextTime,beat,acc:level===2,mute:muted.has(beat)});
+    nextTime+=60/bpm/sub;
+    step=(step+1)%(beats*sub);
+  }
+}
+function draw(){
+  metroRaf=requestAnimationFrame(draw);
+  const now=ctx.currentTime-(ctx.outputLatency||0);
+  let cur=null;while(queue.length&&queue[0].time<=now)cur=queue.shift();
+  if(!cur)return;
+  [...$("dots").children].forEach((d,i)=>d.classList.toggle("on",i===cur.beat));
+  if(!cur.mute){const n=$("nami");n.classList.remove("hop","acc");void n.offsetWidth;n.classList.add("hop");if(cur.acc)n.classList.add("acc");}
+}
+function makeWorker(){
+  const src="let id=0;onmessage=e=>{clearInterval(id);if(e.data==='start')id=setInterval(()=>postMessage(0),25)}";
+  try{worker=new Worker(URL.createObjectURL(new Blob([src],{type:"text/javascript"})));worker.onmessage=()=>playing&&scheduler();}
+  catch(e){worker={_id:0,postMessage(m){clearInterval(this._id);if(m==="start")this._id=setInterval(()=>playing&&scheduler(),25)}};}
+}
+async function start(){
+  const ac=out(); if(ac.state!=="running") await ac.resume();
+  if(!worker)makeWorker();
+  playing=true;step=0;queue=[];nextTime=ac.currentTime+0.06;scheduler();worker.postMessage("start");metroRaf=requestAnimationFrame(draw);
+  $("playBtn").setAttribute("aria-pressed","true");$("playBtn").innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="12" height="14" rx="1.5"/></svg><span>ストップ</span>';
+  try{if(navigator.wakeLock)wakeLock=await navigator.wakeLock.request("screen");}catch(e){}
+}
+function stop(){
+  playing=false;if(worker)worker.postMessage("stop");cancelAnimationFrame(metroRaf);queue=[];
+  [...$("dots").children].forEach(d=>d.classList.remove("on"));
+  $("playBtn").setAttribute("aria-pressed","false");$("playBtn").innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg><span>スタート</span>';
+  try{wakeLock&&wakeLock.release();}catch(e){}wakeLock=null;
+}
+$("playBtn").onclick=()=>playing?stop():start();
+document.addEventListener("visibilitychange",async()=>{if(playing&&document.visibilityState==="visible"){try{if(navigator.wakeLock)wakeLock=await navigator.wakeLock.request("screen");}catch(e){}}});
+
+/* タップテンポ(2秒あくとリセット、直近8回の平均) */
+let taps=[];
+function tap(){
+  const t=performance.now();if(taps.length&&t-taps[taps.length-1]>2000)taps=[];
+  taps.push(t);if(taps.length>8)taps.shift();
+  if(taps.length>=2)setBpm(60000/((taps[taps.length-1]-taps[0])/(taps.length-1)));
+}
+function tapFx(el){el.style.transform="scale(.94)";setTimeout(()=>el.style.transform="",80);}
+function namiFx(){const n=$("nami");n.classList.remove("hop","acc");void n.offsetWidth;n.classList.add("hop","acc");}
+for(const [id,fx] of [["tapBtn",()=>tapFx($("tapBtn"))],["namiBtn",namiFx]]){
+  $(id).addEventListener("pointerdown",e=>{e.preventDefault();tapBell();tap();fx();});
+  $(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();tapBell();tap();fx();}});
+}
+
+document.addEventListener("keydown",e=>{
+  if($("metronome").hidden||e.target.closest("input,textarea,select")||e.metaKey||e.ctrlKey||e.altKey)return;
+  if(e.code==="Space"){e.preventDefault();playing?stop():start();}
+  else if(e.key==="ArrowRight"||e.key==="ArrowUp"){e.preventDefault();setBpm(bpm+(e.shiftKey?10:1));}
+  else if(e.key==="ArrowLeft"||e.key==="ArrowDown"){e.preventDefault();setBpm(bpm-(e.shiftKey?10:1));}
+  else if(e.key==="t"||e.key==="T"){tapBell();tap();tapFx($("tapBtn"));}
+});
+
+/* 最初に開くタブ(#metronome 付きのリンクならメトロノーム) */
+showTab(location.hash==="#metronome"?"metronome":"tuner",false);
+window.addEventListener("hashchange",()=>{if(location.hash==="#metronome"||location.hash==="#tuner")showTab(location.hash.slice(1),false)});
+
+/* 共有ボタン */
+const sb=$("shareBtn");
+if(sb) sb.addEventListener("click",async()=>{
+  const data={title:document.title,url:"https://www.namigroove.com/tools/tuner/"};
+  try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);toast("リンクをコピーしました");}catch(e){}
+});
+function toast(t){const d=document.createElement("div");d.className="ng-toast";d.textContent=t;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}
+})();
+</script>
+</body>
+</html>
