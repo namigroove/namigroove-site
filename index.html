@@ -78,6 +78,9 @@ nav.main a:hover{color:#ffffff}
 .puni img{display:block;width:100%;height:auto;transform-origin:50% 92%;animation:puniIdle 3.2s ease-in-out infinite;filter:drop-shadow(0 18px 22px rgba(16,31,69,.18));user-select:none;-webkit-user-drag:none}
 .puni:active img{transform:scale(1.1,.86);animation:none;transition:transform .08s}
 .puni.boing img{animation:puniBoing .75s cubic-bezier(.3,1.6,.5,1)}
+.puni .bpm{display:block;margin-top:6px;text-align:center;font-family:var(--f-display);font-size:13px;letter-spacing:.06em;color:var(--ink-soft);opacity:.75;font-variant-numeric:tabular-nums;white-space:nowrap}
+.puni .bpm.on{color:var(--sea);opacity:1}
+.puni-sp .bpm{font-size:11px;margin-top:2px}
 @keyframes puniIdle{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975) translateY(2px)}}
 @keyframes puniBoing{0%{transform:scale(1.18,.78)}25%{transform:scale(.88,1.14)}45%{transform:scale(1.07,.93)}65%{transform:scale(.97,1.04)}82%{transform:scale(1.015,.985)}100%{transform:scale(1,1)}}
 @media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:center}.puni-pc{display:block;width:100%}}
@@ -290,7 +293,7 @@ footer .mono{font-family:var(--f-mono)}
   <div class="wrap hero">
     <div>
       <p class="eyebrow">VOCALOID Producer / Sax DJ</p>
-      <button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"></button>
+      <button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button>
       <h1><span class="ngname" translate="no">なみぐる</span><span class="en">NAMIGROOVE</span></h1>
       <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。<b>ゲーム・アニメ・CM・VTuber</b>への楽曲提供、作曲、編曲、作詞、映像製作、楽器演奏まで手がけています。</p>
       <div class="cta">
@@ -300,7 +303,7 @@ footer .mono{font-family:var(--f-mono)}
       </div>
       <p class="tide"><span><b>SINCE</b> 2021</span><span>VOCALOID / R&amp;B / Electro Swing / Funk / Sax</span><span>いい波、起こします~(･ω･~)</span></p>
     </div>
-    <button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"></button>
+    <button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button>
   </div>
 
   <canvas class="sea" id="sea" aria-hidden="true"></canvas>
@@ -573,7 +576,12 @@ document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
 <script>
 /* なみぐるをぷにぷに */
-document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
+/* タップした間隔からBPMを計測(2秒あくとリセット、直近8回の平均) */
+var taps=[];
+function tapBpm(){var now=performance.now();if(taps.length&&now-taps[taps.length-1]>2000)taps=[];taps.push(now);if(taps.length>9)taps.shift();
+  var txt="BPM ---";if(taps.length>=2){var iv=(taps[taps.length-1]-taps[0])/(taps.length-1);txt="BPM "+Math.round(60000/iv);}
+  document.querySelectorAll(".puni .bpm").forEach(function(e){e.textContent=txt;e.classList.add("on");});}
+document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){tapBpm();b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
 </script>
 </body>
 </html>
