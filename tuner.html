@@ -68,6 +68,9 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);l
 .row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
 .ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
 .seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.sel{font:500 13px var(--f-body);padding:5px 8px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);max-width:100%}
+#toneSeg{justify-content:center;max-width:420px}
+#toneSeg button{min-width:44px;padding:6px 8px}
 .seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
@@ -227,12 +230,20 @@ footer a{color:var(--sea)}
       <summary>設定</summary>
       <div class="row">
         <div class="ctl">楽器
-          <span class="seg" id="transSeg" role="group" aria-label="楽器の調">
-            <button type="button" data-t="0" aria-pressed="true">C(実音)</button>
-            <button type="button" data-t="2" aria-pressed="false" title="テナー・ソプラノサックス、トランペット、クラリネットなど">B♭</button>
-            <button type="button" data-t="9" aria-pressed="false" title="アルト・バリトンサックスなど">E♭</button>
-            <button type="button" data-t="7" aria-pressed="false" title="ホルン、イングリッシュホルンなど">F</button>
-          </span>
+          <select id="transSel" class="sel" aria-label="楽器の調">
+            <option value="0">C(実音)</option>
+            <option value="-1">D♭管</option>
+            <option value="-2">D管</option>
+            <option value="9">E♭管(アルト・バリトンサックス)</option>
+            <option value="8">E管</option>
+            <option value="7">F管(ホルンなど)</option>
+            <option value="6">G♭管</option>
+            <option value="5">G管</option>
+            <option value="4">A♭管</option>
+            <option value="3">A管(Aクラリネットなど)</option>
+            <option value="2">B♭管(テナー・ソプラノサックス、トランペット、クラリネット)</option>
+            <option value="1">B管</option>
+          </select>
         </div>
       </div>
       <div class="row">
@@ -253,7 +264,7 @@ footer a{color:var(--sea)}
         <span class="seg" id="toneSeg" role="group" aria-label="基準音の高さ"></span>
       </div>
     </details>
-    <p class="note-s">サックスはE♭(アルト・バリトン)かB♭(テナー・ソプラノ)を選ぶと、楽譜どおりの音名で表示します。</p>
+    <p class="note-s">楽器の調は12キーすべてから選べます。サックスはE♭管(アルト・バリトン)かB♭管(テナー・ソプラノ)を選ぶと、楽譜どおりの音名で表示します。基準音も12音すべて鳴らせます。</p>
   </section>
 
   <!-- ▼ メトロノーム -->
@@ -383,13 +394,14 @@ function renderRef(){$("refHz").textContent=refA+" Hz";}
 renderRef();
 $("refDown").onclick=()=>{refA=Math.max(415,refA-1);store.set("refA",refA);renderRef();retone();};
 $("refUp").onclick=()=>{refA=Math.min(466,refA+1);store.set("refA",refA);renderRef();retone();};
-segInit($("transSeg"),"t",trans,v=>{trans=+v;store.set("trans",trans);buildToneSeg();idleView();});
+{const ts=$("transSel");if(![...ts.options].some(o=>+o.value===trans))trans=0;ts.value=String(trans);
+ ts.addEventListener("change",()=>{trans=+ts.value;store.set("trans",trans);buildToneSeg();idleView();});}
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);buildToneSeg();idleView();});
 
 /* 基準音 */
 let toneMidi=store.get("toneMidi",69), toneOsc=null, toneGain=null;
 function buildToneSeg(){
-  const list=[60,62,64,65,67,69,70]; /* 実音 C4〜B♭4 */
+  const list=[60,61,62,63,64,65,66,67,68,69,70,71]; /* 実音 C4〜B4 の12音 */
   if(!list.includes(toneMidi)) toneMidi=69;
   $("toneSeg").innerHTML=list.map(m=>`<button type="button" data-m="${m}" aria-pressed="${m===toneMidi}" title="実音 ${concertName(m)}">${noteHTML(m+trans,false).replace(/<\/?sup>/g,"")}</button>`).join("");
 }
