@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="BPMから1拍・半拍などのms（付点・3連含む）を計算するツール">
+<title>BPMmsCalculator – なみぐる！</title>
+<link rel="canonical" href="https://www.namigroove.com/tools/bpmms/">
+<link rel="icon" href="img/bpmms/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/bpmms/favicon.png">
+<link rel="apple-touch-icon" href="img/bpmms/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BPMmsCalculator">
+<meta property="og:description" content="BPMを入れるだけで、1拍・半拍などのms（付点・3連も）がわかる計算ツール">
+<meta property="og:url" content="https://www.namigroove.com/tools/bpmms/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/bpmms/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=DM+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap">
+<style>
+body{margin:0;font-size:14px}
+/* Layout: one hardware-style panel — BPM dial on top, two big readouts (1拍 / 半拍), then a reference table of other note lengths */
+:root{
+  --bg:#e9ecef; --panel:#f7f8fa; --line:#cdd3da; --fg:#1b2430; --muted:#5f6b7a;
+  --accent:#2f5bd8; --accent-soft:#dfe6fb; --screen:#1d2633; --screen-fg:#9fe3c8;
+  --f-display:"Chakra Petch", "Zen Kaku Gothic New", system-ui, sans-serif;
+  --f-body:"Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  --f-num:"DM Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11161d; --panel:#18202a; --line:#2a3542; --fg:#e4e9ef; --muted:#93a0b0;
+  --accent:#7d9cff; --accent-soft:#1f2a45; --screen:#0b0f14; --screen-fg:#9fe3c8; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11161d; --panel:#18202a; --line:#2a3542; --fg:#e4e9ef; --muted:#93a0b0;
+  --accent:#7d9cff; --accent-soft:#1f2a45; --screen:#0b0f14; --screen-fg:#9fe3c8; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);line-height:1.6;padding:0 16px}
+.wrap{max-width:560px;margin:0 auto;padding-block:32px 48px;display:flex;flex-direction:column;gap:20px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--f-display);font-weight:700;font-size:1.6rem;margin:0;letter-spacing:.02em}
+h1 span{color:var(--accent)}
+.formula{font-family:var(--f-num);font-size:.8rem;color:var(--muted)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:18px}
+.label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:var(--f-display);font-weight:500}
+.bpm-row{display:flex;align-items:center;gap:10px}
+.step{flex:none;width:44px;height:52px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font-family:var(--f-num);font-size:1.1rem;cursor:pointer}
+.step:hover{border-color:var(--accent);color:var(--accent)}
+.screen{flex:1;min-width:0;display:flex;align-items:baseline;justify-content:center;gap:8px;background:var(--screen);border-radius:8px;padding:6px 12px}
+#bpm{width:100%;min-width:0;background:transparent;border:0;color:var(--screen-fg);font-family:var(--f-num);font-weight:500;font-size:2.4rem;text-align:center;font-variant-numeric:tabular-nums;outline:none}
+.screen small{color:var(--screen-fg);opacity:.6;font-family:var(--f-num);font-size:.8rem}
+.screen:focus-within{box-shadow:0 0 0 2px var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:999px;padding:4px 12px;font-family:var(--f-num);font-size:.85rem;cursor:pointer}
+.chip:hover,.chip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+#tap{font-family:var(--f-display);letter-spacing:.08em}
+.presets{display:contents}
+.pre{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.pre.on{border-color:var(--accent);background:var(--accent-soft)}
+.pre .set{border:0;background:transparent;color:var(--fg);padding:4px 4px 4px 12px;font-family:var(--f-num);font-size:.85rem;cursor:pointer}
+.pre.on .set{color:var(--accent)}
+.pre .del{border:0;background:transparent;color:var(--muted);padding:0 10px 0 6px;font-size:.85rem;cursor:pointer;line-height:1}
+.pre .del:hover{color:#d0443a}
+.pre:hover{border-color:var(--accent)}
+.chip.add{border-style:dashed;color:var(--muted);font-family:var(--f-body)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ro{border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:4px;min-width:0;cursor:pointer;background:var(--panel);color:var(--fg);text-align:left;font:inherit}
+.ro.main{border-color:var(--accent);background:var(--accent-soft)}
+.ro .name{font-weight:700;font-size:.95rem}
+.ro .name em{font-style:normal;font-weight:400;color:var(--muted);font-size:.8rem;margin-left:6px}
+.ro .val{font-family:var(--f-num);font-size:clamp(1.8rem,8vw,2.6rem);font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1;overflow-wrap:anywhere}
+.ro .val small{font-size:.9rem;color:var(--muted);margin-left:4px}
+.ro .hint{font-size:.72rem;color:var(--muted)}
+.ro.copied .hint{color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+th{font-family:var(--f-display);font-weight:500;font-size:.72rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+td{font-family:var(--f-num)}
+td:first-child{font-family:var(--f-body)}
+td .n{color:var(--muted);font-family:var(--f-num);font-size:.8rem;margin-left:6px}
+tr.hl td{color:var(--accent)}
+.cp{border:0;background:transparent;color:inherit;font:inherit;font-variant-numeric:tabular-nums;padding:2px 6px;margin:-2px -6px;border-radius:6px;cursor:pointer}
+.cp:hover{background:var(--accent-soft);color:var(--accent)}
+.cp.done{background:var(--accent);color:var(--panel)}.note{font-size:.82rem;color:var(--muted);margin:0}
+@media (max-width:380px){.readouts{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.ng-back{display:inline-block;margin-top:16px;font-size:.8rem;color:var(--muted);text-decoration:none}.ng-back:hover{color:var(--accent)}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="ng-back" href="tools.html">← なみぐる！のツール</a>
+  <header>
+    <h1>BPM<span>ms</span>Calculator</h1>
+    <div class="formula">60000 ÷ BPM = 1拍 (ms)</div>
+  </header>
+
+  <section class="panel">
+    <div class="label">Tempo</div>
+    <div class="bpm-row">
+      <button class="step" id="minus" aria-label="BPMを1下げる">−</button>
+      <label class="screen"><input id="bpm" type="number" inputmode="decimal" min="20" max="400" step="0.1" value="150" aria-label="BPM"><small>BPM</small></label>
+      <button class="step" id="plus" aria-label="BPMを1上げる">+</button>
+    </div>
+    <input id="slider" type="range" min="60" max="220" step="1" value="150" aria-label="BPMスライダー">
+    <div class="tools">
+      <button class="chip" id="tap">TAP</button>
+      <span id="presets" class="presets"></span>
+      <button class="chip add" id="add" title="今のBPMをよく使うテンポに登録">＋ 登録</button>
+    </div>
+  </section>
+
+  <section class="readouts">
+    <button class="ro main" id="beat"><span class="name">1拍<em>1/4</em></span><span class="val"><span id="v-beat">400</span><small>ms</small></span><span class="hint">タップでコピー</span></button>
+    <button class="ro" id="half"><span class="name">半拍<em>1/8</em></span><span class="val"><span id="v-half">200</span><small>ms</small></span><span class="hint">タップでコピー</span></button>
+  </section>
+
+  <section class="panel">
+    <div class="label">Other lengths</div>
+    <table>
+      <thead><tr><th>長さ</th><th>通常</th><th>付点</th><th>3連</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="note">付点 = ×1.5、3連 = ×2/3。数字をタップするとコピーできます。</p>
+  </section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const bpmIn=$('bpm'), slider=$('slider');
+const notes=[
+  ['1小節','4/4',4],['2拍','1/2',2],['1拍','1/4',1],['半拍','1/8',.5],['1/4拍','1/16',.25],['1/8拍','1/32',.125]
+];
+const fmt=v=>{const r=Math.round(v*100)/100;return Number.isInteger(r)?String(r):r.toFixed(2).replace(/0$/,'')};
+function render(){
+  let b=parseFloat(bpmIn.value);
+  if(!(b>0)) return;
+  const beat=60000/b;
+  $('v-beat').textContent=fmt(beat);
+  $('v-half').textContent=fmt(beat/2);
+  $('rows').innerHTML=notes.map(([n,s,m])=>{
+    const t=beat*m;
+    const c=v=>`<td><button class="cp" data-v="${fmt(v)}" title="タップでコピー">${fmt(v)}</button></td>`;
+    return `<tr class="${m===1||m===.5?'hl':''}"><td>${n}<span class="n">${s}</span></td>${c(t)}${c(t*1.5)}${c(t*2/3)}</tr>`;
+  }).join('');
+  if(b>=60&&b<=220) slider.value=Math.round(b);
+  document.querySelectorAll('.pre').forEach(c=>c.classList.toggle('on',+c.dataset.bpm===b));
+  $('add').hidden=presets.includes(b);
+  try{localStorage.setItem('bpmms',String(b))}catch(e){}
+}
+const DEFAULT_PRESETS=[90,120,140,150,174,200];
+let presets=DEFAULT_PRESETS.slice();
+try{const p=JSON.parse(localStorage.getItem('bpmms-presets'));if(Array.isArray(p))presets=p.filter(n=>n>0)}catch(e){}
+function savePresets(){try{localStorage.setItem('bpmms-presets',JSON.stringify(presets))}catch(e){}}
+function renderPresets(){
+  $('presets').innerHTML=presets.map(p=>`<span class="pre" data-bpm="${p}"><button class="set" data-set="${p}">${p}</button><button class="del" data-del="${p}" aria-label="${p}を削除" title="削除">×</button></span>`).join('');
+  render();
+}
+$('presets').addEventListener('click',e=>{
+  const s=e.target.closest('[data-set]'), d=e.target.closest('[data-del]');
+  if(s) setBpm(+s.dataset.set);
+  if(d){presets=presets.filter(p=>p!==+d.dataset.del);savePresets();renderPresets()}
+});
+$('add').onclick=()=>{
+  const b=parseFloat(bpmIn.value);
+  if(!(b>0)||presets.includes(b))return;
+  presets.push(b);presets.sort((a,c)=>a-c);savePresets();renderPresets();
+};
+function setBpm(b){b=Math.min(400,Math.max(20,Math.round(b*10)/10));bpmIn.value=b;render()}
+bpmIn.addEventListener('input',render);
+bpmIn.addEventListener('change',()=>setBpm(parseFloat(bpmIn.value)||120));
+slider.addEventListener('input',()=>setBpm(+slider.value));
+$('minus').onclick=()=>setBpm(Math.round(parseFloat(bpmIn.value))-1);
+$('plus').onclick=()=>setBpm(Math.round(parseFloat(bpmIn.value))+1);
+let taps=[];
+$('tap').onclick=()=>{
+  const now=performance.now();
+  if(taps.length&&now-taps[taps.length-1]>2000) taps=[];
+  taps.push(now); if(taps.length>8) taps.shift();
+  if(taps.length>1){const avg=(taps[taps.length-1]-taps[0])/(taps.length-1);setBpm(60000/avg)}
+};
+function copy(el,valId){
+  const txt=$(valId).textContent, hint=el.querySelector('.hint');
+  const done=()=>{el.classList.add('copied');hint.textContent=txt+' をコピーしました';setTimeout(()=>{el.classList.remove('copied');hint.textContent='タップでコピー'},1400)};
+  try{navigator.clipboard.writeText(txt).then(done,()=>{hint.textContent='コピーできませんでした'})}catch(e){hint.textContent='コピーできませんでした'}
+}
+$('rows').addEventListener('click',e=>{
+  const b=e.target.closest('.cp'); if(!b)return;
+  const v=b.dataset.v;
+  const done=()=>{b.classList.add('done');b.textContent='Copied';setTimeout(()=>{b.classList.remove('done');b.textContent=v},1000)};
+  try{navigator.clipboard.writeText(v).then(done,()=>{})}catch(err){}
+});
+$('beat').onclick=()=>copy($('beat'),'v-beat');
+$('half').onclick=()=>copy($('half'),'v-half');
+try{const s=localStorage.getItem('bpmms');if(s)bpmIn.value=s}catch(e){}
+renderPresets();
+</script>
+</body>
+</html>
