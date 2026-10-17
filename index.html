@@ -475,10 +475,9 @@ const NEWS_T = {all:"すべて", notice:"₺ƾらせ", release:"新曲", event:"
 const IS_EN = /translate\.goog$/.test(location.hostname);
 if (IS_EN) { NEWS_T.notice = "mochinfo"; document.querySelectorAll(".mochi").forEach(e=>e.textContent="mochinfo"); }
 let NEWS = NOTES.map(n=>({d:n.d, type:"notice", src:"wp", t:n.t, u:n.u})), newsFilter="all", newsShown=6;
-/* ブログタブにはサイトの「投稿」をすべて出す(お知らせカテゴリの投稿も含む) */
-const inTab = (x,k) => k==="all" || x.type===k || (k==="blog" && x.post);
-/* ブログタブを見ているときは、投稿のラベルを「ブログ」で表示 */
-const tabType = n => newsFilter==="blog" && n.post ? "blog" : n.type;
+/* タブの絞り込み(お知らせカテゴリの投稿は₺ƾらせのみ、それ以外の投稿はブログ) */
+const inTab = (x,k) => k==="all" || x.type===k;
+const tabType = n => n.type;
 function renderNews(){
   NEWS.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:(a.src==="wp"?-1:b.src==="wp"?1:0));
   document.getElementById("newsFilters").innerHTML = Object.entries(NEWS_T).map(([k,v])=>{
@@ -497,7 +496,7 @@ document.getElementById("newsFilters").addEventListener("click",e=>{const b=e.ta
 document.getElementById("newsMore").addEventListener("click",()=>{newsShown+=6; renderNews();});
 renderNews();
 const unhtml = s => { const d=document.createElement("textarea"); d.innerHTML=s; return d.value; };
-/* WordPressの投稿:カテゴリ「お知らせ」系は₺ƾらせ、それ以外(お役立ち・機材紹介・日記など)はブログ。ブログタブには投稿すべてを出す */
+/* WordPressの投稿:カテゴリ「お知らせ」系は₺ƾらせ、それ以外(お役立ち・機材紹介・日記など)はブログ */
 const WP_CATS = fetch("https://www.namigroove.com/wp-json/wp/v2/categories?per_page=100&_fields=id,slug,name").then(r=>r.ok?r.json():[]).catch(()=>[]);
 const isNotice = c => /お知らせ|₺ƾらせ|ニュース/.test(c.name) || /^(news|info|information|notice|oshirase)$/.test(c.slug);
 const WP = Promise.all([fetch(WP_API).then(r=>r.ok?r.json():Promise.reject()), WP_CATS]).then(([posts,cats])=>{
