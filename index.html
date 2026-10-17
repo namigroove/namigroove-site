@@ -700,7 +700,20 @@ var taps=[];
 function tapBpm(){var now=performance.now();if(taps.length&&now-taps[taps.length-1]>2000)taps=[];taps.push(now);if(taps.length>9)taps.shift();
   var txt="BPM ---";if(taps.length>=2){var iv=(taps[taps.length-1]-taps[0])/(taps.length-1);txt="BPM "+Math.round(60000/iv);}
   document.querySelectorAll(".puni .bpm").forEach(function(e){e.textContent=txt;e.classList.add("on");});}
-document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){tapBpm();b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
+/* カウベル(808っぽい音をWeb Audioで合成) */
+function cowbell(ac){
+  var t=ac.currentTime, out=ac.createGain(), bp=ac.createBiquadFilter();
+  bp.type="bandpass"; bp.frequency.value=2200; bp.Q.value=0.9;
+  out.gain.setValueAtTime(0.0001,t);
+  out.gain.linearRampToValueAtTime(0.45,t+0.002);
+  out.gain.exponentialRampToValueAtTime(0.14,t+0.05);
+  out.gain.exponentialRampToValueAtTime(0.0001,t+0.42);
+  bp.connect(out); out.connect(ac.destination);
+  [587,845].forEach(f=>{var o=ac.createOscillator();o.type="square";o.frequency.value=f;o.connect(bp);o.start(t);o.stop(t+0.45);});
+}
+var namiAC=null;
+function namiBell(){try{if(!namiAC){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;namiAC=new AC({latencyHint:"interactive"});}if(namiAC.state!=="running")namiAC.resume();cowbell(namiAC);}catch(e){}}
+document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){namiBell();tapBpm();b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
 </script>
 </body>
 </html>

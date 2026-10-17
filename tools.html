@@ -334,6 +334,17 @@ function audio(){
   if(ctx.state!=="running") ctx.resume();
   return ctx;
 }
+/* カウベル(808っぽい音をWeb Audioで合成) */
+function cowbell(ac){
+  const t=ac.currentTime, out=ac.createGain(), bp=ac.createBiquadFilter();
+  bp.type="bandpass"; bp.frequency.value=2200; bp.Q.value=0.9;
+  out.gain.setValueAtTime(0.0001,t);
+  out.gain.linearRampToValueAtTime(0.45,t+0.002);
+  out.gain.exponentialRampToValueAtTime(0.14,t+0.05);
+  out.gain.exponentialRampToValueAtTime(0.0001,t+0.42);
+  bp.connect(out); out.connect(ac.destination);
+  [587,845].forEach(f=>{const o=ac.createOscillator();o.type="square";o.frequency.value=f;o.connect(bp);o.start(t);o.stop(t+0.45);});
+}
 function segInit(el,key,cur,on){
   const btns=[...el.querySelectorAll("button")];
   const set=v=>btns.forEach(b=>b.setAttribute("aria-pressed",b.dataset[key]===String(v)));
@@ -564,8 +575,8 @@ function tap(){
 function tapFx(el){el.style.transform="scale(.94)";setTimeout(()=>el.style.transform="",80);}
 function namiFx(){const n=$("nami");n.classList.remove("hop","acc");void n.offsetWidth;n.classList.add("hop","acc");}
 for(const [id,fx] of [["tapBtn",()=>tapFx($("tapBtn"))],["namiBtn",namiFx]]){
-  $(id).addEventListener("pointerdown",e=>{e.preventDefault();tap();fx();});
-  $(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();tap();fx();}});
+  $(id).addEventListener("pointerdown",e=>{e.preventDefault();cowbell(audio());tap();fx();});
+  $(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();cowbell(audio());tap();fx();}});
 }
 
 document.addEventListener("keydown",e=>{
@@ -573,7 +584,7 @@ document.addEventListener("keydown",e=>{
   if(e.code==="Space"){e.preventDefault();playing?stop():start();}
   else if(e.key==="ArrowRight"||e.key==="ArrowUp"){e.preventDefault();setBpm(bpm+(e.shiftKey?10:1));}
   else if(e.key==="ArrowLeft"||e.key==="ArrowDown"){e.preventDefault();setBpm(bpm-(e.shiftKey?10:1));}
-  else if(e.key==="t"||e.key==="T"){tap();tapFx($("tapBtn"));}
+  else if(e.key==="t"||e.key==="T"){cowbell(audio());tap();tapFx($("tapBtn"));}
 });
 
 /* 最初に開くタブ(#metronome 付きのリンクならメトロノーム) */
