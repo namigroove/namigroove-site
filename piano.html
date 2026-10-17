@@ -392,7 +392,7 @@ const INST={
     const lp=a.createBiquadFilter();lp.type="lowpass";lp.Q.value=0.6;
     lp.frequency.setValueAtTime(f*1.5,t);lp.frequency.linearRampToValueAtTime(Math.min(8000,f*5),t+0.8);
     const s=[-9,0,9].map(d=>osc(a,"sawtooth",f,t,lp,d));lp.connect(env);
-    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.07*(0.6+0.4*v),t+0.35);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.2*(0.6+0.4*v),t+0.35);
     return {srcs:s,rel:0.45,rev:1.6};
   },
   lead(a,f,v,t,env){ /* ノコギリ波2本+ちょっとビブラート */
@@ -402,13 +402,13 @@ const INST={
     const lfo=a.createOscillator(),lg=a.createGain();lfo.frequency.value=5.5;lg.gain.setValueAtTime(0,t);lg.gain.linearRampToValueAtTime(9,t+0.5);
     lfo.connect(lg);s.forEach(o=>lg.connect(o.detune));lfo.start(t);s.push(lfo);
     lp.connect(env);
-    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.09*(0.6+0.4*v),t+0.008);env.gain.setTargetAtTime(0.065*(0.6+0.4*v),t+0.01,0.2);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.13*(0.6+0.4*v),t+0.008);env.gain.setTargetAtTime(0.095*(0.6+0.4*v),t+0.01,0.2);
     return {srcs:s,rel:0.06,rev:0.8};
   },
   chip(a,f,v,t,env){ /* ファミコンっぽい矩形波(デューティ25%) */
     const w=pwave("pulse25",Array.from({length:40},(_,i)=>{const n=i+1;return Math.sin(Math.PI*n*0.25)/n;}));
     const s=[osc(a,w,f,t,env)];
-    env.gain.setValueAtTime(0.085,t);env.gain.setValueAtTime(0.07,t+0.06);
+    env.gain.setValueAtTime(0.3,t);env.gain.setValueAtTime(0.25,t+0.06);
     return {srcs:s,rel:0.012,rev:0.35};
   },
   bell(a,f,v,t,env){ /* FM:はんぱな比率で揺らして金属っぽく */
