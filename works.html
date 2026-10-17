@@ -54,9 +54,17 @@ h2 small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft);font-wei
 .ranks a:hover small{text-decoration:underline}
 .ranks b{font-family:var(--f-mono);font-weight:500;color:var(--sea);font-variant-numeric:tabular-nums;white-space:nowrap}
 .timeline{list-style:none;margin:0;padding:0}
-.timeline>li{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.timeline>li{border-bottom:1px dashed var(--line)}
+.timeline summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;padding:12px 0}
+.timeline summary::-webkit-details-marker{display:none}
+.timeline summary::after{content:"＋";margin-left:auto;color:var(--sea);font-weight:700;font-size:15px}
+.timeline details[open]>summary::after{content:"－"}
+.timeline summary:hover .yr{text-decoration:underline}
+.timeline .cnt{font-size:12px;color:var(--ink-soft)}
+.timeline details>ul{padding:0 0 12px 72px}
+@media (max-width:560px){.timeline details>ul{padding-left:0}}
 .timeline>li:last-child{border-bottom:0}
-.timeline .yr{font-family:var(--f-mono);font-size:14px;color:var(--sea);font-weight:500}
+.timeline .yr{font-family:var(--f-mono);font-size:16px;color:var(--sea);font-weight:500;min-width:56px}
 .timeline ul{margin:0;padding:0;list-style:none;font-size:14px;line-height:1.75;min-width:0}
 .timeline ul li{display:grid;grid-template-columns:3.2em 1fr;gap:8px;padding:5px 0;border-bottom:1px dotted var(--line)}
 .timeline ul li:last-child{border-bottom:0}
@@ -204,7 +212,7 @@ const TIMELINE = [
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 for (const [id, names] of Object.entries(LIST))
   document.getElementById(id).innerHTML = names.map(n=>`<li>${esc(n)}</li>`).join("");
-document.getElementById("timeline").innerHTML = TIMELINE.map(t=>`<li><span class="yr">${t.y}</span><ul>${t.e.map(([m,x])=>`<li><span class="mo">${Number(m)}月</span><span>${x.split(" / ").map(esc).join("<br>")}</span></li>`).join("")}</ul></li>`).join("");
+document.getElementById("timeline").innerHTML = TIMELINE.map((t,i)=>`<li><details${i===0?" open":""}><summary><span class="yr">${t.y}</span><span class="cnt">${t.e.reduce((n,[,x])=>n+x.split(" / ").length,0)}件</span></summary><ul>${t.e.map(([m,x])=>`<li><span class="mo">${Number(m)}月</span><span>${x.split(" / ").map(esc).join("<br>")}</span></li>`).join("")}</ul></details></li>`).join("");
 fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
   const K={notice:/translate\.goog$/.test(location.hostname)?"mochinfo":"₺ƾらせ",release:"新曲"};
   document.getElementById("xlog").innerHTML = d.posts.filter(p=>p.type!=="event").map(p=>`<li><time datetime="${p.date}">${p.date.replaceAll("-",".")}</time><a href="https://x.com/namigroove/status/${p.id}" target="_blank" rel="noopener"><span class="k k-${p.type}">${K[p.type]}</span>${esc(p.text)}</a></li>`).join("");
