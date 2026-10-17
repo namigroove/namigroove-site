@@ -44,9 +44,9 @@
   ];
   var INST = {
     sg: { n: "ソプラノ(ジャーマン)", k: "C", d: 12, low: 60, sys: "g" },
-    sb: { n: "ソプラノ(バロック)", k: "C", d: 12, low: 60, sys: "e" },
-    ag: { n: "アルト(ジャーマン)", k: "F", d: 0, low: 65, sys: "g" },
-    ab: { n: "アルト(バロック)", k: "F", d: 0, low: 65, sys: "e" }
+    ab: { n: "アルト(バロック)", k: "F", d: 0, low: 65, sys: "e" },
+    sb: { n: "ソプラノ(バロック)", k: "C", d: 12, low: 60, sys: "e", more: true },
+    ag: { n: "アルト(ジャーマン)", k: "F", d: 0, low: 65, sys: "g", more: true }
   };
   var M = { KEYS: KEYS, F: {}, A: {}, INST: INST, LOW: 60, HIGH: 86, ALT_LOW: 87, ALT_HIGH: 86 };
   M.setInst = function (id) {

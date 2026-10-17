@@ -157,6 +157,7 @@ footer a{color:var(--sea)}
 /* サックス運指表 */
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
 .eb-link:hover{border-bottom-style:solid}
+#instSeg .more-b{border-style:dashed;color:var(--ink-soft)}
 .tabs.fam{grid-template-columns:repeat(4,1fr);margin-bottom:16px}
 .sx-top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;margin-bottom:14px}
 .sx-head{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 6px}
@@ -285,10 +286,10 @@ footer a{color:var(--sea)}
   <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
 </div>
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
-<script src="https://namigroove.github.io/namigroove-site/sax-fingering.js?v=1792273744"></script>
-<script src="https://namigroove.github.io/namigroove-site/clarinet-fingering.js?v=1792273744"></script>
-<script src="https://namigroove.github.io/namigroove-site/flute-fingering.js?v=1792273744"></script>
-<script src="https://namigroove.github.io/namigroove-site/recorder-fingering.js?v=1792273744"></script>
+<script src="https://namigroove.github.io/namigroove-site/sax-fingering.js?v=1792274310"></script>
+<script src="https://namigroove.github.io/namigroove-site/clarinet-fingering.js?v=1792274310"></script>
+<script src="https://namigroove.github.io/namigroove-site/flute-fingering.js?v=1792274310"></script>
+<script src="https://namigroove.github.io/namigroove-site/recorder-fingering.js?v=1792274310"></script>
 <script>
 (()=>{
 "use strict";
@@ -337,10 +338,11 @@ document.addEventListener("keydown",e=>{if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.ta
 
 function segInit(el,key,v,on){[...el.children].forEach(b=>b.setAttribute("aria-pressed",b.dataset[key]===String(v)));
   el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...el.children].forEach(x=>x.setAttribute("aria-pressed",x===b));on(b.dataset[key]);});}
-function instBtns(){$("instSeg").innerHTML=Object.keys(S.INST).map(k=>`<button type="button" data-i="${k}" aria-pressed="${k===inst}">${S.INST[k].n.replace("クラリネット","")||S.INST[k].n}</button>`).join("");}
-$("instSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;inst=b.dataset.i;store.set(FAM[fam].ik,inst);if(S.setInst){S.setInst(inst);if(!fings(cur).length)cur=Math.min(S.HIGH,Math.max(S.LOW,cur));if(!fings(cur).length)cur=S.LOW;}[...$("instSeg").children].forEach(x=>x.setAttribute("aria-pressed",x===b));allBtns();render();});
+let showMore=false;
+function instBtns(){const ks=Object.keys(S.INST),more=ks.filter(k=>S.INST[k].more),open=showMore||more.includes(inst);$("instSeg").innerHTML=ks.filter(k=>!S.INST[k].more||open).map(k=>`<button type="button" data-i="${k}" aria-pressed="${k===inst}">${S.INST[k].n.replace("クラリネット","")||S.INST[k].n}</button>`).join("")+(more.length&&!open?`<button type="button" class="more-b" data-more="1">その他 ▾</button>`:"");}
+$("instSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.more){showMore=true;instBtns();return;}inst=b.dataset.i;store.set(FAM[fam].ik,inst);if(S.setInst){S.setInst(inst);if(!fings(cur).length)cur=Math.min(S.HIGH,Math.max(S.LOW,cur));if(!fings(cur).length)cur=S.LOW;}[...$("instSeg").children].forEach(x=>x.setAttribute("aria-pressed",x===b));allBtns();render();});
 function legend(){$("legend").innerHTML=Object.keys(S.KEYS).map(k=>`<li>${S.KEYS[k].n}</li>`).join("");}
-function setFam(f){fam=f;S=FAM[f].D;store.set("fingFam",f);inst=store.get(FAM[f].ik,FAM[f].def);if(!S.INST[inst])inst=FAM[f].def;if(S.setInst)S.setInst(inst);cur=store.get(FAM[f].nk,FAM[f].dn);if(!fings(cur).length)cur=FAM[f].dn;
+function setFam(f){showMore=false;fam=f;S=FAM[f].D;store.set("fingFam",f);inst=store.get(FAM[f].ik,FAM[f].def);if(!S.INST[inst])inst=FAM[f].def;if(S.setInst)S.setInst(inst);cur=store.get(FAM[f].nk,FAM[f].dn);if(!fings(cur).length)cur=FAM[f].dn;
   $("altLabel").textContent=$("altLabel2").textContent=FAM[f].alt;$("altBox").hidden=S.ALT_LOW>S.ALT_HIGH;instBtns();allBtns();legend();render();}
 {const fs=$("famSeg");const mark=()=>[...fs.children].forEach(b=>b.setAttribute("aria-selected",b.dataset.f===fam));mark();fs.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;setFam(b.dataset.f);mark();});}
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);allBtns();render();});
