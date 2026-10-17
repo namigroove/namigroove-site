@@ -517,7 +517,7 @@ function jacketBg(s){
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 fetch("data/credits.json").then(r=>r.json()).then(d=>{
-  CREDITS = d.credits.sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.y-a.y);
+  CREDITS = d.credits.map((c,i)=>({...c,_i:i})).sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||a._i-b._i);
   document.getElementById("creditList").innerHTML = CREDITS.map(c=>`
   <${c.u?`a href="${c.u}"`:"div"} class="credit">
     <div class="c-thumb" style="background:${jacketBg(c.client+c.t)}"><b>${esc(c.client)}</b>${c.img?`<img src="${c.img}" alt="${esc(c.t)}" loading="lazy" onerror="this.remove()">`:""}<span class="c-year">${c.y}</span></div>

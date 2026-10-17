@@ -268,7 +268,7 @@ Promise.all([
   fetch("data/credits.json").then(r=>r.json()).catch(()=>({credits:[]}))
 ]).then(([d,c])=>{
   WORKS = d.works.filter(w=>!w.hidden).map(w=>({t:w.title, by:w.by, type:w.type, y:w.year, img:w.img, url:w.url}));
-  PICKS = c.credits.sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.y-a.y).map(x=>({t:x.t, by:x.client+(x.role?" / "+x.role:""), type:"provide", y:x.y, img:x.img, url:x.u}));
+  PICKS = c.credits.map((x,i)=>({...x,_i:i})).sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||a._i-b._i).map(x=>({t:x.t, by:x.client+(x.role?" / "+x.role:""), type:"provide", y:x.y, img:x.img, url:x.u}));
   renderFilters(); renderWorks();
 }).catch(()=>{ document.getElementById("workGrid").innerHTML='<p class="w-meta">Works一覧を読み込めませんでした。</p>'; });
 /* フッターのシェア:「リンクを共有」はスマホなら共有メニュー、PCならリンクをコピー */
