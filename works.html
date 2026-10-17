@@ -45,8 +45,13 @@ h2{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;gap:10px;align
 h2 small{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft);font-weight:400}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
 .tags li{font-size:13px;line-height:1.5;padding:4px 10px;border:1px solid var(--line);border-radius:6px;background:var(--chip)}
-.ranks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
-.ranks li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:10px 12px;border-radius:8px;background:var(--wash);font-size:13px}
+.ranks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.ranks li{border-radius:8px;background:var(--wash);font-size:13px}
+.ranks a{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;color:inherit;text-decoration:none;border-radius:8px;transition:background .15s}
+.ranks a:hover{background:var(--line)}
+.ranks .ev{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ranks .ev small{font-size:11px;color:var(--sea);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ranks a:hover small{text-decoration:underline}
 .ranks b{font-family:var(--f-mono);font-weight:500;color:var(--sea);font-variant-numeric:tabular-nums;white-space:nowrap}
 .timeline{list-style:none;margin:0;padding:0}
 .timeline>li{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:10px 0;border-bottom:1px dashed var(--line)}
@@ -177,8 +182,14 @@ const LIST = {
   stage:["マジカルミライ","SNOW MIKU","ボカニコ","Project Circles(初音ミク公式)","NIGHT HIKE","GOLD DISC","暴力的にカワイイ","MOGRA周年","clubasia周年","GRAYSCALE TOKYO","MIX TOKYO","Electro Swing Party","Butler Service","V2NiTE","FOUND","イオパ(IOSYSパーティ)","MCMC(Zepp Shinjuku)","YouTube Music Weekend","リアルずんだパーリナイ","定禅寺ストリートジャズフェスティバル","阿波ボカFES","VOCALOCKMANIA","ボカマツリ","ボカデス","ボカチバ","ボカハピ","キラハピLive","みくぱ","Puzzle P4RTY","陰フレ","暴年WHATS","To Be Kontinued","知声の学び舎","ころしあむ","カワイイカッティング","広島電音公司","ブートレグ神社","イケボカロ","爆誕後夜祭","FUKU SEKA","クリエイターズパーティー","aninight","gacha","NEOMIX","Invaders","WALL&WALL周年","ボカリエ","イナフ","namco TOKYO DJ","VOCALOGIC","ヨネハチフェス","NightSwingLounge(VR)","TETRAPOD(韓国・ソウル)","Strawberry Music Festival(中国・北京)"],
 };
 const RANKS = [
-  ["2026 夏 REMIX",1],["2026 冬 REMIX",1],["2025 夏 REMIX",4],["2025 冬 TOP100",3],["2024 冬 TOP100",5],
-  ["2023 夏 TOP100",2],["2023 春 ルーキー",2],["2022 秋 ルーキー",4],
+  ["2026 夏 REMIX",1,"デロスサントス - namigroove remix -","https://www.namigroove.com/movie/movie-9745/"],
+  ["2026 冬 REMIX",1,"みむかｩわナイストライ - namigroove remix -","https://www.nicovideo.jp/watch/sm45953521"],
+  ["2025 夏 REMIX",4,"おどロボ BREAKCORE - namigroove remix -","https://www.namigroove.com/movie/movie-8641/"],
+  ["2025 冬 TOP100",3,"ずんだレンジャー","https://www.namigroove.com/movie/movie-7134/"],
+  ["2024 冬 TOP100",5,"ずんだタコヤーキ","https://www.namigroove.com/music/music-5034/"],
+  ["2023 夏 TOP100",2,"ずんだシェイキング","https://www.namigroove.com/movie/movie-3805/"],
+  ["2023 春 ルーキー",2,"ずんだパーリナイ","https://www.namigroove.com/movie/movie-2957/"],
+  ["2022 秋 ルーキー",4,"ウニクラゲ","https://www.namigroove.com/music/music-1698/"],
 ];
 const TIMELINE = [
   {y:2026, e:[["10", "京都アニものづくりアワード2026 インターナショナル部門 銀賞(タイ日清×初音ミクCM) / ubique「なるようになる」MV ディレクション協力 / 小夜誕生祭2026 コラボグッズ / IOSYSパーティ「イオパ」札幌 出演"], ["09", "定禅寺ジャズフェス公式連携「#リアルずんだパーリナイ」第2回 / 「暴力的にカワイイ'26」出演 / NIGHT HIKE POP UP STORE 一日店長 / サンリオピューロランド ハロウィーンショー「MONSTER BEAT！」作編曲(TOPHAMHAT-KYOと共作)"], ["08", "「MOGRA 17th Anniversary」出演 / 「FOUND Vol.0」出演 / ボカコレ2026夏 REMIX 1位 / YouTube Music Weekend 12.0「ド七五サンバフェス」 / 「ずんだパーリナイ」900万再生"], ["07", "「マジカルミライ2026」浜松 出展 / 「V2NiTE」出演 / CHUNITHM Mate 書き下ろし「ちゅ、お注射。feat.をとは somunia」 / 既存楽曲復活祭2026夏 2位「無限ダラダラガンダーラ」"], ["06", "「ド七五サンバ」カラオケ配信・NHKラジオでオンエア"], ["05", "「NIGHT HIKE -scramble- '26」出演(平田義久・梓川・A4。・さぶれ・DJ Heero Yuy・吉本おじさんとコラボ) / 日清焼そばU.F.O. 50周年×初音ミク 企画プロデュース&作曲 / 「ド七五サンバ feat.重音テトSV」公開 / 初音ミク公式「Project Circles」@YOKOHAMA COAST garage+ 出演・出展 / 「NightSwingLounge」VR初出演"], ["04", "2nd Album「Namigroove at Shibuya」リリース(CDs) / 「MCMC」@Zepp Shinjuku 出演 / 「溶けちゃいそう」VoiSona CMソングに / 超ボカニコ2026 登壇(ボカコレ冬REMIX 1位 表彰)"], ["03", "アニメディア4月号「とびだせ！わんだぴょい」インタビュー掲載 / 重音テトin22カレー 店内BGMに「腰痛持ち、4つ打ち」"], ["02", "タイ日清食品 初音ミクCM「激」シリーズ / プロジェクトセカイ カラフルステージ！「とびだせ！わんだぴょい」書き下ろし / ボカコレ2026冬 REMIX 1位「みむかｩわナイストライ - namigroove remix -」 / 「オツキミ超えてオツキアイ」Muse Dash 収録 / 『龍が如く 極3』に「のじゃロリック」収録 / 「ひみつのふふふ」アニソン派 楽曲アワード2025 グランプリ / 「阿波ボカFES」徳島 出演"], ["01", "あおぎり高校 1st Album「コピペパペット」収録"]]},
@@ -202,7 +213,7 @@ fetch("data/x-posts.json").then(r=>r.json()).then(d=>{
   xBtn.addEventListener("click",()=>{ xShown+=10; xRender(); });
   xRender();
 }).catch(()=>{});
-document.getElementById("ranks").innerHTML = RANKS.map(([e,r])=>`<li><span>${esc(e)}</span><b>${r}位</b></li>`).join("");
+document.getElementById("ranks").innerHTML = RANKS.map(([e,r,t,u])=>`<li><a href="${esc(u)}"${/namigroove\.com/.test(u)?"":` target="_blank" rel="noopener"`}><span class="ev">${esc(e)}<small>${esc(t)}</small></span><b>${r}位</b></a></li>`).join("");
 
 /* 作品一覧:data/works.json(WordPress・YouTubeから毎日自動更新) */
 const TYPES = {pick:"代表作", all:"すべて", original:"オリジナル", provide:"提供・編曲", remix:"Remix", perform:"演奏", join:"参加"};
