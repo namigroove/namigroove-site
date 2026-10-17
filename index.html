@@ -75,19 +75,23 @@ nav.main a:hover{color:#ffffff}
 .hero p.lead{font-size:clamp(16px,2.2vw,19px);margin:22px 0 0;max-width:30em}
 .hero p.lead b{color:var(--zunda);font-weight:700}
 /* PCだけ右になみぐる。タップ/クリックでぷにぷに */
-.puni{display:none;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;justify-self:center}
+.pw{display:none}
+.puni{display:block;width:100%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;justify-self:center}
 .puni img{display:block;width:100%;height:auto;transform-origin:50% 92%;animation:puniIdle 3.2s ease-in-out infinite;filter:drop-shadow(0 18px 22px rgba(16,31,69,.18));user-select:none;-webkit-user-drag:none}
 .puni:active img{transform:scale(1.1,.86);animation:none;transition:transform .08s}
 .puni.boing img{animation:puniBoing .75s cubic-bezier(.3,1.6,.5,1)}
 .puni .bpm{display:block;margin-top:6px;text-align:center;font-family:var(--f-display);font-size:13px;letter-spacing:.06em;color:var(--ink-soft);opacity:.75;font-variant-numeric:tabular-nums;white-space:nowrap}
 .puni .bpm.on{color:var(--sea);opacity:1}
-.puni-sp .bpm{font-size:11px;margin-top:2px}
+.pw-sp .bpm{font-size:11px;margin-top:2px}
 @keyframes puniIdle{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975) translateY(2px)}}
 @keyframes puniBoing{0%{transform:scale(1.18,.78)}25%{transform:scale(.88,1.14)}45%{transform:scale(1.07,.93)}65%{transform:scale(.97,1.04)}82%{transform:scale(1.015,.985)}100%{transform:scale(1,1)}}
-@media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:center}.puni-pc{display:block;width:100%}}
+@media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:center}.pw-pc{display:block;width:100%}}
 /* スマホ:文字の右に回り込ませて、文字と重ならないように */
-@media (max-width:899px){.puni-sp{display:block;float:right;width:min(30vw,150px);margin:-6px 0 6px 8px}.hero h1 .ngname{white-space:nowrap}}
+@media (max-width:899px){.pw-sp{display:block;float:right;width:min(30vw,150px);margin:-6px 0 6px 8px}.hero h1 .ngname{white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){.puni img{animation:none}}
+.tool-tip{display:block;width:fit-content;margin:0 auto 6px;padding:2px 10px;border:1px solid var(--line);border-radius:999px;background:var(--chip);font-size:12px;line-height:1.6;color:var(--sea);text-decoration:none;white-space:nowrap}
+.tool-tip:hover{border-color:var(--sea)}
+.pw-sp .tool-tip{font-size:10px;padding:1px 7px;margin-bottom:2px;white-space:normal;text-align:center;line-height:1.35}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .btn{font-family:var(--f-body);display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid var(--ink)}
 .btn.primary{background:var(--ink);color:var(--paper)}
@@ -295,7 +299,7 @@ footer .mono{font-family:var(--f-mono)}
   <div class="wrap hero">
     <div>
       <p class="eyebrow">VOCALOID Producer / Sax DJ</p>
-      <button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button>
+      <div class="pw pw-sp"><a class="tool-tip" href="tools.html">チューナー・<br>メトロノーム ›</a><button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
       <h1><span class="ngname" translate="no">なみぐる</span><span class="en">NAMIGROOVE</span></h1>
       <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。<b>ゲーム・アニメ・CM・VTuber</b>への楽曲提供、作曲、編曲、作詞、映像製作、楽器演奏まで手がけています。</p>
       <div class="cta">
@@ -305,7 +309,7 @@ footer .mono{font-family:var(--f-mono)}
       </div>
       <p class="tide"><span><b>SINCE</b> 2021</span><span>VOCALOID / R&amp;B / Electro Swing / Funk / Sax</span><span>いい波、起こします~(･ω･~)</span></p>
     </div>
-    <button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button>
+    <div class="pw pw-pc"><a class="tool-tip" href="tools.html">チューナー・メトロノームはこちら ›</a><button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
   </div>
 
   <canvas class="sea" id="sea" aria-hidden="true"></canvas>
@@ -395,12 +399,15 @@ footer .mono{font-family:var(--f-mono)}
           <a href="https://x.com/zundaband0823" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://namigroove.github.io/namigroove-site/img/zundaband-logo.png)"></i><span>ずんだバンド</span><small>主催バンド</small></a>
           <a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4m8-4v4"/></svg></i><span>TimeTree</span><small>DJ出演・即売会の予定</small></a>
           <a href="https://www.bandsintown.com/a/15592125-_namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 0 4v0a2 2 0 0 1 0 4v2h18v-2a2 2 0 0 1 0-4 2 2 0 0 1 0-4V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg></i><span>Bandsintown</span><small>出演予定</small></a>
+          <a href="https://lit.link/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg></i><span>lit.link</span><small>SNS用プロフィール</small></a>
         </div></div>
-        <div class="link-group"><h3>応援・その他</h3><div class="links">
+        <div class="link-group"><h3>応援</h3><div class="links">
           <a href="https://ouen55.com/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i><span>ファンレター・プレゼント</span><small>宛先はこちら</small></a>
           <a href="https://bit.ly/3O1mSgc" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12"/><path d="M12 9S10.5 4 8 4.5 7 9 12 9zm0 0s1.5-5 4-4.5S17 9 12 9z"/></svg></i><span>Amazonほしい物リスト</span><small>プレゼントを送れます</small></a>
-          <a href="https://lit.link/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg></i><span>lit.link</span><small>SNS用プロフィール</small></a>
-          <a href="https://namigroove.github.io/BPMmsCalculator/" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M10 2h4"/></svg></i><span>BPMmsCalculator</span><small>製作ツール</small></a>
+        </div></div>
+        <div class="link-group"><h3>🧰 ツール</h3><div class="links">
+          <a href="tools.html"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16a8 8 0 0 1 16 0"/><path d="m12 16 4-5"/></svg></i><span>チューナー&amp;メトロノーム</span><small>ブラウザで使える</small></a>
+          <a href="https://namigroove.github.io/BPMmsCalculator/" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M10 2h4"/></svg></i><span>BPMmsCalculator</span><small>BPMとmsの換算</small></a>
         </div></div>
       </div>
     </div>
