@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>木管楽器運指表 – なみぐる！</title>
-<meta name="description" content="サックス・クラリネット・フルートの運指を図で見られる無料の木管楽器運指表。実音表示、替え指、フラジオ・アルティッシモの代表例、試聴つき。">
+<meta name="description" content="サックス・クラリネット・フルート・リコーダーの運指を図で見られる無料の木管楽器運指表。実音表示、替え指、フラジオ・アルティッシモの代表例、試聴つき。">
 <meta property="og:title" content="木管楽器運指表 – なみぐる！">
 <meta property="og:description" content="サックスの運指を図で見られる運指表。替え指・フラジオの例・実音表示つき。">
 <meta property="og:type" content="website">
@@ -62,7 +62,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);l
 .tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
 .tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
-@media (max-width:480px){.panel{padding:20px 14px 16px}}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 0}.panel{padding:20px 14px 16px}}
 
 /* 共通の操作部品 */
 .row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
@@ -157,7 +157,7 @@ footer a{color:var(--sea)}
 /* サックス運指表 */
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
 .eb-link:hover{border-bottom-style:solid}
-.tabs.fam{grid-template-columns:repeat(3,1fr);margin-bottom:16px}
+.tabs.fam{grid-template-columns:repeat(4,1fr);margin-bottom:16px}
 .sx-top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;margin-bottom:14px}
 .sx-head{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 6px}
 .sx-name{text-align:center;min-width:6em}
@@ -228,7 +228,7 @@ footer a{color:var(--sea)}
   <div class="intro">
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>木管楽器運指表</h1>
-    <p class="lead">実音(ピアノと同じ高さ)の音名を選ぶと、サックス・クラリネット・フルートの運指を図で表示します。よく使う替え指と、高音域(サックスはフラジオ、クラリネットはアルティッシモ)の代表的な例も載せています。タップすると、その楽器で鳴る音(実音)を聴けます。</p>
+    <p class="lead">実音(ピアノと同じ高さ)の音名を選ぶと、サックス・クラリネット・フルート・リコーダーの運指を図で表示します。よく使う替え指と、高音域(サックスはフラジオ、クラリネットはアルティッシモ)の代表的な例も載せています。タップすると、その楽器で鳴る音(実音)を聴けます。</p>
   </div>
 
   <section class="panel" aria-label="運指表">
@@ -236,6 +236,7 @@ footer a{color:var(--sea)}
       <button type="button" data-f="sax" aria-selected="true">サックス</button>
       <button type="button" data-f="cl" aria-selected="false">クラリネット</button>
       <button type="button" data-f="fl" aria-selected="false">フルート</button>
+      <button type="button" data-f="rec" aria-selected="false">リコーダー</button>
     </div>
     <div class="sx-top">
       <span class="seg" id="instSeg" role="group" aria-label="楽器"></span>
@@ -267,6 +268,7 @@ footer a{color:var(--sea)}
       <li>楽器を切り替えると、実音と楽譜の音名の対応が変わります。「音を聴く」はその楽器の実音で鳴ります。</li>
       <li>図の青いキーが押さえるキーです。図のキーにカーソルを合わせると(スマホは長押し)、キーの名前が出ます。</li>
       <li>フラジオ・アルティッシモと、クラリネット・フルートの運指は <a href="https://www.wfg.woodwind.org/" target="_blank" rel="noopener">The Woodwind Fingering Guide</a> を参考にしています。クラリネットとフルートはベーム式です。フルートはB足部管(低いBまで出る)の運指も載せています。</li>
+      <li>リコーダーはジャーマン式とバロック式を選べます(F・F♯・G♯の運指が違います)。「サミング」は裏の親指穴を少しだけあける吹き方です。ソプラノは楽譜より1オクターブ高い音が鳴ります。</li>
     </ul>
     <h2>キーの名前</h2>
     <ul class="sx-legend" id="legend"></ul>
@@ -286,12 +288,13 @@ footer a{color:var(--sea)}
 <script src="https://namigroove.github.io/namigroove-site/sax-fingering.js?v=1792273744"></script>
 <script src="https://namigroove.github.io/namigroove-site/clarinet-fingering.js?v=1792273744"></script>
 <script src="https://namigroove.github.io/namigroove-site/flute-fingering.js?v=1792273744"></script>
+<script src="https://namigroove.github.io/namigroove-site/recorder-fingering.js?v=1792273744"></script>
 <script>
 (()=>{
 "use strict";
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
-const FAM={sax:{D:window.NamiSax,ik:"saxInst",nk:"saxNote",def:"alto",dn:67,alt:"フラジオ"},cl:{D:window.NamiClar,ik:"clInst",nk:"clNote",def:"bb",dn:67,alt:"アルティッシモ"},fl:{D:window.NamiFlute,ik:"flInst",nk:"flNote",def:"fl",dn:69,alt:""}};
+const FAM={sax:{D:window.NamiSax,ik:"saxInst",nk:"saxNote",def:"alto",dn:67,alt:"フラジオ"},cl:{D:window.NamiClar,ik:"clInst",nk:"clNote",def:"bb",dn:67,alt:"アルティッシモ"},fl:{D:window.NamiFlute,ik:"flInst",nk:"flNote",def:"fl",dn:69,alt:""},rec:{D:window.NamiRec,ik:"recInst",nk:"recNote",def:"sg",dn:67,alt:""}};
 let fam=store.get("fingFam","sax"); if(!FAM[fam])fam="sax";
 let S=FAM[fam].D, inst=store.get(FAM[fam].ik,FAM[fam].def), names=store.get("names","en"), cur=store.get(FAM[fam].nk,FAM[fam].dn);
 const EN=["C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"], JA=["ド","ド#","レ","ミb","ミ","ファ","ファ#","ソ","ラb","ラ","シb","シ"];
@@ -316,7 +319,7 @@ $("prev").onclick=()=>go(cur-1);$("next").onclick=()=>go(cur+1);
 let ac=null;
 function play(){
   try{if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();}if(ac.state!=="running")ac.resume();}catch(e){return;}
-  const m=cur+S.INST[inst].d, f=440*Math.pow(2,(m-69)/12), t=ac.currentTime, isCl=fam==="cl", isFl=fam==="fl";
+  const m=cur+S.INST[inst].d, f=440*Math.pow(2,(m-69)/12), t=ac.currentTime, isCl=fam==="cl", isFl=fam==="fl"||fam==="rec";
   const o=ac.createOscillator(),o2=ac.createOscillator(),lp=ac.createBiquadFilter(),bp=ac.createBiquadFilter(),g=ac.createGain(),lfo=ac.createOscillator(),lg=ac.createGain();
   o.type=isFl?"sine":isCl?"square":"sawtooth";o.frequency.value=f;o2.type=isFl?"sine":isCl?"triangle":"square";o2.frequency.value=isFl?f*2:f;o2.detune.value=4;
   lp.type="lowpass";lp.frequency.setValueAtTime(f*2,t);lp.frequency.linearRampToValueAtTime(Math.min(isCl?4000:6000,f*(isCl?4:6)),t+0.08);lp.Q.value=isCl?0.7:1.2;
@@ -335,9 +338,9 @@ document.addEventListener("keydown",e=>{if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.ta
 function segInit(el,key,v,on){[...el.children].forEach(b=>b.setAttribute("aria-pressed",b.dataset[key]===String(v)));
   el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...el.children].forEach(x=>x.setAttribute("aria-pressed",x===b));on(b.dataset[key]);});}
 function instBtns(){$("instSeg").innerHTML=Object.keys(S.INST).map(k=>`<button type="button" data-i="${k}" aria-pressed="${k===inst}">${S.INST[k].n.replace("クラリネット","")||S.INST[k].n}</button>`).join("");}
-$("instSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;inst=b.dataset.i;store.set(FAM[fam].ik,inst);[...$("instSeg").children].forEach(x=>x.setAttribute("aria-pressed",x===b));allBtns();render();});
+$("instSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;inst=b.dataset.i;store.set(FAM[fam].ik,inst);if(S.setInst){S.setInst(inst);if(!fings(cur).length)cur=Math.min(S.HIGH,Math.max(S.LOW,cur));if(!fings(cur).length)cur=S.LOW;}[...$("instSeg").children].forEach(x=>x.setAttribute("aria-pressed",x===b));allBtns();render();});
 function legend(){$("legend").innerHTML=Object.keys(S.KEYS).map(k=>`<li>${S.KEYS[k].n}</li>`).join("");}
-function setFam(f){fam=f;S=FAM[f].D;store.set("fingFam",f);inst=store.get(FAM[f].ik,FAM[f].def);if(!S.INST[inst])inst=FAM[f].def;cur=store.get(FAM[f].nk,FAM[f].dn);if(!fings(cur).length)cur=FAM[f].dn;
+function setFam(f){fam=f;S=FAM[f].D;store.set("fingFam",f);inst=store.get(FAM[f].ik,FAM[f].def);if(!S.INST[inst])inst=FAM[f].def;if(S.setInst)S.setInst(inst);cur=store.get(FAM[f].nk,FAM[f].dn);if(!fings(cur).length)cur=FAM[f].dn;
   $("altLabel").textContent=$("altLabel2").textContent=FAM[f].alt;$("altBox").hidden=S.ALT_LOW>S.ALT_HIGH;instBtns();allBtns();legend();render();}
 {const fs=$("famSeg");const mark=()=>[...fs.children].forEach(b=>b.setAttribute("aria-selected",b.dataset.f===fam));mark();fs.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;setFam(b.dataset.f);mark();});}
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);allBtns();render();});
