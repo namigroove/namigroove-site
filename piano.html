@@ -181,6 +181,13 @@ footer a{color:var(--sea)}
 .kb .w.on .lb{color:var(--ink)}
 .inst-row{display:flex;justify-content:center;margin-bottom:12px}
 .inst-row .seg{justify-content:center}
+.smp{max-width:640px;margin:0 auto 12px;padding:10px 12px;border-radius:12px;background:var(--wash);text-align:center}
+.smp-t{margin:0 0 8px;font-size:13px;color:var(--ink-soft)}
+.smp-t #smpName{color:var(--sea);font-weight:700}
+.smp-t b{color:var(--ink);font-family:var(--f-mono);display:inline-block;min-width:2.6em}
+.btn.mini{padding:0 8px;line-height:1.6}
+.smp-b{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+#smpRec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
 .midi-st{font-size:12px;color:var(--ink-soft)}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
@@ -239,7 +246,16 @@ footer a{color:var(--sea)}
       <button type="button" data-i="lead" aria-pressed="false">リード</button>
       <button type="button" data-i="chip" aria-pressed="false">8bit</button>
       <button type="button" data-i="bell" aria-pressed="false">ベル</button>
+      <button type="button" data-i="sample" aria-pressed="false">サンプル</button>
     </span></div>
+    <div class="smp" id="smp" hidden>
+      <p class="smp-t">サンプル:<span id="smpName">まだありません</span><span class="smp-root" id="smpRootBox" hidden> ・ 元の音程 <button class="btn mini" type="button" id="rootDown" aria-label="元の音程を下げる">−</button><b id="smpRoot">C4</b><button class="btn mini" type="button" id="rootUp" aria-label="元の音程を上げる">＋</button></span></p>
+      <div class="smp-b">
+        <button class="btn" type="button" id="smpFile">ファイルから読み込む</button>
+        <button class="btn" type="button" id="smpRec">● 録音</button>
+      </div>
+      <p class="err" id="smpErr" hidden></p>
+    </div>
     <div class="kb-bar">
       <button class="btn round" type="button" id="octDown" aria-label="1オクターブ下へ">‹</button>
       <span class="oct num" id="octLbl">C3〜</span>
@@ -289,9 +305,10 @@ footer a{color:var(--sea)}
     <h2>使い方のメモ</h2>
     <ul>
       <li>鍵盤の下の方をタップすると強く、上の方だと弱く鳴ります。スマホでは複数の指で和音も弾けます。</li>
+      <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
       <li>MIDIキーボードはChrome・Edgeで使えます(Safariは非対応)。ベロシティとサステインペダルにも対応しています。</li>
       <li>iPhoneで音が出ないときは、本体のマナーモードを解除してみてください。</li>
-      <li>チューニングには <a href="tools.html">チューナー&amp;メトロノーム</a> もどうぞ。</li>
+      <li>チューニングには <a href="tools.html">チューナー&amp;メトロノーム</a>、リズムには <a href="drums.html">ドラムパッド</a> もどうぞ。</li>
     </ul>
   </section>
 </main>
@@ -305,6 +322,7 @@ footer a{color:var(--sea)}
   <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
 </div>
 <div class="wrap foot"><a href="tools.html">← チューナー&amp;メトロノーム</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script src="https://namigroove.github.io/namigroove-site/sampler.js"></script>
 <script>
 (()=>{
 "use strict";
@@ -410,6 +428,12 @@ const INST={
     const s=[osc(a,w,f,t,env)];
     env.gain.setValueAtTime(0.3,t);env.gain.setValueAtTime(0.25,t+0.06);
     return {srcs:s,rel:0.012,rev:0.35};
+  },
+  sample(a,f,v,t,env){ /* サンプラー:読み込んだ音を、鍵盤の高さに合わせて速さを変えて鳴らす */
+    if(!smp||!smp.buffer) return INST.piano(a,f,v,t,env);
+    const m=69+12*Math.log2(f/440), src=a.createBufferSource();src.buffer=smp.buffer;src.playbackRate.value=Math.pow(2,(m-smp.root)/12);
+    src.connect(env);env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.55*v*smp.gain,t+0.003);src.start(t,smp.offset);
+    return {srcs:[src],rel:0.12,rev:0.8};
   },
   bell(a,f,v,t,env){ /* FM:はんぱな比率で揺らして金属っぽく */
     const tau=Math.max(0.6,Math.min(4,2.4*Math.pow(440/f,0.3)));
@@ -551,7 +575,46 @@ function segInit(el,key,cur,on){
 segInit($("transSeg"),"t",trans,v=>{trans=+v;store.set("trans",trans);build();show();});
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);build();show();});
 segInit($("lblSeg"),"l",lbl,v=>{lbl=v;store.set("pianoLbl",lbl);build();});
-segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("pianoInst",inst);});
+segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("pianoInst",inst);smpView();});
+
+/* ===== サンプラー ===== */
+const SM=window.NamiSampler;let smp=null; /* {buffer,offset,gain,root,name} */
+function smpErr(t){const e=$("smpErr");e.textContent=t||"";e.hidden=!t;}
+function smpView(){
+  $("smp").hidden=inst!=="sample";
+  $("smpName").textContent=smp?smp.name:"まだありません(読み込むか録音してね)";
+  $("smpRootBox").hidden=!smp; if(smp) $("smpRoot").textContent=nm(smp.root,true);
+}
+/* 録った音の音程をざっくり推定(自己相関) */
+function guessRoot(buf,off){
+  const sr=buf.sampleRate,d=buf.getChannelData(0),s0=Math.floor((off+0.03)*sr),n=Math.min(4096,d.length-s0);
+  if(n<1024) return 60;
+  let best=0,bl=0;for(let lag=Math.floor(sr/1200);lag<Math.min(n/2,sr/50);lag++){let c=0,e=0;for(let i=0;i<n-lag;i++){c+=d[s0+i]*d[s0+i+lag];e+=d[s0+i]*d[s0+i];}const r=e?c/e:0;if(r>best){best=r;bl=lag;}}
+  if(best<0.5||!bl) return 60;
+  return Math.round(69+12*Math.log2(sr/bl/440));
+}
+async function useRec(r,save){
+  try{const d=await SM.decode(audio(),r.data);const root=r.root!=null?r.root:guessRoot(d.buffer,d.offset);
+    smp=Object.assign(d,{name:r.name,root});smpView();if(save)SM.save("piano:sample",{name:r.name,data:r.data,root});return true;}
+  catch(e){smpErr("この音声ファイルは読み込めませんでした");return false;}
+}
+function saveRoot(){if(!smp||!SM)return;SM.load("piano:sample").then(r=>{if(r){r.root=smp.root;SM.save("piano:sample",r);}});}
+let smpPending=null;
+if(SM){
+  SM.load("piano:sample").then(r=>{if(r){smpPending=r;$("smpName").textContent=r.name;}});
+  const _audio=audio;audio=function(){const a=_audio();if(smpPending){const r=smpPending;smpPending=null;useRec(r,false);}return a;};
+  $("smpFile").onclick=async()=>{smpErr("");const r=await SM.pickFile();if(!r)return;if(r.error){smpErr(r.error);return;}if(await useRec(r,true))noteOn(smp.root,0.8),setTimeout(()=>release(smp.root,true),600);};
+  let recCtl=null;const rb=$("smpRec");
+  const fin=async r=>{rb.setAttribute("aria-pressed","false");rb.textContent="● 録音";await useRec(r,true);};
+  rb.onclick=async()=>{smpErr("");
+    if(recCtl){const c=recCtl;recCtl=null;fin(await c.stop());return;}
+    try{audio();recCtl=await SM.record(5);rb.setAttribute("aria-pressed","true");rb.textContent="■ 止める(最長5秒)";
+      recCtl.result.then(r=>{if(!recCtl)return;recCtl=null;fin(r);});
+    }catch(e){smpErr(typeof e==="string"?e:"マイクが使えませんでした。ブラウザのマイク許可を確認してね");}};
+  $("rootDown").onclick=()=>{if(smp){smp.root--;smpView();saveRoot();}};
+  $("rootUp").onclick=()=>{if(smp){smp.root++;smpView();saveRoot();}};
+}
+smpView();
 $("vol").value=vol;$("vol").addEventListener("input",e=>{vol=+e.target.value;store.set("pianoVol",vol);if(master)master.gain.value=vol*0.9;});
 
 /* MIDIキーボード */
