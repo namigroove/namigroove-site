@@ -373,8 +373,8 @@ const SND={
     [is9?190:180,is9?330:330].forEach((f,i)=>{const o=ac.createOscillator();o.type="triangle";o.frequency.setValueAtTime(f*1.15,t);o.frequency.exponentialRampToValueAtTime(f,t+0.02);o.connect(vca(t,(i?0.18:0.35)*v,0.05));o.start(t);o.stop(t+0.4);});
     const hp=filt("highpass",is9?2200:1600),bp=filt("peaking",is9?6000:4000,1);bp.gain.value=4;noise(t,0.5,hp);hp.connect(bp);bp.connect(vca(t,(is9?0.5:0.4)*v,is9?0.09:0.07));},
   clap(t,v){const bp=filt("bandpass",1150,1.2);
-    [0,0.011,0.022].forEach(d=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t+d);g.gain.linearRampToValueAtTime(0.9*v,t+d+0.001);g.gain.setTargetAtTime(0.0001,t+d+0.001,0.004);g.connect(comp);const b=filt("bandpass",1150,1.2);noise(t+d,0.03,b);b.connect(g);});
-    noise(t+0.03,0.5,bp);bp.connect(vca(t+0.03,0.7*v,0.06));},
+    [0,0.011,0.022].forEach(d=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t+d);g.gain.linearRampToValueAtTime(1.4*v,t+d+0.001);g.gain.setTargetAtTime(0.0001,t+d+0.001,0.004);g.connect(comp);const b=filt("bandpass",1150,1.2);noise(t+d,0.03,b);b.connect(g);});
+    noise(t+0.03,0.5,bp);bp.connect(vca(t+0.03,1.1*v,0.06));},
   rim(t,v){const bp=filt("bandpass",1700,4);tone("triangle",1700,t,0.08,bp);tone("square",480,t,0.06,bp);bp.connect(vca(t,0.6*v,0.012));},
   snap(t,v){const bp=filt("bandpass",2600,3);noise(t,0.08,bp);bp.connect(vca(t,0.9*v,0.012));tone("sine",1900,t,0.04,vca(t,0.15*v,0.008));},
   chh(t,v){if(ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setTargetAtTime(0.0001,t,0.006);ohhGain=null;} /* クローズでオープンを止める */
@@ -386,7 +386,7 @@ const SND={
     hp.connect(bp);const g=vca(t,(kit==="909"?0.3:0.26)*v,0.17);bp.connect(g);ohhGain=g;},
   ride(t,v){const hp=filt("highpass",4500),bp=filt("bandpass",7500,0.7);metal(t,2.5,hp,kit==="909"?2.2:1.8);hp.connect(bp);bp.connect(vca(t,0.12*v,0.6));
     const b2=filt("bandpass",3800,3);tone("sine",3800,t,0.4,b2);b2.connect(vca(t,0.06*v,0.15));},
-  crash(t,v){const hp=filt("highpass",5000);noise(t,3,hp);metal(t,3,hp,2.4);hp.connect(vca(t,0.28*v,0.75,0.004));},
+  crash(t,v){const hp=filt("highpass",5000);noise(t,3,hp);metal(t,3,hp,2.4);hp.connect(vca(t,0.16*v,0.75,0.004));},
   tomh(t,v){tom(t,v,kit==="909"?220:180);},tomm(t,v){tom(t,v,kit==="909"?160:130);},toml(t,v){tom(t,v,kit==="909"?115:95);},
   tamb(t,v){const hp=filt("highpass",6500),bp=filt("bandpass",9000,2);
     [0,0.015,0.03].forEach((d,i)=>{noise(t+d,0.2,hp);metal(t+d,0.2,hp,3);});hp.connect(bp);bp.connect(vca(t,0.4*v,0.06));},
