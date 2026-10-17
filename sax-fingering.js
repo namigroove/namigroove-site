@@ -1,4 +1,4 @@
-/* なみぐる！サックス運指データと運指図(SVG)。sax.html と tuner.html で共通 */
+/* なみぐる！サックス運指データと運指図(SVG)。運指表(fingering.html)で使う */
 (function () {
   "use strict";
   /* キーの位置(viewBox 0 0 120 300)。shape: c=丸, e=楕円(rx,ry), r=角丸 */

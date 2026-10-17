@@ -1,4 +1,4 @@
-/* なみぐる！フルート(ベーム式)運指データと運指図(SVG)。運指表(sax.html)で使う
+/* なみぐる！フルート(ベーム式)運指データと運指図(SVG)。運指表(fingering.html)で使う
    運指は The Woodwind Fingering Guide の Basic Fingering Chart(Flute and Piccolo)を参考にしています */
 (function () {
   "use strict";
