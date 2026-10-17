@@ -188,6 +188,12 @@ footer a{color:var(--sea)}
 .btn.mini{padding:0 8px;line-height:1.6}
 .smp-b{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 #smpRec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
+.btn.recb[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff;animation:recBlink 1s steps(2) infinite}
+@keyframes recBlink{50%{opacity:.75}}
+.take{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--wash);display:flex;flex-direction:column;align-items:center;gap:8px}
+.take audio{width:100%;max-width:520px}
+.take-b{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
+.take-len{font:12px var(--f-mono);color:var(--ink-soft)}
 .midi-st{font-size:12px;color:var(--ink-soft)}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
@@ -261,8 +267,17 @@ footer a{color:var(--sea)}
       <span class="oct num" id="octLbl">C3〜</span>
       <button class="btn round" type="button" id="octUp" aria-label="1オクターブ上へ">›</button>
       <button class="btn sus" type="button" id="susBtn" aria-pressed="false" title="ペダル(Spaceキーを押している間もON)">ペダル</button>
+      <button class="btn recb" type="button" id="recBtn" aria-pressed="false" title="弾いた音を録音して、MP3やWAVで保存できます">● 演奏を録音</button>
     </div>
     <div class="kb-wrap"><div class="kb" id="kb" role="group" aria-label="鍵盤"></div></div>
+    <div class="take" id="take" hidden>
+      <audio id="takeAudio" controls preload="auto"></audio>
+      <div class="take-b"><span class="take-len" id="takeLen"></span>
+        <button class="btn" type="button" id="saveMp3">MP3で保存</button>
+        <button class="btn" type="button" id="saveWav">WAVで保存</button>
+        <button class="btn" type="button" id="takeDel">消す</button>
+      </div>
+    </div>
 
     <details class="opts" open>
       <summary>設定</summary>
@@ -306,6 +321,7 @@ footer a{color:var(--sea)}
     <ul>
       <li>鍵盤の下の方をタップすると強く、上の方だと弱く鳴ります。スマホでは複数の指で和音も弾けます。</li>
       <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
+      <li>「● 演奏を録音」を押して弾くと、演奏を録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。録音はこの端末の中だけで処理します。</li>
       <li>MIDIキーボードはChrome・Edgeで使えます(Safariは非対応)。ベロシティとサステインペダルにも対応しています。</li>
       <li>iPhoneで音が出ないときは、本体のマナーモードを解除してみてください。</li>
       <li>チューニングには <a href="tuner.html">チューナー&amp;メトロノーム</a>、リズムには <a href="drums.html">ドラムパッド</a> もどうぞ。</li>
@@ -576,6 +592,63 @@ segInit($("transSeg"),"t",trans,v=>{trans=+v;store.set("trans",trans);build();sh
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);build();show();});
 segInit($("lblSeg"),"l",lbl,v=>{lbl=v;store.set("pianoLbl",lbl);build();});
 segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("pianoInst",inst);smpView();});
+
+/* ===== 演奏の録音(MP3・WAVで保存) ===== */
+let tap=null, recL=[], recR=[], recOn=false, recStart=0, take=null, takeURL="";
+const recBtn=$("recBtn");
+function recToggle(){
+  if(recOn){recStop();return;}
+  const a=audio(); recL=[];recR=[];
+  tap=a.createScriptProcessor(4096,2,2);
+  tap.onaudioprocess=e=>{if(!recOn)return;const ib=e.inputBuffer;recL.push(new Float32Array(ib.getChannelData(0)));recR.push(new Float32Array(ib.numberOfChannels>1?ib.getChannelData(1):ib.getChannelData(0)));
+    const o=e.outputBuffer;for(let c=0;c<o.numberOfChannels;c++)o.getChannelData(c).fill(0);
+    if(a.currentTime-recStart>600)recStop();};
+  master.connect(tap); tap.connect(a.destination);
+  recOn=true; recStart=a.currentTime; recBtn.setAttribute("aria-pressed","true"); recBtn.textContent="■ 録音を止める";
+}
+function recStop(){
+  recOn=false; recBtn.setAttribute("aria-pressed","false"); recBtn.textContent="● 演奏を録音";
+  try{master.disconnect(tap);tap.disconnect();}catch(e){} tap=null;
+  const n=recL.reduce((x,b)=>x+b.length,0); if(!n) return;
+  const L=new Float32Array(n),R=new Float32Array(n);let o=0;recL.forEach((b,i)=>{L.set(b,o);R.set(recR[i],o);o+=b.length;});recL=recR=[];
+  /* 最初の音の前と、最後の音のあとの無音を切る */
+  const th=0.0015;let s=0,e=n-1;while(s<n&&Math.abs(L[s])<th&&Math.abs(R[s])<th)s++;while(e>s&&Math.abs(L[e])<th&&Math.abs(R[e])<th)e--;
+  if(s>=e){toast("音が入っていませんでした");return;}
+  const sr=ac.sampleRate; s=Math.max(0,s-Math.floor(sr*0.02)); e=Math.min(n-1,e+Math.floor(sr*0.3));
+  take={L:L.slice(s,e),R:R.slice(s,e),sr};
+  if(takeURL)URL.revokeObjectURL(takeURL); takeURL=URL.createObjectURL(wavBlob(take));
+  $("takeAudio").src=takeURL; $("take").hidden=false;
+  const sec=take.L.length/sr; $("takeLen").textContent=Math.floor(sec/60)+":"+String(Math.floor(sec%60)).padStart(2,"0");
+}
+function wavBlob(t){
+  const n=t.L.length,buf=new ArrayBuffer(44+n*4),dv=new DataView(buf),w=(o,x)=>{for(let i=0;i<x.length;i++)dv.setUint8(o+i,x.charCodeAt(i));};
+  w(0,"RIFF");dv.setUint32(4,36+n*4,true);w(8,"WAVE");w(12,"fmt ");dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,2,true);
+  dv.setUint32(24,t.sr,true);dv.setUint32(28,t.sr*4,true);dv.setUint16(32,4,true);dv.setUint16(34,16,true);w(36,"data");dv.setUint32(40,n*4,true);
+  for(let i=0,p=44;i<n;i++,p+=4){dv.setInt16(p,Math.max(-1,Math.min(1,t.L[i]))*32767,true);dv.setInt16(p+2,Math.max(-1,Math.min(1,t.R[i]))*32767,true);}
+  return new Blob([buf],{type:"audio/wav"});
+}
+function fname(ext){const d=new Date(),z=x=>String(x).padStart(2,"0");return "namigroove-piano-"+d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+"-"+z(d.getHours())+z(d.getMinutes())+"."+ext;}
+function download(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);}
+let lameP=null;
+function loadLame(){ /* MP3にする部品は、保存するときだけ読み込む */
+  if(window.lamejs)return Promise.resolve();
+  if(!lameP)lameP=new Promise((res,rej)=>{const sc=document.createElement("script");sc.src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js";sc.onload=res;sc.onerror=()=>{lameP=null;rej();};document.head.appendChild(sc);});
+  return lameP;
+}
+async function mp3Blob(t){
+  await loadLame();
+  const enc=new lamejs.Mp3Encoder(2,t.sr,192),out=[],B=1152,toI=f=>{const a=new Int16Array(f.length);for(let i=0;i<f.length;i++)a[i]=Math.max(-1,Math.min(1,f[i]))*32767;return a;};
+  const L=toI(t.L),R=toI(t.R);
+  for(let i=0;i<L.length;i+=B){const b=enc.encodeBuffer(L.subarray(i,i+B),R.subarray(i,i+B));if(b.length)out.push(new Uint8Array(b));if(i%(B*400)===0)await new Promise(r=>setTimeout(r));}
+  const f=enc.flush();if(f.length)out.push(new Uint8Array(f));
+  return new Blob(out,{type:"audio/mpeg"});
+}
+recBtn.onclick=recToggle;
+$("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
+$("saveMp3").onclick=async()=>{if(!take)return;const b=$("saveMp3"),t0=b.textContent;b.disabled=true;b.textContent="変換中…";
+  try{download(await mp3Blob(take),fname("mp3"));}catch(e){toast("MP3に変換できませんでした。WAVで保存してね");}
+  b.disabled=false;b.textContent=t0;};
+$("takeDel").onclick=()=>{take=null;if(takeURL)URL.revokeObjectURL(takeURL);takeURL="";$("takeAudio").removeAttribute("src");$("take").hidden=true;};
 
 /* ===== サンプラー ===== */
 const SM=window.NamiSampler;let smp=null; /* {buffer,offset,gain,root,name} */
