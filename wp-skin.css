@@ -158,3 +158,13 @@ a.twitter:not(.ng-share),a.facebook,a.hatebu,a.line:not(.ng-share){visibility:hi
 #header-nav li a{font-size:11.5px!important}
 #header-container{padding-left:12px!important;padding-right:12px!important}
 }
+
+/* 記事・固定ページ: 白いカードの内側に余白 */
+#main{padding:40px 48px!important;box-sizing:border-box;border-radius:16px}
+@media (max-width:760px){#main{padding:24px 18px!important}}
+/* お問い合わせフォーム: 入力欄が横いっぱいに広がりすぎないように */
+.wpcf7 form{max-width:720px}
+.wpcf7 .cf-label{font-weight:700}
+.wpcf7 small{display:block;color:var(--ng-ink-soft,#4a5a80);margin-top:-4px}
+/* 折りたたみ見出しへジャンプしたとき、少し下にずらしてヘッダーに隠れないように */
+details[id]{scroll-margin-top:90px}

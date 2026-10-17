@@ -95,4 +95,22 @@
   var _run0 = run; run = function () { _run0(); mochinfo(); };
   var _run = run; run = function () { _run(); addEN(); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
+
+  // ページ内リンク(#faq など)の飛び先が折りたたみなら開いてから移動
+  function openHash(h) {
+    if (!h || h.length < 2) return;
+    var el = document.getElementById(decodeURIComponent(h.slice(1)));
+    if (!el) return;
+    var d = el.tagName === "DETAILS" ? el : el.closest("details");
+    if (d) d.open = true;
+    setTimeout(function () { el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 30);
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var h = a.getAttribute("href");
+    var el = h.length > 1 && document.getElementById(decodeURIComponent(h.slice(1)));
+    if (el && (el.tagName === "DETAILS" || el.closest("details"))) { e.preventDefault(); history.replaceState(null, "", h); openHash(h); }
+  });
+  window.addEventListener("load", function () { openHash(location.hash); });
 })();
