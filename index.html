@@ -89,6 +89,10 @@ nav.main a:hover{color:#ffffff}
 #credits,#partners,#history{background:var(--zunda-wash)}
 #partners,#history{padding-top:8px}
 .wave-top{display:block;width:100%;height:48px;color:var(--night);margin-bottom:-1px}
+.wave-top path{animation:waveSlide 14s linear infinite}
+.wave-top .w2{animation-duration:9s;animation-direction:reverse}
+@keyframes waveSlide{from{transform:translateX(0)}to{transform:translateX(-1200px)}}
+@media (prefers-reduced-motion:reduce){.wave-top path{animation:none}}
 
 section{padding-block:56px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
@@ -381,7 +385,7 @@ footer .mono{font-family:var(--f-mono)}
     </div>
   </section>
 
-  <svg class="wave-top" viewBox="0 0 1200 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 24 C 150 0 300 48 450 24 S 750 0 900 24 S 1100 44 1200 20 L1200 48 L0 48 Z" fill="currentColor"/></svg>
+  <svg class="wave-top" viewBox="0 0 1200 48" preserveAspectRatio="none" aria-hidden="true"><path class="w2" d="M0 22 Q100.0 8 200.0 22 T400 22 T600 22 T800 22 T1000 22 T1200 22 T1400 22 T1600 22 T1800 22 T2000 22 T2200 22 T2400 22 L2400 48 L0 48 Z" fill="currentColor" opacity=".45"/><path class="w1" d="M0 26 Q150.0 10 300.0 26 T600 26 T900 26 T1200 26 T1500 26 T1800 26 T2100 26 T2400 26 L2400 48 L0 48 Z" fill="currentColor"/></svg>
   <section id="contact" class="contact">
     <div class="wrap">
       <div>
