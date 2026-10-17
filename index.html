@@ -185,6 +185,7 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .wx-next b{font-weight:700}
 .wx-next .lbl{font-family:var(--f-mono);font-size:11px;color:var(--zunda);letter-spacing:.06em}
 .wx-next .fc{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-family:var(--f-mono);font-size:13px;white-space:nowrap}
+.wx-next .fc .wx-ico{width:26px;height:26px}
 .wx-next .fc.na{font-family:inherit;font-size:12px;color:var(--ink-soft)}
 .wx-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}
 .wx-days li{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;border-radius:8px;border:1px solid var(--line);font-family:var(--f-mono);font-size:12px;line-height:1.3;text-align:center;min-width:0}
@@ -194,7 +195,7 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .wx-days .hi{color:#d9534f}.wx-days .lo{color:#2c7be5}
 .wx-days .pr{font-size:10px;color:var(--ink-soft)}
 .wx-days .tag{font-size:9px;color:var(--zunda);font-weight:700}
-.wx-ico{width:30px;height:30px;image-rendering:pixelated;shape-rendering:crispEdges;flex:none}
+.wx-ico{width:36px;height:36px;image-rendering:pixelated;shape-rendering:crispEdges;flex:none}
 .wx-note{margin:10px 0 0;font-size:11px;color:var(--ink-soft)}
 .wx-note a{color:inherit}
 @media (max-width:560px){.wx-days{gap:3px}.wx-days li{padding:6px 0;font-size:11px}.wx-ico{width:24px;height:24px}.wx-next .fc{margin-left:0}}
@@ -615,7 +616,7 @@ document.getElementById("yr").textContent = new Date().getFullYear();
   var box=document.getElementById("wx"); if(!box) return;
   var WD="日月火水木金土";
   // ドット絵の天気アイコン(12x12)。文字ごとに色を割り当てる
-  var COL={y:"#f5b400",o:"#ffd23f",w:"#e9eef8",c:"#b7c4de",g:"#8597bd",b:"#396cdf",s:"#ffffff",k:"#ffcc00"};
+  var COL={y:"#f5b400",o:"#ffd23f",w:"#c3d0ea",c:"#8496c0",g:"#8597bd",b:"#396cdf",s:"#ffffff",k:"#ffcc00"};
   var SUN=["","     y     ","  y  y  y  ","   ooooo   ","  ooooooo  "," yoooooooy ","  ooooooo  ","   ooooo   ","  y  y  y  ","     y     ",""];
   var CLOUD=["","","","    www     ","  wwwwww    "," wwwwwwwww  ","wwwwwwwwwww ","ccccccccccc ","","","",""];
   function layer(rows,dx,dy,out){rows.forEach(function(r,y){for(var x=0;x<r.length;x++){var ch=r[x];if(ch&&ch!==" ")out[(y+dy)+","+(x+dx)]=ch;}});}
