@@ -139,12 +139,13 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .works-cta{margin:32px 0 0;text-align:center}
 .works-cta .btn{padding-left:32px;padding-right:32px}
 .works-cta p{margin:10px 0 0;font-size:12px;color:var(--ink-soft)}
-.credits-more{display:none}
-@media (max-width:640px){
-  .credits:not(.open) .credit:nth-child(n+4){display:none}
-  .credits-more{display:flex;justify-content:center;margin-top:20px}
-  .credits.open+.credits-more{display:none}
-}
+/* 代表作は折りたたみ:PCは2段分(4列なら8件・3列なら6件・2列なら4件)、スマホ(1列)は3件 */
+.credits-more{display:flex;justify-content:center;margin-top:20px}
+.credits.open+.credits-more{display:none}
+.credits:not(.open) .credit:nth-child(n+9){display:none}
+@media (max-width:1011px){.credits:not(.open) .credit:nth-child(n+7){display:none}}
+@media (max-width:761px){.credits:not(.open) .credit:nth-child(n+5){display:none}}
+@media (max-width:511px){.credits:not(.open) .credit:nth-child(n+4){display:none}}
 .more-link a{color:var(--ink-soft)}
 .more-link a::after{content:" →"}
 .c-role{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
