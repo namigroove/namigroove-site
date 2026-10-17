@@ -263,7 +263,7 @@ footer a{color:var(--sea)}
       <p class="smp-t"><b id="smpPad">キック</b> の音:<span id="smpName">内蔵の音</span></p>
       <div class="smp-b">
         <button class="btn" type="button" id="smpFile">ファイルから読み込む</button>
-        <button class="btn" type="button" id="smpRec">● 録音</button>
+        <button class="btn" type="button" id="smpRec">● マイクで録音</button>
         <button class="btn" type="button" id="smpReset" hidden>元の音に戻す</button>
       </div>
       <p class="err" id="smpErr" hidden></p>
@@ -569,9 +569,9 @@ $("smpFile").onclick=async()=>{smpErr("");if(!SM)return;const r=await SM.pickFil
   const id=sel;if(await assign(id,r)){SM.save("drums:"+id,{name:r.name,data:r.data});play(id,0.9);}};
 let recCtl=null;
 $("smpRec").onclick=async()=>{smpErr("");if(!SM)return;const b=$("smpRec");
-  if(recCtl){const c=recCtl;recCtl=null;b.setAttribute("aria-pressed","false");b.textContent="● 録音";const r=await c.stop();const id=sel;if(await assign(id,r)){SM.save("drums:"+id,{name:r.name,data:r.data});play(id,0.9);}return;}
+  if(recCtl){const c=recCtl;recCtl=null;b.setAttribute("aria-pressed","false");b.textContent="● マイクで録音";const r=await c.stop();const id=sel;if(await assign(id,r)){SM.save("drums:"+id,{name:r.name,data:r.data});play(id,0.9);}return;}
   try{audio();recCtl=await SM.record(5);b.setAttribute("aria-pressed","true");b.textContent="■ 止める(最長5秒)";
-    recCtl.result.then(async r=>{if(!recCtl)return;recCtl=null;b.setAttribute("aria-pressed","false");b.textContent="● 録音";const id=sel;if(await assign(id,r)){SM.save("drums:"+id,{name:r.name,data:r.data});play(id,0.9);}});
+    recCtl.result.then(async r=>{if(!recCtl)return;recCtl=null;b.setAttribute("aria-pressed","false");b.textContent="● マイクで録音";const id=sel;if(await assign(id,r)){SM.save("drums:"+id,{name:r.name,data:r.data});play(id,0.9);}});
   }catch(e){smpErr(typeof e==="string"?e:"マイクが使えませんでした。ブラウザのマイク許可を確認してね");}};
 $("smpReset").onclick=()=>{delete samples[sel];if(SM)SM.remove("drums:"+sel);smpView();play(sel,0.9);};
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing)stop();});

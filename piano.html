@@ -258,7 +258,7 @@ footer a{color:var(--sea)}
       <p class="smp-t">サンプル:<span id="smpName">まだありません</span><span class="smp-root" id="smpRootBox" hidden> ・ 元の音程 <button class="btn mini" type="button" id="rootDown" aria-label="元の音程を下げる">−</button><b id="smpRoot">C4</b><button class="btn mini" type="button" id="rootUp" aria-label="元の音程を上げる">＋</button></span></p>
       <div class="smp-b">
         <button class="btn" type="button" id="smpFile">ファイルから読み込む</button>
-        <button class="btn" type="button" id="smpRec">● 録音</button>
+        <button class="btn" type="button" id="smpRec">● マイクで録音</button>
       </div>
       <p class="err" id="smpErr" hidden></p>
     </div>
@@ -678,7 +678,7 @@ if(SM){
   const _audio=audio;audio=function(){const a=_audio();if(smpPending){const r=smpPending;smpPending=null;useRec(r,false);}return a;};
   $("smpFile").onclick=async()=>{smpErr("");const r=await SM.pickFile();if(!r)return;if(r.error){smpErr(r.error);return;}if(await useRec(r,true))noteOn(smp.root,0.8),setTimeout(()=>release(smp.root,true),600);};
   let recCtl=null;const rb=$("smpRec");
-  const fin=async r=>{rb.setAttribute("aria-pressed","false");rb.textContent="● 録音";await useRec(r,true);};
+  const fin=async r=>{rb.setAttribute("aria-pressed","false");rb.textContent="● マイクで録音";await useRec(r,true);};
   rb.onclick=async()=>{smpErr("");
     if(recCtl){const c=recCtl;recCtl=null;fin(await c.stop());return;}
     try{audio();recCtl=await SM.record(5);rb.setAttribute("aria-pressed","true");rb.textContent="■ 止める(最長5秒)";
