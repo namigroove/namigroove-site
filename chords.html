@@ -435,7 +435,7 @@ function renderFwd(){
   if(isG){
     vlist=voicings(shapeRoot+48,iv);vsel=0;
     $("chSub").innerHTML=(c?`カポ${c}:<b>${chordName(shapeRoot,type)}</b> の形で弾くと ${chordName(root,type)} が鳴ります<br>`:"")+"構成音 "+tones;
-    $("voicings").innerHTML=vlist.length?vlist.map((v,i)=>`<button type="button" class="vo-c${i===0?" main":""}" data-i="${i}">${diagram(v.fr,v.barre,shapeRoot)}<small>${v.fr.map(f=>f<0?"x":f).join("")}</small></button>`).join(""):'<p class="note-s">この範囲では押さえやすい形が見つかりませんでした</p>';
+    $("voicings").innerHTML=vlist.length?vlist.map((v,i)=>`<button type="button" class="vo-c${i===0?" main":""}" data-i="${i}">${diagram(v.fr,v.barre,shapeRoot)}<small>${v.fr.map(f=>f<0?"x":f).join(v.fr.some(f=>f>9)?"-":"")}</small></button>`).join(""):'<p class="note-s">この範囲では押さえやすい形が見つかりませんでした</p>';
     $("voicings").hidden=false;$("fbWrap").hidden=true;
   }else{
     $("chSub").innerHTML="構成音 "+tones;
