@@ -504,7 +504,7 @@ function renderNews(){
   const list = NEWS.filter(x=>inTab(x,newsFilter));
   /* 出現情報タブの先頭には、予定がまとまったTimeTreeを常に表示 */
   const pin = newsFilter==="event" ? `
-  <a class="note pin k-event" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出演予定はカレンダーでチェック</h3><time>なみぐるの出現スケジュール →</time></a>` : "";
+  <a class="note pin k-event" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出現情報はカレンダーでチェック</h3><time>なみぐるの出現スケジュール →</time></a>` : "";
   document.getElementById("noteList").innerHTML = pin + list.slice(0,newsShown-(pin?1:0)).map(n=>`
   <a class="note k-${tabType(n)}" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag" translate="no">${NEWS_T[tabType(n)]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
   document.getElementById("newsMore").hidden = list.length<=newsShown-(pin?1:0);
