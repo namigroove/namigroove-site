@@ -81,6 +81,7 @@ nav.main a:hover{color:#ffffff}
 @keyframes puniIdle{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975) translateY(2px)}}
 @keyframes puniBoing{0%{transform:scale(1.18,.78)}25%{transform:scale(.88,1.14)}45%{transform:scale(1.07,.93)}65%{transform:scale(.97,1.04)}82%{transform:scale(1.015,.985)}100%{transform:scale(1,1)}}
 @media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:center}.puni{display:block;width:100%}}
+@media (max-width:899px){.hero{position:relative}.puni{display:block;position:absolute;right:max(12px,calc((100% - 1080px)/2));top:56px;width:min(36vw,170px)}}
 @media (prefers-reduced-motion:reduce){.puni img{animation:none}}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .btn{font-family:var(--f-body);display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid var(--ink)}
