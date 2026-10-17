@@ -80,8 +80,9 @@ nav.main a:hover{color:#ffffff}
 .puni.boing img{animation:puniBoing .75s cubic-bezier(.3,1.6,.5,1)}
 @keyframes puniIdle{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975) translateY(2px)}}
 @keyframes puniBoing{0%{transform:scale(1.18,.78)}25%{transform:scale(.88,1.14)}45%{transform:scale(1.07,.93)}65%{transform:scale(.97,1.04)}82%{transform:scale(1.015,.985)}100%{transform:scale(1,1)}}
-@media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:center}.puni{display:block;width:100%}}
-@media (max-width:899px){.hero{position:relative}.puni{display:block;position:absolute;right:max(12px,calc((100% - 1080px)/2));top:56px;width:min(36vw,170px)}}
+@media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:center}.puni-pc{display:block;width:100%}}
+/* スマホ:文字の右に回り込ませて、文字と重ならないように */
+@media (max-width:899px){.puni-sp{display:block;float:right;width:min(34vw,150px);margin:28px 0 8px 10px;shape-outside:margin-box}}
 @media (prefers-reduced-motion:reduce){.puni img{animation:none}}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .btn{font-family:var(--f-body);display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid var(--ink)}
@@ -288,6 +289,7 @@ footer .mono{font-family:var(--f-mono)}
   <div class="banner"><img src="img/header.webp" alt="" width="2576" height="859"></div>
   <div class="wrap hero">
     <div>
+      <button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"></button>
       <p class="eyebrow">VOCALOID Producer / Sax DJ</p>
       <h1><span class="ngname" translate="no">なみぐる</span><span class="en">NAMIGROOVE</span></h1>
       <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。<b>ゲーム・アニメ・CM・VTuber</b>への楽曲提供、作曲、編曲、作詞、映像製作、楽器演奏まで手がけています。</p>
@@ -298,7 +300,7 @@ footer .mono{font-family:var(--f-mono)}
       </div>
       <p class="tide"><span><b>SINCE</b> 2021</span><span>VOCALOID / R&amp;B / Electro Swing / Funk / Sax</span><span>いい波、起こします~(･ω･~)</span></p>
     </div>
-    <button class="puni" type="button" id="puni" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"></button>
+    <button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"></button>
   </div>
 
   <canvas class="sea" id="sea" aria-hidden="true"></canvas>
@@ -571,7 +573,7 @@ document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
 <script>
 /* なみぐるをぷにぷに */
-(function(){var b=document.getElementById("puni");if(!b)return;b.addEventListener("click",function(){b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(){b.classList.remove("boing");});})();
+document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
 </script>
 </body>
 </html>
