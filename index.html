@@ -197,6 +197,9 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 .promo-cards img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 6px 18px rgba(16,31,69,.15)}
 @media (max-width:900px){.promo{grid-template-rows:auto}.promo-video{width:200px}.promo-video{grid-row:auto}.promo-body{align-self:center}.promo-cards{grid-column:1/-1;width:100%;gap:12px}}
 @media (max-width:560px){.promo{grid-template-columns:1fr;justify-items:center;text-align:center}.promo-btns{justify-content:center}.promo-video{width:min(220px,70vw)}.promo-cards{gap:10px}}
+/* スマホ・タブレット: ボタンを下の画像2枚と同じ幅・同じ並びに */
+@media (max-width:900px){.promo-body{display:contents}.promo-body h3{margin:0}.promo-btns{grid-column:1/-1;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:-8px}.promo-btns .btn{justify-content:center;padding-inline:8px}}
+@media (max-width:560px){.promo-btns{gap:10px}}
 
 /* links */
 .link-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px 40px}
