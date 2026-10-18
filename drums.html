@@ -185,6 +185,7 @@ footer a{color:var(--sea)}
 .steps button{aspect-ratio:1/1.3;border-radius:6px;border:1.5px solid var(--line);background:var(--chip);cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .steps button.gs{border-color:var(--ink-soft)}
 .steps button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea)}
+.steps button.ghost:not([aria-pressed="true"]){background:rgba(57,108,223,.2);border-style:dashed;border-color:var(--sea)}
 .steps button.now{box-shadow:0 0 0 2px var(--coral)}
 @media (max-width:560px){.steps{grid-template-columns:repeat(var(--mcols,8),1fr)}}
 .lanes{display:grid;grid-template-columns:repeat(var(--cols,16),1fr);gap:4px;margin-top:6px}
@@ -588,7 +589,7 @@ function lookView(){const L=look[sel]||{};$("lookColor").value=L.c||"#e3ebfb";$(
 function setLook(id,patch){const L=Object.assign({},look[id]||{},patch);Object.keys(L).forEach(k=>{if(!L[k])delete L[k];});if(Object.keys(L).length)look[id]=L;else delete look[id];saveLook();applyLook(id);lookView();}
 function flash(id){const b=padEl[id];b.classList.remove("hit");void b.offsetWidth;b.classList.add("hit");clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove("hit"),110);}
 function hit(id,v){play(id,v);flash(id);select(id);if(rec&&playing)recordHit(id);}
-function select(id){if(sel===id)return;sel=id;store.set("drSel",sel);Object.values(padEl).forEach(b=>b.classList.toggle("sel",b.dataset.id===id));renderSteps();smpView();lookView();}
+let prevSel=null;function select(id){if(sel===id)return;prevSel=sel;sel=id;store.set("drSel",sel);Object.values(padEl).forEach(b=>b.classList.toggle("sel",b.dataset.id===id));renderSteps();smpView();lookView();}
 padsEl.addEventListener("pointerdown",e=>{const b=e.target.closest(".pad");if(!b)return;e.preventDefault();
   const r=b.getBoundingClientRect(),dx=(e.clientX-r.left)/r.width-0.5,dy=(e.clientY-r.top)/r.height-0.5;
   hit(b.dataset.id,1-Math.min(0.6,Math.hypot(dx,dy)*1.1));});
@@ -611,7 +612,7 @@ buildSteps();$("meterSel").value=meter;
 function setMeter(m){meter=m;N=METERS[m].steps;store.set("drMeter",m);$("meterSel").value=m;if(step>=N)step=0;buildSteps();renderSteps();}
 $("meterSel").addEventListener("change",()=>setMeter($("meterSel").value));
 function renderSteps(){
-  [...stepsEl.children].forEach((b,i)=>b.setAttribute("aria-pressed",!!pat[sel][i]));
+  [...stepsEl.children].forEach((b,i)=>{b.setAttribute("aria-pressed",!!pat[sel][i]);b.classList.toggle("ghost",!!(prevSel&&prevSel!==sel&&pat[prevSel]&&pat[prevSel][i]));});
   [...lanesEl.children].forEach((x,i)=>x.classList.toggle("on",PADS.some(p=>pat[p.id][i])));
   PADS.forEach(p=>padEl[p.id].classList.toggle("used",pat[p.id].some(Boolean)));
   $("selName").innerHTML=$("seqName").innerHTML=plain(PADS[IDX[sel]].n);
