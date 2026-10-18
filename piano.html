@@ -407,6 +407,7 @@ header.top .logo{flex:none}
     <div id="clProg" hidden>
       <div class="row"><div class="ctl">キー <select id="clKey" class="sel" aria-label="キー"></select></div><div class="ctl">MIDIのテンポ <input id="clBpm" class="sel num" type="number" min="40" max="240" value="90" style="width:4.2em" aria-label="MIDI書き出しのテンポ(BPM)"></div><button class="btn" type="button" id="clProgPlay">▶ 通して鳴らす</button></div>
       <div class="seg cl-cat" id="clCat" role="group" aria-label="進行のジャンル"></div>
+      <div id="clMy" hidden style="margin:0 0 14px"></div>
       <div class="cl-progs" id="clProgs"></div>
     </div>
   </section>
@@ -437,6 +438,7 @@ header.top .logo{flex:none}
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/sampler.js"></script>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
 <script>
 (()=>{
 "use strict";
@@ -914,15 +916,20 @@ $("clVo").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
 $("clPlay").onclick=clGo;
 /* おしゃれ進行(キーCでの音。左手ベース+右手) */
 const PROGS=window.NamiProg.LIST.map(x=>({g:x.g,n:x.n,d:x.d,c:window.NamiProg.piano(x.c)}));
+/* 自分で作った進行(progbuilder.js。ジャムモード・コード表と共通) */
+const NB=window.NamiBuilder;let myC=NB.load();const qMy=new URLSearchParams(location.search).get("m"),qMyC=qMy?NB.dec(qMy):null;if(qMyC)myC=qMyC;
+const MYI=PROGS.length;PROGS.push({g:"my",n:"マイ進行",d:"自分で作った進行。上でコードを変えると、ここにすぐ反映されます",c:window.NamiProg.piano(myC)});
+let builder=null;
 const CLKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let clKey=store.get("clKey",0);
 $("clKey").innerHTML=CLKEY.map((n,i)=>`<option value="${i}">${n}</option>`).join("");$("clKey").value=String(clKey);
 const kOff=()=>clKey>6?clKey-12:clKey;
 const chName=(c)=>{if(c[3]!=null){const r0=(c[1]==="dim7"?["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"]:CLKEY)[(c[0]+clKey)%12];return r0+c[1]+"/"+CLKEY[(c[3]+clKey)%12];}const r=(c[1]==="dim7"&&[1,3,8].includes((c[0]+clKey)%12)?["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"]:CLKEY)[(c[0]+clKey)%12];if(c[1][0]==="/"){const bn=CLKEY[(c[2][0]+clKey)%12];return r+"/"+bn;}if(c[1].startsWith("m/")){return r+"m/"+CLKEY[(c[2][0]+clKey)%12];}return r+c[1];};
 const PCAT=window.NamiProg.CAT;
-let clCat=store.get("clPgCat","pop");if(clCat!=="all"&&!PCAT[clCat])clCat="pop";
-function catFilter(){[...$("clCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===clCat));document.querySelectorAll("#clProgs .cl-pg").forEach(el=>{el.hidden=clCat!=="all"&&PROGS[+el.dataset.p].g!==clCat;});}
-$("clCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button>`;
+let clCat=store.get("clPgCat","pop");if(clCat!=="all"&&clCat!=="my"&&!PCAT[clCat])clCat="pop";if(qMyC)clCat="my";
+function catFilter(){[...$("clCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===clCat));$("clMy").hidden=clCat!=="my";document.querySelectorAll("#clProgs .cl-pg").forEach(el=>{const g=PROGS[+el.dataset.p].g;el.hidden=clCat==="all"?g==="my":g!==clCat;});}
+$("clCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button><button type="button" data-g="my">✏️ 自分で作る</button>`;
+builder=NB.mount($("clMy"),{key:()=>clKey,initial:myC,onChange:a=>{myC=a;PROGS[MYI].c=window.NamiProg.piano(a);progRender();}});
 $("clCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clCat=b.dataset.g;store.set("clPgCat",clCat);catFilter();});
 function progRender(){
   $("clProgs").innerHTML=PROGS.map((p,i)=>`<div class="cl-pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-jam" type="button" data-jam="${i}" title="ドラムとベースつきでジャム" aria-label="ジャムモードで鳴らす">🥁</button><button class="btn pg-shr" type="button" data-shr="${i}" title="この進行のリンクを共有" aria-label="この進行のリンクを共有">🔗</button><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="chips">${p.c.map((c,j)=>`<button type="button" data-c="${j}">${chName(c)}</button>`).join("")}</div></div>`).join("");;catFilter();
@@ -972,10 +979,10 @@ let clBpm=store.get("clBpm",90);$("clBpm").value=clBpm;$("clBpm").addEventListen
 function progMidi(p){const P=PROGS[p],k=kOff();
   const cs=P.c.map(c=>{const ms=c[2].map(m=>m+k);return {name:chName(c),bass:ms[0],notes:ms.slice(1)};});
   NamiMidi.save(NamiMidi.build(cs,clBpm,P.n+" ("+CLKEY[clKey]+")"),"namigroove_"+P.n+"_"+CLKEY[clKey]+"_"+clBpm+"bpm");}
-$("clProgs").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+"?p="+pid(PROGS[+jm.dataset.jam].n)+"&k="+clKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const P=PROGS[+sh.dataset.shr];shareLink({p:pid(P.n),k:clKey},P.n+"(キー"+CLKEY[clKey]+")– なみぐる！ピアノ");return;}const md=e.target.closest("[data-mid]");if(md){progMidi(+md.dataset.mid);return;}const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
+$("clProgs").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+(+jm.dataset.jam===MYI?"?m="+encodeURIComponent(NB.enc(myC)):"?p="+pid(PROGS[+jm.dataset.jam].n))+"&k="+clKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const P=PROGS[+sh.dataset.shr];shareLink(+sh.dataset.shr===MYI?{m:NB.enc(myC),k:clKey}:{p:pid(P.n),k:clKey},(+sh.dataset.shr===MYI?P.c.map(chName).join("→"):P.n)+"(キー"+CLKEY[clKey]+")– なみぐる！ピアノ");return;}const md=e.target.closest("[data-mid]");if(md){progMidi(+md.dataset.mid);return;}const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
   const b=e.target.closest("[data-c]");if(!b)return;const p=+b.closest(".cl-pg").dataset.p;clearTimeout(progTimer);playChord(p,+b.dataset.c);});
 $("clProgPlay").onclick=()=>{clearTimeout(progTimer);const L=PROGS.map((_,i)=>i).filter(i=>clCat==="all"||PROGS[i].g===clCat);let k=0,j=0;const step=()=>{const p=L[k];playChord(p,j);j++;if(j>=PROGS[p].c.length){k++;j=0;}if(k<L.length)progTimer=setTimeout(step,1500);};if(L.length)step();};
-$("clKey").addEventListener("change",()=>{clKey=+$("clKey").value;store.set("clKey",clKey);progRender();});
+$("clKey").addEventListener("change",()=>{clKey=+$("clKey").value;store.set("clKey",clKey);progRender();if(builder)builder.render();});
 $("clTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const m=b.dataset.m;[...$("clTabs").children].forEach(x=>x.setAttribute("aria-selected",x===b));$("clName").hidden=m!=="name";$("clProg").hidden=m!=="prog";clearTimeout(progTimer);});
 /* ===== 共有リンク(選んだ状態をURLに入れる) ===== */
 const pid=s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.codePointAt(0))>>>0;return h.toString(36);};
@@ -989,9 +996,10 @@ function shareLink(params,title){
 /* 共有リンクから開いたとき */
 const qR=QS.get("r"),qT=QS.get("t");if(qR!=null&&+qR>=0&&+qR<12){clRoot=+qR;const ti=CL_TYPES.findIndex(t=>(t[0]||"M")===qT);if(ti>=0)clType=ti;}
 const qP=QS.get("p"),qPi=qP?PROGS.findIndex(x=>pid(x.n)===qP):-1;
-if(qPi>=0){const k=+QS.get("k");if(k>=0&&k<12){clKey=k;$("clKey").value=String(k);}clCat=PROGS[qPi].g;}
+if(qPi>=0||qMyC){const k=+QS.get("k");if(k>=0&&k<12){clKey=k;$("clKey").value=String(k);}clCat=qMyC?"my":PROGS[qPi].g;}
 clRender();progRender();mini(clNotes());
-if(qPi>=0||qR!=null){const sec=document.getElementById("chordLook");if(qPi>=0)$("clTabs").querySelector('[data-m="prog"]').click();
+if(qMyC){$("clTabs").querySelector('[data-m="prog"]').click();builder.render();setTimeout(()=>$("clMy").scrollIntoView({behavior:"smooth",block:"start"}),300);}
+else if(qPi>=0||qR!=null){const sec=document.getElementById("chordLook");if(qPi>=0)$("clTabs").querySelector('[data-m="prog"]').click();
   setTimeout(()=>{const el=qPi>=0?document.querySelector(`.cl-pg[data-p="${qPi}"]`):sec;if(el){el.scrollIntoView({behavior:"smooth",block:"center"});if(qPi>=0)el.classList.add("shared");}},300);}
 $("clShare").onclick=()=>shareLink({r:clRoot,t:CL_TYPES[clType][0]||"M"},CLR[clRoot]+CL_TYPES[clType][0]+" – なみぐる！ピアノ");
 

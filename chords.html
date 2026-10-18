@@ -309,6 +309,7 @@ header.top .logo{flex:none}
         <button class="btn" type="button" id="pgStop">■ 止める</button>
       </div>
       <div class="seg pg-cat" id="pgCat" role="group" aria-label="進行のジャンル"></div>
+      <div id="pgMy" hidden style="margin:0 0 14px"></div>
       <div class="pg-list" id="pgList"></div>
     </div>
   </section>
@@ -360,6 +361,7 @@ header.top .logo{flex:none}
 </div>
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
 <script>
 (()=>{
 "use strict";
@@ -376,7 +378,7 @@ const TYPES=[["",[0,4,7]],["m",[0,3,7]],["7",[0,4,7,10]],["M7",[0,4,7,11],"や�
   ["M9",[0,4,7,11,14],"浮遊感のあるキラキラ。シティポップの王道",[7],1],["m9",[0,3,7,10,14],"やわらかくて切ない。R&Bやバラードに",[7],1],
   ["13",[0,4,7,10,14,21],"ジャジーでゴージャスなドミナント",[7,14],1],["m11",[0,3,7,10,14,17],"ネオソウル・R&Bの定番。広がりのある響き",[7,14],1],
   ["9sus4",[0,5,7,10,14],"ふわっと宙に浮くフュージョンの響き",[7],1],["M7(♯11)",[0,4,7,11,18],"リディアンの透明感。映画音楽っぽい",[7],1],
-  ["7(♭9)",[0,4,7,10,13],"マイナーへ解決する前のスパイス",[7],1],["7(♯9)",[0,4,7,10,15],"ブルージーでファンキー(通称ジミヘンコード)",[7],1],["7(♯5)",[0,4,8,10],"不安定に浮いて、次のコードへ押し出すドミナント",null,1]];
+  ["7(♭9)",[0,4,7,10,13],"マイナーへ解決する前のスパイス",[7],1],["7(♯9)",[0,4,7,10,15],"ブルージーでファンキー(通称ジミヘンコード)",[7],1],["7(♯11)",[0,4,7,10,18],"リディアン・ドミナント。明るく浮遊感のあるセブンス",[7],1],["7(♯5)",[0,4,8,10],"不安定に浮いて、次のコードへ押し出すドミナント",null,1]];
 const TNAME=Object.fromEntries(TYPES.map((t,i)=>[t[0],i]));
 const DEG={13:"♭9",14:"9",15:"♯9",17:"11",18:"♯11",20:"♭13",21:"13",0:"R",1:"♭9",2:"9",3:"♭3",4:"3",5:"4",6:"♭5",7:"5",8:"♯5",9:"6",10:"♭7",11:"7"};
 const DCOL={13:"#e0782c",14:"#e0782c",15:"#e0782c",17:"#e0782c",18:"#e0782c",21:"#e0782c",0:"#d0436b",3:"#2c5ccc",4:"#2c5ccc",7:"#0e8a6c",6:"#0e8a6c",8:"#0e8a6c",10:"#8a5cf0",11:"#8a5cf0",9:"#8a5cf0"};
@@ -675,7 +677,11 @@ $("revPlay").onclick=()=>{const ms=rf.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filt
 
 /* ===== おしゃれ進行 ===== */
 /* [ルートの度数(半音), 種類, ベース音の度数(分数コードのとき)] */
-const PGS=window.NamiProg.LIST;
+const PGS=window.NamiProg.LIST.slice();
+/* 自分で作った進行(progbuilder.js。ジャムモード・ピアノと共通) */
+const NB=window.NamiBuilder;let myC=NB.load();const qMy=new URLSearchParams(location.search).get("m"),qMyC=qMy?NB.dec(qMy):null;if(qMyC)myC=qMyC;
+const MYI=PGS.length;PGS.push({g:"my",n:"マイ進行",d:"自分で作った進行。上でコードを変えると、押さえ方もすぐ変わります",c:myC});
+let builder=null;
 const PKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let pgKey=store.get("chPgKey",7); if(!(pgKey>=0&&pgKey<12))pgKey=7;
 $("pgKey").innerHTML=PKEY.map((n,i)=>`<option value="${i}">${n}</option>`).join("");$("pgKey").value=String(pgKey);
@@ -713,9 +719,10 @@ function pgPlay(p,j){
 }
 function pgStop(){clearTimeout(pgTimer);pgTimer=null;}
 const PCAT=window.NamiProg.CAT;
-let pgCat=store.get("chPgCat","pop");if(pgCat!=="all"&&!PCAT[pgCat])pgCat="pop";
-function pgFilter(){[...$("pgCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===pgCat));document.querySelectorAll("#pgList .pg").forEach(el=>{el.hidden=pgCat!=="all"&&PGS[+el.dataset.p].g!==pgCat;});}
-$("pgCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button>`;
+let pgCat=store.get("chPgCat","pop");if(pgCat!=="all"&&pgCat!=="my"&&!PCAT[pgCat])pgCat="pop";if(qMyC)pgCat="my";
+function pgFilter(){[...$("pgCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===pgCat));$("pgMy").hidden=pgCat!=="my";document.querySelectorAll("#pgList .pg").forEach(el=>{const g=PGS[+el.dataset.p].g;el.hidden=pgCat==="all"?g==="my":g!==pgCat;});}
+$("pgCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button><button type="button" data-g="my">✏️ 自分で作る</button>`;
+builder=NB.mount($("pgMy"),{key:()=>pgKey,initial:myC,types:TYPES.map(t=>t[0]),onChange:a=>{myC=a;PGS[MYI].c=a;pgStop();pgRender();pgFilter();}});
 $("pgCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pgCat=b.dataset.g;store.set("chPgCat",pgCat);pgStop();pgFilter();});
 /* MIDI書き出し:ギターは選ばれている押さえ方の実音(カポ込み)、ベースはルート */
 /* ===== MIDIファイル書き出し(SMFフォーマット1:テンポ+コード+ベース) ===== */
@@ -760,7 +767,7 @@ function pgMidi(p){
     else{const r0=48+pc(c.r);notes=T[1].filter(x=>x!==0||c.b==null).map(x=>r0+x);}
     return {name:c.nm,notes,bass};});
   NamiMidi.save(NamiMidi.build(cs,pgBpm,PGS[p].n+" ("+PKEY[pgKey]+")"),"namigroove_"+PGS[p].n+"_"+PKEY[pgKey]+"_"+pgBpm+"bpm");}
-$("pgList").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+"?p="+pid(PGS[+jm.dataset.jam].n)+"&k="+pgKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const P=PGS[+sh.dataset.shr],prm={p:pid(P.n),k:pgKey};if(inst!=="gt")prm.i=inst;shareLink(prm,P.n+"(キー"+PKEY[pgKey]+")– なみぐる！コード表");return;}const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
+$("pgList").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+(+jm.dataset.jam===MYI?"?m="+encodeURIComponent(NB.enc(myC)):"?p="+pid(PGS[+jm.dataset.jam].n))+"&k="+pgKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const isMy=+sh.dataset.shr===MYI,P=PGS[+sh.dataset.shr],prm=isMy?{m:NB.enc(myC),k:pgKey}:{p:pid(P.n),k:pgKey};if(inst!=="gt")prm.i=inst;shareLink(prm,(isMy?pgData[MYI].map(c=>c.nm).join("→"):P.n)+"(キー"+PKEY[pgKey]+")– なみぐる！コード表");return;}const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
   const pl=e.target.closest("[data-play]");
   if(pl){pgStop();const p=+pl.dataset.play,n=pgData[p].length;let j=0;const step=()=>{pgPlay(p,j);j++;if(j<n)pgTimer=setTimeout(step,1400);else pgTimer=setTimeout(()=>document.querySelectorAll(".pg-c.now").forEach(x=>x.classList.remove("now")),1400);};step();return;}
   const b=e.target.closest("[data-c]");if(!b)return;pgStop();
@@ -768,7 +775,7 @@ $("pgList").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]")
   const h=e.target.closest("[data-str]"),c=pgData[p][j];
   if(h&&inst==="gt"&&c.v){const st=+h.dataset.str,f=c.v.fr[st];if(f>=0){pluck([TUN.gt[st]+f+capo],0,false);return;}}
   pgPlay(p,j);});
-$("pgKey").addEventListener("change",()=>{pgKey=+$("pgKey").value;store.set("chPgKey",pgKey);pgStop();pgRender();pgFilter();});
+$("pgKey").addEventListener("change",()=>{pgKey=+$("pgKey").value;store.set("chPgKey",pgKey);pgStop();pgRender();pgFilter();if(builder)builder.render();});
 $("pgStop").onclick=()=>{pgStop();document.querySelectorAll(".pg-c.now").forEach(x=>x.classList.remove("now"));};
 
 /* ===== 共有リンク(選んだ状態をURLに入れる) ===== */
@@ -788,8 +795,9 @@ $("modeTabs").addEventListener("click",e=>{const b=e.target.closest("button");if
 const qI=QS.get("i");if(qI&&TUN[qI]&&qI!==inst){inst=qI;store.set("chInst",inst);[...$("instSeg").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.i===inst));}
 const qR=QS.get("r"),qT=QS.get("t");if(qR!=null&&ROOTS.some((n,i)=>String(i)===qR)){root=+qR;const ti=TYPES.findIndex(t=>(t[0]||"M")===qT);if(ti>=0)type=ti;mode="fwd";}
 const qP=QS.get("p"),qPi=qP?PGS.findIndex(x=>pid(x.n)===qP):-1;
-if(qPi>=0){const k=+QS.get("k");if(k>=0&&k<12){pgKey=k;$("pgKey").value=String(k);}pgCat=PGS[qPi].g;mode="fwd";}
+if(qPi>=0||qMyC){const k=+QS.get("k");if(k>=0&&k<12){pgKey=k;$("pgKey").value=String(k);}pgCat=qMyC?"my":PGS[qPi].g;mode="fwd";}
 pgRender();pgFilter();$("pgList").dataset.k=inst+":"+capo;renderFwd();renderRev();setMode(mode==="rev"?"rev":"fwd");
+if(qMyC){builder.render();setTimeout(()=>$("pgMy").scrollIntoView({behavior:"smooth",block:"start"}),300);}
 if(qPi>=0)setTimeout(()=>{const el=document.querySelector(`.pg[data-p="${qPi}"]`);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.add("shared");}},300);
 $("chShare").onclick=()=>shareLink({r:root,t:TYPES[type][0]||"M"},chordName(root,type)+" の押さえ方 – なみぐる！コード表");
 
