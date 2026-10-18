@@ -461,15 +461,60 @@ function fretboard(tun,r,iv){
 /* ===== 音(はじいた弦っぽい音) ===== */
 let ac=null;
 function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();}if(ac.state!=="running")ac.resume();return ac;}
+/* 弦の振動をまねて作る音(Karplus-Strong)。クリーンなエレキギター風に整える */
+const ksCache=new Map();
+function ksBuf(a,midi,bass){
+  const key=midi+(bass?"b":"g"); if(ksCache.has(key))return ksCache.get(key);
+  const sr=a.sampleRate,f=440*Math.pow(2,(midi-69)/12),dur=bass?3:3.6,len=Math.floor(sr*dur);
+  const out=new Float32Array(len), N=sr/f, S=bass?0.5:0.3, T=N-S, size=Math.ceil(N)+4, z=new Float32Array(size);
+  /* 励振:ピックで弾いたノイズ。ピック位置の櫛形フィルターで指板寄りの丸さを出す */
+  const exLen=Math.floor(N), ex=new Float32Array(exLen), lpC=bass?0.55:0.25, pp=Math.max(1,Math.floor(N*(bass?0.2:0.13)));
+  let lp=0;for(let k=0;k<exLen;k++){lp+= (1-lpC)*((Math.random()*2-1)-lp);ex[k]=lp;}
+  for(let k=exLen-1;k>=pp;k--)ex[k]-=ex[k-pp];
+  const t60=(bass?5:6)*Math.pow(110/f,0.3), g=Math.pow(0.001,1/(f*t60));
+  /* 端数の遅れはオールパスで(高い音も減衰しすぎないように) */
+  let D=Math.floor(T),fr=T-D;if(fr<0.1){D--;fr+=1;}
+  const eta=(1-fr)/(1+fr);
+  let w=0,prev=0,apIn=0,apOut=0;
+  for(let n=0;n<len;n++){
+    const v=z[(w-D+size*2)%size], cur=eta*v+apIn-eta*apOut; apIn=v; apOut=cur;
+    const y=(n<exLen?ex[n]:0)+g*((1-S)*cur+S*prev); prev=cur;
+    z[w]=y; out[n]=y; w=(w+1)%size;
+  }
+  let pk=0;for(let n=0;n<len;n++)pk=Math.max(pk,Math.abs(out[n]));
+  const fade=Math.floor(sr*0.05);for(let n=0;n<len;n++){out[n]/=pk||1;if(n>len-fade)out[n]*=(len-n)/fade;}
+  const b=a.createBuffer(1,len,sr);b.copyToChannel(out,0);ksCache.set(key,b);return b;
+}
+let gtBus=null,bsBus=null;
+function buses(a){
+  if(gtBus)return;
+  /* ギター:ピックアップっぽいEQ → 軽いコーラス → ほんのりリバーブ */
+  const hp=a.createBiquadFilter();hp.type="highpass";hp.frequency.value=85;
+  const pk=a.createBiquadFilter();pk.type="peaking";pk.frequency.value=2600;pk.Q.value=0.8;pk.gain.value=3;
+  const lo=a.createBiquadFilter();lo.type="peaking";lo.frequency.value=320;lo.Q.value=1;lo.gain.value=-2.5;
+  const lp=a.createBiquadFilter();lp.type="lowpass";lp.frequency.value=6500;lp.Q.value=0.5;
+  hp.connect(lo);lo.connect(pk);pk.connect(lp);
+  const out=a.createGain();out.gain.value=0.9;
+  const dry=a.createGain();dry.gain.value=1;lp.connect(dry);dry.connect(out);
+  const cd=a.createDelay(0.05);cd.delayTime.value=0.014;const lfo=a.createOscillator(),ld=a.createGain();lfo.frequency.value=0.7;ld.gain.value=0.0025;lfo.connect(ld);ld.connect(cd.delayTime);lfo.start();
+  const cw=a.createGain();cw.gain.value=0.35;lp.connect(cd);cd.connect(cw);cw.connect(out);
+  const rl=Math.floor(a.sampleRate*1.4),ir=a.createBuffer(2,rl,a.sampleRate);
+  for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let n=0;n<rl;n++)d[n]=(Math.random()*2-1)*Math.pow(1-n/rl,3);}
+  const cv=a.createConvolver();cv.buffer=ir;const rw=a.createGain();rw.gain.value=0.16;lp.connect(cv);cv.connect(rw);rw.connect(out);
+  const comp=a.createDynamicsCompressor();comp.threshold.value=-14;comp.ratio.value=3;comp.attack.value=0.004;comp.release.value=0.2;
+  out.connect(comp);comp.connect(a.destination);
+  gtBus=hp;
+  /* ベース:太めで素直に */
+  const bl=a.createBiquadFilter();bl.type="lowpass";bl.frequency.value=2200;bl.Q.value=0.6;
+  const bb=a.createBiquadFilter();bb.type="lowshelf";bb.frequency.value=120;bb.gain.value=3;
+  bl.connect(bb);bb.connect(comp);bsBus=bl;
+}
 function pluck(midis,gap,bass){
-  const a=audio(),t0=a.currentTime+0.02;
-  midis.forEach((m,i)=>{const t=t0+i*gap,f=440*Math.pow(2,(m-69)/12);
-    const o=a.createOscillator(),o2=a.createOscillator(),lp=a.createBiquadFilter(),g=a.createGain();
-    o.type="sawtooth";o.frequency.value=f;o2.type="triangle";o2.frequency.value=f*2;o2.detune.value=3;
-    lp.type="lowpass";lp.frequency.setValueAtTime(Math.min(9000,f*(bass?6:10)),t);lp.frequency.exponentialRampToValueAtTime(Math.max(200,f*1.6),t+0.6);
-    g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(bass?0.32:0.12,t+0.004);g.gain.setTargetAtTime(0.0001,t+0.01,bass?0.5:0.7);
-    const g2=a.createGain();g2.gain.value=0.25;o.connect(lp);o2.connect(g2);g2.connect(lp);lp.connect(g);g.connect(a.destination);
-    o.start(t);o2.start(t);o.stop(t+3);o2.stop(t+3);});
+  const a=audio();buses(a);const t0=a.currentTime+0.02, n=midis.length;
+  midis.forEach((m,i)=>{const t=t0+i*gap;
+    const src=a.createBufferSource();src.buffer=ksBuf(a,m,bass);
+    const g=a.createGain();g.gain.value=(bass?0.75:0.5)/Math.sqrt(Math.max(1,n*0.6));
+    src.connect(g);g.connect(bass?bsBus:gtBus);src.start(t);});
 }
 
 /* ===== 順引き ===== */
