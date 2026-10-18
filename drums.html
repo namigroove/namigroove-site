@@ -384,6 +384,16 @@ header.top .logo{flex:none}
             <option value="four">4つ打ち</option>
             <option value="break">ブレイクビーツ</option>
             <option value="trap">トラップ</option>
+            <option value="rock">ロック</option>
+            <option value="halftime">ハーフタイム</option>
+            <option value="motown">モータウン</option>
+            <option value="disco">ディスコ</option>
+            <option value="funk">ファンク</option>
+            <option value="hiphop">ヒップホップ(ブーンバップ・90前後)</option>
+            <option value="neosoul">ネオソウル(ハネ・80前後)</option>
+            <option value="twostep">2ステップ(130前後)</option>
+            <option value="dnb">ドラムンベース(170前後)</option>
+            <option value="onedrop">レゲエ(ワンドロップ)</option>
           </optgroup><optgroup label="ラテン">
             <option value="samba">サンバっぽい</option>
             <option value="bossa">ボサノバ</option>
@@ -687,6 +697,16 @@ const PRESETS={ /* 文字列の x が鳴らすステップ */
   ballad68:{m:"68",kick:"x.........x.",snare:"......x.....",chh:"x.x.x.x.x.x.",ohh:"..........x."},
   five:{m:"54",kick:"x.....x.....x.......",snare:"........x.......x...",chh:"x.x.x.x.x.x.x.x.x.x."},
   seven:{m:"78",kick:"x.......x.....",snare:"....x.......x.",chh:"x.x.x.x.x.x.x."},
+  rock:{kick:"x.....x.x.......",snare:"....x.......x...",chh:"x.x.x.x.x.x.x.x.",crash:"x..............."},
+  halftime:{kick:"x.........x.....",snare:"........x.......",chh:"x.x.x.x.x.x.x.x.",ohh:"..............x."},
+  motown:{kick:"x.x.....x.x.....",snare:"....x.......x...",tamb:"....x.......x...",chh:"x.x.x.x.x.x.x.x."},
+  disco:{kick:"x...x...x...x...",snare:"....x.......x...",chh:"x...x...x...x...",ohh:"..x...x...x...x.",tamb:"xxxxxxxxxxxxxxxx"},
+  funk:{kick:"x.x....x..x.....",snare:"....x..x.x..x..x",chh:"xxxxxxxxxxxxxx.x",ohh:"..............x."},
+  hiphop:{sw:0.2,kick:"x......xx.x.....",snare:"....x.......x...",chh:"x.x.x.x.x.x.x.x."},
+  neosoul:{sw:0.36,kick:"x......x..x..x..",snare:"....x.......x...",chh:"x.xxx.x.x.xxx.x.",rim:"...............x"},
+  twostep:{sw:0.3,kick:"x.........x.....",snare:"....x.......x...",chh:"..x...x...x...x.",rim:"...x......x....x",shk:"x.x.x.x.x.x.x.x."},
+  dnb:{kick:"x.........x.....",snare:"....x.......x...",chh:"x.x.x.x.x.x.x.x.",ohh:"......x.........",ride:"x...x...x...x..."},
+  onedrop:{sw:0.3,kick:"........x.......",rim:"........x.......",chh:"x.xxx.xxx.xxx.xx"},
   eight:{kick:"x.......x.x.....",snare:"....x.......x...",chh:"x.x.x.x.x.x.x.x."},
   sixteen:{kick:"x.....x...x.....",snare:"....x.......x..x",chh:"xxxxxxxxxxxxxxxx",ohh:"..............x."},
   four:{kick:"x...x...x...x...",clap:"....x.......x...",chh:"..x...x...x...x.",ohh:"..x...x...x...x.",shk:"xxxxxxxxxxxxxxxx"},
@@ -700,7 +720,7 @@ const PRESETS={ /* 文字列の x が鳴らすステップ */
   baiao:{kick:"x..x....x..x....",snare:"......x.......x.",chh:"x.xxx.xxx.xxx.xx",ohh:"..x.......x.....",cow:"x.......x......."},
   samba:{kick:"x..xx..xx..xx..x",tamb:"x.xxx.xxx.xxx.xx",snare:"..x...x...x..x.x",cow:"x.x..x.x..x.x..x",shk:"xxxxxxxxxxxxxxxx"}
 };
-$("preset").onchange=e=>{const p=PRESETS[e.target.value];if(!p)return;setMeter(p.m||"44");PADS.forEach(x=>{const str=p[x.id]||"";pat[x.id]=Array.from({length:NMAX},(_,i)=>str[i]==="x"?1:0);});save();renderSteps();e.target.value="";};
+$("preset").onchange=e=>{const p=PRESETS[e.target.value];if(!p)return;setMeter(p.m||"44");swing=p.sw||0;store.set("drSwing",swing);$("swing").value=swing;swOut();PADS.forEach(x=>{const str=p[x.id]||"";pat[x.id]=Array.from({length:NMAX},(_,i)=>str[i]==="x"?1:0);});save();renderSteps();e.target.value="";};
 
 /* BPM */
 function setBpm(v){bpm=Math.max(40,Math.min(240,Math.round(v)));store.set("drBpm",bpm);$("bpmOut").textContent=bpm;}
