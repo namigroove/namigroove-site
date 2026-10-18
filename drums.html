@@ -211,6 +211,7 @@ footer a{color:var(--sea)}
 .smp-pitch input[type=range]{width:min(260px,60vw);accent-color:var(--sea)}
 .smp-pitch b{color:var(--ink);font-family:var(--f-mono);min-width:4.6em;display:inline-block}
 .smp-pitch[hidden]{display:none}
+#smpRev[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
 
 #smpRec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
 .pad.smpl .k::after{content:" ♪";color:var(--coral)}
@@ -285,7 +286,7 @@ header.top .logo{flex:none}
         <button class="btn" type="button" id="smpRec">● マイクで録音</button>
         <button class="btn" type="button" id="smpReset" hidden>元の音に戻す</button>
       </div>
-      <div class="smp-pitch" id="smpPitchBox" hidden><label for="smpPitch">ピッチ</label><input type="range" id="smpPitch" min="-24" max="24" step="0.1" value="0" aria-describedby="smpPitchV"><b id="smpPitchV">±0 半音</b><button class="btn mini" type="button" id="smpPitch0">0に戻す</button></div>
+      <div class="smp-pitch" id="smpPitchBox" hidden><label for="smpPitch">ピッチ</label><input type="range" id="smpPitch" min="-24" max="24" step="0.1" value="0" aria-describedby="smpPitchV"><b id="smpPitchV">±0 半音</b><button class="btn mini" type="button" id="smpPitch0">0に戻す</button><button class="btn mini" type="button" id="smpRev" aria-pressed="false" title="サンプルを後ろから鳴らす">⇄ 逆再生</button></div>
       <p class="err" id="smpErr" hidden></p>
     </div>
     <div class="take" id="take" hidden>
@@ -343,7 +344,7 @@ header.top .logo{flex:none}
     <ul>
       <li>パッドは真ん中を叩くと強く、端だと弱く鳴ります。スマホでは複数の指で同時に叩けます。</li>
       <li>シーケンサーは、パッドを叩いて音を選んでから、下の16マスをタップして打ち込みます。「● 打ち込み」をオンにして再生中にパッドを叩くと、そのまま打ち込めます。</li>
-      <li>サンプラー:パッドを選んで「ファイルから読み込む」か「録音」で、そのパッドの音を好きな音に差し替えられます。頭の無音は自動でカットします。読み込んだ音はこの端末のブラウザの中だけに保存され、どこにも送信されません。「ピッチ」のスライダーで、差し替えた音の高さをパッドごとに±2オクターブまで変えられます。</li>
+      <li>サンプラー:パッドを選んで「ファイルから読み込む」か「録音」で、そのパッドの音を好きな音に差し替えられます。頭の無音は自動でカットします。読み込んだ音はこの端末のブラウザの中だけに保存され、どこにも送信されません。「ピッチ」のスライダーで、差し替えた音の高さをパッドごとに±2オクターブまで変えられます。「⇄ 逆再生」で、その音を後ろから鳴らせます(パッドごと)。</li>
       <li>「● 演奏を録音」を押すと、パッドやシーケンサーの音をそのまま録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。</li>
       <li>組んだパターンとBPMもこのブラウザに保存されます。</li>
       <li>MIDIパッド・キーボードはChrome・Edgeで使えます(GMドラムの音番号に対応)。</li>
@@ -449,8 +450,13 @@ function tom(t,v,f){const o=ac.createOscillator();o.type="sine";o.frequency.setV
 const samples={};
 /* パッドごとのピッチ(半音。スライダーで変える) */
 const pitchTxt=v=>(Math.abs(v)<0.05?"±0":(v>0?"+":"−")+Math.abs(v).toFixed(Math.abs(v-Math.round(v))<0.05?0:1))+" 半音";
-const pitches=store.get("drumsPitch",{})||{};const live={};
-function playSample(id,t,v){const s=samples[id],src=ac.createBufferSource(),g=ac.createGain();src.buffer=s.buffer;src.playbackRate.value=Math.pow(2,(pitches[id]||0)/12);(live[id]=live[id]||new Set()).add(src);src.onended=()=>live[id].delete(src);g.gain.value=v*s.gain*0.8;src.connect(g);g.connect(comp);src.start(t,s.offset);
+/* 逆再生用:音を後ろから並べ直したバッファ(頭の無音は飛ばす)。1度作ったら使い回す */
+const revOf=s=>{if(s._rev)return s._rev;const b=s.buffer,r=new AudioBuffer({length:b.length,numberOfChannels:b.numberOfChannels,sampleRate:b.sampleRate});let peak=0;
+  for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c),y=r.getChannelData(c),n=x.length;for(let i=0;i<n;i++){const v=x[n-1-i];y[i]=v;const a=v<0?-v:v;if(a>peak)peak=a;}}
+  const th=Math.max(0.0005,peak*0.005),d0=r.getChannelData(0);let st=0;for(let i=0;i<d0.length;i++)if((d0[i]<0?-d0[i]:d0[i])>th){st=i;break;}
+  return s._rev={buffer:r,offset:Math.max(0,st/b.sampleRate-0.004)};};
+const pitches=store.get("drumsPitch",{})||{},revs=store.get("drumsRev",{})||{};const live={};
+function playSample(id,t,v){const s=samples[id],src=ac.createBufferSource(),g=ac.createGain(),R=revs[id]?revOf(s):s;src.buffer=R.buffer;src.playbackRate.value=Math.pow(2,(pitches[id]||0)/12);(live[id]=live[id]||new Set()).add(src);src.onended=()=>live[id].delete(src);g.gain.value=v*s.gain*0.8;src.connect(g);g.connect(comp);src.start(t,R.offset);
   if(id==="chh"&&ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setTargetAtTime(0.0001,t,0.006);ohhGain=null;}
   if(id==="ohh")ohhGain=g;}
 function play(id,v,t){audio();t=t==null?ac.currentTime:t;v=Math.max(0.15,Math.min(1,v));if(samples[id]&&samples[id].buffer)playSample(id,t,v);else SND[id](t,v);}
@@ -575,7 +581,7 @@ const SM=window.NamiSampler;
 function smpView(){
   $("smpPad").innerHTML=plain(PADS[IDX[sel]].n);
   $("smpName").textContent=samples[sel]?samples[sel].name:"内蔵の音";
-  $("smpReset").hidden=!samples[sel];$("smpPitchBox").hidden=!samples[sel];const pv=pitches[sel]||0;$("smpPitch").value=pv;$("smpPitchV").textContent=pitchTxt(pv);
+  $("smpReset").hidden=!samples[sel];$("smpPitchBox").hidden=!samples[sel];$("smpRev").setAttribute("aria-pressed",revs[sel]?"true":"false");const pv=pitches[sel]||0;$("smpPitch").value=pv;$("smpPitchV").textContent=pitchTxt(pv);
   PADS.forEach(p=>padEl[p.id].classList.toggle("smpl",!!samples[p.id]));
 }
 function smpErr(t){const e=$("smpErr");e.textContent=t||"";e.hidden=!t;}
@@ -603,7 +609,8 @@ function setPitch(v,save){v=Math.max(-24,Math.min(24,Math.round(v*10)/10));if(v)
   if(ac&&live[sel])live[sel].forEach(s=>{try{s.playbackRate.setTargetAtTime(Math.pow(2,v/12),ac.currentTime,0.01);}catch(e){}});if(save)store.set("drumsPitch",pitches);}
 $("smpPitch").addEventListener("input",()=>setPitch(+$("smpPitch").value,false));$("smpPitch").addEventListener("change",()=>{setPitch(+$("smpPitch").value,true);play(sel,0.9);});
 $("smpPitch0").onclick=()=>{setPitch(0,true);play(sel,0.9);};
-$("smpReset").onclick=()=>{delete samples[sel];delete pitches[sel];store.set("drumsPitch",pitches);if(SM)SM.remove("drums:"+sel);smpView();play(sel,0.9);};
+$("smpRev").onclick=()=>{if(revs[sel])delete revs[sel];else revs[sel]=1;store.set("drumsRev",revs);$("smpRev").setAttribute("aria-pressed",revs[sel]?"true":"false");play(sel,0.9);};
+$("smpReset").onclick=()=>{delete samples[sel];delete pitches[sel];delete revs[sel];store.set("drumsPitch",pitches);store.set("drumsRev",revs);if(SM)SM.remove("drums:"+sel);smpView();play(sel,0.9);};
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing)stop();});
 
 /* ===== 演奏の録音(MP3・WAVで保存) ===== */

@@ -199,6 +199,7 @@ footer a{color:var(--sea)}
 .smp-pitch input[type=range]{width:min(260px,60vw);accent-color:var(--sea)}
 .smp-pitch b{color:var(--ink);font-family:var(--f-mono);min-width:4.6em;display:inline-block}
 .smp-pitch[hidden]{display:none}
+#smpRev[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
 
 .smp-b{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 #smpRec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
@@ -318,7 +319,7 @@ header.top .logo{flex:none}
         <button class="btn" type="button" id="smpFile">ファイルから読み込む</button>
         <button class="btn" type="button" id="smpRec">● マイクで録音</button>
       </div>
-      <div class="smp-pitch" id="smpPitchBox" hidden><label for="smpPitch">ピッチ</label><input type="range" id="smpPitch" min="-24" max="24" step="0.1" value="0" aria-describedby="smpPitchV"><b id="smpPitchV">±0 半音</b><button class="btn mini" type="button" id="smpPitch0">0に戻す</button></div>
+      <div class="smp-pitch" id="smpPitchBox" hidden><label for="smpPitch">ピッチ</label><input type="range" id="smpPitch" min="-24" max="24" step="0.1" value="0" aria-describedby="smpPitchV"><b id="smpPitchV">±0 半音</b><button class="btn mini" type="button" id="smpPitch0">0に戻す</button><button class="btn mini" type="button" id="smpRev" aria-pressed="false" title="サンプルを後ろから鳴らす">⇄ 逆再生</button></div>
       <p class="err" id="smpErr" hidden></p>
     </div>
     <div class="kb-bar">
@@ -423,7 +424,7 @@ header.top .logo{flex:none}
     <h2>使い方のメモ</h2>
     <ul>
       <li>鍵盤の下の方をタップすると強く、上の方だと弱く鳴ります。スマホでは複数の指で和音も弾けます。</li>
-      <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。「ピッチ」のスライダーで、サンプル全体の高さを±2オクターブまで自由に変えられます(鳴っている音もその場で変わります)。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
+      <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。「ピッチ」のスライダーで、サンプル全体の高さを±2オクターブまで自由に変えられます(鳴っている音もその場で変わります)。「⇄ 逆再生」を押すと、サンプルを後ろから鳴らします。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
       <li>「● 演奏を録音」を押して弾くと、演奏を録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。録音はこの端末の中だけで処理します。</li>
       <li>「コードを調べる」では、コード名を選ぶと鍵盤にオレンジで押さえる場所を出して鳴らします。オレンジの枠のボタンはおしゃれ系のコードです。「おしゃれ進行」では定番進行をテンション入りのボイシングで聴けます(キーも変えられます)。</li>
       <li>鍵盤の左のホイールを上下にドラッグするとピッチベンド。離すと元の高さに戻ります。幅は設定で±1・±2・±12半音から選べます。</li>
@@ -589,8 +590,8 @@ const INST={
   },
   sample(a,f,v,t,env){ /* サンプラー:読み込んだ音を、鍵盤の高さに合わせて速さを変えて鳴らす */
     if(!smp||!smp.buffer) return INST.piano(a,f,v,t,env);
-    const m=69+12*Math.log2(f/440), src=a.createBufferSource();src.buffer=smp.buffer;src._base=Math.pow(2,(m-smp.root)/12);src.playbackRate.value=src._base*Math.pow(2,smpPitch/12);smpLive.add(src);src.onended=()=>smpLive.delete(src);
-    src.connect(env);env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.55*v*smp.gain,t+0.003);src.start(t,smp.offset);
+    const m=69+12*Math.log2(f/440), src=a.createBufferSource(),R=smpRev?revOf(smp):smp;src.buffer=R.buffer;src._base=Math.pow(2,(m-smp.root)/12);src.playbackRate.value=src._base*Math.pow(2,smpPitch/12);smpLive.add(src);src.onended=()=>smpLive.delete(src);
+    src.connect(env);env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.55*v*smp.gain,t+0.003);src.start(t,R.offset);
     return {srcs:[src],rel:0.12,rev:0.8};
   },
   bell(a,f,v,t,env){ /* FM:はんぱな比率で揺らして金属っぽく */
@@ -805,6 +806,14 @@ $("takeDel").onclick=()=>{take=null;if(takeURL)URL.revokeObjectURL(takeURL);take
 /* ===== サンプラー ===== */
 /* サンプルのピッチ(スライダー。鳴っている音もその場で変わる) */
 const pitchTxt=v=>(Math.abs(v)<0.05?"±0":(v>0?"+":"−")+Math.abs(v).toFixed(Math.abs(v-Math.round(v))<0.05?0:1))+" 半音";
+/* 逆再生用:音を後ろから並べ直したバッファ(頭の無音は飛ばす)。1度作ったら使い回す */
+const revOf=s=>{if(s._rev)return s._rev;const b=s.buffer,r=new AudioBuffer({length:b.length,numberOfChannels:b.numberOfChannels,sampleRate:b.sampleRate});let peak=0;
+  for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c),y=r.getChannelData(c),n=x.length;for(let i=0;i<n;i++){const v=x[n-1-i];y[i]=v;const a=v<0?-v:v;if(a>peak)peak=a;}}
+  const th=Math.max(0.0005,peak*0.005),d0=r.getChannelData(0);let st=0;for(let i=0;i<d0.length;i++)if((d0[i]<0?-d0[i]:d0[i])>th){st=i;break;}
+  return s._rev={buffer:r,offset:Math.max(0,st/b.sampleRate-0.004)};};
+let smpRev=!!store.get("pianoSmpRev",false);
+function setRev(on){smpRev=on;$("smpRev").setAttribute("aria-pressed",on?"true":"false");store.set("pianoSmpRev",on);}
+$("smpRev").onclick=()=>{setRev(!smpRev);if(smp&&smp.buffer){noteOn(smp.root,0.8);setTimeout(()=>release(smp.root,true),700);}};setRev(smpRev);
 let smpPitch=+store.get("pianoSmpPitch",0)||0;const smpLive=new Set();
 function setPitch(v,save){smpPitch=Math.max(-24,Math.min(24,Math.round(v*10)/10));$("smpPitch").value=smpPitch;$("smpPitchV").textContent=pitchTxt(smpPitch);
   if(ac)smpLive.forEach(s=>{try{s.playbackRate.setTargetAtTime(s._base*Math.pow(2,smpPitch/12),ac.currentTime,0.01);}catch(e){}});if(save)store.set("pianoSmpPitch",smpPitch);}
