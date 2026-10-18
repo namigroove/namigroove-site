@@ -1,15 +1,16 @@
 /* なみぐる！TOOLS:オフライン用のサービスワーカー
-   - チューナー&メトロノームとツール一覧は、最初に開いたときにまとめて保存する
+   - ツール一覧とすべてのツール(チューナー&メトロノーム・ピアノ・ドラム・コード表など)は、最初に開いたときにまとめて保存する
    - ほかのツールも、一度開いたページは電波がなくても開ける
    - ページは「ネット優先(つながらなければ保存した版)」、画像・フォント・スクリプトは「保存した版を先に使って裏で更新」 */
-const VER = "ng-tools-v2";
+const VER = "ng-tools-v3";
 const ASSET_HOSTS = ["namigroove.github.io", "fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"];
 const SKIP = /googletagmanager|google-analytics|gtag|recaptcha|doubleclick/;
 
 const scopeUrl = new URL(self.registration.scope);
 const onWP = scopeUrl.pathname.endsWith("/tools/"); /* namigroove.com の /tools/ 以下か、GitHub Pages か */
 /* 先に保存しておくページ */
-const PRE_PAGES = onWP ? ["", "tuner/"] : ["tools.html", "tuner.html"];
+const TOOLS = ["tuner", "piano", "drums", "chords", "scales", "jam", "analyze", "ear", "mora", "gacha", "bpmms", "fingering", "brass"];
+const PRE_PAGES = onWP ? ["", ...TOOLS.map(t => t + "/")] : ["tools.html", ...TOOLS.map(t => t + ".html")];
 
 async function cacheAssetsOf(cache, html, base) {
   const urls = new Set();
@@ -35,15 +36,16 @@ async function cacheAssetsOf(cache, html, base) {
 self.addEventListener("install", e => {
   e.waitUntil((async () => {
     const cache = await caches.open(VER);
-    for (const p of PRE_PAGES) {
+    /* 全ページを並べて取りにいく(どれかが失敗しても、ほかは保存する) */
+    await Promise.all(PRE_PAGES.map(async p => {
       const url = new URL(p, scopeUrl).href;
       try {
         const res = await fetch(url, { credentials: "same-origin" });
-        if (!res.ok) continue;
+        if (!res.ok) return;
         await cache.put(url, res.clone());
         await cacheAssetsOf(cache, await res.text(), url);
       } catch (err) {}
-    }
+    }));
     self.skipWaiting();
   })());
 });
@@ -78,7 +80,7 @@ self.addEventListener("fetch", e => {
       } catch (err) {
         const hit = await cache.match(key) || await cache.match(key + "/");
         if (hit) return hit;
-        return new Response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>オフライン</title><body style="font-family:sans-serif;text-align:center;padding:48px 16px;color:#101f45;background:#f5f8fe"><h1 style="font-size:20px">いまはオフラインです</h1><p>このページはまだ保存されていません。<br>電波のあるところで一度開いておくと、次からオフラインでも使えます。</p><p><a href="' + new URL(PRE_PAGES[1], scopeUrl).href + '">チューナー&amp;メトロノームを開く</a></p>', { headers: { "Content-Type": "text/html; charset=utf-8" } });
+        return new Response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>オフライン</title><body style="font-family:sans-serif;text-align:center;padding:48px 16px;color:#101f45;background:#f5f8fe"><h1 style="font-size:20px">いまはオフラインです</h1><p>このページはまだ保存されていません。<br>電波のあるところでツール一覧を一度開いておくと、すべてのツールがオフラインでも使えます。</p><p><a href="' + new URL(PRE_PAGES[1], scopeUrl).href + '">チューナー&amp;メトロノームを開く</a></p>', { headers: { "Content-Type": "text/html; charset=utf-8" } });
       }
     })());
     return;
