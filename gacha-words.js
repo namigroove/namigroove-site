@@ -174,7 +174,6 @@
     {"n": "朝音ボウ", "e": ["UTAU"]},
     {"n": "紫苑ヨワ", "e": ["UTAU"]},
     {"n": "桃守ちゆり", "e": ["UTAU"]},
-    {"n": "忌部こづか", "e": ["UTAU"]},
     {"n": "波音リツ", "e": ["UTAU", "VOICEVOX"]},
     {"n": "ずんだもん", "e": ["VOICEVOX", "NEUTRINO", "CeVIO AI"]},
     {"n": "四国めたん", "e": ["VOICEVOX", "NEUTRINO", "CeVIO AI"]},
