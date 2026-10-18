@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>耳トレ(コード・音程当てクイズ/おしゃれコードの聞き分け) – なみぐる！</title>
+<meta name="description" content="鳴った和音や音程を当てる無料の耳トレ。メジャー・マイナー・セブンスの基本から、M9・m11・13・7(♯9)などのおしゃれコードの聞き分け、上行・下行・同時の音程当てまで。正答率と連続正解の記録つき。">
+<meta property="og:title" content="耳トレ – なみぐる！">
+<meta property="og:description" content="鳴った和音や音程を当てる無料の耳トレ。メジャー・マイナー・セブンスの基本から、M9・m11・13・7(♯9)などのおしゃれコードの聞き分け、上行・下行・同時の音程当てまで。正答率と連続正解の記録つき。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/ear/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools.jpg">
+<link rel="canonical" href="https://www.namigroove.com/tools/ear/">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-180x180.png">
+<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tools.webmanifest">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+/* コード表 */
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+.tabs.fam{margin-bottom:16px}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 2px}}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.ch-pick{display:flex;flex-direction:column;gap:8px;margin:14px 0 6px;align-items:center}
+.ch-pick .seg{justify-content:center}
+.ch-pick .roots button{min-width:44px}
+.ch-head{display:flex;flex-direction:column;align-items:center;gap:4px;margin:12px 0 6px;text-align:center}
+.ch-name{font-family:var(--f-display);font-size:clamp(40px,10vw,60px);line-height:1.1;min-height:1.1em}
+.ch-name .dim{font-size:15px;color:var(--ink-soft);font-family:var(--f-body)}
+.ch-sub{font-size:13px;color:var(--ink-soft);min-height:1.5em}
+.ch-sub b{color:var(--sea)}
+.seg.types button.fancy{border-color:var(--coral);color:var(--coral)}
+.seg.types button.fancy[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:#fff}
+.ch-desc{font-size:13px;color:var(--coral);min-height:1.4em;margin:0}
+.pg-wrap{margin-top:26px;border-top:1px dashed var(--line);padding-top:16px}
+.pg-wrap h2{font-size:16px;margin:0 0 4px;font-family:var(--f-display);font-weight:400}
+.pg-wrap .row{margin-bottom:10px}
+.pg-cat{margin:0 0 12px;display:flex;flex-wrap:wrap;gap:4px}
+.pg-list{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.pg{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
+.pg h3{margin:0 0 2px;font-size:15px}
+.pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
+.pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.pg .pg-btns .btn{font-size:12px;padding:3px 10px}
+.pg-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.pg-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer;font:500 14px var(--f-body)}
+.pg-c .cd{width:76px;height:auto}
+.pg-c small{font-size:11px;color:var(--ink-soft)}
+.pg-c.now{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral) inset}
+.pg-c.now b{color:var(--coral)}
+.vo{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.vo-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
+.vo-c:hover{border-color:var(--sea)}
+.vo-c.main{border:2px solid var(--sea)}
+.vo-c small i.lib{font-style:normal;font-size:10px;color:#fff;background:var(--coral);border-radius:999px;padding:0 6px;margin-right:4px}
+.vo-c small{font-size:11px;color:var(--ink-soft)}
+.cd{width:120px;height:auto;display:block}
+.cd .st{stroke:var(--ink-soft);stroke-width:1}
+.cd .fr{stroke:var(--line);stroke-width:1.2}
+.cd .nut{stroke:var(--ink);stroke-width:4}
+.cd .dot{fill:var(--sea)}
+.cd .dot.r{fill:var(--coral)}
+.cd .bar{fill:var(--sea);opacity:.9}
+.cd .mk{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.cd .pos{font:10px var(--f-mono);fill:var(--ink-soft)}
+.fb-wrap{overflow-x:auto;margin-top:10px}
+.fb{min-width:640px}
+.fb svg{display:block;width:100%;height:auto}
+.fb .str{stroke:var(--ink-soft)}
+.fb .fw{stroke:var(--line);stroke-width:1.5}
+.fb .nutl{stroke:var(--ink);stroke-width:4}
+.fb .inl{fill:var(--wash)}
+.fb .nd{stroke:var(--panel);stroke-width:1.5}
+.fb .nt{font:10px var(--f-mono);fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.fb .fn{font:10px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.fb-leg{font-size:12px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
+.fb-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
+.rev-grid{display:flex;justify-content:center;margin:14px 0 4px}
+.rev-grid svg{width:min(100%,300px);max-height:none;height:auto;touch-action:manipulation;user-select:none}
+.rev-grid .cell{fill:transparent;cursor:pointer}
+.rev-grid .cell:hover{fill:var(--wash)}
+.rev-grid .om{font:16px var(--f-mono);fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;cursor:pointer}
+.rev-grid .omh{fill:transparent;cursor:pointer}
+/* 耳トレ */
+.ea-stage{display:flex;flex-direction:column;align-items:center;gap:12px;margin:18px 0 14px}
+.ea-msg{font-size:14px;color:var(--ink-soft);min-height:1.6em;margin:0;text-align:center}
+.ea-msg.ok{color:var(--ok);font-weight:700}.ea-msg.ng{color:var(--warn);font-weight:700}
+.ea-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+.ea-opts button{font:500 15px var(--f-body);padding:12px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.ea-opts button small{display:block;font-size:10px;color:var(--ink-soft)}
+.ea-opts button:hover{border-color:var(--sea)}
+.ea-opts button.ok{background:var(--ok);border-color:var(--ok);color:#fff}.ea-opts button.ok small{color:#fff}
+.ea-opts button.ng{background:var(--warn);border-color:var(--warn);color:#fff}.ea-opts button.ng small{color:#fff}
+.ea-opts button:disabled{cursor:default}
+.ea-score{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:13px;color:var(--ink-soft);margin-top:14px}
+.ea-score b{font:500 18px var(--f-mono);color:var(--ink);margin:0 2px}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"耳トレ","url":"https://www.namigroove.com/tools/ear/","description":"鳴った和音や音程を当てる無料の耳トレ。メジャー・マイナー・セブンスの基本から、M9・m11・13・7(♯9)などのおしゃれコードの聞き分け、上行・下行・同時の音程当てまで。正答率と連続正解の記録つき。","applicationCategory":"EducationalApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["コード当て(基本・おしゃれ)","音程当て(上行・下行・同時)","正解と答えの聞き比べ","正答率・連続正解の記録"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"耳トレ","item":"https://www.namigroove.com/tools/ear/"}]}]}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html">Works</a>
+      <a href="tools.html">Tools</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links" class="opt">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
+/* EN⇔JP:Google翻訳(英語)との切り替え */
+(()=>{const a=document.getElementById("toEN"); if(!a) return;
+ const tr=/\.translate\.goog$/.test(location.hostname);
+ if(tr){
+  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
+  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
+  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
+  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
+ } else {
+  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
+ }
+})();
+</script>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>耳トレ</h1>
+    <p class="lead">鳴った和音や音程を当てるトレーニング。M9・m11・13 などのおしゃれコードの聞き分けにも挑戦できます。</p>
+  </div>
+
+  <div class="tabs fam" id="modeTabs" role="tablist" aria-label="モード">
+    <button type="button" data-m="chord" aria-selected="true">コード当て</button>
+    <button type="button" data-m="int" aria-selected="false">音程当て</button>
+  </div>
+
+  <section class="panel" aria-label="問題">
+    <div class="row">
+      <span class="seg" id="lvSeg" role="group" aria-label="レベル"></span>
+    </div>
+    <div class="ea-stage">
+      <button class="go" type="button" id="qBtn">▶ 出題</button>
+      <div class="row" style="gap:8px">
+        <button class="btn" type="button" id="againBtn" disabled>もう一回</button>
+        <button class="btn" type="button" id="arpBtn" disabled>1音ずつ</button>
+      </div>
+      <p class="ea-msg" id="msg" aria-live="polite">「出題」を押して、鳴った音を下から選んでね</p>
+    </div>
+    <div class="ea-opts" id="opts" role="group" aria-label="答え"></div>
+    <div class="ea-score" id="score"></div>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>「出題」で音が鳴ります。答えを選ぶと正解がわかって、正解と選んだ答えを続けて鳴らして聞き比べできます。</li>
+      <li>コード当ての「基本」はメジャー・マイナー・セブンス系、「おしゃれ」はテンションコードの聞き分けです。ルートは毎回変わります。</li>
+      <li>音程当ては、上がる・下がる・同時の3つから選べます。</li>
+      <li>コードの押さえ方は <a href="chords.html">コード表</a>、鍵盤で確かめるなら <a href="piano.html">ピアノ</a> もどうぞ。</li>
+    </ul>
+  </section>
+</main>
+
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E8%80%B3%E3%83%88%E3%83%AC%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fear%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fear%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
+const ROOTS=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
+/* [名前, 音程(ボイシング), ひとこと] */
+const CH={
+ basic:[["",[0,4,7],"メジャー:明るく安定"],["m",[0,3,7],"マイナー:暗く切ない"],["7",[0,4,7,10],"セブンス:次へ進みたくなる"],["M7",[0,4,7,11],"メジャーセブンス:やわらかく都会的"],["m7",[0,3,7,10],"マイナーセブンス:落ち着いた大人っぽさ"],["sus4",[0,5,7],"sus4:宙ぶらりん"],["dim",[0,3,6],"ディミニッシュ:不安定で緊張感"],["aug",[0,4,8],"オーギュメント:ふわっと不思議"]],
+ oshare:[["M7",[0,4,7,11],"やわらかく都会的"],["m7",[0,3,7,10],"落ち着いた大人っぽさ"],["7",[0,4,7,10],"ドミナント:次へ進みたくなる"],["M9",[0,4,11,14,19],"浮遊感のあるキラキラ"],["m9",[0,3,10,14,19],"やわらかくて切ない"],["9",[0,4,10,14,19],"ファンキーで厚みがある"],["13",[0,10,16,21,26],"ジャジーでゴージャス"],["m11",[0,10,15,17,26],"ネオソウルの広がり"],["6/9",[0,4,9,14,19],"明るく開放的"],["7(♭9)",[0,4,10,13,19],"マイナーへ解決する前のスパイス"],["7(♯9)",[0,4,10,15,19],"ブルージー(ジミヘンコード)"],["mM7",[0,3,7,11],"怪しくミステリアス"],["7sus4",[0,5,7,10],"浮遊感のあるドミナント"],["m7(♭5)",[0,3,6,10],"マイナーのツーファイブの入口"]]
+};
+const IVN=["完全1度","短2度","長2度","短3度","長3度","完全4度","増4度(減5度)","完全5度","短6度","長6度","短7度","長7度","オクターブ"];
+const IVH=["同じ音","とても濁る","ド→レ","切ない(ド→ミ♭)","明るい(ド→ミ)","ド→ファ","不安定(ド→ファ♯)","力強い(ド→ソ)","ド→ラ♭","ド→ラ","ド→シ♭","ド→シ","ド→高いド"];
+let mode=store.get("earMode","chord"), lv=store.get("earLv",{chord:"basic",int:"up"}), q=null, answered=false, stat=store.get("earStat",{});
+const key=()=>mode+":"+lv[mode];
+/* ---------- 音(やわらかいエレピ風) ---------- */
+let ac=null,bus=null;
+function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();const c=ac.createDynamicsCompressor();c.threshold.value=-12;c.ratio.value=4;bus=ac.createGain();bus.gain.value=0.9;bus.connect(c);c.connect(ac.destination);}if(ac.state!=="running")ac.resume();return ac;}
+function tone(m,t,dur,lvl){const a=audio(),f=440*Math.pow(2,(m-69)/12),car=a.createOscillator(),mod=a.createOscillator(),mg=a.createGain(),g=a.createGain();
+  car.type=mod.type="sine";car.frequency.value=f;mod.frequency.value=f;mg.gain.setValueAtTime(f*1.1,t);mg.gain.setTargetAtTime(f*0.1,t,0.3);mod.connect(mg);mg.connect(car.frequency);
+  g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(lvl,t+0.005);g.gain.setTargetAtTime(lvl*0.45,t+0.01,0.35);g.gain.setTargetAtTime(0.0001,t+dur,0.25);
+  car.connect(g);g.connect(bus);car.start(t);mod.start(t);car.stop(t+dur+2);mod.stop(t+dur+2);}
+function playNotes(ms,arp,t0){const a=audio();t0=t0||a.currentTime+0.05;const lv=0.3/Math.sqrt(ms.length);ms.forEach((m,i)=>tone(m,t0+(arp?i*0.38:i*0.012),arp?0.6:1.6,arp?0.3:lv));return t0+(arp?ms.length*0.38+0.4:1.9);}
+/* ---------- 出題 ---------- */
+function opts(){return mode==="chord"?CH[lv.chord].map(c=>({id:c[0],label:c[0]===""?"メジャー":c[0],sub:c[2].split(":")[0]})):IVN.map((n,i)=>({id:String(i),label:n,sub:""}));}
+function notesOf(ans,root){
+  if(mode==="chord"){const c=CH[lv.chord].find(x=>x[0]===ans);return c[1].map(x=>root+x);}
+  const n=+ans;return lv.int==="down"?[root+n,root]:[root,root+n];}
+function ask(){
+  const o=opts(),pick=o[Math.floor(Math.random()*o.length)].id,root=mode==="chord"?48+Math.floor(Math.random()*12):55+Math.floor(Math.random()*10);
+  q={ans:pick,root};answered=false;renderOpts();
+  $("msg").className="ea-msg";$("msg").textContent=mode==="chord"?"このコードは?":"この音程は?";
+  play();$("againBtn").disabled=$("arpBtn").disabled=false;$("qBtn").textContent="▶ 次の問題";
+}
+function play(arp){if(!q)return;const ms=notesOf(q.ans,q.root);playNotes(ms,arp||(mode==="int"&&lv.int!=="same"));}
+function answer(id){
+  if(!q||answered)return;answered=true;const ok=id===q.ans,s=stat[key()]||{n:0,ok:0,streak:0,best:0};
+  s.n++;if(ok){s.ok++;s.streak++;s.best=Math.max(s.best,s.streak);}else s.streak=0;stat[key()]=s;store.set("earStat",stat);
+  [...$("opts").children].forEach(b=>{b.disabled=true;if(b.dataset.id===q.ans)b.classList.add("ok");else if(b.dataset.id===id)b.classList.add("ng");});
+  const name=mode==="chord"?ROOTS[q.root%12]+(q.ans===""?"":q.ans):IVN[+q.ans];
+  const hint=mode==="chord"?(CH[lv.chord].find(x=>x[0]===q.ans)[2]):IVH[+q.ans];
+  $("msg").className="ea-msg "+(ok?"ok":"ng");$("msg").textContent=(ok?"正解！ ":"ざんねん… 正解は ")+name+"("+hint+")";
+  if(!ok){const t=playNotes(notesOf(id,q.root),mode==="int"&&lv.int!=="same");playNotes(notesOf(q.ans,q.root),mode==="int"&&lv.int!=="same",t+0.2);} /* 選んだ答え→正解の順で聞き比べ */
+  score();if(window.ngTrack)ngTrack("ear_answer",{mode:key(),correct:ok?1:0});
+}
+function renderOpts(){$("opts").innerHTML=opts().map(o=>`<button type="button" data-id="${o.id}">${o.label}${o.sub?`<small>${o.sub}</small>`:""}</button>`).join("");}
+function score(){const s=stat[key()]||{n:0,ok:0,streak:0,best:0};$("score").innerHTML=`<span>正解<b>${s.ok}</b>/${s.n}</span><span>正答率<b>${s.n?Math.round(s.ok/s.n*100):0}</b>%</span><span>連続<b>${s.streak}</b></span><span>ベスト<b>${s.best}</b></span><button class="btn" type="button" id="resetBtn" style="font-size:12px;padding:2px 10px">リセット</button>`;
+  $("resetBtn").onclick=()=>{stat[key()]={n:0,ok:0,streak:0,best:0};store.set("earStat",stat);score();};}
+function renderMode(){
+  [...$("modeTabs").children].forEach(b=>b.setAttribute("aria-selected",b.dataset.m===mode));
+  const L=mode==="chord"?[["basic","基本"],["oshare","おしゃれ"]]:[["up","上がる"],["down","下がる"],["same","同時"]];
+  $("lvSeg").innerHTML=L.map(([k,n])=>`<button type="button" data-l="${k}" aria-pressed="${lv[mode]===k}">${n}</button>`).join("");
+  q=null;answered=false;renderOpts();[...$("opts").children].forEach(b=>b.disabled=true);
+  $("againBtn").disabled=$("arpBtn").disabled=true;$("qBtn").textContent="▶ 出題";$("msg").className="ea-msg";$("msg").textContent="「出題」を押して、鳴った音を下から選んでね";
+  $("arpBtn").hidden=mode==="int";score();store.set("earMode",mode);store.set("earLv",lv);
+}
+$("modeTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;mode=b.dataset.m;renderMode();});
+$("lvSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;lv[mode]=b.dataset.l;renderMode();});
+$("qBtn").onclick=ask;$("againBtn").onclick=()=>play(false);$("arpBtn").onclick=()=>play(true);
+$("opts").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&!b.disabled)answer(b.dataset.id);});
+renderMode();
+
+function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
+const sb=$("shareBtn");
+if(sb) sb.addEventListener("click",async()=>{
+  const data={title:document.title,url:"https://www.namigroove.com/tools/ear/"};
+  try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);toast("リンクをコピーしました");}catch(e){}
+});
+})();
+</script>
+<script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
+(()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
+const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
+ ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
+ [".cp,.ro","copy_ms"],["#scSeg button","scale_select"],["#typeSeg button,#clType button","chord_select"],["#pgCat button,#clCat button","genre_select"],["#drop","file_pick"]];
+document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.target.closest(sel);if(!el)continue;
+  const h=el.closest(".pg,.cl-pg");const label=((h&&h.querySelector("h3")&&h.querySelector("h3").textContent)||el.dataset.g||el.textContent||"").trim().slice(0,60);
+  ngTrack(name,{label});break;}},true);})();
+</script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
+</body>
+</html>
