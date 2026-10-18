@@ -365,14 +365,14 @@ const ST={
 };
 const DEF={pop:"8beat",neo:"neo",jazz:"jazz",bossa:"bossa",cliche:"8beat",anison:"16beat",kirinji:"neo"};
 const QS=new URLSearchParams(location.search);
-let pi=Math.max(0,LIST.findIndex(x=>pid(x.n)===(QS.get("p")||store.get("jamP",""))));
+let pi=Math.max(0,LIST.findIndex(x=>pid(x.n)===((QS.get("pg")||QS.get("p"))||store.get("jamP",""))));
 let key=+(QS.get("k")??store.get("jamKey",0));if(!(key>=0&&key<12))key=0;
-let style=QS.get("s")||store.get("jamStyle",DEF[LIST[pi].g]||"8beat");if(!ST[style])style="8beat";
+let style=(QS.get("st")||QS.get("s"))||store.get("jamStyle",DEF[LIST[pi].g]||"8beat");if(!ST[style])style="8beat";
 let bpm=+(QS.get("b")||store.get("jamBpm",92));if(!(bpm>=50&&bpm<=200))bpm=92;
 const NB=window.NamiBuilder;
 let my=NB.load();
 let useMy=!!store.get("jamUseMy",false),builder=null;
-const qM=QS.get("m")?NB.dec(QS.get("m")):null;if(qM){my=qM;useMy=true;}else if(QS.get("p"))useMy=false;
+const qMs=QS.get("prog")||QS.get("m"),qM=qMs?NB.dec(qMs):null;if(qM){my=qM;useMy=true;}else if((QS.get("pg")||QS.get("p")))useMy=false;
 const cur=()=>useMy?{g:"my",n:"マイ進行",c:my}:LIST[pi];
 let bars=+store.get("jamBars",1),cat=useMy?"my":LIST[pi].g;
 let V=[];const kOff=()=>key>6?key-12:key;
@@ -470,7 +470,7 @@ $("jCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
 builder=NB.mount($("jMy"),{key:()=>key,initial:my,onChange:a=>{my=a;useMy=true;save();renderNow();renderList();if(playing)prepare();}});
 $("jList").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pi=+b.dataset.i;useMy=false;style=DEF[LIST[pi].g]||style;$("jStyle").value=style;renderNow();renderList();save();if(playing){stop();start();}});
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
-$("jShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);if(useMy)u.searchParams.set("m",NB.enc(my));else u.searchParams.set("p",pid(LIST[pi].n));u.searchParams.set("k",key);u.searchParams.set("s",style);u.searchParams.set("b",bpm);const url=u.href,title=(useMy?my.map(chName).join("→"):LIST[pi].n)+"(キー"+KEYN[key]+"・"+ST[style].n+")– なみぐる！ジャムモード";
+$("jShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);if(useMy)u.searchParams.set("prog",NB.enc(my));else u.searchParams.set("pg",pid(LIST[pi].n));u.searchParams.set("k",key);u.searchParams.set("st",style);u.searchParams.set("b",bpm);const url=u.href,title=(useMy?my.map(chName).join("→"):LIST[pi].n)+"(キー"+KEYN[key]+"・"+ST[style].n+")– なみぐる！ジャムモード";
   if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title+" #namigroovetools",url}).catch(()=>{});return;}
   (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("リンクをコピーしました")).catch(()=>toast(url));};
 renderNow();renderList();prepare();

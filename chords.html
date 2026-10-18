@@ -679,7 +679,7 @@ $("revPlay").onclick=()=>{const ms=rf.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filt
 /* [ルートの度数(半音), 種類, ベース音の度数(分数コードのとき)] */
 const PGS=window.NamiProg.LIST.slice();
 /* 自分で作った進行(progbuilder.js。ジャムモード・ピアノと共通) */
-const NB=window.NamiBuilder;let myC=NB.load();const qMy=new URLSearchParams(location.search).get("m"),qMyC=qMy?NB.dec(qMy):null;if(qMyC)myC=qMyC;
+const NB=window.NamiBuilder;let myC=NB.load();const qMy=(new URLSearchParams(location.search).get("prog")||new URLSearchParams(location.search).get("m")),qMyC=qMy?NB.dec(qMy):null;if(qMyC)myC=qMyC;
 const MYI=PGS.length;PGS.push({g:"my",n:"マイ進行",d:"自分で作った進行。上でコードを変えると、押さえ方もすぐ変わります",c:myC});
 let builder=null;
 const PKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
@@ -767,7 +767,7 @@ function pgMidi(p){
     else{const r0=48+pc(c.r);notes=T[1].filter(x=>x!==0||c.b==null).map(x=>r0+x);}
     return {name:c.nm,notes,bass};});
   NamiMidi.save(NamiMidi.build(cs,pgBpm,PGS[p].n+" ("+PKEY[pgKey]+")"),"namigroove_"+PGS[p].n+"_"+PKEY[pgKey]+"_"+pgBpm+"bpm");}
-$("pgList").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+(+jm.dataset.jam===MYI?"?m="+encodeURIComponent(NB.enc(myC)):"?p="+pid(PGS[+jm.dataset.jam].n))+"&k="+pgKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const isMy=+sh.dataset.shr===MYI,P=PGS[+sh.dataset.shr],prm=isMy?{m:NB.enc(myC),k:pgKey}:{p:pid(P.n),k:pgKey};if(inst!=="gt")prm.i=inst;shareLink(prm,(isMy?pgData[MYI].map(c=>c.nm).join("→"):P.n)+"(キー"+PKEY[pgKey]+")– なみぐる！コード表");return;}const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
+$("pgList").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+(+jm.dataset.jam===MYI?"?prog="+encodeURIComponent(NB.enc(myC)):"?pg="+pid(PGS[+jm.dataset.jam].n))+"&k="+pgKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const isMy=+sh.dataset.shr===MYI,P=PGS[+sh.dataset.shr],prm=isMy?{prog:NB.enc(myC),k:pgKey}:{pg:pid(P.n),k:pgKey};if(inst!=="gt")prm.i=inst;shareLink(prm,(isMy?pgData[MYI].map(c=>c.nm).join("→"):P.n)+"(キー"+PKEY[pgKey]+")– なみぐる！コード表");return;}const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
   const pl=e.target.closest("[data-play]");
   if(pl){pgStop();const p=+pl.dataset.play,n=pgData[p].length;let j=0;const step=()=>{pgPlay(p,j);j++;if(j<n)pgTimer=setTimeout(step,1400);else pgTimer=setTimeout(()=>document.querySelectorAll(".pg-c.now").forEach(x=>x.classList.remove("now")),1400);};step();return;}
   const b=e.target.closest("[data-c]");if(!b)return;pgStop();
@@ -794,7 +794,7 @@ $("modeTabs").addEventListener("click",e=>{const b=e.target.closest("button");if
 /* 共有リンクから開いたとき */
 const qI=QS.get("i");if(qI&&TUN[qI]&&qI!==inst){inst=qI;store.set("chInst",inst);[...$("instSeg").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.i===inst));}
 const qR=QS.get("r"),qT=QS.get("t");if(qR!=null&&ROOTS.some((n,i)=>String(i)===qR)){root=+qR;const ti=TYPES.findIndex(t=>(t[0]||"M")===qT);if(ti>=0)type=ti;mode="fwd";}
-const qP=QS.get("p"),qPi=qP?PGS.findIndex(x=>pid(x.n)===qP):-1;
+const qP=QS.get("pg")||QS.get("p"),qPi=qP?PGS.findIndex(x=>pid(x.n)===qP):-1;
 if(qPi>=0||qMyC){const k=+QS.get("k");if(k>=0&&k<12){pgKey=k;$("pgKey").value=String(k);}pgCat=qMyC?"my":PGS[qPi].g;mode="fwd";}
 pgRender();pgFilter();$("pgList").dataset.k=inst+":"+capo;renderFwd();renderRev();setMode(mode==="rev"?"rev":"fwd");
 if(qMyC){builder.render();setTimeout(()=>$("pgMy").scrollIntoView({behavior:"smooth",block:"start"}),300);}

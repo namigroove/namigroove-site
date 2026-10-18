@@ -917,7 +917,7 @@ $("clPlay").onclick=clGo;
 /* おしゃれ進行(キーCでの音。左手ベース+右手) */
 const PROGS=window.NamiProg.LIST.map(x=>({g:x.g,n:x.n,d:x.d,c:window.NamiProg.piano(x.c)}));
 /* 自分で作った進行(progbuilder.js。ジャムモード・コード表と共通) */
-const NB=window.NamiBuilder;let myC=NB.load();const qMy=new URLSearchParams(location.search).get("m"),qMyC=qMy?NB.dec(qMy):null;if(qMyC)myC=qMyC;
+const NB=window.NamiBuilder;let myC=NB.load();const qMy=(new URLSearchParams(location.search).get("prog")||new URLSearchParams(location.search).get("m")),qMyC=qMy?NB.dec(qMy):null;if(qMyC)myC=qMyC;
 const MYI=PROGS.length;PROGS.push({g:"my",n:"マイ進行",d:"自分で作った進行。上でコードを変えると、ここにすぐ反映されます",c:window.NamiProg.piano(myC)});
 let builder=null;
 const CLKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
@@ -979,7 +979,7 @@ let clBpm=store.get("clBpm",90);$("clBpm").value=clBpm;$("clBpm").addEventListen
 function progMidi(p){const P=PROGS[p],k=kOff();
   const cs=P.c.map(c=>{const ms=c[2].map(m=>m+k);return {name:chName(c),bass:ms[0],notes:ms.slice(1)};});
   NamiMidi.save(NamiMidi.build(cs,clBpm,P.n+" ("+CLKEY[clKey]+")"),"namigroove_"+P.n+"_"+CLKEY[clKey]+"_"+clBpm+"bpm");}
-$("clProgs").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+(+jm.dataset.jam===MYI?"?m="+encodeURIComponent(NB.enc(myC)):"?p="+pid(PROGS[+jm.dataset.jam].n))+"&k="+clKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const P=PROGS[+sh.dataset.shr];shareLink(+sh.dataset.shr===MYI?{m:NB.enc(myC),k:clKey}:{p:pid(P.n),k:clKey},(+sh.dataset.shr===MYI?P.c.map(chName).join("→"):P.n)+"(キー"+CLKEY[clKey]+")– なみぐる！ピアノ");return;}const md=e.target.closest("[data-mid]");if(md){progMidi(+md.dataset.mid);return;}const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
+$("clProgs").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+(+jm.dataset.jam===MYI?"?prog="+encodeURIComponent(NB.enc(myC)):"?pg="+pid(PROGS[+jm.dataset.jam].n))+"&k="+clKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const P=PROGS[+sh.dataset.shr];shareLink(+sh.dataset.shr===MYI?{prog:NB.enc(myC),k:clKey}:{pg:pid(P.n),k:clKey},(+sh.dataset.shr===MYI?P.c.map(chName).join("→"):P.n)+"(キー"+CLKEY[clKey]+")– なみぐる！ピアノ");return;}const md=e.target.closest("[data-mid]");if(md){progMidi(+md.dataset.mid);return;}const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
   const b=e.target.closest("[data-c]");if(!b)return;const p=+b.closest(".cl-pg").dataset.p;clearTimeout(progTimer);playChord(p,+b.dataset.c);});
 $("clProgPlay").onclick=()=>{clearTimeout(progTimer);const L=PROGS.map((_,i)=>i).filter(i=>clCat==="all"||PROGS[i].g===clCat);let k=0,j=0;const step=()=>{const p=L[k];playChord(p,j);j++;if(j>=PROGS[p].c.length){k++;j=0;}if(k<L.length)progTimer=setTimeout(step,1500);};if(L.length)step();};
 $("clKey").addEventListener("change",()=>{clKey=+$("clKey").value;store.set("clKey",clKey);progRender();if(builder)builder.render();});
@@ -995,7 +995,7 @@ function shareLink(params,title){
 }
 /* 共有リンクから開いたとき */
 const qR=QS.get("r"),qT=QS.get("t");if(qR!=null&&+qR>=0&&+qR<12){clRoot=+qR;const ti=CL_TYPES.findIndex(t=>(t[0]||"M")===qT);if(ti>=0)clType=ti;}
-const qP=QS.get("p"),qPi=qP?PROGS.findIndex(x=>pid(x.n)===qP):-1;
+const qP=QS.get("pg")||QS.get("p"),qPi=qP?PROGS.findIndex(x=>pid(x.n)===qP):-1;
 if(qPi>=0||qMyC){const k=+QS.get("k");if(k>=0&&k<12){clKey=k;$("clKey").value=String(k);}clCat=qMyC?"my":PROGS[qPi].g;}
 clRender();progRender();mini(clNotes());
 if(qMyC){$("clTabs").querySelector('[data-m="prog"]').click();builder.render();setTimeout(()=>$("clMy").scrollIntoView({behavior:"smooth",block:"start"}),300);}

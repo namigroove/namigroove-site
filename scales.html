@@ -393,7 +393,7 @@ const CATS={basic:"基本",penta:"ペンタ・ブルース",mode:"モード",jaz
 let root=store.get("scRoot",0), sid=store.get("scId","major"), view=store.get("scView","kb"), sax=store.get("saxInst","alto");
 const QS=new URLSearchParams(location.search);
 if(QS.get("r")!=null&&+QS.get("r")>=0&&+QS.get("r")<12)root=+QS.get("r");
-if(QS.get("s")&&SC.some(s=>s[0]===QS.get("s")))sid=QS.get("s");
+if((QS.get("sc")||QS.get("s"))&&SC.some(s=>s[0]===(QS.get("sc")||QS.get("s"))))sid=(QS.get("sc")||QS.get("s"));
 if(!SC.some(s=>s[0]===sid))sid="major";
 let cat=SC.find(s=>s[0]===sid)[2];
 const cur=()=>SC.find(s=>s[0]===sid);
@@ -480,7 +480,7 @@ $("saxSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!
 $("view").addEventListener("click",e=>{const t=e.target.closest("[data-m]");if(t)note(+t.dataset.m,0,0.5);});
 $("playUp").onclick=()=>{const a=audio(),iv=cur()[3],seq=iv.concat([12]),all=seq.concat(seq.slice(0,-1).reverse()),t0=a.currentTime+0.05,b=60+root-(root>6?12:0);all.forEach((x,i)=>note(b+x,t0+i*0.22,0.3));};
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2200);}
-$("scShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);u.searchParams.set("r",root);u.searchParams.set("s",sid);const url=u.href,title=ROOTS[root]+" "+cur()[1]+" – なみぐる！スケール表";
+$("scShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);u.searchParams.set("r",root);u.searchParams.set("sc",sid);const url=u.href,title=ROOTS[root]+" "+cur()[1]+" – なみぐる！スケール表";
   if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title+" #namigroovetools",url}).catch(()=>{});return;}
   (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("リンクをコピーしました")).catch(()=>toast(url));};
 render();
