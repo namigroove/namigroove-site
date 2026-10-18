@@ -223,7 +223,7 @@ footer a{color:var(--sea)}
 .cl-pg .chips{display:flex;flex-wrap:wrap;gap:6px}
 .cl-pg .chips button{font:500 14px var(--f-body);padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer}
 .cl-pg .chips button.now{background:var(--coral);border-color:var(--coral);color:#fff}
-.cl-pg .pg-play{float:right;font-size:12px;padding:3px 10px}
+.cl-pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.cl-pg .pg-btns .btn{font-size:12px;padding:3px 10px}
 .cl-mini{position:sticky;top:64px;z-index:3;background:var(--panel);padding:6px 0 8px;margin-bottom:6px}
 .cl-mini svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
 .cl-mini .mw{fill:#fff;stroke:#9aa7c6;stroke-width:1}
@@ -402,7 +402,7 @@ header.top .logo{flex:none}
       </div>
     </div>
     <div id="clProg" hidden>
-      <div class="row"><div class="ctl">キー <select id="clKey" class="sel" aria-label="キー"></select></div><button class="btn" type="button" id="clProgPlay">▶ 通して鳴らす</button></div>
+      <div class="row"><div class="ctl">キー <select id="clKey" class="sel" aria-label="キー"></select></div><div class="ctl">MIDIのテンポ <input id="clBpm" class="sel num" type="number" min="40" max="240" value="90" style="width:4.2em" aria-label="MIDI書き出しのテンポ(BPM)"></div><button class="btn" type="button" id="clProgPlay">▶ 通して鳴らす</button></div>
       <div class="seg cl-cat" id="clCat" role="group" aria-label="進行のジャンル"></div>
       <div class="cl-progs" id="clProgs"></div>
     </div>
@@ -928,14 +928,54 @@ function catFilter(){[...$("clCat").children].forEach(b=>b.setAttribute("aria-pr
 $("clCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button>`;
 $("clCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clCat=b.dataset.g;store.set("clPgCat",clCat);catFilter();});
 function progRender(){
-  $("clProgs").innerHTML=PROGS.map((p,i)=>`<div class="cl-pg" data-p="${i}"><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button><h3>${p.n}</h3><p>${p.d}</p><div class="chips">${p.c.map((c,j)=>`<button type="button" data-c="${j}">${chName(c)}</button>`).join("")}</div></div>`).join("");;catFilter();
+  $("clProgs").innerHTML=PROGS.map((p,i)=>`<div class="cl-pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="chips">${p.c.map((c,j)=>`<button type="button" data-c="${j}">${chName(c)}</button>`).join("")}</div></div>`).join("");;catFilter();
 }
 let progTimer=0;
 function playChord(p,j){const c=PROGS[p].c[j],ms=c[2].map(m=>m+kOff());audio();hint(ms);sound(ms,1300);
   document.querySelectorAll(".cl-pg .chips button").forEach(b=>b.classList.remove("now"));
   const el=document.querySelector(`.cl-pg[data-p="${p}"] [data-c="${j}"]`);if(el)el.classList.add("now");}
 function playProg(p){clearTimeout(progTimer);let j=0;const n=PROGS[p].c.length;const step=()=>{playChord(p,j);j++;if(j<n)progTimer=setTimeout(step,1500);};step();}
-$("clProgs").addEventListener("click",e=>{const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
+/* MIDI書き出し:左手ベースは別トラック、右手はコードトラック。今のキーに移調 */
+/* ===== MIDIファイル書き出し(SMFフォーマット1:テンポ+コード+ベース) ===== */
+const NamiMidi=(()=>{
+  const TPQ=480;
+  const vlq=n=>{const b=[n&0x7f];while(n>>=7)b.unshift((n&0x7f)|0x80);return b;};
+  const ascii=s=>String(s).replace(/♭/g,"b").replace(/♯/g,"#").replace(/△/g,"M").replace(/[^\x20-\x7e]/g,"");
+  const txt=(type,s)=>{const b=[...new TextEncoder().encode(s)];return [0xff,type,...vlq(b.length),...b];};
+  function track(name,evs){ /* evs: [tick, bytes] */
+    evs.sort((a,b)=>a[0]-b[0]||a[2]-b[2]);
+    let out=[...vlq(0),...txt(0x03,name)],t=0;
+    evs.forEach(([tk,bytes])=>{out.push(...vlq(tk-t),...bytes);t=tk;});
+    out.push(0,0xff,0x2f,0);
+    return [0x4d,0x54,0x72,0x6b,(out.length>>>24)&255,(out.length>>>16)&255,(out.length>>>8)&255,out.length&255,...out];
+  }
+  /* chords: [{name, notes:[midi...], bass:midi|null}] 1小節ずつ */
+  function build(chords,bpm,title){
+    const bar=TPQ*4, us=Math.round(60000000/bpm);
+    const meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,4,2,24,8],0],[0,txt(0x01,ascii(title)),0]];
+    const ch=[],bs=[];
+    chords.forEach((c,i)=>{const t0=i*bar,t1=t0+bar-20;
+      meta.push([t0,txt(0x06,ascii(c.name)),0]);
+      c.notes.forEach(m=>{ch.push([t0,[0x90,m,84],1]);ch.push([t1,[0x80,m,0],0]);});
+      if(c.bass!=null){bs.push([t0,[0x91,c.bass,96],1]);bs.push([t1,[0x81,c.bass,0],0]);}
+    });
+    const tr=[track("Tempo",meta),track("Chords",ch)];if(bs.length)tr.push(track("Bass",bs));
+    const head=[0x4d,0x54,0x68,0x64,0,0,0,6,0,1,0,tr.length,(TPQ>>8)&255,TPQ&255];
+    return new Uint8Array([...head,...tr.flat()]);
+  }
+  function save(bytes,file){
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([bytes],{type:"audio/midi"}));
+    a.download=file.replace(/[\\/:*?"<>|\s]+/g,"_")+".mid";document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+  }
+  return {build,save,ascii};
+})();
+
+let clBpm=store.get("clBpm",90);$("clBpm").value=clBpm;$("clBpm").addEventListener("change",()=>{clBpm=Math.max(40,Math.min(240,+$("clBpm").value||90));$("clBpm").value=clBpm;store.set("clBpm",clBpm);});
+function progMidi(p){const P=PROGS[p],k=kOff();
+  const cs=P.c.map(c=>{const ms=c[2].map(m=>m+k);return {name:chName(c),bass:ms[0],notes:ms.slice(1)};});
+  NamiMidi.save(NamiMidi.build(cs,clBpm,P.n+" ("+CLKEY[clKey]+")"),"namigroove_"+P.n+"_"+CLKEY[clKey]+"_"+clBpm+"bpm");}
+$("clProgs").addEventListener("click",e=>{const md=e.target.closest("[data-mid]");if(md){progMidi(+md.dataset.mid);return;}const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
   const b=e.target.closest("[data-c]");if(!b)return;const p=+b.closest(".cl-pg").dataset.p;clearTimeout(progTimer);playChord(p,+b.dataset.c);});
 $("clProgPlay").onclick=()=>{clearTimeout(progTimer);const L=PROGS.map((_,i)=>i).filter(i=>clCat==="all"||PROGS[i].g===clCat);let k=0,j=0;const step=()=>{const p=L[k];playChord(p,j);j++;if(j>=PROGS[p].c.length){k++;j=0;}if(k<L.length)progTimer=setTimeout(step,1500);};if(L.length)step();};
 $("clKey").addEventListener("change",()=>{clKey=+$("clKey").value;store.set("clKey",clKey);progRender();});

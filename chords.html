@@ -179,7 +179,7 @@ footer a{color:var(--sea)}
 .pg{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
 .pg h3{margin:0 0 2px;font-size:15px}
 .pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
-.pg .pg-play{float:right;font-size:12px;padding:3px 10px}
+.pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.pg .pg-btns .btn{font-size:12px;padding:3px 10px}
 .pg-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .pg-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer;font:500 14px var(--f-body)}
 .pg-c .cd{width:76px;height:auto}
@@ -302,6 +302,7 @@ header.top .logo{flex:none}
       <p class="note-s" style="text-align:left;margin:0 0 10px">定番のコード進行を、テンション入りのおしゃれな押さえ方で。コードをタップすると1つずつ、「▶ 鳴らす」で通して聴けます。</p>
       <div class="row">
         <div class="ctl">キー <select id="pgKey" class="sel" aria-label="進行のキー"></select></div>
+        <div class="ctl">MIDIのテンポ <input id="pgBpm" class="sel num" type="number" min="40" max="240" value="90" style="width:4.2em" aria-label="MIDI書き出しのテンポ(BPM)"></div>
         <button class="btn" type="button" id="pgStop">■ 止める</button>
       </div>
       <div class="seg pg-cat" id="pgCat" role="group" aria-label="進行のジャンル"></div>
@@ -728,7 +729,7 @@ function lead(p){
 function pgRender(){
   pgData=PGS.map(p=>lead(p.c));
   const isG=inst==="gt";
-  $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
+  $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
 }
 function pgPlay(p,j){
   const c=pgData[p][j];
@@ -744,7 +745,50 @@ let pgCat=store.get("chPgCat","pop");if(pgCat!=="all"&&!PCAT[pgCat])pgCat="pop";
 function pgFilter(){[...$("pgCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===pgCat));document.querySelectorAll("#pgList .pg").forEach(el=>{el.hidden=pgCat!=="all"&&PGS[+el.dataset.p].g!==pgCat;});}
 $("pgCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button>`;
 $("pgCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pgCat=b.dataset.g;store.set("chPgCat",pgCat);pgStop();pgFilter();});
-$("pgList").addEventListener("click",e=>{
+/* MIDI書き出し:ギターは選ばれている押さえ方の実音(カポ込み)、ベースはルート */
+/* ===== MIDIファイル書き出し(SMFフォーマット1:テンポ+コード+ベース) ===== */
+const NamiMidi=(()=>{
+  const TPQ=480;
+  const vlq=n=>{const b=[n&0x7f];while(n>>=7)b.unshift((n&0x7f)|0x80);return b;};
+  const ascii=s=>String(s).replace(/♭/g,"b").replace(/♯/g,"#").replace(/△/g,"M").replace(/[^\x20-\x7e]/g,"");
+  const txt=(type,s)=>{const b=[...new TextEncoder().encode(s)];return [0xff,type,...vlq(b.length),...b];};
+  function track(name,evs){ /* evs: [tick, bytes] */
+    evs.sort((a,b)=>a[0]-b[0]||a[2]-b[2]);
+    let out=[...vlq(0),...txt(0x03,name)],t=0;
+    evs.forEach(([tk,bytes])=>{out.push(...vlq(tk-t),...bytes);t=tk;});
+    out.push(0,0xff,0x2f,0);
+    return [0x4d,0x54,0x72,0x6b,(out.length>>>24)&255,(out.length>>>16)&255,(out.length>>>8)&255,out.length&255,...out];
+  }
+  /* chords: [{name, notes:[midi...], bass:midi|null}] 1小節ずつ */
+  function build(chords,bpm,title){
+    const bar=TPQ*4, us=Math.round(60000000/bpm);
+    const meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,4,2,24,8],0],[0,txt(0x01,ascii(title)),0]];
+    const ch=[],bs=[];
+    chords.forEach((c,i)=>{const t0=i*bar,t1=t0+bar-20;
+      meta.push([t0,txt(0x06,ascii(c.name)),0]);
+      c.notes.forEach(m=>{ch.push([t0,[0x90,m,84],1]);ch.push([t1,[0x80,m,0],0]);});
+      if(c.bass!=null){bs.push([t0,[0x91,c.bass,96],1]);bs.push([t1,[0x81,c.bass,0],0]);}
+    });
+    const tr=[track("Tempo",meta),track("Chords",ch)];if(bs.length)tr.push(track("Bass",bs));
+    const head=[0x4d,0x54,0x68,0x64,0,0,0,6,0,1,0,tr.length,(TPQ>>8)&255,TPQ&255];
+    return new Uint8Array([...head,...tr.flat()]);
+  }
+  function save(bytes,file){
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([bytes],{type:"audio/midi"}));
+    a.download=file.replace(/[\\/:*?"<>|\s]+/g,"_")+".mid";document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+  }
+  return {build,save,ascii};
+})();
+
+let pgBpm=store.get("chPgBpm",90);$("pgBpm").value=pgBpm;$("pgBpm").addEventListener("change",()=>{pgBpm=Math.max(40,Math.min(240,+$("pgBpm").value||90));$("pgBpm").value=pgBpm;store.set("chPgBpm",pgBpm);});
+function pgMidi(p){
+  const cs=pgData[p].map(c=>{const T=TYPES[c.t],bp=c.b==null?c.r:c.b,bass=36+pc(bp-36);let notes;
+    if(inst==="gt"&&c.v)notes=c.v.fr.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filter(x=>x!=null);
+    else{const r0=48+pc(c.r);notes=T[1].filter(x=>x!==0||c.b==null).map(x=>r0+x);}
+    return {name:c.nm,notes,bass};});
+  NamiMidi.save(NamiMidi.build(cs,pgBpm,PGS[p].n+" ("+PKEY[pgKey]+")"),"namigroove_"+PGS[p].n+"_"+PKEY[pgKey]+"_"+pgBpm+"bpm");}
+$("pgList").addEventListener("click",e=>{const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
   const pl=e.target.closest("[data-play]");
   if(pl){pgStop();const p=+pl.dataset.play,n=pgData[p].length;let j=0;const step=()=>{pgPlay(p,j);j++;if(j<n)pgTimer=setTimeout(step,1400);else pgTimer=setTimeout(()=>document.querySelectorAll(".pg-c.now").forEach(x=>x.classList.remove("now")),1400);};step();return;}
   const b=e.target.closest("[data-c]");if(!b)return;pgStop();
