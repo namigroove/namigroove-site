@@ -1,0 +1,31 @@
+{
+ "name": "歌詞の音数カウンター – なみぐる！TOOLS",
+ "short_name": "音数カウンター",
+ "lang": "ja",
+ "id": "https://www.namigroove.com/tools/mora/",
+ "start_url": "https://www.namigroove.com/tools/mora/",
+ "scope": "https://www.namigroove.com/tools/mora/",
+ "display": "standalone",
+ "background_color": "#f5f8fe",
+ "theme_color": "#396cdf",
+ "icons": [
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/mora-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/mora-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/mora-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -16,8 +16,9 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
 <link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-180x180.png">
-<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tools.webmanifest">
+<link rel="apple-touch-icon" href="https://namigroove.github.io/namigroove-site/img/icons/tuner-180.png">
+<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tuner.webmanifest">
+<meta name="apple-mobile-web-app-title" content="チューナー">
 <meta name="theme-color" content="#396cdf">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
 <style>
@@ -661,6 +662,6 @@ document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.targ
 <script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
 if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
-<script src="https://namigroove.github.io/namigroove-site/favs.js?v=3"></script>
+<script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 </body>
 </html>

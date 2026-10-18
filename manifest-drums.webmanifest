@@ -1,0 +1,31 @@
+{
+ "name": "ドラムパッド – なみぐる！TOOLS",
+ "short_name": "ドラム",
+ "lang": "ja",
+ "id": "https://www.namigroove.com/tools/drums/",
+ "start_url": "https://www.namigroove.com/tools/drums/",
+ "scope": "https://www.namigroove.com/tools/drums/",
+ "display": "standalone",
+ "background_color": "#f5f8fe",
+ "theme_color": "#396cdf",
+ "icons": [
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/drums-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/drums-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/drums-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "name": "ピアノ – なみぐる！TOOLS",
+ "short_name": "ピアノ",
+ "lang": "ja",
+ "id": "https://www.namigroove.com/tools/piano/",
+ "start_url": "https://www.namigroove.com/tools/piano/",
+ "scope": "https://www.namigroove.com/tools/piano/",
+ "display": "standalone",
+ "background_color": "#f5f8fe",
+ "theme_color": "#396cdf",
+ "icons": [
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/piano-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/piano-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/piano-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

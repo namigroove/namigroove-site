@@ -69,14 +69,14 @@ function page(){
   var wrap=document.createElement("div");wrap.className="ng-fav-h1";h1.parentNode.insertBefore(wrap,h1);wrap.appendChild(h1);wrap.appendChild(button("tool",id,h1.textContent));
 }
 /* ---------- ホーム画面に追加(アイコン化)の案内 ---------- */
-var deferred=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;});
+var deferred=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;window.__ngInstallable=true;});
 var DL='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4.5 16.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></svg>';
 function isStandalone(){return (window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;}
 function guide(){
   var ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),and=/Android/.test(ua),
     steps=ios?"<ol><li>Safariの<b>共有ボタン</b>(□に↑のマーク)をタップ</li><li>「<b>ホーム画面に追加</b>」を選ぶ</li><li>右上の「追加」を押すと、このツールのアイコンができます</li></ol><p class=\"ng-ig-s\">ChromeなどSafari以外のアプリでは、メニューの「ホーム画面に追加」から。</p>"
     :and?"<ol><li>Chromeの右上の<b>︙</b>をタップ</li><li>「<b>ホーム画面に追加</b>」または「アプリをインストール」を選ぶ</li></ol>"
-    :"<ol><li>Chrome・Edgeなら、アドレスバーの右の<b>インストール</b>のアイコンを押す</li><li>またはメニューの「<b>なみぐるTOOLSをインストール</b>」(「アプリ」→「インストール」)を選ぶ</li></ol>";
+    :"<ol><li>Chrome・Edgeなら、アドレスバーの右の<b>インストール</b>のアイコンを押す</li><li>またはメニューの「<b>インストール</b>」(「アプリ」→「このページをアプリとしてインストール」など)を選ぶ</li></ol>";
   var d=document.createElement("div");d.className="ng-ig";d.setAttribute("role","dialog");d.setAttribute("aria-label","ホーム画面に追加");
   d.innerHTML='<div class="ng-ig-c"><p class="ng-ig-t">ホーム画面にアイコンを置く</p>'+steps+'<p class="ng-ig-s">アプリのようにすぐ開けて、オフラインでも使えます。</p><button type="button" class="ng-ig-x">閉じる</button></div>';
   d.addEventListener("click",function(e){if(e.target===d||e.target.closest(".ng-ig-x"))d.remove();});document.body.appendChild(d);
