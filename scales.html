@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>スケール表 – なみぐる！</title>
+<meta name="description" content="アドリブや作曲で使うスケール表。メジャー・ペンタ・ブルース・ドリアンなどのモードやオルタードまで、鍵盤・ギター・ベース・サックスの運指で確認できます。">
+<meta property="og:title" content="スケール表 – なみぐる！">
+<meta property="og:description" content="スケールを鍵盤・ギター・ベース・サックスの運指で確認できるスケール表。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/scales/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-180x180.png">
+<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tools.webmanifest">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+/* コード表 */
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+.tabs.fam{margin-bottom:16px}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 2px}}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.ch-pick{display:flex;flex-direction:column;gap:8px;margin:14px 0 6px;align-items:center}
+.ch-pick .seg{justify-content:center}
+.ch-pick .roots button{min-width:44px}
+.ch-head{display:flex;flex-direction:column;align-items:center;gap:4px;margin:12px 0 6px;text-align:center}
+.ch-name{font-family:var(--f-display);font-size:clamp(40px,10vw,60px);line-height:1.1;min-height:1.1em}
+.ch-name .dim{font-size:15px;color:var(--ink-soft);font-family:var(--f-body)}
+.ch-sub{font-size:13px;color:var(--ink-soft);min-height:1.5em}
+.ch-sub b{color:var(--sea)}
+.seg.types button.fancy{border-color:var(--coral);color:var(--coral)}
+.seg.types button.fancy[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:#fff}
+.ch-desc{font-size:13px;color:var(--coral);min-height:1.4em;margin:0}
+.pg-wrap{margin-top:26px;border-top:1px dashed var(--line);padding-top:16px}
+.pg-wrap h2{font-size:16px;margin:0 0 4px;font-family:var(--f-display);font-weight:400}
+.pg-wrap .row{margin-bottom:10px}
+.pg-cat{margin:0 0 12px;display:flex;flex-wrap:wrap;gap:4px}
+.pg-list{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.pg{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
+.pg h3{margin:0 0 2px;font-size:15px}
+.pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
+.pg.shared{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral)}
+.pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.pg .pg-btns .btn{font-size:12px;padding:3px 10px}
+.pg-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.pg-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer;font:500 14px var(--f-body)}
+.pg-c .cd{width:76px;height:auto}
+.pg-c small{font-size:11px;color:var(--ink-soft)}
+.pg-c.now{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral) inset}
+.pg-c.now b{color:var(--coral)}
+.vo{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.vo-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
+.vo-c:hover{border-color:var(--sea)}
+.vo-c.main{border:2px solid var(--sea)}
+.vo-c small i.lib{font-style:normal;font-size:10px;color:#fff;background:var(--coral);border-radius:999px;padding:0 6px;margin-right:4px}
+.vo-c small{font-size:11px;color:var(--ink-soft)}
+.cd{width:120px;height:auto;display:block}
+.cd .st{stroke:var(--ink-soft);stroke-width:1}
+.cd .fr{stroke:var(--line);stroke-width:1.2}
+.cd .nut{stroke:var(--ink);stroke-width:4}
+.cd .dot{fill:var(--sea)}
+.cd .dot.r{fill:var(--coral)}
+.cd .bar{fill:var(--sea);opacity:.9}
+.cd .mk{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.cd .pos{font:10px var(--f-mono);fill:var(--ink-soft)}
+.fb-wrap{overflow-x:auto;margin-top:10px}
+.fb{min-width:640px}
+.fb svg{display:block;width:100%;height:auto}
+.fb .str{stroke:var(--ink-soft)}
+.fb .fw{stroke:var(--line);stroke-width:1.5}
+.fb .nutl{stroke:var(--ink);stroke-width:4}
+.fb .inl{fill:var(--wash)}
+.fb .nd{stroke:var(--panel);stroke-width:1.5}
+.fb .nt{font:10px var(--f-mono);fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.fb .fn{font:10px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.fb-leg{font-size:12px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
+.fb-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
+.rev-grid{display:flex;justify-content:center;margin:14px 0 4px}
+.rev-grid svg{width:min(100%,300px);max-height:none;height:auto;touch-action:manipulation;user-select:none}
+.rev-grid .cell{fill:transparent;cursor:pointer}
+.rev-grid .cell:hover{fill:var(--wash)}
+.rev-grid .om{font:16px var(--f-mono);fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;cursor:pointer}
+.rev-grid .omh{fill:transparent;cursor:pointer}
+/* スケール表 */
+.sc-cats{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:14px 0 8px}
+.sc-cats button{font:500 12px var(--f-body);padding:4px 11px;border-radius:999px;border:0;background:var(--wash);color:var(--ink-soft);cursor:pointer}
+.sc-cats button[aria-pressed="true"]{background:var(--sea);color:#fff}
+.sc-list{justify-content:center;display:flex}
+.seg.roots{justify-content:center;display:flex}
+.sc-desc{font-size:13px;color:var(--coral);margin:2px 0 8px;min-height:1.4em}
+.sc-notes{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.sc-notes span{display:flex;flex-direction:column;align-items:center;min-width:42px;padding:4px 6px;border-radius:10px;background:var(--wash);font:500 15px var(--f-mono)}
+.sc-notes span small{font-size:10px;color:var(--ink-soft)}
+.sc-notes span.r{background:var(--coral);color:#fff}.sc-notes span.r small{color:#fff}
+.sc-fit{font-size:13px;color:var(--ink-soft);margin:10px 0}
+.sc-fit a{display:inline-block;margin:2px 3px;padding:2px 10px;border-radius:999px;border:1px solid var(--sea);color:var(--sea);text-decoration:none;font-family:var(--f-mono)}
+.sc-fit a:hover{background:var(--sea);color:#fff}
+.inst4{grid-template-columns:repeat(4,1fr)}
+.kbs{overflow-x:auto}.kbs svg{display:block;width:100%;min-width:560px;height:auto}
+.kbs .w{fill:#fff;stroke:var(--line);stroke-width:1.5;cursor:pointer}.kbs .b{fill:var(--ink);cursor:pointer}
+.kbs .on{fill:var(--sea)}.kbs .rt{fill:var(--coral)}
+.kbs .lb{font:11px var(--f-mono);text-anchor:middle;pointer-events:none}
+.sx-row{display:flex;gap:8px;overflow-x:auto;padding:6px 2px 10px;justify-content:flex-start}
+.sx-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
+.sx-c.r{border:2px solid var(--coral)}
+.sx-c b{font:500 16px var(--f-mono)}.sx-c small{font-size:10px;color:var(--ink-soft)}
+.sx-c .sxf{width:74px}
+.sxf-rod{stroke:var(--line);stroke-width:2}
+.sxf-sep{stroke:var(--ink-soft);stroke-width:1.5;stroke-dasharray:3 3}
+.sxf-k{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.sxf-k.on{fill:var(--sea);stroke:var(--sea)}
+.sxf-t{font:9px var(--f-body);fill:var(--ink-soft);text-anchor:middle}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html">Works</a>
+      <a href="tools.html">Tools</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links" class="opt">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
+/* EN⇔JP:Google翻訳(英語)との切り替え */
+(()=>{const a=document.getElementById("toEN"); if(!a) return;
+ const tr=/\.translate\.goog$/.test(location.hostname);
+ if(tr){
+  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
+  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
+  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
+  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
+ } else {
+  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
+ }
+})();
+</script>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>スケール表</h1>
+    <p class="lead">アドリブや作曲で使うスケールを、鍵盤・ギター・ベース・サックスの運指でまとめて確認できます。合うコードもわかります。</p>
+  </div>
+
+  <section class="panel" aria-label="スケールを選ぶ">
+    <div class="seg roots" id="rootSeg" role="group" aria-label="ルート(主音)"></div>
+    <div class="sc-cats" id="catSeg" role="group" aria-label="スケールの種類"></div>
+    <div class="seg sc-list" id="scSeg" role="group" aria-label="スケール"></div>
+    <div class="ch-head" aria-live="polite">
+      <div class="ch-name" id="scName">C メジャー</div>
+      <p class="sc-desc" id="scDesc"></p>
+      <div class="sc-notes" id="scNotes"></div>
+      <p class="sc-fit" id="scFit"></p>
+      <div class="row" style="gap:8px">
+        <button class="btn" type="button" id="playUp">♪ 上がって下がる</button>
+        <button class="btn" type="button" id="scShare" title="このスケールのリンクを共有">🔗 共有</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="tabs fam inst4" id="instTabs" role="tablist" aria-label="楽器">
+    <button type="button" data-v="kb" aria-selected="true">鍵盤</button>
+    <button type="button" data-v="gt" aria-selected="false">ギター</button>
+    <button type="button" data-v="bs" aria-selected="false">ベース</button>
+    <button type="button" data-v="sx" aria-selected="false">サックス</button>
+  </div>
+  <section class="panel" id="view" aria-live="polite">
+    <div id="vKb"></div>
+    <div id="vFb" hidden><div class="fb-wrap"><div class="fb" id="fb"></div></div><p class="fb-leg" id="fbLeg"></p></div>
+    <div id="vSx" hidden>
+      <div class="row"><span class="seg" id="saxSeg" role="group" aria-label="サックスの種類"></span></div>
+      <p class="note-s" id="saxNote"></p>
+      <div class="sx-row" id="sxRow"></div>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>オレンジがルート(主音)、青がスケールの音です。数字は度数(ルートからの距離)で、♭3・♭7 などはメジャースケールより半音低い音です。</li>
+      <li>鍵盤や指板の音をタップすると、その音が鳴ります。「上がって下がる」でスケールを通して聴けます。</li>
+      <li>「合うコード」をタップすると、<a href="chords.html">コード表</a>でそのコードの押さえ方を開きます。</li>
+      <li>サックスは実音(コンサートキー)で表示して、小さい文字で楽譜上の音(記譜音)を添えています。運指は<a href="fingering.html">木管楽器運指表</a>の基本の指使いです。</li>
+      <li>ギターはレギュラーチューニング、ベースは4弦(EADG)です。</li>
+    </ul>
+  </section>
+</main>
+
+
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AB%E8%A1%A8%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fscales%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fscales%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<script src="https://namigroove.github.io/namigroove-site/sax-fingering.js?v=1792274310"></script>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
+const pc=m=>((m%12)+12)%12;
+const ROOTS=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
+const SH=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"], FL=["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"];
+const DEG={0:"1",1:"♭2",2:"2",3:"♭3",4:"3",5:"4",6:"♭5",7:"5",8:"♭6",9:"6",10:"♭7",11:"7"};
+/* [id, 名前, カテゴリ, 音程, ひとこと, 合うコード, 度数の書き方(省略時は標準)] */
+const SC=[
+ ["major","メジャー(アイオニアン)","basic",[0,2,4,5,7,9,11],"明るい長調の基本。ドレミファソラシ",["M7","6","add9"]],
+ ["minor","ナチュラルマイナー(エオリアン)","basic",[0,2,3,5,7,8,10],"短調の基本。切なくて落ち着いた響き",["m7","m9"]],
+ ["harm","ハーモニックマイナー","basic",[0,2,3,5,7,8,11],"♭6から7への増2度がエキゾチック。マイナーのⅤ7で映える",["mM7","7(♭9)"]],
+ ["melo","メロディックマイナー","basic",[0,2,3,5,7,9,11],"上品で都会的なマイナー。ジャズでよく使う",["mM7","m6"]],
+ ["mpenta","メジャーペンタトニック","penta",[0,2,4,7,9],"どこで弾いても外れにくい5音。日本では「ヨナ抜き」とも",["6","add9","M7"]],
+ ["penta","マイナーペンタトニック","penta",[0,3,5,7,10],"ロック・ブルース・R&Bのアドリブの基本",["m7","7","m11"]],
+ ["blues","ブルース","penta",[0,3,5,6,7,10],"マイナーペンタに♭5(ブルーノート)を足して、泣きのひと味",["7","m7","9"]],
+ ["dorian","ドリアン","mode",[0,2,3,5,7,9,10],"明るめのマイナー。ネオソウル・ファンクのm7にぴったり",["m7","m9","m11"]],
+ ["phryg","フリジアン","mode",[0,1,3,5,7,8,10],"♭2が妖しい。スパニッシュやメタルの雰囲気",["m7"]],
+ ["lydian","リディアン","mode",[0,2,4,6,7,9,11],"♯4の浮遊感。映画音楽やシティポップに",["M7(♯11)","M9"],{6:"♯4"}],
+ ["mixo","ミクソリディアン","mode",[0,2,4,5,7,9,10],"セブンスコードの定番。ファンクやロックのリフに",["7","9","13"]],
+ ["locrian","ロクリアン","mode",[0,1,3,5,6,8,10],"m7(♭5)の上で。不安定で暗い響き",["m7(♭5)"]],
+ ["altered","オルタード","jazz",[0,1,3,4,6,8,10],"解決する直前のドミナントで緊張感MAX",["7(♯9)","7(♭9)","7(♯5)"],{1:"♭9",3:"♯9",6:"♯11",8:"♭13"}],
+ ["lyddom","リディアン♭7","jazz",[0,2,4,6,7,9,10],"ふわっと浮くドミナント。裏コードの上で",["9","13"],{6:"♯11"}],
+ ["hw","コンビネーション・オブ・ディミニッシュ","jazz",[0,1,3,4,6,7,9,10],"半音・全音のくり返し。7(♭9)や13(♭9)の上で",["7(♭9)","13"],{1:"♭9",3:"♯9",6:"♯11"}],
+ ["wh","ディミニッシュ(全半)","jazz",[0,2,3,5,6,8,9,11],"全音・半音のくり返し。dim7の上で",["dim7"],{5:"4",6:"♭5",8:"♭6",9:"6"}],
+ ["whole","ホールトーン","jazz",[0,2,4,6,8,10],"全部全音。夢の中みたいなふわふわ感",["7(♯5)"],{6:"♯4",8:"♯5"}],
+ ["bebop","ビバップ・ドミナント","jazz",[0,2,4,5,7,9,10,11],"ミクソリディアン+7度の経過音。8分で弾くと拍頭がコードトーンにそろう",["7","9"]],
+ ["spanish","フリジアン・ドミナント","ethnic",[0,1,4,5,7,8,10],"スパニッシュ・中東っぽさ。マイナーのⅤ7でも",["7(♭9)"]],
+ ["miyako","都節(みやこぶし)","ethnic",[0,1,5,7,8],"和風で切ない。琴や演歌っぽい5音",["m7"]],
+ ["ryukyu","琉球音階","ethnic",[0,4,5,7,11],"沖縄っぽい、明るくのどかな5音",["M7"]]
+];
+const CATS={basic:"基本",penta:"ペンタ・ブルース",mode:"モード",jazz:"ジャズ",ethnic:"和・民族"};
+let root=store.get("scRoot",0), sid=store.get("scId","major"), view=store.get("scView","kb"), sax=store.get("saxInst","alto");
+const QS=new URLSearchParams(location.search);
+if(QS.get("r")!=null&&+QS.get("r")>=0&&+QS.get("r")<12)root=+QS.get("r");
+if(QS.get("s")&&SC.some(s=>s[0]===QS.get("s")))sid=QS.get("s");
+if(!SC.some(s=>s[0]===sid))sid="major";
+let cat=SC.find(s=>s[0]===sid)[2];
+const cur=()=>SC.find(s=>s[0]===sid);
+
+/* 音名:7音のスケールは同じアルファベットが重ならない書き方を選ぶ */
+function spell(r,iv){
+  const a=iv.map(x=>SH[pc(r+x)]),b=iv.map(x=>FL[pc(r+x)]);
+  const uniq=l=>new Set(l.map(n=>n[0])).size===l.length;
+  if(a[0]===ROOTS[r]&&b[0]!==ROOTS[r])return a; /* ルートの書き方はボタンにそろえる */
+  if(b[0]===ROOTS[r]&&a[0]!==ROOTS[r])return b;
+  if(iv.length===7){if(uniq(b)&&!uniq(a))return b;if(uniq(a)&&!uniq(b))return a;}
+  const flatty=[1,3,5,8,10].includes(r)||iv.includes(3)&&![4,9,11,6,1].includes(r);
+  return flatty?b:a;
+}
+const deg=(s,x)=>(s[6]&&s[6][x])||DEG[x];
+
+/* ---------- 音 ---------- */
+let ac=null;
+function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();}if(ac.state!=="running")ac.resume();return ac;}
+function note(m,t,dur){const a=audio();t=t||a.currentTime;const f=440*Math.pow(2,(m-69)/12),g=a.createGain(),o=a.createOscillator(),o2=a.createOscillator(),g2=a.createGain();
+  o.type="triangle";o.frequency.value=f;o2.type="sine";o2.frequency.value=f*2;g2.gain.value=0.25;
+  g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(0.22,t+0.006);g.gain.setTargetAtTime(0.0001,t+0.02,(dur||0.5)*0.6);
+  o.connect(g);o2.connect(g2);g2.connect(g);g.connect(a.destination);o.start(t);o2.start(t);o.stop(t+(dur||0.5)*4);o2.stop(t+(dur||0.5)*4);}
+
+/* ---------- 表示 ---------- */
+function render(){
+  const s=cur(),iv=s[3],nm=spell(root,iv);
+  [...$("rootSeg").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===root));
+  [...$("catSeg").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.c===cat));
+  $("scSeg").innerHTML=SC.filter(x=>x[2]===cat).map(x=>`<button type="button" data-s="${x[0]}" aria-pressed="${x[0]===sid}">${x[1]}</button>`).join("");
+  $("scName").innerHTML=nm[0]+` <small style="font-size:.45em">${s[1]}</small>`;
+  $("scDesc").textContent=s[4];
+  $("scNotes").innerHTML=iv.map((x,i)=>`<span class="${i?"":"r"}">${nm[i]}<small>${deg(s,x)}</small></span>`).join("");
+  $("scFit").innerHTML="合うコード:"+s[5].map(t=>`<a href="chords.html?r=${root}&t=${encodeURIComponent(t)}">${ROOTS[root]}${t==="M"?"":t}</a>`).join("");
+  store.set("scRoot",root);store.set("scId",sid);
+  [...$("instTabs").children].forEach(b=>b.setAttribute("aria-selected",b.dataset.v===view));
+  $("vKb").hidden=view!=="kb";$("vFb").hidden=!(view==="gt"||view==="bs");$("vSx").hidden=view!=="sx";
+  if(view==="kb")kb(iv,nm,s);else if(view==="sx")saxView(iv,s);else fb(view==="gt"?[40,45,50,55,59,64]:[28,33,38,43],iv,s);
+}
+function kb(iv,nm,s){
+  const lo=48,hi=48+24,wh=[];for(let m=lo;m<=hi;m++)if(![1,3,6,8,10].includes(pc(m)))wh.push(m);
+  const W=wh.length*40,set=new Map(iv.map(x=>[pc(root+x),x]));let v=`<svg viewBox="0 0 ${W} 170" role="img" aria-label="鍵盤">`;
+  wh.forEach((m,i)=>{const x=i*40,d=set.get(pc(m));v+=`<rect class="w${d!=null?(d===0?" rt":" on"):""}" data-m="${m}" x="${x}" y="0" width="40" height="160" rx="4"/>`;
+    if(d!=null)v+=`<text class="lb" x="${x+20}" y="146" fill="#fff">${deg(s,d)}</text>`;else if(pc(m)===0)v+=`<text class="lb" x="${x+20}" y="146" fill="var(--ink-soft)">C${m/12-1}</text>`;});
+  for(let m=lo;m<=hi;m++)if([1,3,6,8,10].includes(pc(m))){const i=wh.indexOf(m-1),x=i*40+27,d=set.get(pc(m));v+=`<rect class="b${d!=null?(d===0?" rt":" on"):""}" data-m="${m}" x="${x}" y="0" width="26" height="100" rx="3"/>`;
+    if(d!=null)v+=`<text class="lb" x="${x+13}" y="88" fill="#fff" style="font-size:9px">${deg(s,d)}</text>`;}
+  $("vKb").innerHTML=`<div class="kbs">${v}</svg></div>`;
+}
+function fb(tun,iv,s){
+  const F=15,x0=34,dx=46,y0=18,dy=26,n=tun.length,W=x0+F*dx+16,H=y0+(n-1)*dy+30,ps=new Map(iv.map(x=>[pc(root+x),x]));
+  let v=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="指板">`;
+  [3,5,7,9,15].forEach(f=>v+=`<rect class="inl" x="${x0+(f-1)*dx}" y="${y0}" width="${dx}" height="${(n-1)*dy}"/>`);
+  v+=`<rect class="inl" x="${x0+11*dx}" y="${y0}" width="${dx}" height="${(n-1)*dy}"/>`;
+  for(let f=0;f<=F;f++)v+=`<line class="${f===0?"nutl":"fw"}" x1="${x0+f*dx}" y1="${y0}" x2="${x0+f*dx}" y2="${y0+(n-1)*dy}"/>`;
+  for(let i=0;i<n;i++){const y=y0+(n-1-i)*dy;v+=`<line class="str" x1="${x0}" y1="${y}" x2="${x0+F*dx}" y2="${y}" stroke-width="${1+(n-1-i)*0.3}"/>`;}
+  for(let f=1;f<=F;f++)v+=`<text class="fn" x="${x0+(f-0.5)*dx}" y="${y0+(n-1)*dy+20}">${f}</text>`;
+  for(let i=0;i<n;i++){const y=y0+(n-1-i)*dy;for(let f=0;f<=F;f++){const d=ps.get(pc(tun[i]+f));if(d==null)continue;const x=f===0?x0-16:x0+(f-0.5)*dx;
+    v+=`<circle class="nd" data-m="${tun[i]+f}" style="cursor:pointer" cx="${x}" cy="${y}" r="10" fill="${d===0?"#e0782c":"#2c5ccc"}"/><text class="nt" x="${x}" y="${y}">${deg(s,d)}</text>`;}}
+  $("fb").innerHTML=v+"</svg>";
+  $("fbLeg").innerHTML='<i style="background:#e0782c"></i>ルート<i style="background:#2c5ccc"></i>スケールの音 ・ 0の列は開放弦';
+}
+function saxView(iv,s){
+  const S=window.NamiSax;if(!S){$("sxRow").innerHTML='<p class="note-s">運指データを読み込めませんでした</p>';return;}
+  if(!S.INST[sax])sax="alto";
+  $("saxSeg").innerHTML=Object.entries(S.INST).map(([k,v])=>`<button type="button" data-x="${k}" aria-pressed="${k===sax}">${v.n}(${v.k})</button>`).join("");
+  const d=S.INST[sax].d;
+  /* 記譜で B♭3〜F♯6 に収まり、真ん中あたりから始まるオクターブを選ぶ */
+  let best=null;for(let w=S.LOW;w<=S.HIGH-12;w++){const c=w+d;if(pc(c)!==root)continue;const ok=iv.concat([12]).every(x=>S.F[w+x]&&S.F[w+x].length);if(!ok)continue;const sc=Math.abs(w-64);if(!best||sc<best.sc)best={w,sc};}
+  if(!best){$("sxRow").innerHTML='<p class="note-s">この楽器の基本の音域では1オクターブ分を表示できませんでした</p>';return;}
+  const nm=spell(root,iv);
+  $("saxNote").textContent=`${S.INST[sax].n}サックスは楽譜より${Math.abs(d)}半音低い音が鳴ります。大きい文字が実音、小さい文字が楽譜上の音です。`;
+  $("sxRow").innerHTML=iv.concat([12]).map((x,i)=>{const w=best.w+x,c=w+d,f=S.F[w][0];const wn=FL[pc(w)];
+    return `<button type="button" class="sx-c${x%12?"":" r"}" data-m="${c}"><b>${nm[i%iv.length]}</b><small>${deg(s,x%12)} ・ 記譜 ${wn}</small>${S.svg(f.keys,{bare:true,label:nm[i%iv.length]+"の運指"})}</button>`;}).join("");
+}
+
+/* ---------- 操作 ---------- */
+$("rootSeg").innerHTML=ROOTS.map((n,i)=>`<button type="button" data-r="${i}">${n}</button>`).join("");
+$("catSeg").innerHTML=Object.entries(CATS).map(([k,v])=>`<button type="button" data-c="${k}">${v}</button>`).join("");
+$("rootSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;root=+b.dataset.r;render();note(60+root,0,0.4);});
+$("catSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;cat=b.dataset.c;sid=SC.find(s=>s[2]===cat)[0];render();});
+$("scSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;sid=b.dataset.s;render();});
+$("instTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;view=b.dataset.v;store.set("scView",view);render();});
+$("saxSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;sax=b.dataset.x;store.set("saxInst",sax);render();});
+$("view").addEventListener("click",e=>{const t=e.target.closest("[data-m]");if(t)note(+t.dataset.m,0,0.5);});
+$("playUp").onclick=()=>{const a=audio(),iv=cur()[3],seq=iv.concat([12]),all=seq.concat(seq.slice(0,-1).reverse()),t0=a.currentTime+0.05,b=60+root-(root>6?12:0);all.forEach((x,i)=>note(b+x,t0+i*0.22,0.3));};
+function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2200);}
+$("scShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);u.searchParams.set("r",root);u.searchParams.set("s",sid);const url=u.href,title=ROOTS[root]+" "+cur()[1]+" – なみぐる！スケール表";
+  if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,url}).catch(()=>{});return;}
+  (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("リンクをコピーしました")).catch(()=>toast(url));};
+render();
+
+const sb=$("shareBtn");
+if(sb) sb.addEventListener("click",async()=>{
+  const data={title:document.title,url:"https://www.namigroove.com/tools/scales/"};
+  try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);toast("リンクをコピーしました");}catch(e){}
+});
+})();
+</script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
+</body>
+</html>
