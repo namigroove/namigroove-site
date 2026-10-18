@@ -323,7 +323,7 @@ header.top .logo{flex:none}
         <details class="fx-i" data-k="fxRv"><summary><span>リバーブ</span><b id="fxRvV">オフ</b></summary><div class="fx-row"><input type="range" id="fxRv" aria-label="リバーブ" min="0" max="100" step="1" value="0"></div></details>
         <details class="fx-i" data-k="fxDs"><summary><span>ディストーション</span><b id="fxDsV">オフ</b></summary><div class="fx-row"><input type="range" id="fxDs" aria-label="ディストーション" min="0" max="100" step="1" value="0"></div></details>
         <details class="fx-i" data-k="fxBc"><summary><span>ビットクラッシュ</span><b id="fxBcV">オフ</b></summary><div class="fx-row"><input type="range" id="fxBc" aria-label="ビットクラッシュ" min="0" max="100" step="1" value="0"></div></details>
-        <details class="fx-i" data-k="fxRep"><summary><span>リピート</span><b id="fxRepV">オフ</b></summary><div class="fx-row"><select id="fxRep" aria-label="リピート" class="sel"><option value="">オフ</option><option value="8">8分×2</option><option value="16">16分×4</option><option value="32">32分×8</option><option value="t16">16分3連×6</option></select></div></details>
+        <details class="fx-i" data-k="fxRep"><summary><span>リピート</span><b id="fxRepV">オフ</b></summary><div class="fx-row"><select id="fxRep" aria-label="リピート" class="sel"><option value="">オフ</option><option value="8">8分</option><option value="16">16分</option><option value="32">32分</option><option value="t16">16分3連</option></select></div></details>
         <details class="fx-i" data-k="fxDl"><summary><span>ディレイ</span><b id="fxDlV">オフ</b></summary><div class="fx-row fx-row2"><input type="range" id="fxDl" aria-label="ディレイの量" min="0" max="100" step="1" value="0"><select id="fxDlt" class="sel" aria-label="ディレイの間隔"><option value="16">16分</option><option value="8" selected>8分</option><option value="8d">付点8分</option><option value="4">4分</option></select></div></details>
         <details class="fx-i" data-k="fxLoose"><summary><span>ルーズ</span><b id="fxLooseV">オフ</b></summary><div class="fx-row"><input type="range" id="fxLoose" aria-label="ルーズ" min="0" max="12" step="0.1" value="0"></div></details>
         <details class="fx-i" data-k="wv" id="wvBox"><summary><span>波形編集</span><b id="wvSum">そのまま</b></summary><div class="wv"><p class="fx-note" style="margin:6px 0">波形の両はしの印をドラッグして、鳴らす範囲を決められます。</p><canvas id="wvCv" class="wv-cv" aria-label="波形(鳴らす範囲を決める)"></canvas>
@@ -564,7 +564,7 @@ const bcBits=a=>Math.round(12-a/100*9),bcHold=a=>Math.max(1,Math.round(1+a/100*2
 function crushOf(o,a){if(o._bcA===a&&o._bcB)return o._bcB;const b=o.buffer,q=Math.pow(2,bcBits(a)-1),hold=bcHold(a),r=new AudioBuffer({length:b.length,numberOfChannels:b.numberOfChannels,sampleRate:b.sampleRate});
   for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c),y=r.getChannelData(c);let h=0;for(let i=0;i<x.length;i++){if(i%hold===0)h=Math.round(x[i]*q)/q;y[i]=h;}}o._bcA=a;o._bcB=r;return r;}
 /* リピート(スタッター):叩くたびにテンポに合わせて細かく連打する。d=1拍をいくつに割るか、n=回数 */
-const REP={"8":{d:2,n:2},"16":{d:4,n:4},"32":{d:8,n:8},"t16":{d:6,n:6}},REPN={"8":"8分×2","16":"16分×4","32":"32分×8","t16":"16分3連×6"};
+const REP={"8":{d:2,n:2},"16":{d:4,n:4},"32":{d:8,n:8},"t16":{d:6,n:6}},REPN={"8":"8分","16":"16分","32":"32分","t16":"16分3連"};
 /* パッドごとのエフェクト {p:ピッチ(半音), rev:逆再生, stop:テープストップ(秒), loose:ルーズ(±半音)} */
 const fx=store.get("drumsFx",null)||(()=>{const o={},pp=store.get("drumsPitch",{})||{},rr=store.get("drumsRev",{})||{};Object.keys(pp).forEach(k=>(o[k]=o[k]||{}).p=pp[k]);Object.keys(rr).forEach(k=>(o[k]=o[k]||{}).rev=1);return o;})();
 const live={},F=id=>fx[id]||{},fxActive=id=>{const f=F(id);return !!(f.p||f.rev||f.stop||f.loose||f.flt||f.rv||f.bc||f.wv||f.dl||f.ds);};
@@ -599,7 +599,7 @@ function playBuf(id,s,t,v){const f=F(id),src=ac.createBufferSource(),g=ac.create
   if(id==="chh"&&ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setTargetAtTime(0.0001,t,0.006);ohhGain=null;}
   if(id==="ohh")ohhGain=g;}
 const GMN=id=>{const p=PADS[IDX[id]];return (p&&p.gm&&p.gm[0])||({snap:75,sub:35})[id]||39;};
-function play(id,v,t){const r=REP[F(id).rep];audio();t=t==null?ac.currentTime:t;play1(id,v,t);if(r)for(let k=1;k<r.n;k++)play1(id,v*Math.pow(0.86,k),t+k*60/bpm/r.d);}
+function play(id,v,t,hold){const r=REP[F(id).rep];audio();t=t==null?ac.currentTime:t;play1(id,v,t);if(r&&!hold)for(let k=1;k<r.n;k++)play1(id,v*Math.pow(0.86,k),t+k*60/bpm/r.d);}
 function play1(id,v,t){v=Math.max(0.15,Math.min(1,v));if(recOn){midiEv.push([t-recStart,GMN(id),Math.round(v*127)]);stemEv.push([t-recStart,id,v]);}{const pv=F(id).vol;if(pv!=null)v*=pv;if(v<=0.001)return;}const s=samples[id];if(s&&s.buffer){playBuf(id,s,t,v);return;}if(!s&&fxActive(id)){const b=renderBuilt(id);if(b.buffer){playBuf(id,b,t,v);return;}}snd(id)(t,v);}
 
 /* ===== パッド ===== */
@@ -621,12 +621,23 @@ function nameView(){const h=padLabel(sel);["selName","seqName","smpPad"].forEach
 function lookView(){const L=look[sel]||{};if(document.activeElement!==$("lookName"))$("lookName").value=L.nm||"";$("lookName").placeholder=plain(PADS[IDX[sel]].n).replace(/<[^>]*>/g,"");$("lookNameDel").hidden=!L.nm;$("lookColor").value=L.c||"#e3ebfb";$("lookImgDel").hidden=!L.img;const n=Object.keys(look).length;$("lookState").textContent=n?"("+n+"個カスタム中)":"";}
 function setLook(id,patch){const L=Object.assign({},look[id]||{},patch);Object.keys(L).forEach(k=>{if(!L[k])delete L[k];});if(Object.keys(L).length)look[id]=L;else delete look[id];saveLook();applyLook(id);lookView();}
 function flash(id){const b=padEl[id];b.classList.remove("hit");void b.offsetWidth;b.classList.add("hit");clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove("hit"),110);}
-function hit(id,v){play(id,v);flash(id);select(id);if(rec&&playing)recordHit(id);}
+function hit(id,v,hold){play(id,v,null,hold);flash(id);select(id);if(rec&&playing)recordHit(id);}
+/* リピート:パッドを押している間は、離すまでテンポに合わせて鳴らし続ける */
+const holds=new Map();
+function holdStart(key,id,v){holdStop(key);hit(id,v,true);const r=REP[F(id).rep];if(!r)return;
+  const dt=60/bpm/r.d,t0=ac.currentTime;let k=1;const h={id,tm:null};
+  const pump=()=>{const now=ac.currentTime;while(t0+k*dt<now+0.12){const t=t0+k*dt;play1(id,v*0.8,t);setTimeout(()=>flash(id),Math.max(0,(t-now)*1000));k++;}};
+  pump();h.tm=setInterval(pump,25);holds.set(key,h);}
+function holdStop(key){const h=holds.get(key);if(!h)return;clearInterval(h.tm);holds.delete(key);}
+function holdStopAll(){[...holds.keys()].forEach(holdStop);}
+["pointerup","pointercancel"].forEach(t=>document.addEventListener(t,e=>holdStop("p"+e.pointerId)));
+window.addEventListener("blur",holdStopAll);document.addEventListener("visibilitychange",()=>{if(document.hidden)holdStopAll();});
 let prevSel=null;function select(id){if(sel===id)return;prevSel=sel;sel=id;fxPadSwitch=true;store.set("drSel",sel);Object.values(padEl).forEach(b=>b.classList.toggle("sel",b.dataset.id===id));renderSteps();smpView();lookView();}
 padsEl.addEventListener("pointerdown",e=>{const b=e.target.closest(".pad");if(!b)return;e.preventDefault();
   const r=b.getBoundingClientRect(),dx=(e.clientX-r.left)/r.width-0.5,dy=(e.clientY-r.top)/r.height-0.5;
-  hit(b.dataset.id,1-Math.min(0.6,Math.hypot(dx,dy)*1.1));});
-padsEl.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const b=e.target.closest(".pad");if(b){e.preventDefault();e.stopPropagation();hit(b.dataset.id,0.9);}}});
+  holdStart("p"+e.pointerId,b.dataset.id,1-Math.min(0.6,Math.hypot(dx,dy)*1.1));});
+padsEl.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const b=e.target.closest(".pad");if(b){e.preventDefault();e.stopPropagation();if(!e.repeat)holdStart("k"+e.key,b.dataset.id,0.9);}}});
+padsEl.addEventListener("keyup",e=>holdStop("k"+e.key));
 padsEl.addEventListener("contextmenu",e=>e.preventDefault());
 
 /* ===== シーケンサー ===== */
@@ -715,8 +726,9 @@ const KEY={};PADS.forEach(p=>KEY[p.key]=p.id);
 document.addEventListener("keydown",e=>{
   if(e.metaKey||e.ctrlKey||e.altKey||/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
   if(e.code==="Space"&&!e.target.closest(".pad")){e.preventDefault();if(!e.repeat)(playing?stop:start)();return;}
-  const id=KEY[e.code];if(!id||e.repeat)return;e.preventDefault();hit(id,0.9);
+  const id=KEY[e.code];if(!id||e.repeat)return;e.preventDefault();holdStart("c"+e.code,id,0.9);
 });
+document.addEventListener("keyup",e=>holdStop("c"+e.code));
 
 /* キット */
 function segInit(el,key,cur,on){
@@ -731,7 +743,7 @@ $("midiBtn").onclick=async()=>{
   const st=$("midiSt");
   if(!navigator.requestMIDIAccess){st.textContent="このブラウザはMIDIに対応していません(Chrome・Edgeで使えます)";return;}
   try{const acc=await navigator.requestMIDIAccess();
-    const hook=()=>{const ins=[...acc.inputs.values()];ins.forEach(i=>i.onmidimessage=ev=>{const [s,d1,d2]=ev.data;if((s&0xf0)===0x90&&d2>0&&GM[d1])hit(GM[d1],d2/127);});
+    const hook=()=>{const ins=[...acc.inputs.values()];ins.forEach(i=>i.onmidimessage=ev=>{const [s,d1,d2]=ev.data;if((s&0xf0)===0x90&&d2>0&&GM[d1])holdStart("m"+d1,GM[d1],d2/127);else if((s&0xf0)===0x80||((s&0xf0)===0x90&&d2===0))holdStop("m"+d1);});
       st.textContent=ins.length?"接続中:"+ins.map(i=>i.name).join("、"):"MIDI機器が見つかりません。つないでから少し待ってね";};
     acc.onstatechange=hook;hook();audio();
   }catch(err){st.textContent="MIDIの使用が許可されませんでした";}
