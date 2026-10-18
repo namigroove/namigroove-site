@@ -237,6 +237,15 @@ footer a{color:var(--sea)}
 .jm-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
 .jm-list button{text-align:left;font:inherit;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer}
 .jm-list button b{display:block;font-size:14px}
+.my-seq{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.my-seq button{font:500 15px var(--f-body);padding:8px 14px;border-radius:12px;border:2px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;min-width:3em;-webkit-tap-highlight-color:transparent}
+.my-seq button[aria-pressed="true"]{border-color:var(--coral);background:var(--wash)}
+.my-seq button.add{border-style:dashed;color:var(--sea)}
+.my-ed{border-top:1px dashed var(--line);margin-top:10px;padding-top:4px}
+.my-lbl{font-size:12px;color:var(--ink-soft);margin:12px 0 6px}
+.my-ed .seg button{min-width:2.8em}
+.my-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.my-hint{font-size:12px;color:var(--ink-soft);margin:0 0 8px}
 .jm-list button small{display:block;font-size:12px;color:var(--ink-soft);margin-top:2px}
 .jm-list button[aria-pressed="true"]{border:2px solid var(--coral)}
 </style>
@@ -288,7 +297,7 @@ header.top .logo{flex:none}
   <div class="intro">
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>ジャムモード</h1>
-    <p class="lead">おしゃれ進行を、ドラム・ベース・鍵盤でループ再生。リズムやテンポを変えて曲のスケッチに。そのままMIDIで書き出せます。</p>
+    <p class="lead">おしゃれ進行や自分で作った進行を、ドラム・ベース・鍵盤でループ再生。リズムやテンポを変えて曲のスケッチに。そのままMIDIで書き出せます。</p>
   </div>
 
   <section class="panel jm-now" aria-live="polite">
@@ -320,12 +329,30 @@ header.top .logo{flex:none}
     <h2 class="jm-h">進行をえらぶ</h2>
     <div class="seg pg-cat" id="jCat" role="group" aria-label="進行のジャンル"></div>
     <div class="jm-list" id="jList"></div>
+    <div class="my" id="jMy" hidden>
+      <p class="my-hint">コードをタップして、ルート・種類・ベースを選んでね。再生中に変えても、そのまま次のループから反映されます。</p>
+      <div class="my-seq" id="mySeq"></div>
+      <div class="my-ed">
+        <p class="my-lbl">ルート</p><div class="seg" id="myRoot"></div>
+        <p class="my-lbl">種類</p><div class="seg" id="myType"></div>
+        <p class="my-lbl">ベース(分数コード)</p><div class="seg" id="myBass"></div>
+        <div class="my-row">
+          <button class="btn" type="button" id="myLeft" aria-label="左へ移動">← 左へ</button>
+          <button class="btn" type="button" id="myRight" aria-label="右へ移動">右へ →</button>
+          <button class="btn" type="button" id="myDel">このコードを消す</button>
+        </div>
+      </div>
+      <div class="my-row">
+        <button class="btn" type="button" id="myCopy">今えらんでる進行をコピー</button>
+        <button class="btn" type="button" id="myReset">はじめから作る</button>
+      </div>
+    </div>
   </section>
 
   <section class="how">
     <h2>使い方のメモ</h2>
     <ul>
-      <li>進行をえらんで「ジャム開始」。再生中にリズム・キー・テンポを変えると、次の小節から切り替わります。</li>
+      <li>進行をえらんで「ジャム開始」。「✏️ 自分で作る」では、コードを1つずつ選んでオリジナルの進行でジャムできます(最大16コード)。再生中にリズム・キー・テンポを変えると、次の小節から切り替わります。</li>
       <li>リズムは、8ビート・16ビート・ネオソウル(ゆるいハネ)・ボサノバ・4つ打ち・ジャズ(スウィング)。ジャズはベースが4分音符で歩きます(ウォーキングベース)。</li>
       <li>「MIDI(ドラム入り)」で、鍵盤・ベース・ドラム(GMドラム配列・10ch)の3トラックを書き出します。DAWに読み込んで、そのまま曲づくりに使えます。</li>
       <li>アドリブの練習にも。スケールは <a href="scales.html">スケール表</a> で確認できます。</li>
@@ -366,9 +393,18 @@ let pi=Math.max(0,LIST.findIndex(x=>pid(x.n)===(QS.get("p")||store.get("jamP",""
 let key=+(QS.get("k")??store.get("jamKey",0));if(!(key>=0&&key<12))key=0;
 let style=QS.get("s")||store.get("jamStyle",DEF[LIST[pi].g]||"8beat");if(!ST[style])style="8beat";
 let bpm=+(QS.get("b")||store.get("jamBpm",92));if(!(bpm>=50&&bpm<=200))bpm=92;
-let bars=+store.get("jamBars",1),cat=LIST[pi].g;
+const TYPES=["","m","7","M7","m7","6","m6","9","M9","m9","add9","madd9","6/9","sus4","sus2","7sus4","9sus4","13","m11","dim","dim7","m7(♭5)","aug","7(♯5)","mM7","7(♭9)","7(♯9)","7(♯11)","M7(♯11)"];
+const MY_DEF=[[5,"M7"],[4,"m7"],[2,"m7"],[7,"7sus4"]];
+const okMy=a=>Array.isArray(a)&&a.length>0&&a.length<=16&&a.every(c=>Array.isArray(c)&&c[0]>=0&&c[0]<12&&TYPES.includes(c[1])&&(c[2]==null||(c[2]>=0&&c[2]<12)));
+const myEnc=a=>a.map(c=>c[0].toString(16)+(c[2]!=null?c[2].toString(16):"-")+c[1]).join(",");
+const myDec=t=>{try{const a=t.split(",").map(x=>{const c=[parseInt(x[0],16),x.slice(2)];if(x[1]!=="-")c.push(parseInt(x[1],16));return c;});return okMy(a)?a:null;}catch(e){return null}};
+let my=store.get("jamMy",null);if(!okMy(my))my=MY_DEF.map(c=>c.slice());
+let useMy=!!store.get("jamUseMy",false),myI=0;
+const qM=QS.get("m")?myDec(QS.get("m")):null;if(qM){my=qM;useMy=true;}else if(QS.get("p"))useMy=false;
+const cur=()=>useMy?{g:"my",n:"マイ進行",c:my}:LIST[pi];
+let bars=+store.get("jamBars",1),cat=useMy?"my":LIST[pi].g;
 let V=[];const kOff=()=>key>6?key-12:key;
-function prepare(){V=NP.piano(LIST[pi].c);}
+function prepare(){V=NP.piano(cur().c);}
 const SHP=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
 const chName=c=>{const r=pc(c[0]+key);return (c[1]==="dim7"&&[1,3,8].includes(r)?SHP:KEYN)[r]+c[1]+(c[2]!=null?"/"+KEYN[pc(c[2]+key)]:"");};
 
@@ -404,7 +440,7 @@ function stepEvents(abs){
   const sinceChord=s%len;
   ["k","s","h","o","r","c","y","f"].forEach(d=>{if(S[d]&&S[d][inBar]==="x")ev.push({type:"d",d,v:d==="h"&&S===ST["16beat"]&&inBar%2?0.55:(S.walk&&d==="k"?0.35:1)});});
   (S.keys||[]).forEach(([p,l])=>{if(p===inBar)ev.push({type:"keys",notes:c[2].slice(1).map(m=>m+ko),len:Math.min(l,len-sinceChord)});});
-  const root=c[2][0]+ko,tri=NP.LIST[pi].c[ci][1],third=/^m|dim/.test(tri)&&!/^M/.test(tri)?3:4;
+  const root=c[2][0]+ko,tri=cur().c[ci%cur().c.length][1],third=/^m|dim/.test(tri)&&!/^M/.test(tri)?3:4;
   if(S.walk){if(inBar%4===0){const beat=inBar/4,last=(sinceChord+4>=len),nr=next[2][0]+ko;
       let n=root;if(last)n=nr+(nr>root?-1:1);else if(beat%4===1)n=root+third;else if(beat%4===2)n=root+7;else if(beat%4===3)n=root+(beat%2?10:5);
       ev.push({type:"bass",note:n,len:4});}}
@@ -420,7 +456,7 @@ function sched(){const stepDur=60/bpm/4;
     ev.forEach(e=>{if(e.type==="d"&&$("mDrums").checked)DR[e.d](t,e.v);if(e.type==="keys"&&$("mKeys").checked)e.notes.forEach(m=>keyNote(m,t,e.len*stepDur,0.16/Math.sqrt(e.notes.length)*2));if(e.type==="bass"&&$("mBass").checked)bassNote(e.note,t,e.len*stepDur);});
     if(inBar%4===0)vq.push({t:nextT,ci,beat});nextT+=stepDur;abs++;}}
 function draw(){if(!playing)return;while(vq.length&&vq[0].t<=ac.currentTime){const q=vq.shift();[...$("jChips").children].forEach((x,i)=>x.classList.toggle("now",i===q.ci));[...$("jBeat").children].forEach((x,i)=>x.classList.toggle("on",i===q.beat));}requestAnimationFrame(draw);}
-function start(){audio();prepare();abs=0;nextT=ac.currentTime+0.08;vq.length=0;playing=true;timer=setInterval(sched,25);sched();requestAnimationFrame(draw);$("jPlay").textContent="■ ストップ";if(window.ngTrack)ngTrack("jam_play",{label:LIST[pi].n,style});}
+function start(){audio();prepare();abs=0;nextT=ac.currentTime+0.08;vq.length=0;playing=true;timer=setInterval(sched,25);sched();requestAnimationFrame(draw);$("jPlay").textContent="■ ストップ";if(window.ngTrack)ngTrack("jam_play",{label:useMy?"my:"+myEnc(my):LIST[pi].n,style});}
 function stop(){playing=false;clearInterval(timer);$("jPlay").textContent="▶ ジャム開始";[...$("jChips").children].forEach(x=>x.classList.remove("now"));[...$("jBeat").children].forEach(x=>x.classList.remove("on"));}
 $("jPlay").onclick=()=>playing?stop():start();
 
@@ -433,33 +469,53 @@ function midi(){
   const trk=(name,evs)=>{evs.sort((a,b)=>a[0]-b[0]||a[2]-b[2]);let o=[0,...txt(0x03,name)],t=0;evs.forEach(([tk,by])=>{o.push(...vlq(tk-t),...by);t=tk;});o.push(0,0xff,0x2f,0);return [0x4d,0x54,0x72,0x6b,(o.length>>>24)&255,(o.length>>>16)&255,(o.length>>>8)&255,o.length&255,...o];};
   const GM={k:36,s:38,h:42,o:46,r:37,c:39,y:51,f:44},meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,4,2,24,8],0]],K=[],B=[],D=[];
   for(let a=0;a<N;a++){const {ev,ci,inBar}=stepEvents(a),t0=a*st+Math.round(swingOff(inBar,1)*st);
-    if(a%len===0)meta.push([a*st,txt(0x06,asc(chName(LIST[pi].c[ci]))),0]);
+    if(a%len===0)meta.push([a*st,txt(0x06,asc(chName(cur().c[ci]))),0]);
     ev.forEach(e=>{if(e.type==="d"){D.push([t0,[0x99,GM[e.d],Math.round(100*e.v)],1]);D.push([t0+st-10,[0x89,GM[e.d],0],0]);}
       if(e.type==="keys")e.notes.forEach(m=>{K.push([t0,[0x90,m,80],1]);K.push([t0+e.len*st-15,[0x80,m,0],0]);});
       if(e.type==="bass"){B.push([t0,[0x91,e.note,100],1]);B.push([t0+e.len*st-15,[0x81,e.note,0],0]);}});}
   const tr=[trk("Tempo",meta),trk("Keys",K),trk("Bass",B),trk("Drums",D)],head=[0x4d,0x54,0x68,0x64,0,0,0,6,0,1,0,tr.length,(TPQ>>8)&255,TPQ&255];
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([new Uint8Array([...head,...tr.flat()])],{type:"audio/midi"}));
-  a.download=("namigroove_jam_"+LIST[pi].n+"_"+KEYN[key]+"_"+ST[style].n+"_"+bpm+"bpm").replace(/[\\/:*?"<>|\s]+/g,"_")+".mid";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+  a.download=("namigroove_jam_"+(useMy?"my":LIST[pi].n)+"_"+KEYN[key]+"_"+ST[style].n+"_"+bpm+"bpm").replace(/[\\/:*?"<>|\s]+/g,"_")+".mid";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
 }
 $("jMidi").onclick=midi;
 
 /* ---------- 画面 ---------- */
-function renderNow(){const P=LIST[pi];$("jTitle").textContent=P.n+"(キー"+KEYN[key]+")";$("jChips").innerHTML=P.c.map(c=>`<span>${chName(c)}</span>`).join("");}
+function renderNow(){const P=cur();$("jTitle").textContent=P.n+"(キー"+KEYN[key]+")";$("jChips").innerHTML=P.c.map(c=>`<span>${chName(c)}</span>`).join("");}
 function renderList(){[...$("jCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===cat));
-  $("jList").innerHTML=LIST.map((p,i)=>p.g!==cat?"":`<button type="button" data-i="${i}" aria-pressed="${i===pi}"><b>${p.n}</b><small>${p.c.map(chName).join(" → ")}</small></button>`).join("");}
-function save(){store.set("jamP",pid(LIST[pi].n));store.set("jamKey",key);store.set("jamStyle",style);store.set("jamBpm",bpm);store.set("jamBars",bars);}
+  $("jMy").hidden=cat!=="my";$("jList").hidden=cat==="my";if(cat==="my"){renderMy();return;}
+  $("jList").innerHTML=LIST.map((p,i)=>p.g!==cat?"":`<button type="button" data-i="${i}" aria-pressed="${!useMy&&i===pi}"><b>${p.n}</b><small>${p.c.map(chName).join(" → ")}</small></button>`).join("");}
+function save(){store.set("jamP",pid(LIST[pi].n));store.set("jamMy",my);store.set("jamUseMy",useMy);store.set("jamKey",key);store.set("jamStyle",style);store.set("jamBpm",bpm);store.set("jamBars",bars);}
 $("jStyle").innerHTML=Object.entries(ST).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");$("jStyle").value=style;
 $("jKey").innerHTML=KEYN.map((n,i)=>`<option value="${i}">${n}</option>`).join("");$("jKey").value=String(key);
 $("jBpm").value=bpm;$("jBars").value=String(bars);
-$("jCat").innerHTML=Object.entries(NP.CAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("");
+$("jCat").innerHTML=Object.entries(NP.CAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="my">✏️ 自分で作る</button>`;
 $("jStyle").addEventListener("change",()=>{style=$("jStyle").value;save();});
 $("jKey").addEventListener("change",()=>{key=+$("jKey").value;renderNow();renderList();save();});
 $("jBpm").addEventListener("change",()=>{bpm=Math.max(50,Math.min(200,+$("jBpm").value||92));$("jBpm").value=bpm;save();});
 $("jBars").addEventListener("change",()=>{bars=+$("jBars").value;save();if(playing){stop();start();}});
-$("jCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;cat=b.dataset.g;renderList();});
-$("jList").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pi=+b.dataset.i;style=DEF[LIST[pi].g]||style;$("jStyle").value=style;renderNow();renderList();save();if(playing){stop();start();}});
+$("jCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;cat=b.dataset.g;if(cat==="my"&&!useMy){useMy=true;myI=Math.min(myI,my.length-1);renderNow();save();if(playing)prepare();}renderList();});
+/* ---------- 自分で作る ---------- */
+function renderMy(){
+  $("mySeq").innerHTML=my.map((c,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===myI}">${chName(c)}</button>`).join("")+(my.length<16?`<button type="button" class="add" data-add="1" aria-label="コードを追加">＋</button>`:"");
+  const c=my[myI];
+  $("myRoot").innerHTML=KEYN.map((n,r)=>`<button type="button" data-r="${r}" aria-pressed="${pc(c[0]+key)===r}">${n}</button>`).join("");
+  $("myType").innerHTML=TYPES.map(t=>`<button type="button" data-t="${t}" aria-pressed="${c[1]===t}">${t===""?"メジャー":t}</button>`).join("");
+  $("myBass").innerHTML=`<button type="button" data-b="" aria-pressed="${c[2]==null}">なし</button>`+KEYN.map((n,r)=>`<button type="button" data-b="${r}" aria-pressed="${c[2]!=null&&pc(c[2]+key)===r}">${n}</button>`).join("");
+  $("myDel").disabled=my.length<2;$("myLeft").disabled=myI===0;$("myRight").disabled=myI===my.length-1;
+}
+function myChanged(){useMy=true;save();renderNow();renderMy();if(playing)prepare();}
+$("mySeq").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.add){my.splice(myI+1,0,my[myI].slice());myI++;myChanged();}else{myI=+b.dataset.i;renderMy();}});
+$("myRoot").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const c=my[myI],r=pc(+b.dataset.r-key);if(c[2]!=null&&c[2]===r)c.length=2;c[0]=r;myChanged();});
+$("myType").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;my[myI][1]=b.dataset.t;myChanged();});
+$("myBass").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const c=my[myI];if(b.dataset.b===""||pc(+b.dataset.b-key)===c[0])c.length=2;else c[2]=pc(+b.dataset.b-key);myChanged();});
+$("myDel").onclick=()=>{if(my.length<2)return;my.splice(myI,1);myI=Math.min(myI,my.length-1);myChanged();};
+$("myLeft").onclick=()=>{if(myI<1)return;[my[myI-1],my[myI]]=[my[myI],my[myI-1]];myI--;myChanged();};
+$("myRight").onclick=()=>{if(myI>=my.length-1)return;[my[myI+1],my[myI]]=[my[myI],my[myI+1]];myI++;myChanged();};
+$("myCopy").onclick=()=>{my=LIST[pi].c.slice(0,16).map(c=>c.slice());myI=0;myChanged();toast("「"+LIST[pi].n+"」をコピーしました");};
+$("myReset").onclick=()=>{my=[[0,"M7"]];myI=0;myChanged();};
+$("jList").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pi=+b.dataset.i;useMy=false;style=DEF[LIST[pi].g]||style;$("jStyle").value=style;renderNow();renderList();save();if(playing){stop();start();}});
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
-$("jShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);u.searchParams.set("p",pid(LIST[pi].n));u.searchParams.set("k",key);u.searchParams.set("s",style);u.searchParams.set("b",bpm);const url=u.href,title=LIST[pi].n+"(キー"+KEYN[key]+"・"+ST[style].n+")– なみぐる！ジャムモード";
+$("jShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);if(useMy)u.searchParams.set("m",myEnc(my));else u.searchParams.set("p",pid(LIST[pi].n));u.searchParams.set("k",key);u.searchParams.set("s",style);u.searchParams.set("b",bpm);const url=u.href,title=(useMy?my.map(chName).join("→"):LIST[pi].n)+"(キー"+KEYN[key]+"・"+ST[style].n+")– なみぐる！ジャムモード";
   if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title+" #namigroovetools",url}).catch(()=>{});return;}
   (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("リンクをコピーしました")).catch(()=>toast(url));};
 renderNow();renderList();prepare();
