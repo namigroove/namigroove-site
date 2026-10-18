@@ -333,7 +333,7 @@ header.top .logo{flex:none}
     <h2>使い方のメモ</h2>
     <ul>
       <li>進行をえらんで「ジャム開始」。「✏️ 自分で作る」では、コードを1つずつ選んでオリジナルの進行でジャムできます(最大16コード)。再生中にリズム・キー・テンポを変えると、次の小節から切り替わります。</li>
-      <li>リズムは、8ビート・16ビート・ネオソウル(ゆるいハネ)・ボサノバ・4つ打ち・エレスイ(4つ打ちに裏打ちの鍵盤と、ルートと5度を行き来するベース)・ジャズ(スウィング)。ジャズはベースが4分音符で歩きます(ウォーキングベース)。</li>
+      <li>リズムは、8ビート・16ビート・ネオソウル(ゆるいハネ)・ボサノバ・4つ打ち・ジャズ(スウィング)。ジャズはベースが4分音符で歩きます(ウォーキングベース)。</li>
       <li>「MIDI(ドラム入り)」で、鍵盤・ベース・ドラム(GMドラム配列・10ch)の3トラックを書き出します。DAWに読み込んで、そのまま曲づくりに使えます。</li>
       <li>アドリブの練習にも。スケールは <a href="scales.html">スケール表</a> で確認できます。</li>
     </ul>
@@ -367,14 +367,13 @@ const ST={
  "neo":{n:"ネオソウル(ハネ)",sw:0.55,sw16:1,k:"x......x..x.....",s:"....x.......x...",h:"x.x.x.x.x.x.x.x.",keys:[[0,6],[7,9]],bass:[[0,"R",5],[7,"R",3],[10,"5",4],[14,"8",2]]},
  "bossa":{n:"ボサノバ",sw:0,k:"x..x....x..x....",r:"x..x..x...x..x..",h:"x.x.x.x.x.x.x.x.",keys:[[0,2],[3,2],[6,3],[10,2],[13,3]],bass:[[0,"R",6],[6,"R",2],[8,"5",6],[14,"5",2]]},
  "four":{n:"4つ打ち",sw:0,k:"x...x...x...x...",c:"....x.......x...",o:"..x...x...x...x.",h:"x.x.x.x.x.x.x.x.",keys:[[2,2],[6,2],[10,2],[14,2]],bass:[[2,"R",2],[6,"R",2],[10,"R",2],[14,"R",2]]},
- "eswing":{n:"エレスイ(4つ打ち)",sw:0,k:"x...x...x...x...",c:"....x.......x...",o:"..x...x...x...x.",h:"x.xxx.xxx.xxx.xx",keys:[[2,2],[6,2],[10,2],[14,2]],bass:[[0,"R",3],[4,"5",3],[8,"R",3],[12,"5",3]]},
  "jazz":{n:"ジャズ(スウィング)",sw:1,y:"x...x.x.x...x.x.",f:"....x.......x...",k:"x...............",keys:[[0,3],[6,4]],walk:1}
 };
-const DEF={eswing:"eswing",pop:"8beat",neo:"neo",jazz:"jazz",bossa:"bossa",cliche:"8beat",anison:"16beat",kirinji:"neo"};
+const DEF={eswing:"four",pop:"8beat",neo:"neo",jazz:"jazz",bossa:"bossa",cliche:"8beat",anison:"16beat",kirinji:"neo"};
 const QS=new URLSearchParams(location.search);
 let pi=Math.max(0,LIST.findIndex(x=>pid(x.n)===((QS.get("pg")||QS.get("p"))||store.get("jamP",""))));
 let key=+(QS.get("k")??store.get("jamKey",0));if(!(key>=0&&key<12))key=0;
-let style=(QS.get("st")||QS.get("s"))||store.get("jamStyle",LIST[pi].st||DEF[LIST[pi].g]||"8beat");if(!ST[style])style="8beat";
+let style=(QS.get("st")||QS.get("s"))||store.get("jamStyle",LIST[pi].st||DEF[LIST[pi].g]||"8beat");if(style==="eswing")style="four";if(!ST[style])style="8beat";
 let bpm=+(QS.get("b")||store.get("jamBpm",92));if(!(bpm>=50&&bpm<=200))bpm=92;
 const NB=window.NamiBuilder;
 let my=NB.load();
