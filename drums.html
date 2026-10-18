@@ -233,6 +233,10 @@ footer a{color:var(--sea)}
 .fx-i>.fx-row{grid-template-columns:1fr;margin:0 4px 12px}.fx-i>.fx-row select{justify-self:start}
 .fx-i>.wv{padding:0 4px 10px}
 .fx-i>.fx-row2{grid-template-columns:1fr auto}.fx-wide .fx-i>summary{cursor:default;padding:8px 4px 2px}.fx-wide .fx-i>.fx-row{margin-bottom:8px}.fx-wide .fx-i>summary span::before{content:none}
+.roll{margin:0 4px 10px}.roll-row{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin:0 0 6px;align-items:center}
+.roll-row button{min-width:0;padding:8px 0;letter-spacing:-.02em;border-radius:8px;border:1px solid var(--line);background:var(--chip,#fff);color:var(--ink);font:500 13px var(--f-mono);cursor:pointer;touch-action:manipulation;white-space:nowrap;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.roll-row button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
+.roll-t{text-align:center;font:700 13px var(--f-mono);color:var(--ink-soft)}.roll-note{font-size:11px;margin:2px 0 0;color:var(--ink-soft)}@media (max-width:420px){.roll-row{gap:3px}.roll-row button{font-size:11px;padding:9px 0}}
 .fx-note{font-size:12px;margin:8px 0 2px;text-align:center}
 #smpRev[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
 
@@ -323,7 +327,7 @@ header.top .logo{flex:none}
         <details class="fx-i" data-k="fxRv"><summary><span>リバーブ</span><b id="fxRvV">オフ</b></summary><div class="fx-row"><input type="range" id="fxRv" aria-label="リバーブ" min="0" max="100" step="1" value="0"></div></details>
         <details class="fx-i" data-k="fxDs"><summary><span>ディストーション</span><b id="fxDsV">オフ</b></summary><div class="fx-row"><input type="range" id="fxDs" aria-label="ディストーション" min="0" max="100" step="1" value="0"></div></details>
         <details class="fx-i" data-k="fxBc"><summary><span>ビットクラッシュ</span><b id="fxBcV">オフ</b></summary><div class="fx-row"><input type="range" id="fxBc" aria-label="ビットクラッシュ" min="0" max="100" step="1" value="0"></div></details>
-        <details class="fx-i" data-k="fxRep"><summary><span>リピート</span><b id="fxRepV">オフ</b></summary><div class="fx-row"><select id="fxRep" aria-label="リピート" class="sel"><option value="">オフ</option><option value="8">8分</option><option value="16">16分</option><option value="32">32分</option><option value="t16">16分3連</option></select></div></details>
+        <details class="fx-i" data-k="fxRep"><summary><span>ロール</span><b id="fxRepV">オフ</b></summary><div class="roll" id="rollBox" role="group" aria-label="ロールの長さ(拍)"><div class="roll-row"><button type="button" data-v="" aria-pressed="false">オフ</button><button type="button" data-v="8" aria-pressed="false">8</button><button type="button" data-v="4" aria-pressed="false">4</button><button type="button" data-v="2" aria-pressed="false">2</button><button type="button" data-v="1" aria-pressed="false">1</button><button type="button" data-v="1/2" aria-pressed="false">1/2</button><button type="button" data-v="1/4" aria-pressed="false">1/4</button><button type="button" data-v="1/8" aria-pressed="false">1/8</button><button type="button" data-v="1/16" aria-pressed="false">1/16</button><button type="button" data-v="1/32" aria-pressed="false">1/32</button></div><div class="roll-row"><span class="roll-t" title="3連符">T</span><button type="button" data-v="1/3" aria-pressed="false">1/3</button><button type="button" data-v="1/6" aria-pressed="false">1/6</button><button type="button" data-v="1/12" aria-pressed="false">1/12</button><button type="button" data-v="1/24" aria-pressed="false">1/24</button></div><p class="roll-note">数字は拍(1=4分音符)。パッドを押している間、この長さで鳴らし続けます。押しながら切り替えてもOK。</p></div></details>
         <details class="fx-i" data-k="fxDl"><summary><span>ディレイ</span><b id="fxDlV">オフ</b></summary><div class="fx-row fx-row2"><input type="range" id="fxDl" aria-label="ディレイの量" min="0" max="100" step="1" value="0"><select id="fxDlt" class="sel" aria-label="ディレイの間隔"><option value="16">16分</option><option value="8" selected>8分</option><option value="8d">付点8分</option><option value="4">4分</option></select></div></details>
         <details class="fx-i" data-k="fxLoose"><summary><span>ルーズ</span><b id="fxLooseV">オフ</b></summary><div class="fx-row"><input type="range" id="fxLoose" aria-label="ルーズ" min="0" max="12" step="0.1" value="0"></div></details>
         <details class="fx-i" data-k="wv" id="wvBox"><summary><span>波形編集</span><b id="wvSum">そのまま</b></summary><div class="wv"><p class="fx-note" style="margin:6px 0">波形の両はしの印をドラッグして、鳴らす範囲を決められます。</p><canvas id="wvCv" class="wv-cv" aria-label="波形(鳴らす範囲を決める)"></canvas>
@@ -573,9 +577,11 @@ const bcBits=a=>Math.round(12-a/100*9),bcHold=a=>Math.max(1,Math.round(1+a/100*2
 function crushOf(o,a){if(o._bcA===a&&o._bcB)return o._bcB;const b=o.buffer,q=Math.pow(2,bcBits(a)-1),hold=bcHold(a),r=new AudioBuffer({length:b.length,numberOfChannels:b.numberOfChannels,sampleRate:b.sampleRate});
   for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c),y=r.getChannelData(c);let h=0;for(let i=0;i<x.length;i++){if(i%hold===0)h=Math.round(x[i]*q)/q;y[i]=h;}}o._bcA=a;o._bcB=r;return r;}
 /* リピート(スタッター):叩くたびにテンポに合わせて細かく連打する。d=1拍をいくつに割るか、n=回数 */
-const REP={"8":{d:2,n:2},"16":{d:4,n:4},"32":{d:8,n:8},"t16":{d:6,n:6}},REPN={"8":"8分","16":"16分","32":"32分","t16":"16分3連"};
+/* ロール:長さは拍で持つ(1=4分音符)。T=3連符 */
+const ROLL={"8":8,"4":4,"2":2,"1":1,"1/2":1/2,"1/4":1/4,"1/8":1/8,"1/16":1/16,"1/32":1/32,"1/3":1/3,"1/6":1/6,"1/12":1/12,"1/24":1/24};
+const rollTxt=k=>!ROLL[k]?"オフ":(["1/3","1/6","1/12","1/24"].includes(k)?k+"T":k);
 /* パッドごとのエフェクト {p:ピッチ(半音), rev:逆再生, stop:テープストップ(秒), loose:ルーズ(±半音)} */
-const fx=store.get("drumsFx",null)||(()=>{const o={},pp=store.get("drumsPitch",{})||{},rr=store.get("drumsRev",{})||{};Object.keys(pp).forEach(k=>(o[k]=o[k]||{}).p=pp[k]);Object.keys(rr).forEach(k=>(o[k]=o[k]||{}).rev=1);return o;})();
+const fx=(o=>{if(o&&!store.get("drRollV2",false)){const M={"8":"1/2","16":"1/4","32":"1/8","t16":"1/12"};Object.values(o).forEach(f=>{if(f&&f.rep)f.rep=M[f.rep]||"";if(f&&!f.rep)delete f.rep;});store.set("drumsFx",o);}store.set("drRollV2",true);return o;})(store.get("drumsFx",null))||(()=>{const o={},pp=store.get("drumsPitch",{})||{},rr=store.get("drumsRev",{})||{};Object.keys(pp).forEach(k=>(o[k]=o[k]||{}).p=pp[k]);Object.keys(rr).forEach(k=>(o[k]=o[k]||{}).rev=1);return o;})();
 const live={},F=id=>fx[id]||{},fxActive=id=>{const f=F(id);return !!(f.p||f.rev||f.stop||f.loose||f.flt||f.rv||f.bc||f.wv||f.dl||f.ds);};
 /* リバーブ:全パッドで共有する響き(1.8秒)。パッドごとに送る量を決める */
 /* ディストーション:音を持ち上げて、なめらかに頭を潰す(tanh)。0〜100 */
@@ -608,7 +614,7 @@ function playBuf(id,s,t,v){const f=F(id),src=ac.createBufferSource(),g=ac.create
   if(id==="chh"&&ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setTargetAtTime(0.0001,t,0.006);ohhGain=null;}
   if(id==="ohh")ohhGain=g;}
 const GMN=id=>{const p=PADS[IDX[id]];return (p&&p.gm&&p.gm[0])||({snap:75,sub:35})[id]||39;};
-function play(id,v,t,hold){const r=REP[F(id).rep];audio();t=t==null?ac.currentTime:t;play1(id,v,t);if(r&&!hold)for(let k=1;k<r.n;k++)play1(id,v*Math.pow(0.86,k),t+k*60/bpm/r.d);}
+function play(id,v,t,hold){const r=ROLL[F(id).rep];audio();t=t==null?ac.currentTime:t;play1(id,v,t);if(r&&r<1&&!hold){const n=Math.min(32,Math.round(1/r));for(let k=1;k<n;k++)play1(id,v*Math.pow(0.9,k),t+k*60/bpm*r);}}
 function play1(id,v,t){v=Math.max(0.15,Math.min(1,v));if(recOn){midiEv.push([t-recStart,GMN(id),Math.round(v*127)]);stemEv.push([t-recStart,id,v]);}{const pv=F(id).vol;if(pv!=null)v*=pv;if(v<=0.001)return;}const s=samples[id];if(s&&s.buffer){playBuf(id,s,t,v);return;}if(!s&&fxActive(id)){const b=renderBuilt(id);if(b.buffer){playBuf(id,b,t,v);return;}}snd(id)(t,v);}
 
 /* ===== パッド ===== */
@@ -633,10 +639,12 @@ function flash(id){const b=padEl[id];b.classList.remove("hit");void b.offsetWidt
 function hit(id,v,hold){play(id,v,null,hold);flash(id);select(id);if(rec&&playing)recordHit(id);}
 /* リピート:パッドを押している間は、離すまでテンポに合わせて鳴らし続ける */
 const holds=new Map();
-function holdStart(key,id,v){holdStop(key);hit(id,v,true);const r=REP[F(id).rep];if(!r)return;
-  const dt=60/bpm/r.d,t0=ac.currentTime;let k=1;const h={id,tm:null};
-  const pump=()=>{const now=ac.currentTime;while(t0+k*dt<now+0.12){const t=t0+k*dt;play1(id,v*0.8,t);setTimeout(()=>flash(id),Math.max(0,(t-now)*1000));k++;}};
-  pump();h.tm=setInterval(pump,25);holds.set(key,h);}
+function holdStart(key,id,v){holdStop(key);hit(id,v,true);
+  /* 押している間、ロールの長さを毎回読み直す(押しながら切り替えられる)。オフの間は止まって待つ */
+  let last=ac.currentTime,cur=F(id).rep;const h={id,tm:null};
+  const pump=()=>{const now=ac.currentTime,k=F(id).rep,r=ROLL[k];if(k!==cur){cur=k;if(last<now-0.05)last=now;}if(!r){last=now;return;}
+    const dt=60/bpm*r;while(last+dt<now+0.12){last+=dt;if(last<now-0.02)continue;const t=last;play1(id,v*0.8,t);setTimeout(()=>flash(id),Math.max(0,(t-now)*1000));}};
+  h.tm=setInterval(pump,15);holds.set(key,h);}
 function holdStop(key){const h=holds.get(key);if(!h)return;clearInterval(h.tm);holds.delete(key);}
 function holdStopAll(){[...holds.keys()].forEach(holdStop);}
 ["pointerup","pointercancel"].forEach(t=>document.addEventListener(t,e=>holdStop("p"+e.pointerId)));
@@ -815,12 +823,12 @@ $("smpRec").onclick=async()=>{smpErr("");if(!SM)return;const b=$("smpRec");
 /* 1つずつ畳める。パッドを切り替えたときは、使っているエフェクトと自分で開いたものだけ開く */
 var fxPadSwitch=true,fxUserOpen={},fxWideMQ=matchMedia("(min-width:700px)");
 document.querySelectorAll("#fxBox .fx-i>summary").forEach(sm=>sm.addEventListener("click",()=>{const d=sm.parentNode;fxUserOpen[d.dataset.k]=!d.open;}));
-function fxView(){wvDraw();const f=F(sel),fl=f.flt||0;$("fxRep").value=f.rep||"";$("fxBc").value=f.bc||0;$("fxBcV").textContent=bcTxt(f.bc||0);$("fxRv").value=f.rv||0;$("fxRvV").textContent=f.rv?f.rv+"%":"オフ";$("fxFlt").value=fl;$("fxFltV").textContent=fltTxt(fl);const vv=f.vol==null?1:f.vol;$("fxVol").value=vv;$("fxVolV").textContent=vv===0?"ミュート":Math.round(vv*100)+"%";$("smpPitch").value=f.p||0;$("smpPitchV").textContent=pitchTxt(f.p||0);$("fxStop").value=f.stop||0;$("fxStopV").textContent=stopTxt(f.stop||0);
-  $("fxLoose").value=f.loose||0;$("fxLooseV").textContent=looseTxt(f.loose||0);$("fxRepV").textContent=f.rep?$("fxRep").selectedOptions[0].text:"オフ";$("fxDs").value=f.ds||0;$("fxDsV").textContent=dsTxt(f.ds||0);$("fxDl").value=f.dl||0;$("fxDlt").value=f.dlt||"8";$("fxDlV").textContent=dlTxt(f.dl||0,f.dlt||"8");
+function fxView(){wvDraw();const f=F(sel),fl=f.flt||0;document.querySelectorAll("#rollBox button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===(ROLL[f.rep]?f.rep:""))));$("fxBc").value=f.bc||0;$("fxBcV").textContent=bcTxt(f.bc||0);$("fxRv").value=f.rv||0;$("fxRvV").textContent=f.rv?f.rv+"%":"オフ";$("fxFlt").value=fl;$("fxFltV").textContent=fltTxt(fl);const vv=f.vol==null?1:f.vol;$("fxVol").value=vv;$("fxVolV").textContent=vv===0?"ミュート":Math.round(vv*100)+"%";$("smpPitch").value=f.p||0;$("smpPitchV").textContent=pitchTxt(f.p||0);$("fxStop").value=f.stop||0;$("fxStopV").textContent=stopTxt(f.stop||0);
+  $("fxLoose").value=f.loose||0;$("fxLooseV").textContent=looseTxt(f.loose||0);$("fxRepV").textContent=rollTxt(f.rep);$("fxDs").value=f.ds||0;$("fxDsV").textContent=dsTxt(f.ds||0);$("fxDl").value=f.dl||0;$("fxDlt").value=f.dlt||"8";$("fxDlV").textContent=dlTxt(f.dl||0,f.dlt||"8");
   const W=window.NamiWave,wst=W&&f.wv?W.norm(f.wv):null;$("wvSum").textContent=wst?[wst.s>0||wst.e<1?"切り出し":"",wst.fi?"フェードイン":"",wst.fo?"フェードアウト":"",wst.n?"ノーマライズ":""].filter(Boolean).join("・"):"そのまま";
   const ACT={fxVol:f.vol!=null,smpPitch:!!f.p,fxStop:!!f.stop,fxFlt:!!f.flt,fxRv:!!f.rv,fxBc:!!f.bc,fxRep:!!f.rep,fxLoose:!!f.loose,fxDl:!!f.dl,fxDs:!!f.ds,wv:!!f.wv};
   document.querySelectorAll("#fxBox .fx-i").forEach(d=>{const a=ACT[d.dataset.k];d.classList.toggle("on",a);if(fxPadSwitch&&!fxWideMQ.matches)d.open=a||!!fxUserOpen[d.dataset.k];});fxPadSwitch=false;$("smpRev").setAttribute("aria-pressed",f.rev?"true":"false");
-  const on=[f.vol!=null?"音量"+Math.round(f.vol*100)+"%":"",f.p?"ピッチ"+pitchTxt(f.p).replace(" 半音",""):"",f.stop?"テープストップ":"",f.loose?"ルーズ":"",f.flt?"フィルター":"",f.rv?"リバーブ":"",f.bc?"ビットクラッシュ":"",f.rep?"リピート":"",f.ds?"ディストーション":"",f.dl?"ディレイ":"",f.wv?"波形":"",f.rev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";
+  const on=[f.vol!=null?"音量"+Math.round(f.vol*100)+"%":"",f.p?"ピッチ"+pitchTxt(f.p).replace(" 半音",""):"",f.stop?"テープストップ":"",f.loose?"ルーズ":"",f.flt?"フィルター":"",f.rv?"リバーブ":"",f.bc?"ビットクラッシュ":"",f.rep?"ロール"+rollTxt(f.rep):"",f.ds?"ディストーション":"",f.dl?"ディレイ":"",f.wv?"波形":"",f.rev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";
   PADS.forEach(p=>padEl[p.id].classList.toggle("fxd",fxActive(p.id)||F(p.id).vol!=null||!!F(p.id).rep));}
 function setFx(key,val){const f=fx[sel]=fx[sel]||{};if(key==="vol"?val===1:!val)delete f[key];else f[key]=val;if(!Object.keys(f).length)delete fx[sel];store.set("drumsFx",fx);fxView();if(fxActive(sel)&&!samples[sel])renderBuilt(sel);}
 const rng=(id,key,conv)=>{const el=$(id);el.addEventListener("input",()=>setFx(key,conv(+el.value)));el.addEventListener("change",()=>play(sel,0.9));};
@@ -834,7 +842,8 @@ if(window.NamiWave){NamiWave.attach($("wvCv"),{get:()=>({buf:wvBuf(),st:F(sel).w
   $("wvFo").addEventListener("input",()=>setWv({fo:+$("wvFo").value}));$("wvFo").addEventListener("change",()=>play(sel,0.9));
   $("wvN").addEventListener("change",()=>setWv({n:$("wvN").checked},true));$("wvReset").onclick=()=>{setFx("wv",0);play(sel,0.9);};
   $("fxBox").addEventListener("toggle",()=>{audio();wvDraw();});$("wvBox").addEventListener("toggle",()=>{audio();wvDraw();});window.addEventListener("resize",wvDraw);}
-$("fxRep").addEventListener("change",()=>{setFx("rep",$("fxRep").value);play(sel,0.9);});rng("fxVol","vol",v=>Math.round(v*20)/20);rng("smpPitch","p",v=>Math.max(-24,Math.min(24,Math.round(v*10)/10)));rng("fxStop","stop",v=>Math.round(v*100)/100);rng("fxLoose","loose",v=>Math.round(v*10)/10);
+$("rollBox").addEventListener("pointerdown",e=>{const b=e.target.closest("button[data-v]");if(!b)return;e.preventDefault();const v=b.dataset.v;setFx("rep",v);if(!holds.size)play(sel,0.9);});
+$("rollBox").addEventListener("keydown",e=>{const b=e.target.closest("button[data-v]");if(b&&(e.key==="Enter"||e.key===" ")){e.preventDefault();setFx("rep",b.dataset.v);if(!holds.size)play(sel,0.9);}});rng("fxVol","vol",v=>Math.round(v*20)/20);rng("smpPitch","p",v=>Math.max(-24,Math.min(24,Math.round(v*10)/10)));rng("fxStop","stop",v=>Math.round(v*100)/100);rng("fxLoose","loose",v=>Math.round(v*10)/10);
 /* ピッチは鳴っている音もその場で変える */
 $("smpPitch").addEventListener("input",()=>{if(!ac||!live[sel])return;const v=F(sel).p||0;live[sel].forEach(x=>{if(!x._stop)try{x.playbackRate.setTargetAtTime(Math.pow(2,v/12),ac.currentTime,0.01);}catch(e){}});});
 $("smpRev").onclick=()=>{setFx("rev",F(sel).rev?0:1);play(sel,0.9);};
