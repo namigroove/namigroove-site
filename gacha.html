@@ -338,6 +338,8 @@ header.top .logo{flex:none}
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
 const G=window.NamiGacha;
+/* 古い言葉リストが残っていても動くように(ソフトは配列にそろえる) */
+const ES=x=>Array.isArray(x.e)?x.e:[x.e];
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const SLOTS=[
   {id:"theme",lb:"テーマ"},{id:"genre",lb:"ジャンル"},{id:"voice",lb:"歌声"},{id:"w1",lb:"キーワード"},{id:"w2",lb:"キーワード"},{id:"w3",lb:"キーワード"},
@@ -353,7 +355,7 @@ function roll(id){
   if(id==="theme")return{v:pick(G.THEME)};
   if(id==="rule")return{v:pick(G.RULE)};
   if(id==="mood")return{v:pick(G.MOOD)};
-  if(id==="voice"){const list=G.VOICE.filter(x=>x.e.some(e=>engines[e]!==0));const v=pick(list.length?list:G.VOICE);return{v:v.n,e:v.e.join(" / ")};}
+  if(id==="voice"){const list=G.VOICE.filter(x=>ES(x).some(e=>engines[e]!==0));const v=pick(list.length?list:G.VOICE);return{v:v.n,e:ES(v).join(" / ")};}
   if(id==="genre"){const g=pick(G.GENRE);return{v:g.n,b:g.b};}
   if(id==="extra"){const g=G.GENRE.find(x=>cur.genre&&x.n===cur.genre.v)||pick(G.GENRE);const bpm=g.b[0]+Math.round(Math.random()*(g.b[1]-g.b[0])/2)*2;
     const minor=Math.random()<0.5;return{v:`BPM ${bpm} ・ ${pick(G.KEYS)}${minor?"マイナー":"メジャー"}`,bpm};}
@@ -399,7 +401,7 @@ const USE_LB={theme:"テーマ",genre:"ジャンル",voice:"歌声",w:"キーワ
 $("useSeg").innerHTML=Object.keys(USE_LB).map(k=>`<label><input type="checkbox" data-k="${k}"${use[k]?" checked":""}>${USE_LB[k]}</label>`).join("");
 /* 歌声のソフト(持っているソフトだけにしぼれる) */
 let engines=store.get("gachaEngines",{});
-const ENG=[...new Set(G.VOICE.flatMap(x=>x.e))];
+const ENG=[...new Set(G.VOICE.flatMap(ES))];
 $("engSeg").innerHTML=ENG.map(e=>`<label><input type="checkbox" data-e="${e}"${engines[e]!==0?" checked":""}>${e}</label>`).join("");
 $("engSeg").addEventListener("change",e=>{engines[e.target.dataset.e]=e.target.checked?1:0;store.set("gachaEngines",engines);if(!locks.has("voice")){cur.voice=roll("voice");store.set("gachaCur",cur);render(["voice"]);}});
 $("useSeg").addEventListener("change",e=>{const k=e.target.dataset.k;use[k]=e.target.checked?1:0;store.set("gachaUse",use);
