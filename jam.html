@@ -334,7 +334,7 @@ header.top .logo{flex:none}
     <h2>使い方のメモ</h2>
     <ul>
       <li>進行をえらんで「ジャム開始」。「✏️ 自分で作る」では、コードを1つずつ選んでオリジナルの進行でジャムできます(最大16コード)。再生中にリズム・キー・テンポを変えると、次の小節から切り替わります。</li>
-      <li>リズムは、8ビート・16ビート・ネオソウル(ゆるいハネ)・ボサノバ・4つ打ち・ジャズ(スウィング)、それに3拍子(ワルツ・3/4)・ハチロク(6/8)・5拍子(5/4)・7拍子(7/8)。MIDIにも拍子が入ります。ジャズはベースが4分音符で歩きます(ウォーキングベース)。</li>
+      <li>リズムは「定番」「ダンス・クラブ」「ソウル・ジャズ・ヒップホップ」「ラテン・ワールド」「3拍子・変拍子」の5つに分けて、全部で28種類。ベースと鍵盤の刻みもリズムに合わせて変わります。MIDIにも拍子が入ります。ジャズはベースが4分音符で歩きます(ウォーキングベース)。</li>
       <li>「MIDI(ドラム入り)」で、鍵盤・ベース・ドラム(GMドラム配列・10ch)の3トラックを書き出します。DAWに読み込んで、そのまま曲づくりに使えます。</li>
       <li>アドリブの練習にも。スケールは <a href="scales.html">スケール表</a> で確認できます。</li>
     </ul>
@@ -361,19 +361,36 @@ const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==n
 const pc=m=>((m%12)+12)%12, NP=window.NamiProg, LIST=NP.LIST;
 const KEYN=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 const pid=s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.codePointAt(0))>>>0;return h.toString(36);};
-/* リズム:16分音符×16。k=キック s=スネア h=ハット o=オープンハット r=リム c=クラップ y=ライド f=フットハット / keys:[位置,長さ] / bass:[位置,音,長さ] */
+/* リズム:16分音符×16。k=キック s=スネア h=ハット o=オープンハット r=リム c=クラップ y=ライド f=フットハット x=クラッシュ b=タンバリン w=カウベル z=シェイカー t=コンガ(低) u=コンガ(高) / keys:[位置,長さ] / bass:[位置,音,長さ] */
 const ST={
- "8beat":{n:"8ビート",sw:0,k:"x.......x.x.....",s:"....x.......x...",h:"x.x.x.x.x.x.x.x.",keys:[[0,15]],bass:[[0,"R",6],[6,"R",2],[8,"R",4],[12,"5",4]]},
- "16beat":{n:"16ビート",sw:0,k:"x.....x...x.....",s:"....x.......x...",h:"xxxxxxxxxxxxxxxx",keys:[[0,6],[6,4],[10,6]],bass:[[0,"R",3],[3,"R",1],[6,"R",2],[10,"R",2],[12,"5",2],[14,"8",2]]},
- "neo":{n:"ネオソウル(ハネ)",sw:0.55,sw16:1,k:"x......x..x.....",s:"....x.......x...",h:"x.x.x.x.x.x.x.x.",keys:[[0,6],[7,9]],bass:[[0,"R",5],[7,"R",3],[10,"5",4],[14,"8",2]]},
- "bossa":{n:"ボサノバ",sw:0,k:"x..x....x..x....",r:"x..x..x...x..x..",h:"x.x.x.x.x.x.x.x.",keys:[[0,2],[3,2],[6,3],[10,2],[13,3]],bass:[[0,"R",6],[6,"R",2],[8,"5",6],[14,"5",2]]},
- "four":{n:"4つ打ち",sw:0,k:"x...x...x...x...",c:"....x.......x...",o:"..x...x...x...x.",h:"x.x.x.x.x.x.x.x.",keys:[[2,2],[6,2],[10,2],[14,2]],bass:[[2,"R",2],[6,"R",2],[10,"R",2],[14,"R",2]]},
- "waltz":{n:"ワルツ(3/4)",steps:12,ts:[3,4],sw:0,k:"x...........",s:"....x...x...",h:"x.x.x.x.x.x.",keys:[[4,3],[8,3]],bass:[[0,"R",4]]},
- "pop34":{n:"3拍子(3/4)",steps:12,ts:[3,4],sw:0,k:"x.....x.x...",s:"........x...",h:"x.x.x.x.x.x.",keys:[[0,12]],bass:[[0,"R",6],[6,"R",2],[8,"5",4]]},
- "68":{n:"ハチロク(6/8)",steps:12,ts:[6,8],grp:[0,6],sw:0,k:"x.........x.",s:"......x.....",h:"x.x.x.x.x.x.",keys:[[0,2],[2,2],[4,2],[6,2],[8,2],[10,2]],bass:[[0,"R",6],[6,"5",6]]},
- "54":{n:"5拍子(5/4)",steps:20,ts:[5,4],sw:0,k:"x.....x.....x.......",s:"........x.......x...",h:"x.x.x.x.x.x.x.x.x.x.",keys:[[0,12],[12,8]],bass:[[0,"R",6],[6,"R",6],[12,"5",8]]},
- "78":{n:"7拍子(7/8)",steps:14,ts:[7,8],grp:[0,4,8],sw:0,k:"x.......x.....",s:"....x.......x.",h:"x.x.x.x.x.x.x.",keys:[[0,4],[4,4],[8,6]],bass:[[0,"R",4],[4,"5",4],[8,"R",6]]},
- "jazz":{n:"ジャズ(スウィング)",sw:1,y:"x...x.x.x...x.x.",f:"....x.......x...",k:"x...............",keys:[[0,3],[6,4]],walk:1}
+ "8beat":{g:"std",n:"8ビート",sw:0,k:"x.......x.x.....",s:"....x.......x...",h:"x.x.x.x.x.x.x.x.",keys:[[0,15]],bass:[[0,"R",6],[6,"R",2],[8,"R",4],[12,"5",4]]},
+ "16beat":{g:"std",n:"16ビート",sw:0,k:"x.....x...x.....",s:"....x.......x...",h:"xxxxxxxxxxxxxxxx",keys:[[0,6],[6,4],[10,6]],bass:[[0,"R",3],[3,"R",1],[6,"R",2],[10,"R",2],[12,"5",2],[14,"8",2]]},
+ "neo":{g:"soul",n:"ネオソウル(ハネ)",sw:0.55,sw16:1,k:"x......x..x.....",s:"....x.......x...",h:"x.x.x.x.x.x.x.x.",keys:[[0,6],[7,9]],bass:[[0,"R",5],[7,"R",3],[10,"5",4],[14,"8",2]]},
+ "bossa":{g:"latin",n:"ボサノバ",sw:0,k:"x..x....x..x....",r:"x..x..x...x..x..",h:"x.x.x.x.x.x.x.x.",keys:[[0,2],[3,2],[6,3],[10,2],[13,3]],bass:[[0,"R",6],[6,"R",2],[8,"5",6],[14,"5",2]]},
+ "four":{g:"dance",n:"4つ打ち",sw:0,k:"x...x...x...x...",c:"....x.......x...",o:"..x...x...x...x.",h:"x.x.x.x.x.x.x.x.",keys:[[2,2],[6,2],[10,2],[14,2]],bass:[[2,"R",2],[6,"R",2],[10,"R",2],[14,"R",2]]},
+ "rock":{n:"ロック",g:"std",sw:0,k:"x.....x.x.......",s:"....x.......x...",h:"x.x.x.x.x.x.x.x.",x:"x...............",keys:[[0,2],[2,2],[4,2],[6,2],[8,2],[10,2],[12,2],[14,2]],bass:[[0,"R",2],[2,"R",2],[4,"R",2],[6,"R",2],[8,"R",2],[10,"R",2],[12,"5",2],[14,"8",2]]},
+ "halftime":{n:"ハーフタイム",g:"std",sw:0,k:"x.........x.....",s:"........x.......",h:"x.x.x.x.x.x.x.x.",o:"..............x.",keys:[[0,16]],bass:[[0,"R",8],[10,"R",4],[14,"5",2]]},
+ "motown":{n:"モータウン",g:"std",sw:0,k:"x.x.....x.x.....",s:"....x.......x...",b:"....x.......x...",h:"x.x.x.x.x.x.x.x.",keys:[[4,2],[12,2]],bass:[[0,"R",2],[2,"R",2],[6,"5",2],[8,"R",2],[10,"R",2],[14,"8",2]]},
+ "funk":{n:"ファンク",g:"std",sw:0,k:"x.x....x..x.....",s:"....x..x.x..x..x",h:"xxxxxxxxxxxxxx.x",o:"..............x.",keys:[[0,1],[3,1],[6,1],[10,1],[13,1]],bass:[[0,"R",2],[3,"8",1],[6,"R",1],[7,"R",1],[10,"5",2],[13,"8",1],[14,"R",2]]},
+ "break":{n:"ブレイクビーツ",g:"std",sw:0,k:"x.x.......x.....",s:"....x..x.x..x...",h:"x.x.x.x.x.x.x.x.",o:"..........x.....",keys:[[0,6],[8,6]],bass:[[0,"R",3],[3,"R",1],[10,"R",2],[12,"5",4]]},
+ "disco":{n:"ディスコ",g:"dance",sw:0,k:"x...x...x...x...",s:"....x.......x...",h:"x...x...x...x...",o:"..x...x...x...x.",b:"xxxxxxxxxxxxxxxx",keys:[[2,2],[6,2],[10,2],[14,2]],bass:[[0,"R",2],[2,"8",2],[4,"R",2],[6,"8",2],[8,"R",2],[10,"8",2],[12,"R",2],[14,"8",2]]},
+ "trap":{n:"トラップ",g:"dance",sw:0,k:"x......x..x.....",c:"........x.......",h:"x.x.xxx.x.x.x.xx",keys:[[0,16]],bass:[[0,"R",7],[7,"R",3],[10,"R",6]]},
+ "twostep":{n:"2ステップ",g:"dance",sw:0.5,sw16:1,k:"x.........x.....",s:"....x.......x...",h:"..x...x...x...x.",r:"...x......x....x",z:"x.x.x.x.x.x.x.x.",keys:[[3,2],[10,3]],bass:[[0,"R",3],[6,"R",2],[10,"R",3],[14,"5",2]]},
+ "dnb":{n:"ドラムンベース",g:"dance",sw:0,k:"x.........x.....",s:"....x.......x...",h:"x.x.x.x.x.x.x.x.",y:"x...x...x...x...",keys:[[0,16]],bass:[[0,"R",8],[10,"R",6]]},
+ "hiphop":{n:"ヒップホップ(ブーンバップ)",g:"soul",sw:0.4,sw16:1,k:"x......xx.x.....",s:"....x.......x...",h:"x.x.x.x.x.x.x.x.",keys:[[0,7],[8,8]],bass:[[0,"R",6],[7,"R",1],[8,"R",2],[10,"5",4]]},
+ "samba":{n:"サンバ",g:"latin",sw:0,k:"x..xx..xx..xx..x",b:"x.xxx.xxx.xxx.xx",s:"..x...x...x..x.x",w:"x.x..x.x..x.x..x",keys:[[0,2],[3,2],[6,2],[8,2],[11,2],[14,2]],bass:[[0,"R",3],[3,"5",1],[4,"5",4],[8,"R",3],[11,"5",1],[12,"5",4]]},
+ "salsa":{n:"サルサ(ソン・クラーベ)",g:"latin",sw:0,k:"...x..x....x..x.",r:"x..x..x...x.x...",w:"x...x.x.x.x.x.x.",t:"......xx......xx",z:"x.x.x.x.x.x.x.x.",keys:[[0,1],[2,1],[3,1],[5,1],[6,1],[8,1],[10,1],[11,1],[13,1],[14,1]],bass:[[3,"5",3],[6,"R",6],[12,"5",4]]},
+ "chacha":{n:"チャチャチャ",g:"latin",sw:0,k:"x.......x.......",w:"x...x...x...x...",t:"............x.x.",u:"..............x.",r:"....x.......x...",z:"x.xxx.xxx.xxx.xx",keys:[[0,2],[4,2],[8,2],[12,1],[14,2]],bass:[[0,"R",4],[6,"5",2],[8,"R",4],[12,"R",2],[14,"5",2]]},
+ "reggaeton":{n:"レゲトン",g:"latin",sw:0,k:"x...x...x...x...",s:"...x..x....x..x.",h:"x.x.x.x.x.x.x.x.",b:"..x...x...x...x.",keys:[[0,16]],bass:[[0,"R",3],[3,"R",3],[6,"R",2],[8,"R",3],[11,"R",3],[14,"R",2]]},
+ "cumbia":{n:"クンビア",g:"latin",sw:0,k:"x.......x.......",r:"....x.......x...",u:"..x...x...x...x.",z:"x.xxx.xxx.xxx.xx",keys:[[2,2],[6,2],[10,2],[14,2]],bass:[[0,"R",4],[4,"5",4],[8,"R",4],[12,"5",4]]},
+ "baiao":{n:"バイアォン",g:"latin",sw:0,k:"x..x....x..x....",s:"......x.......x.",h:"x.xxx.xxx.xxx.xx",o:"..x.......x.....",keys:[[0,3],[3,3],[8,3],[11,3]],bass:[[0,"R",3],[3,"5",5],[8,"R",3],[11,"5",5]]},
+ "onedrop":{n:"レゲエ(ワンドロップ)",g:"latin",sw:0.5,k:"........x.......",r:"........x.......",h:"x.x.x.x.x.x.x.x.",keys:[[2,1],[6,1],[10,1],[14,1]],bass:[[0,"R",3],[4,"5",2],[8,"R",3],[12,"3",2]]},
+ "waltz":{g:"odd",n:"ワルツ(3/4)",steps:12,ts:[3,4],sw:0,k:"x...........",s:"....x...x...",h:"x.x.x.x.x.x.",keys:[[4,3],[8,3]],bass:[[0,"R",4]]},
+ "pop34":{g:"odd",n:"3拍子(3/4)",steps:12,ts:[3,4],sw:0,k:"x.....x.x...",s:"........x...",h:"x.x.x.x.x.x.",keys:[[0,12]],bass:[[0,"R",6],[6,"R",2],[8,"5",4]]},
+ "68":{g:"odd",n:"ハチロク(6/8)",steps:12,ts:[6,8],grp:[0,6],sw:0,k:"x.........x.",s:"......x.....",h:"x.x.x.x.x.x.",keys:[[0,2],[2,2],[4,2],[6,2],[8,2],[10,2]],bass:[[0,"R",6],[6,"5",6]]},
+ "54":{g:"odd",n:"5拍子(5/4)",steps:20,ts:[5,4],sw:0,k:"x.....x.....x.......",s:"........x.......x...",h:"x.x.x.x.x.x.x.x.x.x.",keys:[[0,12],[12,8]],bass:[[0,"R",6],[6,"R",6],[12,"5",8]]},
+ "78":{g:"odd",n:"7拍子(7/8)",steps:14,ts:[7,8],grp:[0,4,8],sw:0,k:"x.......x.....",s:"....x.......x.",h:"x.x.x.x.x.x.x.",keys:[[0,4],[4,4],[8,6]],bass:[[0,"R",4],[4,"5",4],[8,"R",6]]},
+ "jazz":{g:"soul",n:"ジャズ(スウィング)",sw:1,y:"x...x.x.x...x.x.",f:"....x.......x...",k:"x...............",keys:[[0,3],[6,4]],walk:1}
 };
 const SB=S=>S.steps||16,GRP=S=>S.grp||Array.from({length:SB(S)/4},(_,i)=>i*4),barLen=S=>Math.max(4,Math.round(bars*SB(S)));
 const DEF={eswing:"four",pop:"8beat",neo:"neo",jazz:"jazz",bossa:"bossa",cliche:"8beat",anison:"16beat",kirinji:"neo"};
@@ -408,7 +425,13 @@ const DR={
  r(t,v){const b=ac.createBiquadFilter();b.type="bandpass";b.frequency.value=1700;b.Q.value=5;const o=ac.createOscillator();o.type="triangle";o.frequency.value=1700;o.connect(b);b.connect(env(t,0.35*v,0.015));o.start(t);o.stop(t+0.1);},
  c(t,v){[0,0.01,0.02].forEach(d=>nz(t+d,0.03,env(t+d,0.4*v,0.006),"bandpass",1150,1.2));nz(t+0.03,0.3,env(t+0.03,0.3*v,0.06),"bandpass",1150,1.2);},
  y(t,v){ /* ライド:高域を削った丸めの音 */const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=5000;lp.Q.value=0.4;lp.connect(env(t,0.048*v,0.32,0.004));nz(t,0.9,lp,"bandpass",4000,0.6);const o=ac.createOscillator();o.frequency.value=2350;o.connect(env(t,0.007*v,0.2,0.003));o.start(t);o.stop(t+0.8);},
- f(t,v){nz(t,0.06,env(t,0.07*v,0.015),"bandpass",3500,1);}
+ f(t,v){nz(t,0.06,env(t,0.07*v,0.015),"bandpass",3500,1);},
+ x(t,v){const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=9000;lp.connect(env(t,0.07*v,0.55,0.003));nz(t,1.6,lp,"highpass",4200);},
+ b(t,v){nz(t,0.12,env(t,0.06*v,0.04,0.003),"bandpass",8500,1.5);},
+ w(t,v){const bp=ac.createBiquadFilter();bp.type="bandpass";bp.frequency.value=900;bp.Q.value=2.5;bp.connect(env(t,0.22*v,0.07));[562,845].forEach(f=>{const o=ac.createOscillator();o.type="square";o.frequency.value=f;o.connect(bp);o.start(t);o.stop(t+0.4);});},
+ z(t,v){nz(t,0.07,env(t,0.05*v,0.02,0.008),"highpass",5500);},
+ t(t,v){const o=ac.createOscillator();o.frequency.setValueAtTime(205,t);o.frequency.exponentialRampToValueAtTime(185,t+0.08);o.connect(env(t,0.32*v,0.12));o.start(t);o.stop(t+0.6);nz(t,0.02,env(t,0.06*v,0.008),"bandpass",2500,1);},
+ u(t,v){const o=ac.createOscillator();o.frequency.setValueAtTime(320,t);o.frequency.exponentialRampToValueAtTime(295,t+0.06);o.connect(env(t,0.28*v,0.09));o.start(t);o.stop(t+0.5);nz(t,0.02,env(t,0.06*v,0.008),"bandpass",3000,1);}
 };
 function keyNote(m,t,dur,lv){const f=440*Math.pow(2,(m-69)/12),car=ac.createOscillator(),mod=ac.createOscillator(),mg=ac.createGain(),g=ac.createGain();
   car.type=mod.type="sine";car.frequency.value=f;mod.frequency.value=f;mg.gain.setValueAtTime(f*1.0,t);mg.gain.setTargetAtTime(f*0.1,t,0.25);mod.connect(mg);mg.connect(car.frequency);
@@ -423,7 +446,7 @@ function bassNote(m,t,dur){const f=440*Math.pow(2,(m-69)/12),o=ac.createOscillat
 function stepEvents(abs){
   const S=ST[style],len=barLen(S),ns=V.length*len,s=abs%ns,ci=Math.floor(s/len),inBar=s%SB(S),c=V[ci],next=V[(ci+1)%V.length],ko=kOff(),ev=[];
   const sinceChord=s%len;
-  ["k","s","h","o","r","c","y","f"].forEach(d=>{if(S[d]&&S[d][inBar]==="x")ev.push({type:"d",d,v:d==="h"&&S===ST["16beat"]&&inBar%2?0.55:(S.walk&&d==="k"?0.35:1)});});
+  ["k","s","h","o","r","c","y","f","x","b","w","z","t","u"].forEach(d=>{if(S[d]&&S[d][inBar]==="x")ev.push({type:"d",d,v:d==="h"&&S===ST["16beat"]&&inBar%2?0.55:(S.walk&&d==="k"?0.35:1)});});
   (S.keys||[]).forEach(([p,l])=>{if(p===inBar)ev.push({type:"keys",notes:c[2].slice(1).map(m=>m+ko),len:Math.min(l,len-sinceChord)});});
   const root=c[2][0]+ko,tri=cur().c[ci%cur().c.length][1],third=/^m|dim/.test(tri)&&!/^M/.test(tri)?3:4;
   if(S.walk){if(inBar%4===0){const beat=inBar/4,last=(sinceChord+4>=len),nr=next[2][0]+ko;
@@ -452,7 +475,7 @@ function midi(){
   const txt=(ty,s)=>{const b=[...new TextEncoder().encode(s)];return [0xff,ty,...vlq(b.length),...b];};
   const asc=s=>s.replace(/♭/g,"b").replace(/♯/g,"#").replace(/[^\x20-\x7e]/g,"");
   const trk=(name,evs)=>{evs.sort((a,b)=>a[0]-b[0]||a[2]-b[2]);let o=[0,...txt(0x03,name)],t=0;evs.forEach(([tk,by])=>{o.push(...vlq(tk-t),...by);t=tk;});o.push(0,0xff,0x2f,0);return [0x4d,0x54,0x72,0x6b,(o.length>>>24)&255,(o.length>>>16)&255,(o.length>>>8)&255,o.length&255,...o];};
-  const GM={k:36,s:38,h:42,o:46,r:37,c:39,y:51,f:44},meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,TS[0],Math.log2(TS[1]),24,8],0]],K=[],B=[],D=[];
+  const GM={k:36,s:38,h:42,o:46,r:37,c:39,y:51,f:44,x:49,b:54,w:56,z:70,t:64,u:63},meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,TS[0],Math.log2(TS[1]),24,8],0]],K=[],B=[],D=[];
   for(let a=0;a<N;a++){const {ev,ci,inBar}=stepEvents(a),t0=a*st+Math.round(swingOff(inBar,1)*st);
     if(a%len===0)meta.push([a*st,txt(0x06,asc(chName(cur().c[ci]))),0]);
     ev.forEach(e=>{if(e.type==="d"){D.push([t0,[0x99,GM[e.d],Math.round(100*e.v)],1]);D.push([t0+st-10,[0x89,GM[e.d],0],0]);}
@@ -471,7 +494,8 @@ function renderList(){[...$("jCat").children].forEach(b=>b.setAttribute("aria-pr
   const isF=p=>window.NamiFav&&NamiFav.has("prog",NamiFav.pid(p.n));
   $("jList").innerHTML=LIST.map((p,i)=>(cat==="fav"?!isF(p):p.g!==cat)?"":`<div class="jm-it"><button type="button" data-i="${i}" aria-pressed="${!useMy&&i===pi}"><b>${p.n}</b><small>${p.c.map(chName).join(" → ")}</small></button>${window.NamiFav?NamiFav.html("prog",NamiFav.pid(p.n),p.n,"ng-fav-p"):""}</div>`).join("")||(cat==="fav"?`<p class="note-s" style="text-align:left;grid-column:1/-1">進行の☆を押すと、ここに集まります(ピアノ・コード表・ジャムモードで共通)。</p>`:"");}
 function save(){store.set("jamP",pid(LIST[pi].n));store.set("jamUseMy",useMy);store.set("jamKey",key);store.set("jamStyle",style);store.set("jamBpm",bpm);store.set("jamBars",bars);}
-$("jStyle").innerHTML=Object.entries(ST).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");$("jStyle").value=style;
+{const GN=[["std","定番"],["dance","ダンス・クラブ"],["soul","ソウル・ジャズ・ヒップホップ"],["latin","ラテン・ワールド"],["odd","3拍子・変拍子"]];
+  $("jStyle").innerHTML=GN.map(([g,l])=>`<optgroup label="${l}">`+Object.entries(ST).filter(([,v])=>v.g===g).sort((x,y)=>g==="odd"?["waltz","pop34","68","54","78"].indexOf(x[0])-["waltz","pop34","68","54","78"].indexOf(y[0]):0).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("")+"</optgroup>").join("");}$("jStyle").value=style;
 $("jKey").innerHTML=KEYN.map((n,i)=>`<option value="${i}">${n}</option>`).join("");$("jKey").value=String(key);
 $("jBpm").textContent=bpm;$("jBars").value=String(bars);
 $("jCat").innerHTML=`<button type="button" data-g="fav">★ お気に入り</button>`+Object.entries(NP.CAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="my">✏️ 自分で作る</button>`;
