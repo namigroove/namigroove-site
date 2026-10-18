@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>キー&amp;BPM判定 – なみぐる！</title>
+<meta name="description" content="音源ファイルから曲のBPM(テンポ)とキーを判定するツール。DJ向けのカメロット表記つき。ファイルはブラウザの中だけで解析し、送信しません。">
+<meta property="og:title" content="キー&amp;BPM判定 – なみぐる！">
+<meta property="og:description" content="音源ファイルからBPMとキーを判定。カメロット表記つき。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/analyze/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-180x180.png">
+<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tools.webmanifest">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+/* コード表 */
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+.tabs.fam{margin-bottom:16px}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 2px}}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.ch-pick{display:flex;flex-direction:column;gap:8px;margin:14px 0 6px;align-items:center}
+.ch-pick .seg{justify-content:center}
+.ch-pick .roots button{min-width:44px}
+.ch-head{display:flex;flex-direction:column;align-items:center;gap:4px;margin:12px 0 6px;text-align:center}
+.ch-name{font-family:var(--f-display);font-size:clamp(40px,10vw,60px);line-height:1.1;min-height:1.1em}
+.ch-name .dim{font-size:15px;color:var(--ink-soft);font-family:var(--f-body)}
+.ch-sub{font-size:13px;color:var(--ink-soft);min-height:1.5em}
+.ch-sub b{color:var(--sea)}
+.seg.types button.fancy{border-color:var(--coral);color:var(--coral)}
+.seg.types button.fancy[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:#fff}
+.ch-desc{font-size:13px;color:var(--coral);min-height:1.4em;margin:0}
+.pg-wrap{margin-top:26px;border-top:1px dashed var(--line);padding-top:16px}
+.pg-wrap h2{font-size:16px;margin:0 0 4px;font-family:var(--f-display);font-weight:400}
+.pg-wrap .row{margin-bottom:10px}
+.pg-cat{margin:0 0 12px;display:flex;flex-wrap:wrap;gap:4px}
+.pg-list{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.pg{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
+.pg h3{margin:0 0 2px;font-size:15px}
+.pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
+.pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.pg .pg-btns .btn{font-size:12px;padding:3px 10px}
+.pg-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.pg-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer;font:500 14px var(--f-body)}
+.pg-c .cd{width:76px;height:auto}
+.pg-c small{font-size:11px;color:var(--ink-soft)}
+.pg-c.now{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral) inset}
+.pg-c.now b{color:var(--coral)}
+.vo{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.vo-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
+.vo-c:hover{border-color:var(--sea)}
+.vo-c.main{border:2px solid var(--sea)}
+.vo-c small i.lib{font-style:normal;font-size:10px;color:#fff;background:var(--coral);border-radius:999px;padding:0 6px;margin-right:4px}
+.vo-c small{font-size:11px;color:var(--ink-soft)}
+.cd{width:120px;height:auto;display:block}
+.cd .st{stroke:var(--ink-soft);stroke-width:1}
+.cd .fr{stroke:var(--line);stroke-width:1.2}
+.cd .nut{stroke:var(--ink);stroke-width:4}
+.cd .dot{fill:var(--sea)}
+.cd .dot.r{fill:var(--coral)}
+.cd .bar{fill:var(--sea);opacity:.9}
+.cd .mk{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.cd .pos{font:10px var(--f-mono);fill:var(--ink-soft)}
+.fb-wrap{overflow-x:auto;margin-top:10px}
+.fb{min-width:640px}
+.fb svg{display:block;width:100%;height:auto}
+.fb .str{stroke:var(--ink-soft)}
+.fb .fw{stroke:var(--line);stroke-width:1.5}
+.fb .nutl{stroke:var(--ink);stroke-width:4}
+.fb .inl{fill:var(--wash)}
+.fb .nd{stroke:var(--panel);stroke-width:1.5}
+.fb .nt{font:10px var(--f-mono);fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.fb .fn{font:10px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.fb-leg{font-size:12px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
+.fb-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
+.rev-grid{display:flex;justify-content:center;margin:14px 0 4px}
+.rev-grid svg{width:min(100%,300px);max-height:none;height:auto;touch-action:manipulation;user-select:none}
+.rev-grid .cell{fill:transparent;cursor:pointer}
+.rev-grid .cell:hover{fill:var(--wash)}
+.rev-grid .om{font:16px var(--f-mono);fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;cursor:pointer}
+.rev-grid .omh{fill:transparent;cursor:pointer}
+/* キー&BPM判定 */
+.drop{display:flex;flex-direction:column;align-items:center;gap:6px;padding:34px 16px;border:2px dashed var(--line);border-radius:16px;background:var(--wash);cursor:pointer;text-align:center;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:var(--sea);background:var(--panel)}
+.drop b{font-size:16px}
+.drop span{font-size:13px;color:var(--ink-soft)}
+.drop-ic{width:56px;height:56px;border-radius:16px;background:var(--panel);display:flex;align-items:center;justify-content:center;color:var(--sea)}
+.drop-ic svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.busy{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;font-size:14px;color:var(--ink-soft)}
+.spin{width:18px;height:18px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--sea);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fname{text-align:center;font-size:13px;color:var(--ink-soft);margin:0 0 12px;word-break:break-all}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){.res{grid-template-columns:1fr}}
+.res-box{background:var(--wash);border-radius:14px;padding:16px 12px 14px;text-align:center}
+.res-lbl{margin:0;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea)}
+.res-big{margin:2px 0 6px;font-family:var(--f-display);font-size:clamp(40px,10vw,60px);line-height:1.1}
+.res-sub{margin:6px 0 0;font-size:12px;color:var(--ink-soft)}
+.res-cam{margin:0;display:flex;gap:8px;justify-content:center;align-items:center;font-size:13px;color:var(--ink-soft)}
+.cam{font-family:var(--f-mono);font-weight:700;color:#fff;background:var(--coral);border-radius:999px;padding:1px 10px}
+.seg.alt{justify-content:center}
+.scale{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px 0 4px}
+.scale span{font:500 14px var(--f-mono);padding:4px 10px;border-radius:10px;background:var(--wash)}
+.scale span.t{background:var(--sea);color:#fff}
+.play-row{margin-top:16px}
+.chk{display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer}
+.mix{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:16px}
+.mix span{font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line)}
+.mix span b{font-family:var(--f-mono);color:var(--coral);margin-right:4px}
+.mix-cap{text-align:center}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html">Works</a>
+      <a href="tools.html">Tools</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links" class="opt">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
+/* EN⇔JP:Google翻訳(英語)との切り替え */
+(()=>{const a=document.getElementById("toEN"); if(!a) return;
+ const tr=/\.translate\.goog$/.test(location.hostname);
+ if(tr){
+  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
+  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
+  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
+  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
+ } else {
+  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
+ }
+})();
+</script>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>キー&amp;BPM判定</h1>
+    <p class="lead">音源ファイルを入れると、曲のテンポ(BPM)とキーを推定します。DJでつなぐ曲選びや、リミックス・耳コピの下準備にどうぞ。</p>
+  </div>
+
+  <section class="panel" aria-label="ファイルを選ぶ">
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.flac,.ogg,.aif,.aiff" hidden>
+      <span class="drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
+      <b>音源ファイルをここにドロップ</b>
+      <span>またはタップして選ぶ(MP3・WAV・M4A など)</span>
+    </label>
+    <p class="note-s">ファイルはこの端末の中だけで解析します。どこにも送信されません。</p>
+    <div class="busy" id="busy" hidden><span class="spin" aria-hidden="true"></span><span id="busyTxt">解析中…</span></div>
+    <p class="err" id="err" hidden></p>
+  </section>
+
+  <section class="panel" id="result" hidden aria-live="polite">
+    <p class="fname" id="fname"></p>
+    <div class="res">
+      <div class="res-box">
+        <p class="res-lbl">BPM</p>
+        <p class="res-big num" id="bpm">—</p>
+        <div class="seg alt" id="bpmAlt" role="group" aria-label="BPMの候補"></div>
+        <p class="res-sub" id="bpmSub"></p>
+      </div>
+      <div class="res-box">
+        <p class="res-lbl">KEY</p>
+        <p class="res-big" id="key">—</p>
+        <p class="res-cam"><span class="cam" id="cam"></span><span id="keyConf"></span></p>
+        <p class="res-sub" id="keyAlt"></p>
+      </div>
+    </div>
+    <div class="scale" id="scale"></div>
+    <div class="row play-row">
+      <button class="go" type="button" id="playBtn">▶ 再生</button>
+      <label class="chk"><input type="checkbox" id="clickOn" checked> クリックを重ねる</label>
+    </div>
+    <p class="note-s">クリックを重ねて、拍がずれていないか耳で確かめてみてね。ずれていたら BPM の候補(半分・倍)を切り替えられます。</p>
+    <div class="mix" id="mix"></div>
+    <p class="res-sub mix-cap" id="mixCap"></p>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>BPMは、音の立ち上がり(アタック)の周期から推定しています。ドラムがはっきりした曲ほど正確です。ハーフタイムや倍で出ることがあるので、候補ボタンで切り替えてください。</li>
+      <li>キーは、曲全体で鳴っている音の割合から、いちばん近い長調・短調を選んでいます。平行調(C と Am など)は取り違えやすいので、2番目の候補もあわせて見てください。</li>
+      <li>「カメロット」は DJ でよく使うキーの番号です。同じ番号・となりの番号(±1)・同じ番号のA/Bはきれいにつながります。</li>
+      <li>テンポが途中で変わる曲や、転調が多い曲は、全体の平均に近い値が出ます。</li>
+      <li>BPMからディレイやリバーブの時間を出すなら <a href="bpmms.html">BPMmsCalculator</a>、キーのスケールを鍵盤で確かめるなら <a href="piano.html">ピアノ</a> もどうぞ。</li>
+    </ul>
+  </section>
+</main>
+
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%82%AD%E3%83%BC%26BPM%E5%88%A4%E5%AE%9A%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fanalyze%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fanalyze%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const MAJ=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"], MIN=["C","C♯","D","E♭","E","F","F♯","G","G♯","A","B♭","B"];
+const SHARPS=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"], FLATS=["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"];
+const CAM_MAJ={0:8,7:9,2:10,9:11,4:12,11:1,6:2,1:3,8:4,3:5,10:6,5:7}, CAM_MIN={9:8,4:9,11:10,6:11,1:12,8:1,3:2,10:3,5:4,0:5,7:6,2:7};
+/* 長調・短調の音の出やすさ(Albrecht & Shanahan 2013 のプロファイル) */
+const KK_MAJ=[.238,.006,.111,.006,.137,.094,.016,.214,.009,.080,.008,.081], KK_MIN=[.220,.006,.104,.123,.019,.103,.012,.214,.062,.022,.061,.052];
+const SR=22050, MAXSEC=420;
+const tick=()=>new Promise(r=>setTimeout(r,0));
+
+/* ---------- FFT(基数2) ---------- */
+const tw={};
+function fft(re,im){
+  const n=re.length;let t=tw[n];
+  if(!t){t=tw[n]={c:new Float64Array(n/2),s:new Float64Array(n/2),r:new Uint32Array(n)};for(let i=0;i<n/2;i++){t.c[i]=Math.cos(-2*Math.PI*i/n);t.s[i]=Math.sin(-2*Math.PI*i/n);}
+    const bits=Math.log2(n);for(let i=0;i<n;i++){let x=i,y=0;for(let b=0;b<bits;b++){y=(y<<1)|(x&1);x>>=1;}t.r[i]=y;}}
+  for(let i=0;i<n;i++){const j=t.r[i];if(j>i){let a=re[i];re[i]=re[j];re[j]=a;a=im[i];im[i]=im[j];im[j]=a;}}
+  for(let size=2;size<=n;size<<=1){const h=size>>1,st=n/size;
+    for(let i=0;i<n;i+=size)for(let j=0;j<h;j++){const k=j*st,c=t.c[k],s=t.s[k],a=i+j,b=a+h;
+      const xr=re[b]*c-im[b]*s,xi=re[b]*s+im[b]*c;re[b]=re[a]-xr;im[b]=im[a]-xi;re[a]+=xr;im[a]+=xi;}}
+}
+const hann=n=>{const w=new Float64Array(n);for(let i=0;i<n;i++)w[i]=0.5-0.5*Math.cos(2*Math.PI*i/n);return w;};
+
+/* ---------- 音の立ち上がりの強さ(スペクトルフラックス) ---------- */
+async function onsetEnv(x,prog){
+  const N=1024,H=256,w=hann(N),nf=Math.max(0,Math.floor((x.length-N)/H)),env=new Float32Array(nf);
+  const re=new Float64Array(N),im=new Float64Array(N),kmax=Math.floor(8000/SR*N);let prev=new Float64Array(kmax+1),cur=new Float64Array(kmax+1);
+  for(let f=0;f<nf;f++){
+    const o=f*H;for(let i=0;i<N;i++){re[i]=x[o+i]*w[i];im[i]=0;}fft(re,im);
+    let s=0;for(let k=1;k<=kmax;k++){const m=Math.log1p(100*Math.hypot(re[k],im[k]));cur[k]=m;const d=m-prev[k];if(d>0)s+=d;}
+    env[f]=s;const tmp=prev;prev=cur;cur=tmp;
+    if(f%3000===0){prog(f/nf);await tick();}
+  }
+  /* ゆっくりした変化を引いて、アタックだけ残す */
+  const W=Math.round(0.4*SR/H),out=new Float32Array(nf);let acc=0;
+  for(let i=0;i<nf;i++){acc+=env[i];if(i>=W)acc-=env[i-W];const m=acc/Math.min(i+1,W);out[i]=Math.max(0,env[Math.max(0,i-(W>>1))]-m);}
+  return {env:out.slice(W>>1),fps:SR/H,off:(N/2)/SR};
+}
+function tempo(e,fps){
+  const n=e.length,lagMax=Math.ceil(fps*60/45)+2,r=new Float64Array(lagMax+1);
+  for(let L=1;L<=lagMax;L++){let s=0;for(let i=0;i+L<n;i++)s+=e[i]*e[i+L];r[L]=s/(n-L);}
+  const ri=L=>{const a=Math.floor(L),f=L-a;return a+1<=lagMax?r[a]*(1-f)+r[a+1]*f:0;};
+  const S=b=>{const L=fps*60/b;return ri(L)+0.5*ri(2*L)+0.25*ri(L/2);};
+  const prior=b=>Math.exp(-0.5*Math.pow(Math.log2(b/115)/0.9,2));
+  let best=0,bb=120;for(let b=55;b<=215;b+=0.5){const v=S(b)*prior(b);if(v>best){best=v;bb=b;}}
+  /* 細かく合わせる:拍の位置にアタックがいちばん集まるテンポと位相を探す */
+  const comb=(b)=>{const p=fps*60/b;let bestS=-1,bestPh=0;for(let ph=0;ph<p;ph+=0.5){let s=0,c=0;for(let t=ph;t<n-1;t+=p){const a=Math.floor(t),f=t-a;s+=e[a]*(1-f)+e[a+1]*f;c++;}s/=c||1;if(s>bestS){bestS=s;bestPh=ph;}}return [bestS,bestPh];};
+  let fb=bb,fs=-1,fph=0;for(let b=bb-1.5;b<=bb+1.5;b+=0.02){const [s,ph]=comb(b);if(s>fs){fs=s;fb=b;fph=ph;}}
+  const near=Math.round(fb);if(Math.abs(fb-near)<0.12)fb=near;
+  return {bpm:fb,phase:fph/fps};
+}
+
+/* ---------- キー(クロマ+Krumhanslのプロファイル) ---------- */
+async function keyOf(x,prog){
+  const N=8192,H=4096,w=hann(N),nf=Math.max(0,Math.floor((x.length-N)/H)),re=new Float64Array(N),im=new Float64Array(N);
+  const map=new Int8Array(N/2).fill(-1),wt=new Float64Array(N/2),isB=new Uint8Array(N/2);
+  for(let k=1;k<N/2;k++){const f=k*SR/N;if(f<45||f>2000)continue;isB[k]=f<220?1:0;const m=69+12*Math.log2(f/440),d=Math.abs(m-Math.round(m));if(d>0.35)continue;map[k]=((Math.round(m)%12)+12)%12;wt[k]=1-d;}
+  const chroma=new Float64Array(12),fr=new Float64Array(12),bc=new Float64Array(12),bfr=new Float64Array(12);
+  for(let f=0;f<nf;f++){
+    const o=f*H;for(let i=0;i<N;i++){re[i]=x[o+i]*w[i];im[i]=0;}fft(re,im);fr.fill(0);
+    bfr.fill(0);
+    for(let k=1;k<N/2;k++){const p=map[k];if(p<0)continue;const v=Math.hypot(re[k],im[k])*wt[k];if(isB[k])bfr[p]+=v;else fr[p]+=v;}
+    let mx=0,bm=0;for(let p=0;p<12;p++){mx=Math.max(mx,fr[p]);bm=Math.max(bm,bfr[p]);}
+    if(mx>1e-3)for(let p=0;p<12;p++)chroma[p]+=fr[p]/mx;
+    if(bm>1e-3)for(let p=0;p<12;p++)bc[p]+=Math.pow(bfr[p]/bm,2); /* ベースは主音に寄りやすいので、強い音を強調して別に集計 */
+    if(f%200===0){prog(f/nf);await tick();}
+  }
+  const corr=(a,b)=>{const ma=a.reduce((s,v)=>s+v,0)/12,mb=b.reduce((s,v)=>s+v,0)/12;let n=0,da=0,db=0;for(let i=0;i<12;i++){n+=(a[i]-ma)*(b[i]-mb);da+=(a[i]-ma)**2;db+=(b[i]-mb)**2;}return n/Math.sqrt(da*db||1);};
+  /* ベースの重心を足す:上もの7割+ベース3割 */
+  const sum=a=>a.reduce((x,y)=>x+y,0)||1,cs=sum(chroma),bs=sum(bc);for(let p=0;p<12;p++)chroma[p]=0.7*chroma[p]/cs+0.3*bc[p]/bs;
+  const res=[];for(let k=0;k<12;k++){const rot=p=>Array.from({length:12},(_,i)=>p[((i-k)%12+12)%12]);res.push({k,maj:true,s:corr(chroma,rot(KK_MAJ))});res.push({k,maj:false,s:corr(chroma,rot(KK_MIN))});}
+  res.sort((a,b)=>b.s-a.s);window.__chroma=Array.from(chroma);return {list:res,chroma};
+}
+const keyName=(k,maj)=>(maj?MAJ:MIN)[k]+(maj?"":"m");
+const cam=(k,maj)=>(maj?CAM_MAJ[k]+"B":CAM_MIN[k]+"A");
+function fromCam(n,l){n=((n-1)%12+12)%12+1;const t=l==="B"?CAM_MAJ:CAM_MIN;const k=+Object.keys(t).find(x=>t[x]===n);return {k,maj:l==="B"};}
+
+/* ---------- 画面 ---------- */
+let ac=null,buf=null,src=null,clickTimer=0,res=null,curBpm=0,phase=0,playing=false,t0=0;
+function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();}if(ac.state!=="running")ac.resume();return ac;}
+function busy(on,txt){$("busy").hidden=!on;if(txt)$("busyTxt").textContent=txt;}
+function err(msg){$("err").hidden=!msg;$("err").textContent=msg||"";}
+async function analyze(file){
+  stop();err("");$("result").hidden=true;busy(true,"読み込み中…");
+  try{
+    const ab=await file.arrayBuffer();
+    buf=await new Promise((ok,ng)=>{const p=audio().decodeAudioData(ab,ok,ng);if(p&&p.then)p.then(ok,ng);});
+    busy(true,"解析中…");await tick();
+    const dur=Math.min(buf.duration,MAXSEC),len=Math.ceil(dur*SR);
+    const oc=new OfflineAudioContext(1,len,SR),s=oc.createBufferSource();s.buffer=buf;s.connect(oc.destination);s.start();
+    const x=(await oc.startRendering()).getChannelData(0);
+    const on=await onsetEnv(x,p=>busy(true,"テンポを解析中… "+Math.round(p*100)+"%"));
+    const tp=tempo(on.env,on.fps);
+    const ky=await keyOf(x,p=>busy(true,"キーを解析中… "+Math.round(p*100)+"%"));
+    res={tp,ky,off:on.off};curBpm=tp.bpm;phase=tp.phase+on.off;
+    show(file.name);
+  }catch(e){console.error(e);err("このファイルは読み込めませんでした。MP3・WAV・M4A などの音声ファイルを選んでください。");}
+  busy(false);
+}
+const fmt=b=>Math.abs(b-Math.round(b))<0.01?String(Math.round(b)):b.toFixed(1);
+function show(name){
+  $("fname").textContent=name+(buf.duration>MAXSEC?"(最初の7分を解析)":"");
+  const b=res.tp.bpm,alts=[b/2,b,b*2].filter(v=>v>=40&&v<=260);
+  $("bpmAlt").innerHTML=alts.map(v=>`<button type="button" data-b="${v}" aria-pressed="${v===curBpm}">${v<b?"半分 ":v>b?"倍 ":""}${fmt(v)}</button>`).join("");
+  $("bpm").textContent=fmt(curBpm);
+  $("bpmSub").textContent="1拍 "+(60000/curBpm).toFixed(1)+" ms";
+  const L=res.ky.list,top=L[0],next=L.find(x=>x!==top);
+  $("key").innerHTML=(top.maj?MAJ:MIN)[top.k]+`<small style="font-size:.4em;margin-left:.25em">${top.maj?"メジャー":"マイナー"}</small>`;
+  $("cam").textContent=cam(top.k,top.maj);
+  const m=top.s-next.s;$("keyConf").textContent="確からしさ:"+(m>0.08?"高":m>0.03?"中":"低");
+  $("keyAlt").textContent="ほかの候補:"+L.slice(1,3).map(x=>keyName(x.k,x.maj)+"("+cam(x.k,x.maj)+")").join("・");
+  const sc=(top.maj?[0,2,4,5,7,9,11]:[0,2,3,5,7,8,10]).map(i=>(top.k+i)%12);
+  const useSharp=top.maj?[7,2,9,4,11,6].includes(top.k):[4,11,6,1,8,3].includes(top.k);
+  $("scale").innerHTML=sc.map((p,i)=>`<span class="${i===0?"t":""}">${(useSharp?SHARPS:FLATS)[p]}</span>`).join("");
+  const c=CAM_MAJ[top.k],n=top.maj?CAM_MAJ[top.k]:CAM_MIN[top.k],l=top.maj?"B":"A",o=l==="B"?"A":"B";
+  const mix=[[n,o,"平行調"],[n-1,l,"−1"],[n+1,l,"+1"]].map(([nn,ll,t])=>{const kk=fromCam(nn,ll);return `<span><b>${cam(kk.k,kk.maj)}</b>${keyName(kk.k,kk.maj)}<small style="color:var(--ink-soft)"> ${t}</small></span>`;});
+  $("mix").innerHTML=mix.join("");$("mixCap").textContent="この曲となめらかにつながるキー(カメロット)";
+  $("result").hidden=false;
+}
+$("bpmAlt").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;curBpm=+b.dataset.b;show($("fname").textContent.replace(/(最初の7分を解析)$/,""));});
+
+/* ---------- 再生とクリック ---------- */
+function beep(t){const o=ac.createOscillator(),g=ac.createGain();o.type="sine";o.frequency.value=1320;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.35,t+0.002);g.gain.exponentialRampToValueAtTime(0.0001,t+0.05);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+0.06);}
+let nextBeat=0;
+function sched(){const p=60/curBpm,now=ac.currentTime-t0;while(nextBeat*p+phase<now+0.15){const bt=nextBeat*p+phase;if(bt>=now-0.01&&$("clickOn").checked)beep(t0+bt);nextBeat++;}}
+function play(){const a=audio();src=a.createBufferSource();src.buffer=buf;const g=a.createGain();g.gain.value=0.8;src.connect(g);g.connect(a.destination);t0=a.currentTime+0.05;src.start(t0);
+  nextBeat=Math.max(0,Math.ceil(-phase/(60/curBpm)));clickTimer=setInterval(sched,40);playing=true;$("playBtn").textContent="■ 止める";src.onended=()=>{if(playing)stop();};}
+function stop(){playing=false;clearInterval(clickTimer);if(src){try{src.stop()}catch(e){}src=null;}$("playBtn").textContent="▶ 再生";}
+$("playBtn").onclick=()=>{if(!buf)return;playing?stop():play();};
+
+/* ---------- ファイル入力 ---------- */
+$("file").addEventListener("change",e=>{const f=e.target.files[0];if(f)analyze(f);e.target.value="";});
+const dz=$("drop");
+["dragenter","dragover"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add("over");}));
+["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("over");}));
+dz.addEventListener("drop",e=>{const f=e.dataTransfer.files[0];if(f)analyze(f);});
+document.addEventListener("dragover",e=>e.preventDefault());document.addEventListener("drop",e=>e.preventDefault());
+window.__analyze=analyze;window.__res=()=>res&&{bpm:curBpm,key:keyName(res.ky.list[0].k,res.ky.list[0].maj),cam:cam(res.ky.list[0].k,res.ky.list[0].maj),alt:res.ky.list.slice(1,3).map(x=>keyName(x.k,x.maj)),phase};
+
+const sb=$("shareBtn");
+if(sb) sb.addEventListener("click",async()=>{
+  const data={title:document.title,url:"https://www.namigroove.com/tools/analyze/"};
+  try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);const d=document.createElement("div");d.className="ng-toast";d.textContent="リンクをコピーしました";document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}catch(e){}
+});
+})();
+</script>
+</body>
+</html>
