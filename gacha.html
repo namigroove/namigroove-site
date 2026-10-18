@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>お題ガチャ(作詞・作曲のお題メーカー) – なみぐる！</title>
+<meta name="description" content="作詞・曲づくりのお題をランダムに出す無料のお題ガチャ。テーマ・音楽ジャンル・歌詞のキーワード・縛り・気分・BPMとキーの組み合わせで、ボカロや作曲の練習に。">
+<meta property="og:title" content="お題ガチャ(作詞・作曲のお題メーカー) – なみぐる！">
+<meta property="og:description" content="作詞・曲づくりのお題をランダムに出す無料のお題ガチャ。テーマ・音楽ジャンル・歌詞のキーワード・縛り・気分・BPMとキーの組み合わせで、ボカロや作曲の練習に。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/gacha/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg">
+<link rel="canonical" href="https://www.namigroove.com/tools/gacha/">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-180x180.png">
+<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tools.webmanifest">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 0}.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+/* サックス運指表 */
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+#instSeg .more-b{border-style:dashed;color:var(--ink-soft)}
+.tabs.fam{grid-template-columns:repeat(4,1fr);margin-bottom:16px}
+.sx-top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;margin-bottom:14px}
+.sx-head{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 6px}
+.sx-name{text-align:center;min-width:6em}
+.sx-name .w{font-family:var(--f-display);font-size:clamp(48px,12vw,72px);line-height:1}
+.sx-name .w sub{font-size:.4em;color:var(--ink-soft);font-family:var(--f-mono);margin-left:2px}
+.sx-name .c{font-size:13px;color:var(--ink-soft)}
+.sx-name .c b{color:var(--sea);font-weight:700}
+.sx-alt-badge{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;background:var(--coral);color:#fff;margin-left:4px;vertical-align:2px}
+.sx-figs{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:10px 0 4px}
+.sx-fig{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 10px 8px;border-radius:14px;border:1px solid var(--line);background:var(--chip);width:150px}
+.sx-fig.main{border:2px solid var(--sea)}
+.sx-fig h3{margin:0;font-size:12px;font-weight:700;color:var(--ink-soft);text-align:center;min-height:1.5em;white-space:nowrap}
+.sx-fig.main h3{color:var(--sea)}
+.sx-fig .keys{font-size:10px;color:var(--ink-soft);text-align:center;line-height:1.5}
+.sxf{width:110px;height:auto;display:block}
+.sxf-rod{stroke:var(--line);stroke-width:2}
+.sxf-sep{stroke:var(--ink-soft);stroke-width:1.5;stroke-dasharray:3 3}
+.sxf-k{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.sxf-k.on{fill:var(--sea);stroke:var(--sea)}
+.sxf-t{font:9px var(--f-body);fill:var(--ink-soft);text-anchor:middle}
+.sx-notes{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:8px}
+.sx-notes button{font:500 13px var(--f-body);min-width:46px;padding:6px 6px;border-radius:10px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.2}
+.sx-notes button small{display:block;font:10px var(--f-body);color:var(--ink-soft);opacity:.8}
+.sx-notes button[aria-pressed="true"] small{color:#dfe8ff}
+.sx-notes button sub{font:10px var(--f-mono);color:var(--ink-soft)}
+.sx-notes button.blk{background:var(--wash)}
+.sx-notes button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
+.sx-notes button[aria-pressed="true"] sub{color:#dfe8ff}
+.sx-sub{font-size:13px;font-weight:700;color:var(--ink-soft);text-align:center;margin:18px 0 0}
+.sx-warn{font-size:12px;color:var(--ink-soft);text-align:center;margin:6px 0 0}
+.bf{width:156px;height:auto;display:block}
+.bf-slide{width:156px}
+.sx-fig{width:180px}
+.bf-k{fill:var(--paper);stroke:var(--ink);stroke-width:1.8}
+.bf-k.on{fill:var(--sea);stroke:var(--sea)}
+.bf-n{font:600 14px var(--f-mono);fill:var(--ink);text-anchor:middle;pointer-events:none}
+.bf-n.on{fill:#fff}
+.bf-st{fill:var(--line)}
+.bf-t{font:10px var(--f-body);fill:var(--ink-soft);text-anchor:middle}
+.bf-t.on{fill:var(--sea);font-weight:700}
+.bf-rail{stroke:var(--line);stroke-width:4;stroke-linecap:round}
+.bf-tick{stroke:var(--ink-soft);stroke-width:1.5}
+.bf-tick.on{stroke:var(--sea)}
+.bf-mark{fill:var(--sea);opacity:.9}
+.bf-tr{font:700 10px var(--f-body);fill:var(--ink-soft);text-anchor:middle}
+.bf-tr.on{fill:var(--coral)}
+.sx-fig .tip{font-size:11px;color:var(--coral);text-align:center;line-height:1.5}
+.tabs.fam{grid-template-columns:repeat(5,1fr)}
+@media (max-width:480px){.tabs.fam .lg{display:none}}
+/* お題ガチャ */
+.stage-g{display:flex;align-items:flex-end;justify-content:center;gap:10px;min-height:110px;margin-bottom:12px}
+.stage-g .nami{width:96px}
+.capsule{width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,var(--sea) 50%,var(--chip) 50%);border:2px solid var(--ink);opacity:0;transform:translateY(-30px) scale(.6)}
+.capsule.gold{background:linear-gradient(180deg,#e6b422 50%,#fff3c4 50%);border-color:#a07a10}
+.capsule.pop{animation:capPop .5s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes capPop{0%{opacity:0;transform:translate(-40px,-30px) scale(.4)}60%{opacity:1;transform:translate(0,4px) scale(1.1)}100%{opacity:1;transform:none}}
+.cards-g{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.cg{grid-column:span 3}.cg.kw{grid-column:span 2}.cg.wide{grid-column:1/-1}
+@media (max-width:560px){.cg{grid-column:1/-1}.cg.kw{grid-column:span 2;padding:10px 8px 10px 10px}.cg.kw .v{font-size:16px;margin-top:6px}.cg.kw .lock{width:24px;height:24px;font-size:11px;top:6px;right:6px}.cg.kw.locked{padding:9px 7px 9px 9px}}
+.cg{position:relative;border:1px solid var(--line);border-radius:14px;background:var(--chip);padding:12px 44px 12px 14px;cursor:pointer;transition:transform .12s,border-color .12s;-webkit-tap-highlight-color:transparent}
+.cg:hover{border-color:var(--sea)}
+.cg.locked{border:2px solid var(--sea);padding:11px 43px 11px 13px}
+.cg.rare{background:linear-gradient(135deg,#fff7d6,#ffe9a8);border-color:#e6b422;color:#3a2a00}
+.cg.rare .lb{color:#8a6400}
+.cg .lb{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--sea)}
+.cg .v{display:block;font-family:var(--f-display);font-size:19px;line-height:1.45;margin-top:2px;word-break:break-word}
+.cg .v small{font-family:var(--f-body);font-size:12px;color:var(--ink-soft)}
+.cg.rare .v small{color:#6b5300}
+.cg.flip{animation:flip .35s ease-out}
+@keyframes flip{0%{transform:rotateX(80deg);opacity:.2}100%{transform:none;opacity:1}}
+.lock{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0}
+.cg.locked .lock{background:var(--sea);border-color:var(--sea)}
+#useSeg label{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);cursor:pointer}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+@media (prefers-reduced-motion:reduce){.capsule.pop,.cg.flip{animation:none;opacity:1;transform:none}}
+.sx-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px 14px;font-size:12px;margin:0;padding:0;list-style:none}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"お題ガチャ(作詞・作曲のお題メーカー)","url":"https://www.namigroove.com/tools/gacha/","description":"作詞・曲づくりのお題をランダムに出す無料のお題ガチャ。テーマ・音楽ジャンル・歌詞のキーワード・縛り・気分・BPMとキーの組み合わせで、ボカロや作曲の練習に。","applicationCategory":"MultimediaApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["作詞のお題","音楽ジャンル","キーワード3つ","縛り(ルール)","BPM・キー","カードの固定"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"お題ガチャ(作詞・作曲のお題メーカー)","item":"https://www.namigroove.com/tools/gacha/"}]}]}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html">Works</a>
+      <a href="tools.html">Tools</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links" class="opt">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
+/* EN⇔JP:Google翻訳(英語)との切り替え */
+(()=>{const a=document.getElementById("toEN"); if(!a) return;
+ const tr=/\.translate\.goog$/.test(location.hostname);
+ if(tr){
+  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
+  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
+  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
+  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
+ } else {
+  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
+ }
+})();
+</script>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>お題ガチャ</h1>
+    <p class="lead">曲づくり・作詞のお題をランダムに出します。テーマ、ジャンル、歌詞に入れるキーワード、縛り、気分の組み合わせで1曲書いてみよう。気に入ったカードは鍵をかけて、残りだけ回し直せます。</p>
+  </div>
+
+  <section class="panel" aria-label="お題ガチャ">
+    <div class="stage-g">
+      <button class="nami-btn" type="button" id="namiBtn" aria-label="ガチャを回す"><img class="nami" id="nami" src="img/namigroove-3d.webp" alt="" width="640" height="565"></button>
+      <div class="capsule" id="capsule" aria-hidden="true"><i></i></div>
+    </div>
+    <div class="row"><button class="go" type="button" id="spin"><span>ガチャを回す</span></button></div>
+    <p class="note-s" id="rareMsg" hidden>✨ 金のカプセル!なみぐるのレアお題が入っています</p>
+    <ul class="cards-g" id="cards" aria-live="polite"></ul>
+    <div class="row" style="margin-top:14px">
+      <button class="btn" type="button" id="copyBtn">コピー</button>
+      <a class="btn" id="postBtn" href="#" target="_blank" rel="noopener">Xにお題を投稿</a>
+      <a class="btn" id="metroBtn" href="tuner.html#metronome">このBPMでメトロノーム ›</a>
+    </div>
+    <details class="opts">
+      <summary>出すカードを選ぶ</summary>
+      <div class="row" id="useSeg"></div>
+    </details>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>カードをタップすると、そのカードだけ回し直せます。🔒を押すと、次に回しても残ります。</li>
+      <li>BPMとキーは、出たジャンルによくあるテンポの中から選んでいます。あくまできっかけなので、自由に変えてね。</li>
+      <li>ときどき金のカプセルが出ます。中身はお楽しみ。</li>
+      <li>このお題で曲を作ったら、<a href="https://x.com/search?q=%23namigroovetools" target="_blank" rel="noopener">#namigroovetools</a> をつけて教えてね。歌詞の音数は<a href="mora.html">歌詞の音数カウンター</a>で数えられます。</li>
+    </ul>
+  </section>
+</main>
+
+
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%81%8A%E9%A1%8C%E3%82%AC%E3%83%81%E3%83%A3%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fgacha%2F&amp;hashtags=namigroovetools" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fgacha%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script src="https://namigroove.github.io/namigroove-site/gacha-words.js?v=1"></script>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
+const G=window.NamiGacha;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const SLOTS=[
+  {id:"theme",lb:"テーマ"},{id:"genre",lb:"ジャンル"},{id:"w1",lb:"キーワード"},{id:"w2",lb:"キーワード"},{id:"w3",lb:"キーワード"},
+  {id:"rule",lb:"縛り",wide:1},{id:"mood",lb:"気分・視点"},{id:"extra",lb:"BPM・キー"}
+];
+const USE_DEF={theme:1,genre:1,w:1,rule:1,mood:1,extra:1};
+let use=Object.assign({},USE_DEF,store.get("gachaUse",{}));
+let cur=store.get("gachaCur",null)||{}, locks=new Set(store.get("gachaLocks",[])), rareNow=false;
+const useKey=id=>id[0]==="w"?"w":id;
+
+function roll(id){
+  const used=new Set(["w1","w2","w3"].filter(k=>k!==id).map(k=>cur[k]&&cur[k].v));
+  if(id==="theme")return{v:pick(G.THEME)};
+  if(id==="rule")return{v:pick(G.RULE)};
+  if(id==="mood")return{v:pick(G.MOOD)};
+  if(id==="genre"){const g=pick(G.GENRE);return{v:g.n,b:g.b};}
+  if(id==="extra"){const g=G.GENRE.find(x=>cur.genre&&x.n===cur.genre.v)||pick(G.GENRE);const bpm=g.b[0]+Math.round(Math.random()*(g.b[1]-g.b[0])/2)*2;
+    const minor=Math.random()<0.5;return{v:`BPM ${bpm} ・ ${pick(G.KEYS)}${minor?"マイナー":"メジャー"}`,bpm};}
+  let w;do{w=pick(G.WORD);}while(used.has(w));return{v:w};
+}
+function active(){return SLOTS.filter(s=>use[useKey(s.id)]);}
+function spin(only){
+  const ids=only?[only]:active().map(s=>s.id).filter(id=>!locks.has(id));
+  ids.forEach(id=>{cur[id]=roll(id);if(id==="genre"&&!locks.has("extra")&&!only)cur.extra=roll("extra");});
+  if(only==="genre"&&!locks.has("extra"))cur.extra=roll("extra");
+  rareNow=false;
+  if(!only&&Math.random()<0.06){ /* 金のカプセル */
+    const r=pick(G.RARE), id=r.k==="word"?["w1","w2","w3"].find(k=>!locks.has(k)&&use.w):r.k;
+    if(id&&use[useKey(id)]&&!locks.has(id)){cur[id]={v:r.v,rare:1};rareNow=true;}
+  }
+  store.set("gachaCur",cur);render(only?[only]:ids);
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function render(changed){
+  changed=new Set(changed||[]);
+  $("cards").innerHTML=active().map(s=>{const c=cur[s.id];if(!c)return"";
+    const sub=s.id==="genre"&&c.b?` <small>BPM ${c.b[0]}${c.b[1]!==c.b[0]?"〜"+c.b[1]:""}くらい</small>`:"";
+    return `<li class="cg${locks.has(s.id)?" locked":""}${c.rare?" rare":""}${s.wide?" wide":""}${s.id[0]==="w"?" kw":""}${changed.has(s.id)?" flip":""}" data-id="${s.id}" title="タップでこのカードだけ回し直す"><span class="lb">${c.rare?"✨ ":""}${s.lb}</span><span class="v">${esc(c.v)}${sub}</span><button class="lock" type="button" aria-pressed="${locks.has(s.id)}" aria-label="${s.lb}を${locks.has(s.id)?"固定解除":"固定"}">${locks.has(s.id)?"🔒":"🔓"}</button></li>`;}).join("");
+  $("rareMsg").hidden=!rareNow;
+  const cap=$("capsule");cap.classList.remove("pop","gold");void cap.offsetWidth;if(changed.size){cap.classList.add("pop");if(rareNow)cap.classList.add("gold");}
+  const t=text();
+  $("postBtn").href="https://x.com/intent/post?text="+encodeURIComponent("お題ガチャで出たお題\n"+t+"\n")+"&url="+encodeURIComponent("https://www.namigroove.com/tools/gacha/")+"&hashtags=namigroovetools";
+  $("metroBtn").hidden=!(use.extra&&cur.extra&&cur.extra.bpm);
+}
+function text(){return active().filter(s=>cur[s.id]).map(s=>`${s.lb}:${cur[s.id].v}`).join("\n");}
+$("cards").addEventListener("click",e=>{
+  const li=e.target.closest(".cg");if(!li)return;const id=li.dataset.id;
+  if(e.target.closest(".lock")){locks.has(id)?locks.delete(id):locks.add(id);store.set("gachaLocks",[...locks]);render();return;}
+  if(locks.has(id))return; spin(id);
+});
+function hop(){const n=$("nami");n.classList.remove("hop","acc");void n.offsetWidth;n.classList.add("hop","acc");}
+$("spin").onclick=()=>{hop();spin();};
+$("namiBtn").onclick=()=>{hop();spin();};
+$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(text());toast("お題をコピーしました");}catch(e){}};
+$("metroBtn").addEventListener("click",()=>{if(cur.extra&&cur.extra.bpm)store.set("bpm",cur.extra.bpm);});
+/* 出すカード */
+const USE_LB={theme:"テーマ",genre:"ジャンル",w:"キーワード",rule:"縛り",mood:"気分・視点",extra:"BPM・キー"};
+$("useSeg").innerHTML=Object.keys(USE_LB).map(k=>`<label><input type="checkbox" data-k="${k}"${use[k]?" checked":""}>${USE_LB[k]}</label>`).join("");
+$("useSeg").addEventListener("change",e=>{const k=e.target.dataset.k;use[k]=e.target.checked?1:0;store.set("gachaUse",use);
+  active().forEach(s=>{if(!cur[s.id])cur[s.id]=roll(s.id);});render();});
+function toast(t){const d=document.createElement("div");d.className="ng-toast";d.textContent=t;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}
+if(!active().every(s=>cur[s.id]))spin();else render();
+const sb=$("shareBtn");
+if(sb) sb.addEventListener("click",async()=>{const data={title:document.title,text:document.title+" #namigroovetools",url:"https://www.namigroove.com/tools/gacha/"};
+  try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);toast("リンクをコピーしました");}catch(e){}});
+})();
+</script>
+<script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
+(()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
+const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
+ ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
+ [".cp,.ro","copy_ms"],["#scSeg button","scale_select"],["#typeSeg button,#clType button","chord_select"],["#pgCat button,#clCat button","genre_select"],["#drop","file_pick"]];
+document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.target.closest(sel);if(!el)continue;
+  const h=el.closest(".pg,.cl-pg");const label=((h&&h.querySelector("h3")&&h.querySelector("h3").textContent)||el.dataset.g||el.textContent||"").trim().slice(0,60);
+  ngTrack(name,{label});break;}},true);})();
+</script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
+</body>
+</html>
