@@ -2,7 +2,7 @@
    - チューナー&メトロノームとツール一覧は、最初に開いたときにまとめて保存する
    - ほかのツールも、一度開いたページは電波がなくても開ける
    - ページは「ネット優先(つながらなければ保存した版)」、画像・フォント・スクリプトは「保存した版を先に使って裏で更新」 */
-const VER = "ng-tools-v1";
+const VER = "ng-tools-v2";
 const ASSET_HOSTS = ["namigroove.github.io", "fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"];
 const SKIP = /googletagmanager|google-analytics|gtag|recaptcha|doubleclick/;
 
@@ -27,11 +27,7 @@ async function cacheAssetsOf(cache, html, base) {
       const res = await fetch(u, { mode: "cors", credentials: "omit" }).catch(() => fetch(u, { mode: "no-cors" }));
       if (!res || (!res.ok && res.type !== "opaque")) return;
       await cache.put(u, res.clone());
-      if (/fonts\.googleapis\.com/.test(u)) { /* フォントCSSの中身も保存 */
-        const css = await res.text();
-        const fu = [...css.matchAll(/url\(([^)]+)\)/g)].map(x => x[1].replace(/["']/g, ""));
-        await Promise.all(fu.map(f => fetch(f, { mode: "cors" }).then(r => r.ok && cache.put(f, r)).catch(() => {})));
-      }
+      /* Google Fonts の文字ごとのファイルは数百あるので、先に全部は保存しない(実際に使った分だけ、表示のときに保存) */
     } catch (e) {}
   }));
 }
