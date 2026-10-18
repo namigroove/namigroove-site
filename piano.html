@@ -212,6 +212,13 @@ footer a{color:var(--sea)}
 #smpRec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
 .btn.recb[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff;animation:recBlink 1s steps(2) infinite}
 @keyframes recBlink{50%{opacity:.75}}
+.btn.mt[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
+.mt-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;margin:10px auto 0;padding:10px 12px;border-radius:12px;background:var(--wash);max-width:640px;font-size:13px;color:var(--ink-soft)}
+.mt-row[hidden]{display:none}
+.mt-bpm{display:flex;align-items:center;gap:8px;touch-action:none;user-select:none}
+.mt-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize}.mt-v output{font-family:var(--f-display);font-size:26px;min-width:2.6ch;text-align:center;color:var(--ink)}.mt-v small{font-size:10px}
+.mt-c{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.mt-dots{display:flex;gap:6px}.mt-dots i{width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}.mt-dots i.on{background:var(--sea);border-color:var(--sea)}.mt-dots i.on.acc{background:var(--coral);border-color:var(--coral)}
 .take{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--wash);display:flex;flex-direction:column;align-items:center;gap:8px}
 .take audio{width:100%;max-width:520px}
 .take-b{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
@@ -348,6 +355,13 @@ header.top .logo{flex:none}
       <button class="btn round" type="button" id="octUp" aria-label="1オクターブ上へ">›</button>
       <button class="btn sus" type="button" id="susBtn" aria-pressed="false" title="ペダル(Spaceキーを押している間もON)">ペダル</button>
       <button class="btn recb" type="button" id="recBtn" aria-pressed="false" title="弾いた音を録音して、MP3やWAVで保存できます">● 演奏を録音</button>
+      <button class="btn mt" type="button" id="mtBtn" aria-pressed="false" title="メトロノーム">♩ メトロノーム</button>
+    </div>
+    <div class="mt-row" id="mtRow" hidden>
+      <div class="mt-bpm" id="mtBpmBox" title="ホイール・上下ドラッグでも変えられます"><button class="btn round" type="button" id="mtDown" aria-label="BPMを1下げる">−</button><span class="mt-v"><output id="mtBpm" class="num">100</output><small>BPM</small></span><button class="btn round" type="button" id="mtUp" aria-label="BPMを1上げる">＋</button></div>
+      <label class="mt-c">拍子 <select id="mtBeats" class="sel"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/8</option></select></label>
+      <label class="mt-c"><input type="checkbox" id="mtRec"> 録音とMIDIにクリックも入れる</label>
+      <span class="mt-dots" id="mtDots" aria-hidden="true"></span>
     </div>
     <div class="kb-row"><div class="pb" id="pb" role="slider" aria-label="ピッチベンド" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0" tabindex="0"><i class="pb-c"></i><b class="pb-th" id="pbTh"></b></div>
       <div class="kb-wrap"><div class="kb" id="kb" role="group" aria-label="鍵盤"></div></div>
@@ -447,6 +461,7 @@ header.top .logo{flex:none}
       <li>鍵盤の下の方をタップすると強く、上の方だと弱く鳴ります。スマホでは複数の指で和音も弾けます。</li>
       <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。「エフェクト」を開くと、ピッチ(±2オクターブ)・テープストップ(弾くたびに止まるように減速)・ルーズ(弾くたびにピッチがランダムにずれる)・逆再生をかけられます。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
       <li>「● 演奏を録音」を押して弾くと、演奏を録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。録音はこの端末の中だけで処理します。弾いた鍵盤はMIDIファイルでも保存できます(強さ・長さ・ペダル・ピッチベンドつき。テンポは120で記録)。</li>
+      <li>「♩ メトロノーム」でクリックを鳴らせます(BPM・拍子つき)。「録音とMIDIにクリックも入れる」にチェックすると、録音にクリックが入り、MIDIにもクリックのトラックが付きます。メトロノームを鳴らしながら録音すると、MIDIはそのテンポで、小節の頭にそろえて保存します。</li>
       <li>「コードを調べる」では、コード名を選ぶと鍵盤にオレンジで押さえる場所を出して鳴らします。オレンジの枠のボタンはおしゃれ系のコードです。「おしゃれ進行」では定番進行をテンション入りのボイシングで聴けます(キーも変えられます)。</li>
       <li>鍵盤の左のホイールを上下にドラッグするとピッチベンド。離すと元の高さに戻ります。幅は設定で±1・±2・±12半音から選べます。</li>
       <li>MIDIキーボードはChrome・Edgeで使えます(Safariは非対応)。ベロシティ、サステインペダル、ピッチベンドにも対応しています。</li>
@@ -778,16 +793,35 @@ segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("pianoInst",inst);smpView();$
 let chipWave=store.get("pianoChipWave","sq25");if(!["sq50","sq25","sq12","tri","saw"].includes(chipWave))chipWave="sq25";
 segInit($("chipSeg"),"w",chipWave,v=>{chipWave=v;store.set("pianoChipWave",v);});$("chipRow").hidden=inst!=="chip";
 
+/* ===== メトロノーム(録音にクリックを入れるかは選べる。録音中に鳴っていれば、MIDIはそのテンポの拍に合わせて保存) ===== */
+let mtOn=false,mtBpm=+store.get("pianoMtBpm",100)||100,mtBeats=+store.get("pianoMtBeats",4)||4,mtRec=!!store.get("pianoMtRec",false),mtNext=0,mtBeat=0,mtTimer=0,mtQ=[],mtLog=[];
+$("mtBeats").value=String(mtBeats);$("mtRec").checked=mtRec;
+function mtSetBpm(v){mtBpm=Math.max(30,Math.min(300,Math.round(v)));$("mtBpm").textContent=mtBpm;store.set("pianoMtBpm",mtBpm);}mtSetBpm(mtBpm);
+function mtDotsView(){$("mtDots").innerHTML=Array.from({length:mtBeats},(_,i)=>`<i class="${i?"":"acc"}"></i>`).join("");}mtDotsView();
+function mtClick(t,acc){const a=ac,o=a.createOscillator(),g=a.createGain();o.type="square";o.frequency.value=acc?1760:1320;
+  g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(acc?0.22:0.14,t+0.002);g.gain.exponentialRampToValueAtTime(0.0001,t+0.05);
+  o.connect(g);g.connect(mtRec?master:a.destination);o.start(t);o.stop(t+0.06);}
+function mtSched(){const a=ac;while(mtNext<a.currentTime+0.12){const acc=mtBeat===0;mtClick(mtNext,acc);mtQ.push({t:mtNext,b:mtBeat});if(recOn)mtLog.push([mtNext-recStart,mtBeat]);
+  mtNext+=mtBeats===6?60/mtBpm/2:60/mtBpm;mtBeat=(mtBeat+1)%mtBeats;}}
+function mtDraw(){if(!mtOn)return;const now=ac.currentTime;let cur=null;while(mtQ.length&&mtQ[0].t<=now)cur=mtQ.shift();if(cur)[...$("mtDots").children].forEach((x,i)=>x.classList.toggle("on",i===cur.b));requestAnimationFrame(mtDraw);}
+function mtStart(){const a=audio();mtOn=true;mtBeat=0;mtQ=[];mtNext=a.currentTime+0.08;mtSched();mtTimer=setInterval(mtSched,25);requestAnimationFrame(mtDraw);$("mtBtn").setAttribute("aria-pressed","true");$("mtRow").hidden=false;}
+function mtStop(){mtOn=false;clearInterval(mtTimer);$("mtBtn").setAttribute("aria-pressed","false");[...$("mtDots").children].forEach(x=>x.classList.remove("on"));}
+$("mtBtn").onclick=()=>{if(mtOn)mtStop();else mtStart();};
+$("mtDown").onclick=()=>mtSetBpm(mtBpm-1);$("mtUp").onclick=()=>mtSetBpm(mtBpm+1);
+$("mtBpmBox").addEventListener("wheel",e=>{e.preventDefault();mtSetBpm(mtBpm+(e.deltaY<0?1:-1)*(e.shiftKey?5:1));},{passive:false});
+{const v=document.querySelector("#mtBpmBox .mt-v");let y0=null,b0=0;v.addEventListener("pointerdown",e=>{y0=e.clientY;b0=mtBpm;v.setPointerCapture(e.pointerId);});v.addEventListener("pointermove",e=>{if(y0!=null)mtSetBpm(b0+(y0-e.clientY)/4);});["pointerup","pointercancel"].forEach(t=>v.addEventListener(t,()=>{y0=null;}));}
+$("mtBeats").addEventListener("change",()=>{mtBeats=+$("mtBeats").value;store.set("pianoMtBeats",mtBeats);mtBeat=0;mtDotsView();});
+$("mtRec").addEventListener("change",()=>{mtRec=$("mtRec").checked;store.set("pianoMtRec",mtRec);});
 /* ===== 演奏の録音(MP3・WAVで保存) ===== */
 let tap=null, recL=[], recR=[], recOn=false, recStart=0, take=null, takeURL="";
 /* 録音中に弾いた鍵盤をMIDIでも記録(時間は秒。保存するときにBPM120の拍に直す) */
 let midiEv=[];const midiOpen=new Set();
 function midiPush(by){if(ac)midiEv.push([ac.currentTime-recStart,by]);}
 /* 標準MIDIファイル(フォーマット1)を作る。tracks:[{name,ch,ev:[[tick,[bytes]],...]}] */
-function smfBlob(tracks,bpm){const TPQ=480,vlq=n=>{n=Math.max(0,Math.round(n));const b=[n&0x7f];while(n>>=7)b.unshift((n&0x7f)|0x80);return b;},
+function smfBlob(tracks,bpm,ts){ts=ts||[4,4];const TPQ=480,vlq=n=>{n=Math.max(0,Math.round(n));const b=[n&0x7f];while(n>>=7)b.unshift((n&0x7f)|0x80);return b;},
   txt=(ty,s)=>{const b=[...new TextEncoder().encode(s)].filter(x=>x<128);return [0xff,ty,...vlq(b.length),...b];},us=Math.round(60000000/bpm),
   trk=(name,ev,meta)=>{ev=ev.slice().sort((a,b)=>a[0]-b[0]||((a[1][0]&0xf0)===0x80?-1:0)-((b[1][0]&0xf0)===0x80?-1:0));let o=[0,...txt(0x03,name)],t=0;
-    if(meta)o.push(0,0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255,0,0xff,0x58,4,4,2,24,8);
+    if(meta)o.push(0,0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255,0,0xff,0x58,4,ts[0],Math.log2(ts[1]),24,8);
     ev.forEach(([tk,by])=>{tk=Math.round(tk);o.push(...vlq(tk-t),...by);t=tk;});o.push(0,0xff,0x2f,0);
     return [0x4d,0x54,0x72,0x6b,(o.length>>>24)&255,(o.length>>>16)&255,(o.length>>>8)&255,o.length&255,...o];},
   tr=[trk("Tempo",[],true),...tracks.map(x=>trk(x.name,x.ev))],head=[0x4d,0x54,0x68,0x64,0,0,0,6,0,1,0,tr.length,(TPQ>>8)&255,TPQ&255];
@@ -796,7 +830,7 @@ function smfBlob(tracks,bpm){const TPQ=480,vlq=n=>{n=Math.max(0,Math.round(n));c
 const recBtn=$("recBtn");
 function recToggle(){
   if(recOn){recStop();return;}
-  const a=audio(); recL=[];recR=[];midiEv=[];midiOpen.clear();
+  const a=audio(); recL=[];recR=[];midiEv=[];midiOpen.clear();mtLog=[];
   tap=a.createScriptProcessor(4096,2,2);
   tap.onaudioprocess=e=>{if(!recOn)return;const ib=e.inputBuffer;recL.push(new Float32Array(ib.getChannelData(0)));recR.push(new Float32Array(ib.numberOfChannels>1?ib.getChannelData(1):ib.getChannelData(0)));
     const o=e.outputBuffer;for(let c=0;c<o.numberOfChannels;c++)o.getChannelData(c).fill(0);
@@ -815,7 +849,11 @@ function recStop(){
   if(s>=e){toast("音が入っていませんでした");return;}
   const sr=ac.sampleRate; s=Math.max(0,s-Math.floor(sr*0.02)); e=Math.min(n-1,e+Math.floor(sr*0.3));
   take={L:L.slice(s,e),R:R.slice(s,e),sr};
-  const t0=(mev.find(x=>(x[1][0]&0xf0)===0x90)||[0])[0];take.midi=mev.map(([t,by])=>[Math.max(0,t-t0),by]);$("saveMid").hidden=!take.midi.some(x=>(x[1][0]&0xf0)===0x90);
+  const ml=mtLog;mtLog=[];const fn=(mev.find(x=>(x[1][0]&0xf0)===0x90)||[0])[0];
+  if(ml.length){ /* メトロノームが鳴っていた:最初の音の直前の小節頭を0にして、メトロノームのテンポで保存 */
+    const bi=mtBeats===6?60/mtBpm/2:60/mtBpm,down=ml.filter(x=>x[1]===0&&x[0]<=fn+0.05),t0=down.length?down[down.length-1][0]:ml[0][0]-ml[0][1]*bi;
+    take.midi=mev.filter(x=>x[0]>=t0-0.05).map(([t,by])=>[Math.max(0,t-t0),by]);take.mt={bpm:mtBpm,beats:mtBeats,clicks:mtRec?ml.filter(x=>x[0]>=t0-0.001).map(([t,b])=>[t-t0,b]):[]};}
+  else{take.midi=mev.map(([t,by])=>[Math.max(0,t-fn),by]);take.mt=null;}$("saveMid").hidden=!take.midi.some(x=>(x[1][0]&0xf0)===0x90);
   if(takeURL)URL.revokeObjectURL(takeURL); takeURL=URL.createObjectURL(wavBlob(take));
   $("takeAudio").src=takeURL; $("take").hidden=false;
   const sec=take.L.length/sr; $("takeLen").textContent=Math.floor(sec/60)+":"+String(Math.floor(sec%60)).padStart(2,"0");
@@ -845,7 +883,9 @@ async function mp3Blob(t){
 }
 recBtn.onclick=recToggle;
 $("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
-$("saveMid").onclick=()=>{if(!take||!take.midi)return;download(smfBlob([{name:"Piano",ev:take.midi.map(([t,by])=>[t*960,by])}],120),fname("mid"));if(window.ngTrack)ngTrack("midi_export",{tool:"piano_take"});};
+$("saveMid").onclick=()=>{if(!take||!take.midi)return;const M=take.mt,bpmM=M?M.bpm:120,k=bpmM/60*480,tr=[{name:"Piano",ev:take.midi.map(([t,by])=>[t*k,by])}];
+  if(M&&M.clicks.length){const ev=[];M.clicks.forEach(([t,b])=>{const n=b===0?76:77;ev.push([t*k,[0x99,n,b===0?110:80]]);ev.push([t*k+60,[0x89,n,0]]);});tr.push({name:"Click",ev});}
+  download(smfBlob(tr,bpmM,M?(M.beats===6?[6,8]:[M.beats,4]):[4,4]),fname("mid"));if(window.ngTrack)ngTrack("midi_export",{tool:"piano_take"});};
 $("saveMp3").onclick=async()=>{if(!take)return;const b=$("saveMp3"),t0=b.textContent;b.disabled=true;b.textContent="変換中…";
   try{download(await mp3Blob(take),fname("mp3"));}catch(e){toast("MP3に変換できませんでした。WAVで保存してね");}
   b.disabled=false;b.textContent=t0;};
