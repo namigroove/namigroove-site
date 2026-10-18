@@ -348,6 +348,7 @@ header.top .logo{flex:none}
         <div class="fx-row"><label for="fxFlt">フィルター</label><input type="range" id="fxFlt" min="-100" max="100" step="1" value="0" aria-label="フィルター(左でこもる、右で細くなる)"><b id="fxFltV">オフ</b></div>
         <div class="fx-row"><label for="fxRv">リバーブ</label><input type="range" id="fxRv" min="0" max="100" step="1" value="40"><b id="fxRvV">40%</b></div>
         <div class="fx-row"><label for="fxBc">ビットクラッシュ</label><input type="range" id="fxBc" min="0" max="100" step="1" value="0"><b id="fxBcV">オフ</b></div>
+        <div class="fx-row"><label for="fxRep">リピート</label><select id="fxRep" class="sel" style="grid-column:2/4;justify-self:start"><option value="">オフ</option><option value="8">8分×2</option><option value="16">16分×4</option><option value="32">32分×8</option><option value="t16">16分3連×6</option></select></div>
         <div class="fx-row"><label for="fxLoose">ルーズ</label><input type="range" id="fxLoose" min="0" max="12" step="0.1" value="0"><b id="fxLooseV">オフ</b></div>
         <div class="fx-btns"><button class="btn mini" type="button" id="smpRev" aria-pressed="false" title="音を後ろから鳴らす">⇄ 逆再生</button><button class="btn mini" type="button" id="fxReset">エフェクトを全部戻す</button></div>
         <p class="fx-note">サンプル全体にかかります。ピッチは鳴っている音もその場で変わります。</p>
@@ -638,8 +639,10 @@ const INST={
   sample(a,f,v,t,env){ /* サンプラー:読み込んだ音を、鍵盤の高さに合わせて速さを変えて鳴らす */
     if(!smp||!smp.buffer) return INST.piano(a,f,v,t,env);
     const m=69+12*Math.log2(f/440), src=a.createBufferSource(),R=smpRev?revOf(smp):smp;src.buffer=smpBc?crushOf(R,smpBc):R.buffer;src._base=Math.pow(2,(m-smp.root)/12)*(smpLoose?Math.pow(2,(Math.random()*2-1)*smpLoose/12):1);const r0=src._base*Math.pow(2,smpPitch/12);src.playbackRate.setValueAtTime(r0,t);if(smpStop){src._stop=1;src.playbackRate.exponentialRampToValueAtTime(Math.max(0.01,r0*0.02),t+smpStop);}smpLive.add(src);src.onended=()=>smpLive.delete(src);
-    (smpFlt?(()=>{const q=fltNode(a,smpFlt);src.connect(q);return q;})():src).connect(env);env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.55*v*smp.gain,t+0.003);src.start(t,R.offset);if(smpStop)src.stop(t+smpStop+0.02);
-    return {srcs:[src],rel:0.12,rev:smpRv/50};
+    const head=smpFlt?fltNode(a,smpFlt):env;if(smpFlt)head.connect(env);src.connect(head);env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.55*v*smp.gain,t+0.003);src.start(t,R.offset);if(smpStop)src.stop(t+smpStop+0.02);
+    const srcs=[src],rp=REP[smpRep];if(rp){const dt=60/mtBpm/rp.d;try{src.stop(t+dt);}catch(e){}
+      for(let k=1;k<rp.n;k++){const s2=a.createBufferSource(),g2=a.createGain();s2.buffer=src.buffer;s2.playbackRate.value=r0;g2.gain.value=Math.pow(0.86,k);s2.connect(g2);g2.connect(head);s2.start(t+k*dt,R.offset);if(k<rp.n-1)s2.stop(t+(k+1)*dt);srcs.push(s2);}}
+    return {srcs,rel:0.12,rev:smpRv/50};
   },
   bell(a,f,v,t,env){ /* FM:はんぱな比率で揺らして金属っぽく */
     const tau=Math.max(0.6,Math.min(4,2.4*Math.pow(440/f,0.3)));
@@ -911,21 +914,25 @@ function fltNode(a,v){const b=a.createBiquadFilter();b.type=v<0?"lowpass":"highp
 const bcBits=a=>Math.round(12-a/100*9),bcHold=a=>Math.max(1,Math.round(1+a/100*23)),bcTxt=a=>a?bcBits(a)+"bit・1/"+bcHold(a):"オフ";
 function crushOf(o,a){if(o._bcA===a&&o._bcB)return o._bcB;const b=o.buffer,q=Math.pow(2,bcBits(a)-1),hold=bcHold(a),r=new AudioBuffer({length:b.length,numberOfChannels:b.numberOfChannels,sampleRate:b.sampleRate});
   for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c),y=r.getChannelData(c);let h=0;for(let i=0;i<x.length;i++){if(i%hold===0)h=Math.round(x[i]*q)/q;y[i]=h;}}o._bcA=a;o._bcB=r;return r;}
+/* リピート(スタッター):叩くたびにテンポに合わせて細かく連打する。d=1拍をいくつに割るか、n=回数 */
+const REP={"8":{d:2,n:2},"16":{d:4,n:4},"32":{d:8,n:8},"t16":{d:6,n:6}},REPN={"8":"8分×2","16":"16分×4","32":"32分×8","t16":"16分3連×6"};
+let smpRep=store.get("pianoSmpRep","")||"";if(!REP[smpRep])smpRep="";
 let smpBc=+store.get("pianoSmpBc",0)||0,smpFlt=+store.get("pianoSmpFlt",0)||0,smpRv=+store.get("pianoSmpRv",40);if(!(smpRv>=0&&smpRv<=100))smpRv=40;
 let smpRev=!!store.get("pianoSmpRev",false),smpStop=+store.get("pianoSmpStop",0)||0,smpLoose=+store.get("pianoSmpLoose",0)||0,smpPitch=+store.get("pianoSmpPitch",0)||0;const smpLive=new Set();
 const demo=()=>{if(smp&&smp.buffer){noteOn(smp.root,0.8);setTimeout(()=>release(smp.root,true),700);}};
-function fxView(){$("fxBc").value=smpBc;$("fxBcV").textContent=bcTxt(smpBc);$("fxRv").value=smpRv;$("fxRvV").textContent=smpRv?smpRv+"%":"オフ";$("fxFlt").value=smpFlt;$("fxFltV").textContent=fltTxt(smpFlt);$("smpPitch").value=smpPitch;$("smpPitchV").textContent=pitchTxt(smpPitch);$("fxStop").value=smpStop;$("fxStopV").textContent=stopTxt(smpStop);$("fxLoose").value=smpLoose;$("fxLooseV").textContent=looseTxt(smpLoose);
-  $("smpRev").setAttribute("aria-pressed",smpRev?"true":"false");const on=[smpPitch?"ピッチ"+pitchTxt(smpPitch).replace(" 半音",""):"",smpStop?"テープストップ":"",smpLoose?"ルーズ":"",smpFlt?"フィルター":"",smpBc?"ビットクラッシュ":"",smpRv!==40?"リバーブ"+smpRv+"%":"",smpRev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";}
-function fxSave(){store.set("pianoSmpBc",smpBc);store.set("pianoSmpRv",smpRv);store.set("pianoSmpFlt",smpFlt);store.set("pianoSmpPitch",smpPitch);store.set("pianoSmpStop",smpStop);store.set("pianoSmpLoose",smpLoose);store.set("pianoSmpRev",smpRev);fxView();}
+function fxView(){$("fxRep").value=smpRep;$("fxBc").value=smpBc;$("fxBcV").textContent=bcTxt(smpBc);$("fxRv").value=smpRv;$("fxRvV").textContent=smpRv?smpRv+"%":"オフ";$("fxFlt").value=smpFlt;$("fxFltV").textContent=fltTxt(smpFlt);$("smpPitch").value=smpPitch;$("smpPitchV").textContent=pitchTxt(smpPitch);$("fxStop").value=smpStop;$("fxStopV").textContent=stopTxt(smpStop);$("fxLoose").value=smpLoose;$("fxLooseV").textContent=looseTxt(smpLoose);
+  $("smpRev").setAttribute("aria-pressed",smpRev?"true":"false");const on=[smpPitch?"ピッチ"+pitchTxt(smpPitch).replace(" 半音",""):"",smpStop?"テープストップ":"",smpLoose?"ルーズ":"",smpFlt?"フィルター":"",smpBc?"ビットクラッシュ":"",smpRep?"リピート":"",smpRv!==40?"リバーブ"+smpRv+"%":"",smpRev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";}
+function fxSave(){store.set("pianoSmpRep",smpRep);store.set("pianoSmpBc",smpBc);store.set("pianoSmpRv",smpRv);store.set("pianoSmpFlt",smpFlt);store.set("pianoSmpPitch",smpPitch);store.set("pianoSmpStop",smpStop);store.set("pianoSmpLoose",smpLoose);store.set("pianoSmpRev",smpRev);fxView();}
 $("smpPitch").addEventListener("input",()=>{smpPitch=Math.max(-24,Math.min(24,Math.round(+$("smpPitch").value*10)/10));fxSave();
   if(ac)smpLive.forEach(x=>{if(!x._stop)try{x.playbackRate.setTargetAtTime(x._base*Math.pow(2,smpPitch/12),ac.currentTime,0.01);}catch(e){}});});
 $("fxStop").addEventListener("input",()=>{smpStop=Math.round(+$("fxStop").value*100)/100;fxSave();});$("fxStop").addEventListener("change",demo);
+$("fxRep").addEventListener("change",()=>{smpRep=$("fxRep").value;fxSave();demo();});
 $("fxBc").addEventListener("input",()=>{smpBc=Math.round(+$("fxBc").value);fxSave();});$("fxBc").addEventListener("change",demo);
 $("fxRv").addEventListener("input",()=>{smpRv=Math.round(+$("fxRv").value);fxSave();});$("fxRv").addEventListener("change",demo);
 $("fxFlt").addEventListener("input",()=>{smpFlt=Math.round(+$("fxFlt").value);fxSave();});$("fxFlt").addEventListener("change",demo);
 $("fxLoose").addEventListener("input",()=>{smpLoose=Math.round(+$("fxLoose").value*10)/10;fxSave();});$("fxLoose").addEventListener("change",demo);
 $("smpRev").onclick=()=>{smpRev=!smpRev;fxSave();demo();};
-$("fxReset").onclick=()=>{smpBc=0;smpRv=40;smpFlt=0;smpPitch=0;smpStop=0;smpLoose=0;smpRev=false;fxSave();demo();};
+$("fxReset").onclick=()=>{smpRep="";smpBc=0;smpRv=40;smpFlt=0;smpPitch=0;smpStop=0;smpLoose=0;smpRev=false;fxSave();demo();};
 fxView();
 const SM=window.NamiSampler;let smp=null; /* {buffer,offset,gain,root,name} */
 function smpErr(t){const e=$("smpErr");e.textContent=t||"";e.hidden=!t;}
