@@ -565,6 +565,16 @@ function pluck(midis,gap,bass){
   });
 }
 
+/* ベースで和音を鳴らすときの上もの:弦の音だと濁るので、やわらかい鍵盤の音で */
+function keys(ms,gap){
+  const a=audio();buses(a);const t0=a.currentTime+0.02,n=ms.length;
+  ms.forEach((m,i)=>{const t=t0+i*gap,f=440*Math.pow(2,(m-69)/12),v=0.5/Math.sqrt(n);
+    const car=a.createOscillator(),mod=a.createOscillator(),mg=a.createGain(),g=a.createGain();
+    car.type=mod.type="sine";car.frequency.value=f;mod.frequency.value=f;mg.gain.setValueAtTime(f*0.9,t);mg.gain.setTargetAtTime(f*0.08,t,0.25);mod.connect(mg);mg.connect(car.frequency);
+    g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(0.28*v,t+0.004);g.gain.setTargetAtTime(0.12*v,t+0.01,0.3);g.gain.setTargetAtTime(0.0001,t+0.9,0.35);
+    car.connect(g);g.connect(gtBus);car.start(t);mod.start(t);car.stop(t+3);mod.stop(t+3);});
+}
+
 /* ===== 順引き ===== */
 let vlist=[], vsel=0;
 function chordName(r,t){return ROOTS[pc(r)]+TYPES[t][0];}
@@ -593,7 +603,7 @@ function renderFwd(){
 function playFwd(){
   const iv=TYPES[type][1];
   if(inst==="gt"){const v=vlist[vsel];if(!v)return;pluck(v.fr.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filter(x=>x!=null),0.035,false);}
-  else{const lowR=TUN[inst][0]+pc(root-TUN[inst][0]);pluck([lowR],0,true);setTimeout(()=>pluck(iv.map(x=>lowR+12+x),0.12,true),350);}
+  else{const lowR=TUN[inst][0]+pc(root-TUN[inst][0]);pluck([lowR],0,true);setTimeout(()=>keys(iv.map(x=>48+pc(root)+x),0.04),250);}
 }
 $("rootSeg").innerHTML=ROOTS.map((n,i)=>`<button type="button" data-r="${i}">${n}</button>`).join("");
 $("typeSeg").innerHTML=TYPES.map((t,i)=>`<button type="button" data-t="${i}"${t[4]?' class="fancy"':""}${t[2]?` title="${t[2]}"`:""}>${t[0]||"M(メジャー)"}</button>`).join("");
@@ -740,7 +750,7 @@ function pgPlay(p,j){
   const el=document.querySelector(`.pg[data-p="${p}"] [data-c="${j}"]`);if(el){el.classList.add("now");}
   if(inst==="gt"){if(c.v)pluck(c.v.fr.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filter(x=>x!=null),0.03,false);}
   else{const tn=TUN[inst],bp=c.b==null?c.r:c.b,low=tn[0]+pc(bp-tn[0]);pluck([low],0,true);
-    const iv=TYPES[c.t][1].filter(x=>x!==0||c.b==null).map(x=>tn[0]+12+pc(c.r-tn[0])+x);setTimeout(()=>pluck(iv,0.05,true),120);}
+    keys(TYPES[c.t][1].filter(x=>x!==0||c.b==null).map(x=>48+pc(c.r)+x),0.015);}
 }
 function pgStop(){clearTimeout(pgTimer);pgTimer=null;}
 const PCAT={"pop": "定番", "neo": "ネオソウル・R&B", "jazz": "ジャズ", "bossa": "ボサノバ", "cliche": "クリシェ", "anison": "アニソン風", "kirinji": "キリンジ風"};

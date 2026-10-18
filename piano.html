@@ -486,32 +486,63 @@ function noiseHit(a,t,dest,freq,amt,len){
   const ns=a.createBufferSource(),nf=a.createBiquadFilter(),ng=a.createGain();ns.buffer=nb;nf.type="bandpass";nf.frequency.value=freq;nf.Q.value=0.8;ng.gain.value=amt;
   ns.connect(nf).connect(ng).connect(dest);ns.start(t);return ns;
 }
+/* エレピ用:ピックアップのひずみ(少し非対称にして、強く弾くと倍音が増える) */
+const epCurves={};
+function epCurve(k){k=Math.round(k*4)/4;if(epCurves[k])return epCurves[k];const n=1024,c=new Float32Array(n),o=0.22,nm=Math.tanh(k*(1+o))-Math.tanh(k*o);
+  for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=(Math.tanh(k*(x+o))-Math.tanh(k*o))/nm;}return epCurves[k]=c;}
+/* エレピ用:左右にゆれるトレモロ(全部の音で共通の揺れ) */
+let epLfo=null;
+function epTrem(a){if(!epLfo){const o=a.createOscillator();o.frequency.value=4.6;const g=a.createGain();g.gain.value=0.38;o.connect(g);o.start();epLfo=g;}return epLfo;}
 /* 音色ごとの作り方:{env(音量), srcs(止める音源), rel(離したときの消え方), rev(響きの量)} を返す */
 const INST={
-  piano(a,f,v,t,env){
-    const lp=a.createBiquadFilter();lp.type="lowpass";lp.Q.value=0.4;
-    const bright=Math.min(14000,f*(5+v*12)), dark=Math.min(9000,Math.max(f*2.2,600));
-    const tau=Math.max(0.35,Math.min(4.5,2.6*Math.pow(440/f,0.55)));
-    lp.frequency.setValueAtTime(bright,t);lp.frequency.setTargetAtTime(dark,t+0.01,tau*0.35);
-    const peak=0.28*Math.pow(v,1.4)*Math.min(1.3,Math.pow(261/f,0.18));
-    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(peak,t+0.004);
-    env.gain.setTargetAtTime(peak*0.45,t+0.005,0.09);env.gain.setTargetAtTime(0.0001,t+0.12,tau);
-    const w=pwave("piano",Array.from({length:24},(_,i)=>{const n=i+1;return (1/Math.pow(n,1.35))*(n%2?1:0.82)*(n===1?1.25:1);}));
-    const s=[osc(a,w,f,t,lp,-1.8),osc(a,w,f,t,lp,1.8),noiseHit(a,t,env,Math.min(6000,f*3),0.05*v,0.03)];
-    lp.connect(env);
-    return {srcs:s,rel:0.07,rev:1,end:t+tau*7+0.2};
+  piano(a,f,v,t,env){ /* 倍音ごとに減衰の速さを変えた加算合成。弦2〜3本のうなり、倍音のずれ(インハーモニシティ)、ハンマーの打点とノイズ */
+    const m=69+12*Math.log2(f/440);
+    const B=Math.min(0.0025,0.00009*Math.pow(2,(m-48)/12));        /* 高い音ほど倍音が少しずつ上にずれる */
+    const tau0=Math.max(0.7,Math.min(12,7.5*Math.pow(261.6/f,0.62)));/* 低い音ほど長く伸びる */
+    const bright=1300+7000*v*v, maxF=Math.min(a.sampleRate/2-800,12000);
+    const det=m<40?[-0.6,0.6]:[-0.9,0.15,1.05];                      /* 1音に張られた弦どうしの、わずかなずれ */
+    const sum=a.createGain(),lp=a.createBiquadFilter();lp.type="lowpass";lp.Q.value=0.3;
+    lp.frequency.setValueAtTime(Math.min(16000,f*(6+18*v)),t);lp.frequency.setTargetAtTime(Math.min(11000,Math.max(f*3,900)),t+0.02,tau0*0.22);
+    sum.connect(lp);lp.connect(env);
+    const srcs=[];let norm=0;const N=Math.min(14,Math.floor(maxF/f));
+    for(let n=1;n<=N;n++){
+      const fn=n*f*Math.sqrt(1+B*n*n);if(fn>maxF)break;
+      let amp=Math.pow(n,-0.8)*Math.exp(-(fn-f)/bright)*(0.3+0.7*Math.abs(Math.sin(Math.PI*n/7.4))); /* 打点は弦の約1/7 */
+      if(n===1&&m<45)amp*=0.65;
+      norm+=amp;
+      const g=a.createGain(),tf=tau0/(1+fn/1700),tq=Math.min(tf*0.16,0.5);
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(amp,t+0.002);
+      g.gain.setTargetAtTime(amp*0.34,t+0.003,tq);                    /* 打鍵直後にすっと落ちて */
+      g.gain.setTargetAtTime(0.0001,t+tq*2.5,tf);                      /* そのあと長く伸びる */
+      g.connect(sum);
+      const sd=n<=6?det:[0];
+      sd.forEach(c=>{const o=a.createOscillator();o.type="sine";o.frequency.value=fn;o.detune.value=c+(n>1?(Math.random()-0.5)*0.4:0);
+        if(sd.length>1){const x=a.createGain();x.gain.value=1/sd.length;o.connect(x);x.connect(g);}else o.connect(g);o.start(t);srcs.push(o);});
+    }
+    sum.gain.value=1.15/Math.max(1,norm);
+    srcs.push(noiseHit(a,t,env,Math.min(3500,f*3.5),0.06*v,0.03));      /* ハンマーの「コツッ」 */
+    env.gain.setValueAtTime(1.25*Math.pow(v,1.25),t);
+    return {srcs,rel:0.085,rev:1,end:t+tau0*6+0.3};
   },
-  epiano(a,f,v,t,env){ /* FM:サイン波をサイン波で揺らす(ローズっぽい) */
-    const tau=Math.max(0.5,Math.min(3.5,1.8*Math.pow(440/f,0.4)));
+  epiano(a,f,v,t,env){ /* ローズ風:ティンを叩いた音(FM)+ピックアップのひずみ(強く弾くと「バーク」)+打鍵の「チン」+トレモロ */
+    const tau=Math.max(0.7,Math.min(5,3.2*Math.pow(261.6/f,0.45)));
     const car=a.createOscillator();car.type="sine";car.frequency.value=f;
     const mod=a.createOscillator();mod.type="sine";mod.frequency.value=f;const mg=a.createGain();
-    mg.gain.setValueAtTime(f*(0.6+2.2*v),t);mg.gain.setTargetAtTime(f*0.25,t,0.25);mod.connect(mg).connect(car.frequency);
-    const tine=a.createOscillator();tine.type="sine";tine.frequency.value=f*14;const tg=a.createGain(); /* 打鍵の「チン」 */
-    tg.gain.setValueAtTime(f*1.5*v,t);tg.gain.setTargetAtTime(0,t,0.02);tine.connect(tg).connect(car.frequency);
-    car.connect(env);[car,mod,tine].forEach(o=>o.start(t));
-    const peak=0.32*Math.pow(v,1.2);
-    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(peak,t+0.003);env.gain.setTargetAtTime(0.0001,t+0.01,tau);
-    return {srcs:[car,mod,tine],rel:0.09,rev:0.9,end:t+tau*7};
+    mg.gain.setValueAtTime(f*(0.35+2.4*v*v),t);mg.gain.setTargetAtTime(f*0.1,t,0.16+0.22*(1-v));mod.connect(mg);mg.connect(car.frequency);
+    const ws=a.createWaveShaper();ws.curve=epCurve(1+3.2*v);ws.oversample="2x";
+    const hp=a.createBiquadFilter();hp.type="highpass";hp.frequency.value=35;
+    car.connect(ws);ws.connect(hp);
+    const bell=a.createOscillator();bell.type="sine";bell.frequency.value=f*7.08;const bg=a.createGain();
+    bg.gain.setValueAtTime(0.0001,t);bg.gain.linearRampToValueAtTime(0.16*v*Math.min(1,600/f+0.3),t+0.0015);bg.gain.setTargetAtTime(0.0001,t+0.003,0.04+0.08*Math.min(2,261/f));bell.connect(bg);
+    const lp=a.createBiquadFilter();lp.type="lowpass";lp.frequency.value=Math.min(8000,2200+f*4);lp.Q.value=0.4;
+    hp.connect(lp);bg.connect(lp);
+    let out=lp;if(a.createStereoPanner){const pn=a.createStereoPanner();epTrem(a).connect(pn.pan);lp.connect(pn);out=pn;}
+    out.connect(env);
+    [car,mod,bell].forEach(o=>o.start(t));
+    const peak=0.16*Math.pow(v,1.1);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(peak,t+0.002);
+    env.gain.setTargetAtTime(peak*0.55,t+0.01,0.22);env.gain.setTargetAtTime(0.0001,t+0.35,tau);
+    return {srcs:[car,mod,bell],rel:0.13,rev:0.9,end:t+tau*7+0.5};
   },
   organ(a,f,v,t,env){ /* ドローバー風:倍音を足し算。押している間ずっと鳴る */
     const w=pwave("organ",[1,0.75,0.5,0.45,0,0.3,0,0.25]);
