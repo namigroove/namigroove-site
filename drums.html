@@ -159,7 +159,8 @@ footer a{color:var(--sea)}
 /* ドラムパッド */
 .wrap.drums-w{max-width:900px}
 .dr-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.dr-sel{font-family:var(--f-display);font-size:18px;color:var(--sea)}
+.dr-sel{font-family:var(--f-display);font-size:18px;color:var(--sea);flex:0 1 7.5em;min-width:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kit-sel{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-soft);white-space:nowrap}.kit-sel select{font:500 13px var(--f-body);color:var(--ink);padding:6px 26px 6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--chip) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234a5a80' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center/10px;-webkit-appearance:none;appearance:none;cursor:pointer;width:auto}
 .pads{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;max-width:560px;margin:0 auto}
 .pad{position:relative;aspect-ratio:1/1;border-radius:12px;border:2px solid var(--ink);background:var(--wash);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;box-shadow:0 4px 0 var(--ink);transition:transform .05s,box-shadow .05s,background .12s;font:500 13px var(--f-body);padding:4px;text-align:center;line-height:1.25}
 .pad .k{position:absolute;top:5px;left:7px;font:10px var(--f-mono);color:var(--ink-soft)}
@@ -200,8 +201,8 @@ footer a{color:var(--sea)}
 .take-len{font:12px var(--f-mono);color:var(--ink-soft)}
 .take{max-width:560px;margin-left:auto;margin-right:auto}
 .dr-top .recb{margin-left:auto;white-space:nowrap}
-.dr-top{flex-wrap:wrap;row-gap:8px}
-.dr-top .seg{flex-wrap:nowrap}
+.dr-top{flex-wrap:nowrap}
+@media (max-width:400px){.kit-sel{font-size:0;gap:0}.kit-sel select{font-size:13px}.dr-top .recb{font-size:12px;padding:6px 10px}}
 .midi-st{font-size:12px;color:var(--ink-soft)}
 .smp{max-width:560px;margin:14px auto 0;padding:10px 12px;border-radius:12px;background:var(--wash);text-align:center}
 .smp-t{margin:0 0 8px;font-size:13px;color:var(--ink-soft)}
@@ -285,11 +286,7 @@ header.top .logo{flex:none}
 
   <section class="panel dr-panel" aria-label="ドラムパッド">
     <div class="dr-top">
-      <span class="seg" id="kitSeg" role="group" aria-label="キット">
-        <button type="button" data-k="808" aria-pressed="true">808</button>
-        <button type="button" data-k="909" aria-pressed="false">909</button>
-        <button type="button" data-k="chip" aria-pressed="false">チップ</button>
-      </span>
+      <label class="kit-sel">キット <select id="kitSel" class="sel" aria-label="キット"><option value="808">808</option><option value="909">909</option><option value="chip">チップ</option></select></label>
       <button class="btn recb" type="button" id="recBtn" aria-pressed="false" title="叩いた音やシーケンサーの音を録音して、MP3やWAVで保存できます">● 演奏を録音</button>
       <span class="dr-sel" id="selName">キック</span>
     </div>
@@ -646,7 +643,7 @@ function segInit(el,key,cur,on){
   [...el.children].forEach(b=>b.setAttribute("aria-pressed",b.dataset[key]===String(cur)));
   el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...el.children].forEach(x=>x.setAttribute("aria-pressed",x===b));on(b.dataset[key]);});
 }
-segInit($("kitSeg"),"k",kit,v=>{kit=v;store.set("drKit",kit);play("kick",0.9);});
+if(!["808","909","chip"].includes(kit))kit="808";$("kitSel").value=kit;$("kitSel").addEventListener("change",()=>{kit=$("kitSel").value;store.set("drKit",kit);play("kick",0.9);});
 
 /* MIDI */
 const GM={};PADS.forEach(p=>p.gm.forEach(n=>GM[n]=p.id));
