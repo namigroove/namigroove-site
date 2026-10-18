@@ -199,7 +199,9 @@ footer a{color:var(--sea)}
 .take-b{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
 .take-len{font:12px var(--f-mono);color:var(--ink-soft)}
 .take{max-width:560px;margin-left:auto;margin-right:auto}
-.dr-top .recb{margin-left:auto}
+.dr-top .recb{margin-left:auto;white-space:nowrap}
+.dr-top{flex-wrap:wrap;row-gap:8px}
+.dr-top .seg{flex-wrap:nowrap}
 .midi-st{font-size:12px;color:var(--ink-soft)}
 .smp{max-width:560px;margin:14px auto 0;padding:10px 12px;border-radius:12px;background:var(--wash);text-align:center}
 .smp-t{margin:0 0 8px;font-size:13px;color:var(--ink-soft)}
@@ -222,6 +224,11 @@ footer a{color:var(--sea)}
 #smpRec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
 .pad.smpl .k::after{content:" ♪";color:var(--coral)}
 .pad.fxd .k::before{content:"fx ";color:var(--sea);font-size:9px}
+.pad.custom{color:var(--fg)}.pad.custom .k{color:var(--fg);opacity:.75}
+.pad.has-img{background-size:cover!important;background-position:center!important;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 1px rgba(0,0,0,.9)}
+.pad.custom.hit{filter:brightness(1.45) saturate(1.15)}
+.look-row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.look-row input[type=color]{width:46px;height:34px;padding:0;border:1px solid var(--line);border-radius:8px;background:none;cursor:pointer}
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
 .eb-link:hover{border-bottom-style:solid}
 </style>
@@ -302,6 +309,12 @@ header.top .logo{flex:none}
         <div class="fx-btns"><button class="btn mini" type="button" id="smpRev" aria-pressed="false" title="音を後ろから鳴らす">⇄ 逆再生</button><button class="btn mini" type="button" id="fxReset">このパッドのエフェクトを戻す</button></div>
         <p class="fx-note">パッドごとに設定できます。内蔵の音にも、差し替えた音にも効きます。</p>
       </details>
+      <details class="fx" id="lookBox"><summary>パッドの見た目 <span class="fx-state" id="lookState"></span></summary>
+        <div class="look-row"><label for="lookColor">色</label><input type="color" id="lookColor" value="#e3ebfb"><button class="btn mini" type="button" id="lookColorAll">全部のパッドをこの色に</button></div>
+        <div class="look-row"><button class="btn mini" type="button" id="lookImg">画像を選ぶ</button><button class="btn mini" type="button" id="lookImgDel" hidden>画像を外す</button></div>
+        <div class="fx-btns"><button class="btn mini" type="button" id="lookReset">このパッドを戻す</button><button class="btn mini" type="button" id="lookResetAll">全部戻す</button></div>
+        <p class="fx-note">選んでいるパッドの色や画像を変えられます(この端末に保存)。</p>
+      </details>
     </div>
     <div class="take" id="take" hidden>
       <audio id="takeAudio" controls preload="auto"></audio>
@@ -362,6 +375,7 @@ header.top .logo{flex:none}
       <li>シーケンサーは、パッドを叩いて音を選んでから、下の16マスをタップして打ち込みます。「● 打ち込み」をオンにして再生中にパッドを叩くと、そのまま打ち込めます。</li>
       <li>サンプラー:パッドを選んで「ファイルから読み込む」か「録音」で、そのパッドの音を好きな音に差し替えられます。頭の無音は自動でカットします。読み込んだ音はこの端末のブラウザの中だけに保存され、どこにも送信されません。「エフェクト」を開くと、パッドごとにピッチ(±2オクターブ)・テープストップ(鳴らすたびに止まるように減速)・ルーズ(鳴らすたびにピッチがランダムにずれる)・逆再生をかけられます。内蔵の音にも、差し替えた音にも効きます。</li>
       <li>「● 演奏を録音」を押すと、パッドやシーケンサーの音をそのまま録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。叩いた演奏はMIDIファイル(GMドラム配列・10ch)でも保存できます。ステップで組んだパターンは「⬇ パターンをMIDI」で1小節ぶんを保存できます。</li>
+      <li>「パッドの見た目」を開くと、選んでいるパッドの色を変えたり、好きな画像を貼ったりできます(この端末に保存)。</li>
       <li>組んだパターンとBPMもこのブラウザに保存されます。</li>
       <li>MIDIパッド・キーボードはChrome・Edgeで使えます(GMドラムの音番号に対応)。</li>
       <li>iPhoneで音が出ないときは、本体のマナーモードを解除してみてください。</li>
@@ -531,9 +545,18 @@ const padsEl=$("pads"), padEl={};
 const KEYLBL=c=>c.replace("Digit","").replace("Key","");
 PADS.forEach(p=>{const b=document.createElement("button");b.type="button";b.className="pad";b.dataset.id=p.id;b.dataset.g=p.g;
   b.innerHTML='<span class="k">'+KEYLBL(p.key)+'</span><span class="dot"></span><span>'+p.n+"</span>";b.setAttribute("aria-label",plain(p.n));padsEl.appendChild(b);padEl[p.id]=b;});
+/* ===== パッドの見た目(色・画像。この端末に保存) ===== */
+let look=store.get("drumsLook",{})||{};
+const lum=hex=>{const n=parseInt(hex.slice(1),16),f=c=>{c/=255;return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);};return 0.2126*f(n>>16&255)+0.7152*f(n>>8&255)+0.0722*f(n&255);};
+function applyLook(id){const b=padEl[id],L=look[id]||{};b.classList.toggle("custom",!!(L.c||L.img));b.classList.toggle("has-img",!!L.img);
+  b.style.backgroundColor=L.c||"";b.style.backgroundImage=L.img?'linear-gradient(rgba(0,0,0,.28),rgba(0,0,0,.28)),url("'+L.img+'")':"";
+  b.style.setProperty("--fg",L.img?"#fff":(L.c?(lum(L.c)>0.4?"#101f45":"#fff"):""));}
+function saveLook(){try{localStorage.setItem("ngTools.drumsLook",JSON.stringify(look));return true;}catch(e){toast("保存できる容量をこえました。画像を減らしてね");return false;}}
+function lookView(){const L=look[sel]||{};$("lookColor").value=L.c||"#e3ebfb";$("lookImgDel").hidden=!L.img;const n=Object.keys(look).length;$("lookState").textContent=n?"("+n+"個カスタム中)":"";}
+function setLook(id,patch){const L=Object.assign({},look[id]||{},patch);Object.keys(L).forEach(k=>{if(!L[k])delete L[k];});if(Object.keys(L).length)look[id]=L;else delete look[id];saveLook();applyLook(id);lookView();}
 function flash(id){const b=padEl[id];b.classList.remove("hit");void b.offsetWidth;b.classList.add("hit");clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove("hit"),110);}
 function hit(id,v){play(id,v);flash(id);select(id);if(rec&&playing)recordHit(id);}
-function select(id){if(sel===id)return;sel=id;store.set("drSel",sel);Object.values(padEl).forEach(b=>b.classList.toggle("sel",b.dataset.id===id));renderSteps();smpView();}
+function select(id){if(sel===id)return;sel=id;store.set("drSel",sel);Object.values(padEl).forEach(b=>b.classList.toggle("sel",b.dataset.id===id));renderSteps();smpView();lookView();}
 padsEl.addEventListener("pointerdown",e=>{const b=e.target.closest(".pad");if(!b)return;e.preventDefault();
   const r=b.getBoundingClientRect(),dx=(e.clientX-r.left)/r.width-0.5,dy=(e.clientY-r.top)/r.height-0.5;
   hit(b.dataset.id,1-Math.min(0.6,Math.hypot(dx,dy)*1.1));});
@@ -642,6 +665,17 @@ renderSteps();
 
 /* ===== サンプラー ===== */
 const SM=window.NamiSampler;
+$("lookColor").addEventListener("input",e=>setLook(sel,{c:e.target.value}));
+$("lookColorAll").onclick=()=>{const c=$("lookColor").value;PADS.forEach(p=>{const L=Object.assign({},look[p.id]||{},{c});look[p.id]=L;applyLook(p.id);});saveLook();lookView();};
+$("lookImg").onclick=()=>{const inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;
+  try{const url=URL.createObjectURL(f),img=new Image();await new Promise((r,j)=>{img.onload=r;img.onerror=j;img.src=url;});const S=240,cv=document.createElement("canvas");cv.width=cv.height=S;
+    const k=Math.max(S/img.width,S/img.height),w=img.width*k,h=img.height*k;cv.getContext("2d").drawImage(img,(S-w)/2,(S-h)/2,w,h);URL.revokeObjectURL(url);
+    const id=sel,old=look[id]&&look[id].img;setLook(id,{img:cv.toDataURL("image/jpeg",0.82)});if(!saveLook()){setLook(id,{img:old||""});}}
+  catch(e){toast("この画像は読み込めませんでした");}};inp.click();};
+$("lookImgDel").onclick=()=>setLook(sel,{img:""});
+$("lookReset").onclick=()=>setLook(sel,{c:"",img:""});
+$("lookResetAll").onclick=()=>{look={};saveLook();PADS.forEach(p=>applyLook(p.id));lookView();};
+PADS.forEach(p=>applyLook(p.id));lookView();
 function smpView(){
   $("smpPad").innerHTML=plain(PADS[IDX[sel]].n);
   $("smpName").textContent=samples[sel]?samples[sel].name:"内蔵の音";
