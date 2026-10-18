@@ -307,6 +307,7 @@ header.top .logo{flex:none}
       <div class="take-b"><span class="take-len" id="takeLen"></span>
         <button class="btn" type="button" id="saveMp3">MP3で保存</button>
         <button class="btn" type="button" id="saveWav">WAVで保存</button>
+        <button class="btn" type="button" id="saveMid" hidden>MIDIで保存</button>
         <button class="btn" type="button" id="takeDel">消す</button>
       </div>
     </div>
@@ -339,6 +340,7 @@ header.top .logo{flex:none}
         </div>
         <button class="btn" type="button" id="clearOne">この音を消す</button>
         <button class="btn" type="button" id="clearAll">全部消す</button>
+        <button class="btn" type="button" id="patMid" title="このパターン(1小節)をMIDIファイルで保存">⬇ パターンをMIDI</button>
       </div>
       <div class="row seq-opts">
         <div class="ctl">スウィング <input type="range" id="swing" min="0" max="0.6" step="0.02" value="0" style="width:110px;margin:0" aria-label="スウィング"><b class="num" id="swingOut">0%</b></div>
@@ -358,7 +360,7 @@ header.top .logo{flex:none}
       <li>パッドは真ん中を叩くと強く、端だと弱く鳴ります。スマホでは複数の指で同時に叩けます。</li>
       <li>シーケンサーは、パッドを叩いて音を選んでから、下の16マスをタップして打ち込みます。「● 打ち込み」をオンにして再生中にパッドを叩くと、そのまま打ち込めます。</li>
       <li>サンプラー:パッドを選んで「ファイルから読み込む」か「録音」で、そのパッドの音を好きな音に差し替えられます。頭の無音は自動でカットします。読み込んだ音はこの端末のブラウザの中だけに保存され、どこにも送信されません。「エフェクト」を開くと、パッドごとにピッチ(±2オクターブ)・テープストップ(鳴らすたびに止まるように減速)・ルーズ(鳴らすたびにピッチがランダムにずれる)・逆再生をかけられます。内蔵の音にも、差し替えた音にも効きます。</li>
-      <li>「● 演奏を録音」を押すと、パッドやシーケンサーの音をそのまま録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。</li>
+      <li>「● 演奏を録音」を押すと、パッドやシーケンサーの音をそのまま録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。叩いた演奏はMIDIファイル(GMドラム配列・10ch)でも保存できます。ステップで組んだパターンは「⬇ パターンをMIDI」で1小節ぶんを保存できます。</li>
       <li>組んだパターンとBPMもこのブラウザに保存されます。</li>
       <li>MIDIパッド・キーボードはChrome・Edgeで使えます(GMドラムの音番号に対応)。</li>
       <li>iPhoneで音が出ないときは、本体のマナーモードを解除してみてください。</li>
@@ -487,7 +489,8 @@ function playBuf(id,s,t,v){const f=F(id),src=ac.createBufferSource(),g=ac.create
   (live[id]=live[id]||new Set()).add(src);src.onended=()=>live[id].delete(src);src.connect(g);g.connect(comp);src.start(t,R.offset);if(f.stop)src.stop(t+f.stop+0.02);
   if(id==="chh"&&ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setTargetAtTime(0.0001,t,0.006);ohhGain=null;}
   if(id==="ohh")ohhGain=g;}
-function play(id,v,t){audio();t=t==null?ac.currentTime:t;v=Math.max(0.15,Math.min(1,v));const s=samples[id];if(s&&s.buffer){playBuf(id,s,t,v);return;}if(!s&&fxActive(id)){const b=renderBuilt(id);if(b.buffer){playBuf(id,b,t,v);return;}}SND[id](t,v);}
+const GMN=id=>{const p=PADS[IDX[id]];return (p&&p.gm&&p.gm[0])||({snap:75,sub:35})[id]||39;};
+function play(id,v,t){audio();t=t==null?ac.currentTime:t;v=Math.max(0.15,Math.min(1,v));if(recOn)midiEv.push([t-recStart,GMN(id),Math.round(v*127)]);const s=samples[id];if(s&&s.buffer){playBuf(id,s,t,v);return;}if(!s&&fxActive(id)){const b=renderBuilt(id);if(b.buffer){playBuf(id,b,t,v);return;}}SND[id](t,v);}
 
 /* ===== パッド ===== */
 let sel=store.get("drSel","kick");
@@ -651,6 +654,18 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing)st
 
 /* ===== 演奏の録音(MP3・WAVで保存) ===== */
 let tap=null, recL=[], recR=[], recOn=false, recStart=0, take=null, takeURL="";
+/* 録音中に鳴った音をMIDIでも記録(GMドラムの音番号・10ch) */
+let midiEv=[];
+/* 標準MIDIファイル(フォーマット1)を作る。tracks:[{name,ch,ev:[[tick,[bytes]],...]}] */
+function smfBlob(tracks,bpm){const TPQ=480,vlq=n=>{n=Math.max(0,Math.round(n));const b=[n&0x7f];while(n>>=7)b.unshift((n&0x7f)|0x80);return b;},
+  txt=(ty,s)=>{const b=[...new TextEncoder().encode(s)].filter(x=>x<128);return [0xff,ty,...vlq(b.length),...b];},us=Math.round(60000000/bpm),
+  trk=(name,ev,meta)=>{ev=ev.slice().sort((a,b)=>a[0]-b[0]||((a[1][0]&0xf0)===0x80?-1:0)-((b[1][0]&0xf0)===0x80?-1:0));let o=[0,...txt(0x03,name)],t=0;
+    if(meta)o.push(0,0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255,0,0xff,0x58,4,4,2,24,8);
+    ev.forEach(([tk,by])=>{tk=Math.round(tk);o.push(...vlq(tk-t),...by);t=tk;});o.push(0,0xff,0x2f,0);
+    return [0x4d,0x54,0x72,0x6b,(o.length>>>24)&255,(o.length>>>16)&255,(o.length>>>8)&255,o.length&255,...o];},
+  tr=[trk("Tempo",[],true),...tracks.map(x=>trk(x.name,x.ev))],head=[0x4d,0x54,0x68,0x64,0,0,0,6,0,1,0,tr.length,(TPQ>>8)&255,TPQ&255];
+  return new Blob([new Uint8Array([...head,...tr.flat()])],{type:"audio/midi"});}
+
 const recBtn=$("recBtn");
 function recToggle(){
   if(recOn){recStop();return;}
@@ -660,7 +675,7 @@ function recToggle(){
     const o=e.outputBuffer;for(let c=0;c<o.numberOfChannels;c++)o.getChannelData(c).fill(0);
     if(a.currentTime-recStart>600)recStop();};
   master.connect(tap); tap.connect(a.destination);
-  recOn=true; recStart=a.currentTime; recBtn.setAttribute("aria-pressed","true"); recBtn.textContent="■ 録音を止める";
+  midiEv=[];recOn=true; recStart=a.currentTime; recBtn.setAttribute("aria-pressed","true"); recBtn.textContent="■ 録音を止める";
 }
 function recStop(){
   recOn=false; recBtn.setAttribute("aria-pressed","false"); recBtn.textContent="● 演奏を録音";
@@ -672,6 +687,7 @@ function recStop(){
   if(s>=e){toast("音が入っていませんでした");return;}
   const sr=ac.sampleRate; s=Math.max(0,s-Math.floor(sr*0.02)); e=Math.min(n-1,e+Math.floor(sr*0.3));
   take={L:L.slice(s,e),R:R.slice(s,e),sr};
+  {const mev=midiEv;midiEv=[];const t0=mev.length?Math.min(...mev.map(x=>x[0])):0;take.midi=mev.map(([t,n,v])=>[t-t0,n,v]);take.bpm=bpm;$("saveMid").hidden=!take.midi.length;}
   if(takeURL)URL.revokeObjectURL(takeURL); takeURL=URL.createObjectURL(wavBlob(take));
   $("takeAudio").src=takeURL; $("take").hidden=false;
   const sec=take.L.length/sr; $("takeLen").textContent=Math.floor(sec/60)+":"+String(Math.floor(sec%60)).padStart(2,"0");
@@ -701,6 +717,10 @@ async function mp3Blob(t){
 }
 recBtn.onclick=recToggle;
 $("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
+const drumEv=list=>{const ev=[];list.forEach(([tk,n,v])=>{ev.push([tk,[0x99,n,Math.max(1,Math.min(127,v))]]);ev.push([tk+110,[0x89,n,0]]);});return ev;};
+$("saveMid").onclick=()=>{if(!take||!take.midi)return;const k=take.bpm/60*480;download(smfBlob([{name:"Drums",ev:drumEv(take.midi.map(([t,n,v])=>[t*k,n,v]))}],take.bpm),fname("mid"));if(window.ngTrack)ngTrack("midi_export",{tool:"drums_take"});};
+$("patMid").onclick=()=>{const L=[];for(let st=0;st<N;st++){const tk=st*120+(st%2?swing*60:0);PADS.forEach(p=>{if(pat[p.id][st])L.push([tk,GMN(p.id),Math.round((p.id==="chh"&&st%4?0.7:0.92)*127)]);});}
+  if(!L.length){toast("パターンが空っぽです。ステップを打ち込んでね");return;}download(smfBlob([{name:"Drums",ev:drumEv(L)}],bpm),fname("mid").replace("drums-","drums-pattern-"));if(window.ngTrack)ngTrack("midi_export",{tool:"drums_pattern"});};
 $("saveMp3").onclick=async()=>{if(!take)return;const b=$("saveMp3"),t0=b.textContent;b.disabled=true;b.textContent="変換中…";
   try{download(await mp3Blob(take),fname("mp3"));}catch(e){toast("MP3に変換できませんでした。WAVで保存してね");}
   b.disabled=false;b.textContent=t0;};

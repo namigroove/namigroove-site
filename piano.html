@@ -357,6 +357,7 @@ header.top .logo{flex:none}
       <div class="take-b"><span class="take-len" id="takeLen"></span>
         <button class="btn" type="button" id="saveMp3">MP3で保存</button>
         <button class="btn" type="button" id="saveWav">WAVで保存</button>
+        <button class="btn" type="button" id="saveMid" hidden>MIDIで保存</button>
         <button class="btn" type="button" id="takeDel">消す</button>
       </div>
     </div>
@@ -445,7 +446,7 @@ header.top .logo{flex:none}
     <ul>
       <li>鍵盤の下の方をタップすると強く、上の方だと弱く鳴ります。スマホでは複数の指で和音も弾けます。</li>
       <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。「エフェクト」を開くと、ピッチ(±2オクターブ)・テープストップ(弾くたびに止まるように減速)・ルーズ(弾くたびにピッチがランダムにずれる)・逆再生をかけられます。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
-      <li>「● 演奏を録音」を押して弾くと、演奏を録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。録音はこの端末の中だけで処理します。</li>
+      <li>「● 演奏を録音」を押して弾くと、演奏を録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。録音はこの端末の中だけで処理します。弾いた鍵盤はMIDIファイルでも保存できます(強さ・長さ・ペダル・ピッチベンドつき。テンポは120で記録)。</li>
       <li>「コードを調べる」では、コード名を選ぶと鍵盤にオレンジで押さえる場所を出して鳴らします。オレンジの枠のボタンはおしゃれ系のコードです。「おしゃれ進行」では定番進行をテンション入りのボイシングで聴けます(キーも変えられます)。</li>
       <li>鍵盤の左のホイールを上下にドラッグするとピッチベンド。離すと元の高さに戻ります。幅は設定で±1・±2・±12半音から選べます。</li>
       <li>MIDIキーボードはChrome・Edgeで使えます(Safariは非対応)。ベロシティ、サステインペダル、ピッチベンドにも対応しています。</li>
@@ -638,6 +639,7 @@ function noteOn(m,vel){
   if(voices.has(m)) release(m,true);
   const v=Math.max(0.12,Math.min(1,vel));
   const env=a.createGain(), out=a.createGain(), rg=a.createGain();
+  if(recOn){if(midiOpen.has(m))midiPush([0x80,m,0]);midiPush([0x90,m,Math.max(1,Math.min(127,Math.round(v*127)))]);midiOpen.add(m);}
   const vc=(INST[inst]||INST.piano)(a,f,v,t,env);
   env.connect(out); out.gain.value=0.5; out.connect(comp);
   rg.gain.value=vc.rev; out.connect(rg); rg.connect(rev);
@@ -646,6 +648,7 @@ function noteOn(m,vel){
   voices.set(m,{env,srcs:vc.srcs,rel:vc.rel,held:true,t});
 }
 function release(m,force){
+  if(recOn&&midiOpen.has(m)){midiPush([0x80,m,0]);midiOpen.delete(m);}
   const vc=voices.get(m); if(!vc) return;
   vc.held=false;
   if(sustain&&!force) return;
@@ -655,14 +658,14 @@ function release(m,force){
   voices.delete(m);
 }
 function setSustain(on){
-  sustain=on; $("susBtn").setAttribute("aria-pressed",on);
+  sustain=on; $("susBtn").setAttribute("aria-pressed",on);if(recOn)midiPush([0xb0,64,on?127:0]);
   if(!on) for(const [m,vc] of [...voices]) if(!vc.held) release(m);
 }
 
 /* ===== ピッチベンド ===== */
 let bend=0, bendRange=store.get("pianoBend",2);
 function setBend(v){
-  bend=Math.max(-1,Math.min(1,v));
+  bend=Math.max(-1,Math.min(1,v));if(recOn){const pb=Math.max(0,Math.min(16383,Math.round(8192+bend*8191)));midiPush([0xe0,pb&127,pb>>7]);}
   if(ac){const t=ac.currentTime;voices.forEach(vc=>vc.srcs.forEach(o=>{if(o.detune&&!o._noBend&&o._d!=null)o.detune.setTargetAtTime(o._d+bend*bendRange*100,t,0.008);}));}
   const pb=$("pb");if(pb){$("pbTh").style.top="calc("+(50-bend*42)+"% - 11px)";pb.setAttribute("aria-valuenow",bend.toFixed(2));}
 }
@@ -777,10 +780,23 @@ segInit($("chipSeg"),"w",chipWave,v=>{chipWave=v;store.set("pianoChipWave",v);})
 
 /* ===== 演奏の録音(MP3・WAVで保存) ===== */
 let tap=null, recL=[], recR=[], recOn=false, recStart=0, take=null, takeURL="";
+/* 録音中に弾いた鍵盤をMIDIでも記録(時間は秒。保存するときにBPM120の拍に直す) */
+let midiEv=[];const midiOpen=new Set();
+function midiPush(by){if(ac)midiEv.push([ac.currentTime-recStart,by]);}
+/* 標準MIDIファイル(フォーマット1)を作る。tracks:[{name,ch,ev:[[tick,[bytes]],...]}] */
+function smfBlob(tracks,bpm){const TPQ=480,vlq=n=>{n=Math.max(0,Math.round(n));const b=[n&0x7f];while(n>>=7)b.unshift((n&0x7f)|0x80);return b;},
+  txt=(ty,s)=>{const b=[...new TextEncoder().encode(s)].filter(x=>x<128);return [0xff,ty,...vlq(b.length),...b];},us=Math.round(60000000/bpm),
+  trk=(name,ev,meta)=>{ev=ev.slice().sort((a,b)=>a[0]-b[0]||((a[1][0]&0xf0)===0x80?-1:0)-((b[1][0]&0xf0)===0x80?-1:0));let o=[0,...txt(0x03,name)],t=0;
+    if(meta)o.push(0,0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255,0,0xff,0x58,4,4,2,24,8);
+    ev.forEach(([tk,by])=>{tk=Math.round(tk);o.push(...vlq(tk-t),...by);t=tk;});o.push(0,0xff,0x2f,0);
+    return [0x4d,0x54,0x72,0x6b,(o.length>>>24)&255,(o.length>>>16)&255,(o.length>>>8)&255,o.length&255,...o];},
+  tr=[trk("Tempo",[],true),...tracks.map(x=>trk(x.name,x.ev))],head=[0x4d,0x54,0x68,0x64,0,0,0,6,0,1,0,tr.length,(TPQ>>8)&255,TPQ&255];
+  return new Blob([new Uint8Array([...head,...tr.flat()])],{type:"audio/midi"});}
+
 const recBtn=$("recBtn");
 function recToggle(){
   if(recOn){recStop();return;}
-  const a=audio(); recL=[];recR=[];
+  const a=audio(); recL=[];recR=[];midiEv=[];midiOpen.clear();
   tap=a.createScriptProcessor(4096,2,2);
   tap.onaudioprocess=e=>{if(!recOn)return;const ib=e.inputBuffer;recL.push(new Float32Array(ib.getChannelData(0)));recR.push(new Float32Array(ib.numberOfChannels>1?ib.getChannelData(1):ib.getChannelData(0)));
     const o=e.outputBuffer;for(let c=0;c<o.numberOfChannels;c++)o.getChannelData(c).fill(0);
@@ -789,6 +805,7 @@ function recToggle(){
   recOn=true; recStart=a.currentTime; recBtn.setAttribute("aria-pressed","true"); recBtn.textContent="■ 録音を止める";
 }
 function recStop(){
+  midiOpen.forEach(m=>midiPush([0x80,m,0]));midiOpen.clear();if(bend)midiPush([0xe0,0,64]);const mev=midiEv;midiEv=[];
   recOn=false; recBtn.setAttribute("aria-pressed","false"); recBtn.textContent="● 演奏を録音";
   try{master.disconnect(tap);tap.disconnect();}catch(e){} tap=null;
   const n=recL.reduce((x,b)=>x+b.length,0); if(!n) return;
@@ -798,6 +815,7 @@ function recStop(){
   if(s>=e){toast("音が入っていませんでした");return;}
   const sr=ac.sampleRate; s=Math.max(0,s-Math.floor(sr*0.02)); e=Math.min(n-1,e+Math.floor(sr*0.3));
   take={L:L.slice(s,e),R:R.slice(s,e),sr};
+  const t0=(mev.find(x=>(x[1][0]&0xf0)===0x90)||[0])[0];take.midi=mev.map(([t,by])=>[Math.max(0,t-t0),by]);$("saveMid").hidden=!take.midi.some(x=>(x[1][0]&0xf0)===0x90);
   if(takeURL)URL.revokeObjectURL(takeURL); takeURL=URL.createObjectURL(wavBlob(take));
   $("takeAudio").src=takeURL; $("take").hidden=false;
   const sec=take.L.length/sr; $("takeLen").textContent=Math.floor(sec/60)+":"+String(Math.floor(sec%60)).padStart(2,"0");
@@ -827,6 +845,7 @@ async function mp3Blob(t){
 }
 recBtn.onclick=recToggle;
 $("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
+$("saveMid").onclick=()=>{if(!take||!take.midi)return;download(smfBlob([{name:"Piano",ev:take.midi.map(([t,by])=>[t*960,by])}],120),fname("mid"));if(window.ngTrack)ngTrack("midi_export",{tool:"piano_take"});};
 $("saveMp3").onclick=async()=>{if(!take)return;const b=$("saveMp3"),t0=b.textContent;b.disabled=true;b.textContent="変換中…";
   try{download(await mp3Blob(take),fname("mp3"));}catch(e){toast("MP3に変換できませんでした。WAVで保存してね");}
   b.disabled=false;b.textContent=t0;};
