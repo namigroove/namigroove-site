@@ -159,6 +159,7 @@ footer a{color:var(--sea)}
 .foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
 .eb-link:hover{border-bottom-style:solid}
+#swRow .ctl{flex-wrap:wrap;justify-content:center}#swRow label,#sw66,#swOut{white-space:nowrap}#sw66{padding:4px 12px;font-size:12px;line-height:1.5}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
@@ -310,6 +311,13 @@ header.top .logo{flex:none}
             <button type="button" data-s="3" aria-pressed="false">3連</button>
             <button type="button" data-s="4" aria-pressed="false">16分</button>
           </span>
+        </div>
+      </div>
+      <div class="row" id="swRow" hidden>
+        <div class="ctl"><label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="swOn">スウィング</label>
+          <input type="range" id="swAmt" min="50" max="75" step="1" value="67" style="width:150px;margin:0" aria-label="スウィングの幅">
+          <b class="num" id="swOut" style="min-width:6.5em;color:var(--ink);font-weight:400">67%(3連)</b>
+          <button class="btn mini" type="button" id="sw66" title="3連のハネ(67%)に戻す">3連</button>
         </div>
       </div>
       <div class="row">
@@ -528,7 +536,15 @@ $("bpmRange").addEventListener("input",e=>setBpm(+e.target.value));
 $("bpmDown").onclick=()=>setBpm(bpm-1);$("bpmUp").onclick=()=>setBpm(bpm+1);
 function setBeats(v){beats=Math.max(1,Math.min(12,v));store.set("beats",beats);muted=new Set([...muted].filter(i=>i<beats));store.set("muted",[...muted]);renderDots();if(step>=beats*sub)step=0;}
 $("beatsDown").onclick=()=>setBeats(beats-1);$("beatsUp").onclick=()=>setBeats(beats+1);
-segInit($("subSeg"),"s",sub,v=>{const b=Math.floor(step/sub);sub=+v;store.set("sub",sub);step=b*sub;});
+segInit($("subSeg"),"s",sub,v=>{const b=Math.floor(step/sub);sub=+v;store.set("sub",sub);step=b*sub;swView();});
+/* スウィング(♪♪・16分のとき)。幅は「2つ目の音が何%の位置に来るか」。50%=まっすぐ、66%=3連のハネ、75%=付点のハネ */
+let swingOn=!!store.get("swingOn",false),swingAmt=+store.get("swingAmt",67)||67;
+function swLabel(v){return v+"%"+(v===50?"(まっすぐ)":Math.abs(v-66.7)<1?"(3連)":v===75?"(付点)":"");}
+function swView(){$("swRow").hidden=!(sub===2||sub===4);$("swOn").checked=swingOn;$("swAmt").value=swingAmt;$("swOut").textContent=swLabel(swingAmt);$("swAmt").style.opacity=swingOn?1:0.45;}
+$("swOn").addEventListener("change",()=>{swingOn=$("swOn").checked;store.set("swingOn",swingOn);swView();});
+$("swAmt").addEventListener("input",()=>{swingAmt=+$("swAmt").value;store.set("swingAmt",swingAmt);if(!swingOn){swingOn=true;store.set("swingOn",true);}swView();});
+$("sw66").onclick=()=>{swingAmt=67;swingOn=true;store.set("swingAmt",67);store.set("swingOn",true);swView();};
+swView();
 segInit($("sndSeg"),"v",snd,v=>{snd=v;store.set("snd",snd);if(!playing)preview();});
 $("vol").value=vol;$("vol").addEventListener("input",e=>{vol=+e.target.value;store.set("vol",vol);if(master)master.gain.value=vol;});
 $("accent").checked=accentOn;$("accent").addEventListener("change",e=>{accentOn=e.target.checked;store.set("accent",accentOn);renderDots();});
@@ -561,7 +577,8 @@ function scheduler(){
   while(nextTime<ctx.currentTime+0.12){
     const beat=Math.floor(step/sub), onBeat=step%sub===0;
     const level=onBeat?(beat===0&&accentOn?2:1):0;
-    if(!muted.has(beat)) click(nextTime,level);
+    const sw=swingOn&&(sub===2||sub===4)&&step%2===1?(swingAmt/100-0.5)*2*(60/bpm/sub):0;
+    if(!muted.has(beat)) click(nextTime+sw,level);
     if(onBeat) queue.push({time:nextTime,beat,acc:level===2,mute:muted.has(beat)});
     nextTime+=60/bpm/sub;
     step=(step+1)%(beats*sub);
