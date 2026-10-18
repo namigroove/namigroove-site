@@ -114,6 +114,24 @@
     { n: "マーチ", b: [110, 125] }, { n: "アンビエント", b: [60, 90] }, { n: "クラシカル", b: [60, 140] }
   ];
 
+  /* 歌声(合成音声)。e はソフト。同じキャラが複数のソフトにいるときは代表的なもの */
+  var VOICE = [
+    { n: "初音ミク", e: "VOCALOID" }, { n: "鏡音リン", e: "VOCALOID" }, { n: "鏡音レン", e: "VOCALOID" },
+    { n: "巡音ルカ", e: "VOCALOID" }, { n: "KAITO", e: "VOCALOID" }, { n: "MEIKO", e: "VOCALOID" },
+    { n: "GUMI", e: "VOCALOID" }, { n: "神威がくぽ", e: "VOCALOID" }, { n: "IA", e: "VOCALOID" },
+    { n: "結月ゆかり", e: "VOCALOID" }, { n: "v flower", e: "VOCALOID" }, { n: "歌愛ユキ", e: "VOCALOID" },
+    { n: "猫村いろは", e: "VOCALOID" }, { n: "Fukase", e: "VOCALOID" }, { n: "洛天依", e: "VOCALOID" },
+    { n: "可不", e: "CeVIO AI" }, { n: "星界", e: "CeVIO AI" }, { n: "裏命", e: "CeVIO AI" },
+    { n: "狐子", e: "CeVIO AI" }, { n: "羽累", e: "CeVIO AI" }, { n: "双葉湊音", e: "CeVIO AI" },
+    { n: "小春六花", e: "CeVIO AI" }, { n: "夏色花梨", e: "CeVIO AI" }, { n: "花隈千冬", e: "CeVIO AI" },
+    { n: "さとうささら", e: "CeVIO" },
+    { n: "重音テト", e: "Synthesizer V" }, { n: "弦巻マキ", e: "Synthesizer V" },
+    { n: "知声", e: "VoiSona" },
+    { n: "東北きりたん", e: "NEUTRINO" },
+    { n: "ずんだもん", e: "VOICEVOX" }, { n: "四国めたん", e: "VOICEVOX" }, { n: "春日部つむぎ", e: "VOICEVOX" },
+    { n: "桃音モモ", e: "UTAU" }, { n: "唄音ウタ(デフォ子)", e: "UTAU" }
+  ];
+
   /* キー */
   var KEYS = ["C", "C♯", "D", "E♭", "E", "F", "F♯", "G", "A♭", "A", "B♭", "B"];
 
@@ -126,5 +144,5 @@
     { k: "word", v: "ずんだ" }, { k: "word", v: "枝豆" }, { k: "word", v: "サックス" }, { k: "word", v: "いい波" }
   ];
 
-  window.NamiGacha = { THEME: THEME, WORD: WORD, RULE: RULE, MOOD: MOOD, GENRE: GENRE, KEYS: KEYS, RARE: RARE };
+  window.NamiGacha = { THEME: THEME, WORD: WORD, RULE: RULE, MOOD: MOOD, GENRE: GENRE, VOICE: VOICE, KEYS: KEYS, RARE: RARE };
 })();

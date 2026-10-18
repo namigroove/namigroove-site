@@ -217,8 +217,8 @@ footer a{color:var(--sea)}
 .capsule.pop{animation:capPop .5s cubic-bezier(.3,1.6,.5,1) forwards}
 @keyframes capPop{0%{opacity:0;transform:translate(-40px,-30px) scale(.4)}60%{opacity:1;transform:translate(0,4px) scale(1.1)}100%{opacity:1;transform:none}}
 .cards-g{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
-.cg{grid-column:span 3}.cg.kw{grid-column:span 2}.cg.wide{grid-column:1/-1}
-@media (max-width:560px){.cg{grid-column:1/-1}.cg.kw{grid-column:span 2;padding:10px 8px 10px 10px}.cg.kw .v{font-size:16px;margin-top:6px}.cg.kw .lock{width:24px;height:24px;font-size:11px;top:6px;right:6px}.cg.kw.locked{padding:9px 7px 9px 9px}}
+.cg{grid-column:span 3}.cg.kw,.cg.top{grid-column:span 2}.cg.wide{grid-column:1/-1}
+@media (max-width:560px){.cg,.cg.top{grid-column:1/-1}.cg.kw{grid-column:span 2;padding:10px 8px 10px 10px}.cg.kw .v{font-size:16px;margin-top:6px}.cg.kw .lock{width:24px;height:24px;font-size:11px;top:6px;right:6px}.cg.kw.locked{padding:9px 7px 9px 9px}}
 .cg{position:relative;border:1px solid var(--line);border-radius:14px;background:var(--chip);padding:12px 44px 12px 14px;cursor:pointer;transition:transform .12s,border-color .12s;-webkit-tap-highlight-color:transparent}
 .cg:hover{border-color:var(--sea)}
 .cg.locked{border:2px solid var(--sea);padding:11px 43px 11px 13px}
@@ -226,13 +226,13 @@ footer a{color:var(--sea)}
 .cg.rare .lb{color:#8a6400}
 .cg .lb{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--sea)}
 .cg .v{display:block;font-family:var(--f-display);font-size:19px;line-height:1.45;margin-top:2px;word-break:break-word}
-.cg .v small{font-family:var(--f-body);font-size:12px;color:var(--ink-soft)}
+.cg .v small{display:block;font-family:var(--f-body);font-size:12px;line-height:1.4;color:var(--ink-soft)}
 .cg.rare .v small{color:#6b5300}
 .cg.flip{animation:flip .35s ease-out}
 @keyframes flip{0%{transform:rotateX(80deg);opacity:.2}100%{transform:none;opacity:1}}
 .lock{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0}
 .cg.locked .lock{background:var(--sea);border-color:var(--sea)}
-#useSeg label{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);cursor:pointer}
+#useSeg label,#engSeg label{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);cursor:pointer}
 a.btn{text-decoration:none;display:inline-flex;align-items:center}
 @media (prefers-reduced-motion:reduce){.capsule.pop,.cg.flip{animation:none;opacity:1;transform:none}}
 .sx-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px 14px;font-size:12px;margin:0;padding:0;list-style:none}
@@ -249,7 +249,7 @@ header.top .logo{flex:none}
 @media (max-width:374px){header.top nav.main .opt{display:none}}
 @media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"お題ガチャ(作詞・作曲のお題メーカー)","url":"https://www.namigroove.com/tools/gacha/","description":"作詞・曲づくりのお題をランダムに出す無料のお題ガチャ。テーマ・音楽ジャンル・歌詞のキーワード・縛り・気分・BPMとキーの組み合わせで、ボカロや作曲の練習に。","applicationCategory":"MultimediaApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["作詞のお題","音楽ジャンル","キーワード3つ","縛り(ルール)","BPM・キー","カードの固定"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"お題ガチャ(作詞・作曲のお題メーカー)","item":"https://www.namigroove.com/tools/gacha/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"お題ガチャ(作詞・作曲のお題メーカー)","url":"https://www.namigroove.com/tools/gacha/","description":"作詞・曲づくりのお題をランダムに出す無料のお題ガチャ。テーマ・音楽ジャンル・歌詞のキーワード・縛り・気分・BPMとキーの組み合わせで、ボカロや作曲の練習に。","applicationCategory":"MultimediaApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["作詞のお題","音楽ジャンル","合成音声(歌声)","キーワード3つ","縛り(ルール)","BPM・キー","カードの固定"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"お題ガチャ(作詞・作曲のお題メーカー)","item":"https://www.namigroove.com/tools/gacha/"}]}]}</script>
 </head>
 <body>
 
@@ -285,7 +285,7 @@ header.top .logo{flex:none}
   <div class="intro">
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>お題ガチャ</h1>
-    <p class="lead">曲づくり・作詞のお題をランダムに出します。テーマ、ジャンル、歌詞に入れるキーワード、縛り、気分の組み合わせで1曲書いてみよう。気に入ったカードは鍵をかけて、残りだけ回し直せます。</p>
+    <p class="lead">曲づくり・作詞のお題をランダムに出します。テーマ、ジャンル、歌ってもらう合成音声、歌詞に入れるキーワード、縛り、気分の組み合わせで1曲書いてみよう。気に入ったカードは鍵をかけて、残りだけ回し直せます。</p>
   </div>
 
   <section class="panel" aria-label="お題ガチャ">
@@ -304,6 +304,8 @@ header.top .logo{flex:none}
     <details class="opts">
       <summary>出すカードを選ぶ</summary>
       <div class="row" id="useSeg"></div>
+      <p class="note-s" style="margin-top:16px">歌声に出すソフト(持っているソフトだけにできます)</p>
+      <div class="row" id="engSeg"></div>
     </details>
   </section>
 
@@ -312,6 +314,7 @@ header.top .logo{flex:none}
     <ul>
       <li>カードをタップすると、そのカードだけ回し直せます。🔒を押すと、次に回しても残ります。</li>
       <li>BPMとキーは、出たジャンルによくあるテンポの中から選んでいます。あくまできっかけなので、自由に変えてね。</li>
+      <li>「歌声」はVOCALOID・CeVIO AI・Synthesizer V・VoiSona・NEUTRINO・VOICEVOX・UTAUなどの合成音声から選びます。「出すカードを選ぶ」で、持っているソフトだけにしぼれます。</li>
       <li>ときどき金のカプセルが出ます。中身はお楽しみ。</li>
       <li>このお題で曲を作ったら、<a href="https://x.com/search?q=%23namigroovetools" target="_blank" rel="noopener">#namigroovetools</a> をつけて教えてね。歌詞の音数は<a href="mora.html">歌詞の音数カウンター</a>で数えられます。</li>
     </ul>
@@ -337,10 +340,10 @@ const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==n
 const G=window.NamiGacha;
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const SLOTS=[
-  {id:"theme",lb:"テーマ"},{id:"genre",lb:"ジャンル"},{id:"w1",lb:"キーワード"},{id:"w2",lb:"キーワード"},{id:"w3",lb:"キーワード"},
+  {id:"theme",lb:"テーマ"},{id:"genre",lb:"ジャンル"},{id:"voice",lb:"歌声"},{id:"w1",lb:"キーワード"},{id:"w2",lb:"キーワード"},{id:"w3",lb:"キーワード"},
   {id:"rule",lb:"縛り",wide:1},{id:"mood",lb:"気分・視点"},{id:"extra",lb:"BPM・キー"}
 ];
-const USE_DEF={theme:1,genre:1,w:1,rule:1,mood:1,extra:1};
+const USE_DEF={theme:1,genre:1,voice:1,w:1,rule:1,mood:1,extra:1};
 let use=Object.assign({},USE_DEF,store.get("gachaUse",{}));
 let cur=store.get("gachaCur",null)||{}, locks=new Set(store.get("gachaLocks",[])), rareNow=false;
 const useKey=id=>id[0]==="w"?"w":id;
@@ -350,6 +353,7 @@ function roll(id){
   if(id==="theme")return{v:pick(G.THEME)};
   if(id==="rule")return{v:pick(G.RULE)};
   if(id==="mood")return{v:pick(G.MOOD)};
+  if(id==="voice"){const list=G.VOICE.filter(x=>engines[x.e]!==0);const v=pick(list.length?list:G.VOICE);return{v:v.n,e:v.e};}
   if(id==="genre"){const g=pick(G.GENRE);return{v:g.n,b:g.b};}
   if(id==="extra"){const g=G.GENRE.find(x=>cur.genre&&x.n===cur.genre.v)||pick(G.GENRE);const bpm=g.b[0]+Math.round(Math.random()*(g.b[1]-g.b[0])/2)*2;
     const minor=Math.random()<0.5;return{v:`BPM ${bpm} ・ ${pick(G.KEYS)}${minor?"マイナー":"メジャー"}`,bpm};}
@@ -371,8 +375,8 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;","
 function render(changed){
   changed=new Set(changed||[]);
   $("cards").innerHTML=active().map(s=>{const c=cur[s.id];if(!c)return"";
-    const sub=s.id==="genre"&&c.b?` <small>BPM ${c.b[0]}${c.b[1]!==c.b[0]?"〜"+c.b[1]:""}くらい</small>`:"";
-    return `<li class="cg${locks.has(s.id)?" locked":""}${c.rare?" rare":""}${s.wide?" wide":""}${s.id[0]==="w"?" kw":""}${changed.has(s.id)?" flip":""}" data-id="${s.id}" title="タップでこのカードだけ回し直す"><span class="lb">${c.rare?"✨ ":""}${s.lb}</span><span class="v">${esc(c.v)}${sub}</span><button class="lock" type="button" aria-pressed="${locks.has(s.id)}" aria-label="${s.lb}を${locks.has(s.id)?"固定解除":"固定"}">${locks.has(s.id)?"🔒":"🔓"}</button></li>`;}).join("");
+    const sub=s.id==="voice"&&c.e?` <small>${esc(c.e)}</small>`:s.id==="genre"&&c.b?` <small>BPM ${c.b[0]}${c.b[1]!==c.b[0]?"〜"+c.b[1]:""}くらい</small>`:"";
+    return `<li class="cg${locks.has(s.id)?" locked":""}${c.rare?" rare":""}${s.wide?" wide":""}${s.id[0]==="w"?" kw":""}${["theme","genre","voice"].includes(s.id)?" top":""}${changed.has(s.id)?" flip":""}" data-id="${s.id}" title="タップでこのカードだけ回し直す"><span class="lb">${c.rare?"✨ ":""}${s.lb}</span><span class="v">${esc(c.v)}${sub}</span><button class="lock" type="button" aria-pressed="${locks.has(s.id)}" aria-label="${s.lb}を${locks.has(s.id)?"固定解除":"固定"}">${locks.has(s.id)?"🔒":"🔓"}</button></li>`;}).join("");
   $("rareMsg").hidden=!rareNow;
   const cap=$("capsule");cap.classList.remove("pop","gold");void cap.offsetWidth;if(changed.size){cap.classList.add("pop");if(rareNow)cap.classList.add("gold");}
   const t=text();
@@ -391,8 +395,13 @@ $("namiBtn").onclick=()=>{hop();spin();};
 $("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(text());toast("お題をコピーしました");}catch(e){}};
 $("metroBtn").addEventListener("click",()=>{if(cur.extra&&cur.extra.bpm)store.set("bpm",cur.extra.bpm);});
 /* 出すカード */
-const USE_LB={theme:"テーマ",genre:"ジャンル",w:"キーワード",rule:"縛り",mood:"気分・視点",extra:"BPM・キー"};
+const USE_LB={theme:"テーマ",genre:"ジャンル",voice:"歌声",w:"キーワード",rule:"縛り",mood:"気分・視点",extra:"BPM・キー"};
 $("useSeg").innerHTML=Object.keys(USE_LB).map(k=>`<label><input type="checkbox" data-k="${k}"${use[k]?" checked":""}>${USE_LB[k]}</label>`).join("");
+/* 歌声のソフト(持っているソフトだけにしぼれる) */
+let engines=store.get("gachaEngines",{});
+const ENG=[...new Set(G.VOICE.map(x=>x.e))];
+$("engSeg").innerHTML=ENG.map(e=>`<label><input type="checkbox" data-e="${e}"${engines[e]!==0?" checked":""}>${e}</label>`).join("");
+$("engSeg").addEventListener("change",e=>{engines[e.target.dataset.e]=e.target.checked?1:0;store.set("gachaEngines",engines);if(!locks.has("voice")){cur.voice=roll("voice");store.set("gachaCur",cur);render(["voice"]);}});
 $("useSeg").addEventListener("change",e=>{const k=e.target.dataset.k;use[k]=e.target.checked?1:0;store.set("gachaUse",use);
   active().forEach(s=>{if(!cur[s.id])cur[s.id]=roll(s.id);});render();});
 function toast(t){const d=document.createElement("div");d.className="ng-toast";d.textContent=t;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}
