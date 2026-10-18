@@ -206,6 +206,12 @@ footer a{color:var(--sea)}
 .smp-t b{color:var(--ink)}
 .smp-t span{color:var(--sea);font-weight:700}
 .smp-b{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.btn.mini{padding:0 8px;line-height:1.6}
+.smp-pitch{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px 0 2px;font-size:13px;color:var(--ink-soft)}
+.smp-pitch input[type=range]{width:min(260px,60vw);accent-color:var(--sea)}
+.smp-pitch b{color:var(--ink);font-family:var(--f-mono);min-width:4.6em;display:inline-block}
+.smp-pitch[hidden]{display:none}
+
 #smpRec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
 .pad.smpl .k::after{content:" ♪";color:var(--coral)}
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
@@ -279,6 +285,7 @@ header.top .logo{flex:none}
         <button class="btn" type="button" id="smpRec">● マイクで録音</button>
         <button class="btn" type="button" id="smpReset" hidden>元の音に戻す</button>
       </div>
+      <div class="smp-pitch" id="smpPitchBox" hidden><label for="smpPitch">ピッチ</label><input type="range" id="smpPitch" min="-24" max="24" step="0.1" value="0" aria-describedby="smpPitchV"><b id="smpPitchV">±0 半音</b><button class="btn mini" type="button" id="smpPitch0">0に戻す</button></div>
       <p class="err" id="smpErr" hidden></p>
     </div>
     <div class="take" id="take" hidden>
@@ -336,7 +343,7 @@ header.top .logo{flex:none}
     <ul>
       <li>パッドは真ん中を叩くと強く、端だと弱く鳴ります。スマホでは複数の指で同時に叩けます。</li>
       <li>シーケンサーは、パッドを叩いて音を選んでから、下の16マスをタップして打ち込みます。「● 打ち込み」をオンにして再生中にパッドを叩くと、そのまま打ち込めます。</li>
-      <li>サンプラー:パッドを選んで「ファイルから読み込む」か「録音」で、そのパッドの音を好きな音に差し替えられます。頭の無音は自動でカットします。読み込んだ音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
+      <li>サンプラー:パッドを選んで「ファイルから読み込む」か「録音」で、そのパッドの音を好きな音に差し替えられます。頭の無音は自動でカットします。読み込んだ音はこの端末のブラウザの中だけに保存され、どこにも送信されません。「ピッチ」のスライダーで、差し替えた音の高さをパッドごとに±2オクターブまで変えられます。</li>
       <li>「● 演奏を録音」を押すと、パッドやシーケンサーの音をそのまま録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。</li>
       <li>組んだパターンとBPMもこのブラウザに保存されます。</li>
       <li>MIDIパッド・キーボードはChrome・Edgeで使えます(GMドラムの音番号に対応)。</li>
@@ -440,7 +447,10 @@ function tom(t,v,f){const o=ac.createOscillator();o.type="sine";o.frequency.setV
   if(kit==="909"){const b=filt("bandpass",f*4,1);noise(t,0.05,b);b.connect(vca(t,0.15*v,0.015));}}
 /* サンプラーで差し替えた音 */
 const samples={};
-function playSample(id,t,v){const s=samples[id],src=ac.createBufferSource(),g=ac.createGain();src.buffer=s.buffer;g.gain.value=v*s.gain*0.8;src.connect(g);g.connect(comp);src.start(t,s.offset);
+/* パッドごとのピッチ(半音。スライダーで変える) */
+const pitchTxt=v=>(Math.abs(v)<0.05?"±0":(v>0?"+":"−")+Math.abs(v).toFixed(Math.abs(v-Math.round(v))<0.05?0:1))+" 半音";
+const pitches=store.get("drumsPitch",{})||{};const live={};
+function playSample(id,t,v){const s=samples[id],src=ac.createBufferSource(),g=ac.createGain();src.buffer=s.buffer;src.playbackRate.value=Math.pow(2,(pitches[id]||0)/12);(live[id]=live[id]||new Set()).add(src);src.onended=()=>live[id].delete(src);g.gain.value=v*s.gain*0.8;src.connect(g);g.connect(comp);src.start(t,s.offset);
   if(id==="chh"&&ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setTargetAtTime(0.0001,t,0.006);ohhGain=null;}
   if(id==="ohh")ohhGain=g;}
 function play(id,v,t){audio();t=t==null?ac.currentTime:t;v=Math.max(0.15,Math.min(1,v));if(samples[id]&&samples[id].buffer)playSample(id,t,v);else SND[id](t,v);}
@@ -565,7 +575,7 @@ const SM=window.NamiSampler;
 function smpView(){
   $("smpPad").innerHTML=plain(PADS[IDX[sel]].n);
   $("smpName").textContent=samples[sel]?samples[sel].name:"内蔵の音";
-  $("smpReset").hidden=!samples[sel];
+  $("smpReset").hidden=!samples[sel];$("smpPitchBox").hidden=!samples[sel];const pv=pitches[sel]||0;$("smpPitch").value=pv;$("smpPitchV").textContent=pitchTxt(pv);
   PADS.forEach(p=>padEl[p.id].classList.toggle("smpl",!!samples[p.id]));
 }
 function smpErr(t){const e=$("smpErr");e.textContent=t||"";e.hidden=!t;}
@@ -589,7 +599,11 @@ $("smpRec").onclick=async()=>{smpErr("");if(!SM)return;const b=$("smpRec");
   try{audio();recCtl=await SM.record(5);b.setAttribute("aria-pressed","true");b.textContent="■ 止める(最長5秒)";
     recCtl.result.then(async r=>{if(!recCtl)return;recCtl=null;b.setAttribute("aria-pressed","false");b.textContent="● マイクで録音";const id=sel;if(await assign(id,r)){SM.save("drums:"+id,{name:r.name,data:r.data});play(id,0.9);}});
   }catch(e){smpErr(typeof e==="string"?e:"マイクが使えませんでした。ブラウザのマイク許可を確認してね");}};
-$("smpReset").onclick=()=>{delete samples[sel];if(SM)SM.remove("drums:"+sel);smpView();play(sel,0.9);};
+function setPitch(v,save){v=Math.max(-24,Math.min(24,Math.round(v*10)/10));if(v)pitches[sel]=v;else delete pitches[sel];$("smpPitch").value=v;$("smpPitchV").textContent=pitchTxt(v);
+  if(ac&&live[sel])live[sel].forEach(s=>{try{s.playbackRate.setTargetAtTime(Math.pow(2,v/12),ac.currentTime,0.01);}catch(e){}});if(save)store.set("drumsPitch",pitches);}
+$("smpPitch").addEventListener("input",()=>setPitch(+$("smpPitch").value,false));$("smpPitch").addEventListener("change",()=>{setPitch(+$("smpPitch").value,true);play(sel,0.9);});
+$("smpPitch0").onclick=()=>{setPitch(0,true);play(sel,0.9);};
+$("smpReset").onclick=()=>{delete samples[sel];delete pitches[sel];store.set("drumsPitch",pitches);if(SM)SM.remove("drums:"+sel);smpView();play(sel,0.9);};
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing)stop();});
 
 /* ===== 演奏の録音(MP3・WAVで保存) ===== */
