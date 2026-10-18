@@ -306,6 +306,7 @@ header.top .logo{flex:none}
         <div class="fx-row"><label for="fxStop">テープストップ</label><input type="range" id="fxStop" min="0" max="2" step="0.05" value="0"><b id="fxStopV">オフ</b></div>
         <div class="fx-row"><label for="fxFlt">フィルター</label><input type="range" id="fxFlt" min="-100" max="100" step="1" value="0" aria-label="フィルター(左でこもる、右で細くなる)"><b id="fxFltV">オフ</b></div>
         <div class="fx-row"><label for="fxRv">リバーブ</label><input type="range" id="fxRv" min="0" max="100" step="1" value="0"><b id="fxRvV">オフ</b></div>
+        <div class="fx-row"><label for="fxBc">ビットクラッシュ</label><input type="range" id="fxBc" min="0" max="100" step="1" value="0"><b id="fxBcV">オフ</b></div>
         <div class="fx-row"><label for="fxLoose">ルーズ</label><input type="range" id="fxLoose" min="0" max="12" step="0.1" value="0"><b id="fxLooseV">オフ</b></div>
         <div class="fx-btns"><button class="btn mini" type="button" id="smpRev" aria-pressed="false" title="音を後ろから鳴らす">⇄ 逆再生</button><button class="btn mini" type="button" id="fxReset">このパッドのエフェクトを戻す</button></div>
         <p class="fx-note">パッドごとに設定できます。内蔵の音にも、差し替えた音にも効きます。</p>
@@ -529,9 +530,13 @@ const stopTxt=v=>v>0?v.toFixed(2)+" 秒":"オフ",looseTxt=v=>v>0?"±"+v.toFixed
 /* フィルター:左(−)でローパス=こもる、右(＋)でハイパス=細くなる。0はオフ */
 const fltHz=v=>v<0?20000*Math.pow(150/20000,-v/100):20*Math.pow(5000/20,v/100),fltTxt=v=>!v?"オフ":(v<0?"LP ":"HP ")+(fltHz(v)>=1000?(fltHz(v)/1000).toFixed(1)+"k":Math.round(fltHz(v)));
 function fltNode(a,v){const b=a.createBiquadFilter();b.type=v<0?"lowpass":"highpass";b.frequency.value=fltHz(v);b.Q.value=v<0?0.9:0.8;return b;}
+/* ビットクラッシュ:音を粗く(ビット数を減らし、同じ値を何サンプルか続ける)。0〜100。作った音は使い回す */
+const bcBits=a=>Math.round(12-a/100*9),bcHold=a=>Math.max(1,Math.round(1+a/100*23)),bcTxt=a=>a?bcBits(a)+"bit・1/"+bcHold(a):"オフ";
+function crushOf(o,a){if(o._bcA===a&&o._bcB)return o._bcB;const b=o.buffer,q=Math.pow(2,bcBits(a)-1),hold=bcHold(a),r=new AudioBuffer({length:b.length,numberOfChannels:b.numberOfChannels,sampleRate:b.sampleRate});
+  for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c),y=r.getChannelData(c);let h=0;for(let i=0;i<x.length;i++){if(i%hold===0)h=Math.round(x[i]*q)/q;y[i]=h;}}o._bcA=a;o._bcB=r;return r;}
 /* パッドごとのエフェクト {p:ピッチ(半音), rev:逆再生, stop:テープストップ(秒), loose:ルーズ(±半音)} */
 const fx=store.get("drumsFx",null)||(()=>{const o={},pp=store.get("drumsPitch",{})||{},rr=store.get("drumsRev",{})||{};Object.keys(pp).forEach(k=>(o[k]=o[k]||{}).p=pp[k]);Object.keys(rr).forEach(k=>(o[k]=o[k]||{}).rev=1);return o;})();
-const live={},F=id=>fx[id]||{},fxActive=id=>{const f=F(id);return !!(f.p||f.rev||f.stop||f.loose||f.flt||f.rv);};
+const live={},F=id=>fx[id]||{},fxActive=id=>{const f=F(id);return !!(f.p||f.rev||f.stop||f.loose||f.flt||f.rv||f.bc);};
 /* リバーブ:全パッドで共有する響き(1.8秒)。パッドごとに送る量を決める */
 let rvNode=null;function rvBus(){if(rvNode&&rvNode.context===ac)return rvNode;const sr=ac.sampleRate,len=Math.floor(sr*1.8),b=ac.createBuffer(2,len,sr);
   for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);}
@@ -544,7 +549,7 @@ function renderBuilt(id){const k=kit+":"+id;if(built[k])return built[k];audio();
     try{snd(id)(0,1);}finally{[ac,comp,noiseBuf,ohhGain]=sv;}
     off.startRendering().then(buf=>{rec.buffer=buf;rec.offset=0;rec.gain=1.25;}).catch(()=>{delete built[k];});}catch(e){delete built[k];}
   return rec;}
-function playBuf(id,s,t,v){const f=F(id),src=ac.createBufferSource(),g=ac.createGain(),R=f.rev?revOf(s):s;src.buffer=R.buffer;
+function playBuf(id,s,t,v){const f=F(id),src=ac.createBufferSource(),g=ac.createGain(),R=f.rev?revOf(s):s;src.buffer=f.bc?crushOf(R,f.bc):R.buffer;
   let base=Math.pow(2,(f.p||0)/12);if(f.loose)base*=Math.pow(2,(Math.random()*2-1)*f.loose/12);src._base=base;src.playbackRate.setValueAtTime(base,t);
   g.gain.value=v*s.gain*0.8;
   if(f.stop){src._stop=1;src.playbackRate.setValueAtTime(base,t);src.playbackRate.exponentialRampToValueAtTime(Math.max(0.01,base*0.02),t+f.stop);g.gain.setValueAtTime(v*s.gain*0.8,t+f.stop*0.85);g.gain.linearRampToValueAtTime(0.0001,t+f.stop);}
@@ -730,13 +735,13 @@ $("smpRec").onclick=async()=>{smpErr("");if(!SM)return;const b=$("smpRec");
     recCtl.result.then(async r=>{if(!recCtl)return;recCtl=null;b.setAttribute("aria-pressed","false");b.textContent="● マイクで録音";const id=sel;if(await assign(id,r)){SM.save("drums:"+id,{name:r.name,data:r.data});play(id,0.9);}});
   }catch(e){smpErr(typeof e==="string"?e:"マイクが使えませんでした。ブラウザのマイク許可を確認してね");}};
 /* エフェクトの操作 */
-function fxView(){const f=F(sel),fl=f.flt||0;$("fxRv").value=f.rv||0;$("fxRvV").textContent=f.rv?f.rv+"%":"オフ";$("fxFlt").value=fl;$("fxFltV").textContent=fltTxt(fl);const vv=f.vol==null?1:f.vol;$("fxVol").value=vv;$("fxVolV").textContent=vv===0?"ミュート":Math.round(vv*100)+"%";$("smpPitch").value=f.p||0;$("smpPitchV").textContent=pitchTxt(f.p||0);$("fxStop").value=f.stop||0;$("fxStopV").textContent=stopTxt(f.stop||0);
+function fxView(){const f=F(sel),fl=f.flt||0;$("fxBc").value=f.bc||0;$("fxBcV").textContent=bcTxt(f.bc||0);$("fxRv").value=f.rv||0;$("fxRvV").textContent=f.rv?f.rv+"%":"オフ";$("fxFlt").value=fl;$("fxFltV").textContent=fltTxt(fl);const vv=f.vol==null?1:f.vol;$("fxVol").value=vv;$("fxVolV").textContent=vv===0?"ミュート":Math.round(vv*100)+"%";$("smpPitch").value=f.p||0;$("smpPitchV").textContent=pitchTxt(f.p||0);$("fxStop").value=f.stop||0;$("fxStopV").textContent=stopTxt(f.stop||0);
   $("fxLoose").value=f.loose||0;$("fxLooseV").textContent=looseTxt(f.loose||0);$("smpRev").setAttribute("aria-pressed",f.rev?"true":"false");
-  const on=[f.vol!=null?"音量"+Math.round(f.vol*100)+"%":"",f.p?"ピッチ"+pitchTxt(f.p).replace(" 半音",""):"",f.stop?"テープストップ":"",f.loose?"ルーズ":"",f.flt?"フィルター":"",f.rv?"リバーブ":"",f.rev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";
+  const on=[f.vol!=null?"音量"+Math.round(f.vol*100)+"%":"",f.p?"ピッチ"+pitchTxt(f.p).replace(" 半音",""):"",f.stop?"テープストップ":"",f.loose?"ルーズ":"",f.flt?"フィルター":"",f.rv?"リバーブ":"",f.bc?"ビットクラッシュ":"",f.rev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";
   PADS.forEach(p=>padEl[p.id].classList.toggle("fxd",fxActive(p.id)||F(p.id).vol!=null));}
 function setFx(key,val){const f=fx[sel]=fx[sel]||{};if(key==="vol"?val===1:!val)delete f[key];else f[key]=val;if(!Object.keys(f).length)delete fx[sel];store.set("drumsFx",fx);fxView();if(fxActive(sel)&&!samples[sel])renderBuilt(sel);}
 const rng=(id,key,conv)=>{const el=$(id);el.addEventListener("input",()=>setFx(key,conv(+el.value)));el.addEventListener("change",()=>play(sel,0.9));};
-rng("fxFlt","flt",v=>Math.round(v));rng("fxRv","rv",v=>Math.round(v));rng("fxVol","vol",v=>Math.round(v*20)/20);rng("smpPitch","p",v=>Math.max(-24,Math.min(24,Math.round(v*10)/10)));rng("fxStop","stop",v=>Math.round(v*100)/100);rng("fxLoose","loose",v=>Math.round(v*10)/10);
+rng("fxFlt","flt",v=>Math.round(v));rng("fxRv","rv",v=>Math.round(v));rng("fxBc","bc",v=>Math.round(v));rng("fxVol","vol",v=>Math.round(v*20)/20);rng("smpPitch","p",v=>Math.max(-24,Math.min(24,Math.round(v*10)/10)));rng("fxStop","stop",v=>Math.round(v*100)/100);rng("fxLoose","loose",v=>Math.round(v*10)/10);
 /* ピッチは鳴っている音もその場で変える */
 $("smpPitch").addEventListener("input",()=>{if(!ac||!live[sel])return;const v=F(sel).p||0;live[sel].forEach(x=>{if(!x._stop)try{x.playbackRate.setTargetAtTime(Math.pow(2,v/12),ac.currentTime,0.01);}catch(e){}});});
 $("smpRev").onclick=()=>{setFx("rev",F(sel).rev?0:1);play(sel,0.9);};
