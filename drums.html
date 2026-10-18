@@ -220,6 +220,7 @@ footer a{color:var(--sea)}
 .fx-row input[type=range]{width:100%;accent-color:var(--sea)}
 .fx-row b{color:var(--ink);font-family:var(--f-mono);text-align:right;font-weight:400}
 .fx-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.wv-cv{display:block;width:100%;height:84px;border-radius:8px;background:var(--paper);border:1px solid var(--line);cursor:ew-resize}.wv-n{display:flex;align-items:center;gap:6px;font-size:13px}
 .fx-note{font-size:12px;margin:8px 0 2px;text-align:center}
 #smpRev[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
 
@@ -301,6 +302,11 @@ header.top .logo{flex:none}
       </div>
       <p class="err" id="smpErr" hidden></p>
       <details class="fx" id="fxBox"><summary>エフェクト <span class="fx-state" id="fxState"></span></summary>
+        <div class="wv"><p class="fx-note" style="margin:6px 0">波形の両はしの印をドラッグして、鳴らす範囲を決められます。</p><canvas id="wvCv" class="wv-cv" aria-label="波形(鳴らす範囲を決める)"></canvas>
+          <div class="fx-row"><label for="wvFi">フェードイン</label><input type="range" id="wvFi" min="0" max="0.5" step="0.01" value="0"><b id="wvFiV">なし</b></div>
+          <div class="fx-row"><label for="wvFo">フェードアウト</label><input type="range" id="wvFo" min="0" max="1" step="0.01" value="0"><b id="wvFoV">なし</b></div>
+          <div class="fx-btns"><label class="wv-n"><input type="checkbox" id="wvN"> ノーマライズ(音量をそろえる)</label><button class="btn mini" type="button" id="wvReset">波形の編集を戻す</button></div>
+        </div>
         <div class="fx-row"><label for="fxVol">音量</label><input type="range" id="fxVol" min="0" max="1.5" step="0.05" value="1"><b id="fxVolV">100%</b></div>
         <div class="fx-row"><label for="smpPitch">ピッチ</label><input type="range" id="smpPitch" min="-24" max="24" step="0.1" value="0"><b id="smpPitchV">±0 半音</b></div>
         <div class="fx-row"><label for="fxStop">テープストップ</label><input type="range" id="fxStop" min="0" max="2" step="0.05" value="0"><b id="fxStopV">オフ</b></div>
@@ -405,6 +411,7 @@ header.top .logo{flex:none}
 </div>
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/sampler.js"></script>
+<script src="https://namigroove.github.io/namigroove-site/waveedit.js?v=1"></script>
 <script>
 (()=>{
 "use strict";
@@ -539,7 +546,7 @@ function crushOf(o,a){if(o._bcA===a&&o._bcB)return o._bcB;const b=o.buffer,q=Mat
 const REP={"8":{d:2,n:2},"16":{d:4,n:4},"32":{d:8,n:8},"t16":{d:6,n:6}},REPN={"8":"8分×2","16":"16分×4","32":"32分×8","t16":"16分3連×6"};
 /* パッドごとのエフェクト {p:ピッチ(半音), rev:逆再生, stop:テープストップ(秒), loose:ルーズ(±半音)} */
 const fx=store.get("drumsFx",null)||(()=>{const o={},pp=store.get("drumsPitch",{})||{},rr=store.get("drumsRev",{})||{};Object.keys(pp).forEach(k=>(o[k]=o[k]||{}).p=pp[k]);Object.keys(rr).forEach(k=>(o[k]=o[k]||{}).rev=1);return o;})();
-const live={},F=id=>fx[id]||{},fxActive=id=>{const f=F(id);return !!(f.p||f.rev||f.stop||f.loose||f.flt||f.rv||f.bc);};
+const live={},F=id=>fx[id]||{},fxActive=id=>{const f=F(id);return !!(f.p||f.rev||f.stop||f.loose||f.flt||f.rv||f.bc||f.wv);};
 /* リバーブ:全パッドで共有する響き(1.8秒)。パッドごとに送る量を決める */
 let rvNode=null;function rvBus(){if(rvNode&&rvNode.context===ac)return rvNode;const sr=ac.sampleRate,len=Math.floor(sr*1.8),b=ac.createBuffer(2,len,sr);
   for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);}
@@ -555,8 +562,9 @@ function renderBuilt(id){const k=kit+":"+id;if(built[k])return built[k];audio();
 function playBuf(id,s,t,v){const f=F(id),src=ac.createBufferSource(),g=ac.createGain(),R=f.rev?revOf(s):s;src.buffer=f.bc?crushOf(R,f.bc):R.buffer;
   let base=Math.pow(2,(f.p||0)/12);if(f.loose)base*=Math.pow(2,(Math.random()*2-1)*f.loose/12);src._base=base;src.playbackRate.setValueAtTime(base,t);
   g.gain.value=v*s.gain*0.8;
+  const W=window.NamiWave,wv=W&&f.wv&&!W.isDef(f.wv)?f.wv:null,reg=wv?W.region(s.buffer,wv,f.rev):null;
   if(f.stop){src._stop=1;src.playbackRate.setValueAtTime(base,t);src.playbackRate.exponentialRampToValueAtTime(Math.max(0.01,base*0.02),t+f.stop);g.gain.setValueAtTime(v*s.gain*0.8,t+f.stop*0.85);g.gain.linearRampToValueAtTime(0.0001,t+f.stop);}
-  (live[id]=live[id]||new Set()).add(src);src.onended=()=>live[id].delete(src);{let o=src;if(f.flt){const q=fltNode(ac,f.flt);o.connect(q);o=q;}o.connect(g);}g.connect(comp);if(f.rv){const sg=ac.createGain();sg.gain.value=f.rv/100*1.2;g.connect(sg);sg.connect(rvBus());}src.start(t,R.offset);if(f.stop)src.stop(t+f.stop+0.02);
+  (live[id]=live[id]||new Set()).add(src);src.onended=()=>live[id].delete(src);{let o=src;if(wv){const wg=ac.createGain();W.shape(wg,t,reg.dur/base,wv,wv.n?W.peakGain(s.buffer,wv):1);o.connect(wg);o=wg;}if(f.flt){const q=fltNode(ac,f.flt);o.connect(q);o=q;}o.connect(g);}g.connect(comp);if(f.rv){const sg=ac.createGain();sg.gain.value=f.rv/100*1.2;g.connect(sg);sg.connect(rvBus());}if(reg)src.start(t,reg.off,reg.dur);else src.start(t,R.offset);if(f.stop)src.stop(t+f.stop+0.02);
   if(id==="chh"&&ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setTargetAtTime(0.0001,t,0.006);ohhGain=null;}
   if(id==="ohh")ohhGain=g;}
 const GMN=id=>{const p=PADS[IDX[id]];return (p&&p.gm&&p.gm[0])||({snap:75,sub:35})[id]||39;};
@@ -681,7 +689,7 @@ function segInit(el,key,cur,on){
   [...el.children].forEach(b=>b.setAttribute("aria-pressed",b.dataset[key]===String(cur)));
   el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...el.children].forEach(x=>x.setAttribute("aria-pressed",x===b));on(b.dataset[key]);});
 }
-if(!["808","909","chip"].includes(kit))kit="808";$("kitSel").value=kit;$("kitSel").addEventListener("change",()=>{kit=$("kitSel").value;store.set("drKit",kit);play("kick",0.9);});
+if(!["808","909","chip"].includes(kit))kit="808";$("kitSel").value=kit;$("kitSel").addEventListener("change",()=>{kit=$("kitSel").value;store.set("drKit",kit);play("kick",0.9);wvDraw();});
 
 /* MIDI */
 const GM={};PADS.forEach(p=>p.gm.forEach(n=>GM[n]=p.id));
@@ -719,7 +727,7 @@ function smpView(){
 }
 function smpErr(t){const e=$("smpErr");e.textContent=t||"";e.hidden=!t;}
 async function assign(id,rec){
-  try{const d=await SM.decode(audio(),rec.data);samples[id]=Object.assign(d,{name:rec.name});smpView();return true;}
+  try{const d=await SM.decode(audio(),rec.data);samples[id]=Object.assign(d,{name:rec.name});if(fx[id]&&fx[id].wv){delete fx[id].wv;store.set("drumsFx",fx);}smpView();return true;}
   catch(e){smpErr("この音声ファイルは読み込めませんでした");return false;}
 }
 if(SM){
@@ -739,13 +747,23 @@ $("smpRec").onclick=async()=>{smpErr("");if(!SM)return;const b=$("smpRec");
     recCtl.result.then(async r=>{if(!recCtl)return;recCtl=null;b.setAttribute("aria-pressed","false");b.textContent="● マイクで録音";const id=sel;if(await assign(id,r)){SM.save("drums:"+id,{name:r.name,data:r.data});play(id,0.9);}});
   }catch(e){smpErr(typeof e==="string"?e:"マイクが使えませんでした。ブラウザのマイク許可を確認してね");}};
 /* エフェクトの操作 */
-function fxView(){const f=F(sel),fl=f.flt||0;$("fxRep").value=f.rep||"";$("fxBc").value=f.bc||0;$("fxBcV").textContent=bcTxt(f.bc||0);$("fxRv").value=f.rv||0;$("fxRvV").textContent=f.rv?f.rv+"%":"オフ";$("fxFlt").value=fl;$("fxFltV").textContent=fltTxt(fl);const vv=f.vol==null?1:f.vol;$("fxVol").value=vv;$("fxVolV").textContent=vv===0?"ミュート":Math.round(vv*100)+"%";$("smpPitch").value=f.p||0;$("smpPitchV").textContent=pitchTxt(f.p||0);$("fxStop").value=f.stop||0;$("fxStopV").textContent=stopTxt(f.stop||0);
+function fxView(){wvDraw();const f=F(sel),fl=f.flt||0;$("fxRep").value=f.rep||"";$("fxBc").value=f.bc||0;$("fxBcV").textContent=bcTxt(f.bc||0);$("fxRv").value=f.rv||0;$("fxRvV").textContent=f.rv?f.rv+"%":"オフ";$("fxFlt").value=fl;$("fxFltV").textContent=fltTxt(fl);const vv=f.vol==null?1:f.vol;$("fxVol").value=vv;$("fxVolV").textContent=vv===0?"ミュート":Math.round(vv*100)+"%";$("smpPitch").value=f.p||0;$("smpPitchV").textContent=pitchTxt(f.p||0);$("fxStop").value=f.stop||0;$("fxStopV").textContent=stopTxt(f.stop||0);
   $("fxLoose").value=f.loose||0;$("fxLooseV").textContent=looseTxt(f.loose||0);$("smpRev").setAttribute("aria-pressed",f.rev?"true":"false");
-  const on=[f.vol!=null?"音量"+Math.round(f.vol*100)+"%":"",f.p?"ピッチ"+pitchTxt(f.p).replace(" 半音",""):"",f.stop?"テープストップ":"",f.loose?"ルーズ":"",f.flt?"フィルター":"",f.rv?"リバーブ":"",f.bc?"ビットクラッシュ":"",f.rep?"リピート":"",f.rev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";
+  const on=[f.vol!=null?"音量"+Math.round(f.vol*100)+"%":"",f.p?"ピッチ"+pitchTxt(f.p).replace(" 半音",""):"",f.stop?"テープストップ":"",f.loose?"ルーズ":"",f.flt?"フィルター":"",f.rv?"リバーブ":"",f.bc?"ビットクラッシュ":"",f.rep?"リピート":"",f.wv?"波形":"",f.rev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";
   PADS.forEach(p=>padEl[p.id].classList.toggle("fxd",fxActive(p.id)||F(p.id).vol!=null||!!F(p.id).rep));}
 function setFx(key,val){const f=fx[sel]=fx[sel]||{};if(key==="vol"?val===1:!val)delete f[key];else f[key]=val;if(!Object.keys(f).length)delete fx[sel];store.set("drumsFx",fx);fxView();if(fxActive(sel)&&!samples[sel])renderBuilt(sel);}
 const rng=(id,key,conv)=>{const el=$(id);el.addEventListener("input",()=>setFx(key,conv(+el.value)));el.addEventListener("change",()=>play(sel,0.9));};
-rng("fxFlt","flt",v=>Math.round(v));rng("fxRv","rv",v=>Math.round(v));rng("fxBc","bc",v=>Math.round(v));$("fxRep").addEventListener("change",()=>{setFx("rep",$("fxRep").value);play(sel,0.9);});rng("fxVol","vol",v=>Math.round(v*20)/20);rng("smpPitch","p",v=>Math.max(-24,Math.min(24,Math.round(v*10)/10)));rng("fxStop","stop",v=>Math.round(v*100)/100);rng("fxLoose","loose",v=>Math.round(v*10)/10);
+rng("fxFlt","flt",v=>Math.round(v));rng("fxRv","rv",v=>Math.round(v));rng("fxBc","bc",v=>Math.round(v));/* 波形編集 */
+function wvBuf(){const s=samples[sel];if(s&&s.buffer)return s.buffer;if(s)return null;const b=built[kit+":"+sel];if(b&&b.buffer)return b.buffer;if($("fxBox").open){renderBuilt(sel);setTimeout(wvDraw,150);}return null;}
+function wvDraw(){const W=window.NamiWave;if(!W||!$("fxBox").open)return;const st=W.norm(F(sel).wv);W.draw($("wvCv"),wvBuf(),F(sel).wv);
+  $("wvFi").value=st.fi;$("wvFiV").textContent=st.fi?st.fi.toFixed(2)+" 秒":"なし";$("wvFo").value=st.fo;$("wvFoV").textContent=st.fo?st.fo.toFixed(2)+" 秒":"なし";$("wvN").checked=st.n;}
+function setWv(patch,done){const W=window.NamiWave;const st=Object.assign(W.norm(F(sel).wv),patch);setFx("wv",W.isDef(st)?0:st);if(done)play(sel,0.9);}
+if(window.NamiWave){NamiWave.attach($("wvCv"),{get:()=>({buf:wvBuf(),st:F(sel).wv}),set:(st,done)=>setWv(st,done)});
+  $("wvFi").addEventListener("input",()=>setWv({fi:+$("wvFi").value}));$("wvFi").addEventListener("change",()=>play(sel,0.9));
+  $("wvFo").addEventListener("input",()=>setWv({fo:+$("wvFo").value}));$("wvFo").addEventListener("change",()=>play(sel,0.9));
+  $("wvN").addEventListener("change",()=>setWv({n:$("wvN").checked},true));$("wvReset").onclick=()=>{setFx("wv",0);play(sel,0.9);};
+  $("fxBox").addEventListener("toggle",()=>{audio();wvDraw();});window.addEventListener("resize",wvDraw);}
+$("fxRep").addEventListener("change",()=>{setFx("rep",$("fxRep").value);play(sel,0.9);});rng("fxVol","vol",v=>Math.round(v*20)/20);rng("smpPitch","p",v=>Math.max(-24,Math.min(24,Math.round(v*10)/10)));rng("fxStop","stop",v=>Math.round(v*100)/100);rng("fxLoose","loose",v=>Math.round(v*10)/10);
 /* ピッチは鳴っている音もその場で変える */
 $("smpPitch").addEventListener("input",()=>{if(!ac||!live[sel])return;const v=F(sel).p||0;live[sel].forEach(x=>{if(!x._stop)try{x.playbackRate.setTargetAtTime(Math.pow(2,v/12),ac.currentTime,0.01);}catch(e){}});});
 $("smpRev").onclick=()=>{setFx("rev",F(sel).rev?0:1);play(sel,0.9);};
