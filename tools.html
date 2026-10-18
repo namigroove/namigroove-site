@@ -185,6 +185,10 @@ footer a{color:var(--sea)}
 .hub-sec{margin-top:8px;padding-top:20px;border-top:1px dashed var(--line)}
 .hub-h{font-family:var(--f-display);font-weight:400;font-size:24px;margin:4px 0 2px}
 .hub-p{margin:0 0 6px;font-size:13px;color:var(--ink-soft)}
+.log{margin:6px 0 28px;font-size:13.5px}
+.log h3{font:400 15px var(--f-mono);color:var(--sea);margin:14px 0 4px}
+.log ul{margin:0;padding-left:1.2em}.log li{margin:2px 0;color:var(--ink)}
+.log details{margin-top:8px}.log summary{cursor:pointer;color:var(--sea);font-size:13px;list-style:none}.log summary::-webkit-details-marker{display:none}.log summary::before{content:"▸ "}.log details[open] summary::before{content:"▾ "}
 .card .go-ar{margin-left:auto;align-self:center;color:var(--sea);font-size:20px;flex:none}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
@@ -243,10 +247,10 @@ header.top .logo{flex:none}
   </div>
   <ul class="cards">
     <li><a class="card" href="tuner.html#tuner"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0 1 16 0"/><path d="m12 16 4-5"/></svg></span><div><h2>チューナー</h2><p>マイクで音程をチェック。サックスなど移調楽器の音名にも対応。</p><span class="tags"><span>マイク</span><span>12キー対応</span><span>基準音</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
-    <li><a class="card" href="tuner.html#metronome"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l4 18H5z"/><path d="m12 15 5-9"/></svg></span><div><h2>メトロノーム</h2><p>拍子・分割・音色を選べる。なみぐるをタップしてBPM計測も。</p><span class="tags"><span>タップテンポ</span><span>3連・16分</span><span>カウベル</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
-    <li><a class="card" href="piano.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M12 5v14M16 5v14"/><path class="f" d="M7 5h2v8H7zM15 5h2v8h-2z"/></svg></span><div><h2>ピアノ</h2><p>和音のコード名と、移調楽器での音名を表示。7つの音色とサンプラーつき。</p><span class="tags"><span>コード名</span><span>MIDI対応</span><span>サンプラー</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
-    <li><a class="card" href="jam.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 9.5v5l4.5-2.5z" class="f"/><path d="M4 12h-2M22 12h-2M12 4V2M12 22v-2"/></svg></span><div><h2>ジャムモード</h2><p>おしゃれ進行をドラム・ベース・鍵盤でループ再生。リズムを変えて曲のスケッチに。ドラム入りMIDIで書き出し。</p><span class="tags"><span>ループ</span><span>6リズム</span><span>MIDI</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
-    <li><a class="card" href="drums.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span><div><h2>ドラムパッド</h2><p>16パッドを叩いたり、ステップシーケンサーでビートを組んだり。</p><span class="tags"><span>808・909</span><span>シーケンサー</span><span>サンプラー</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
+    <li><a class="card" href="tuner.html#metronome"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l4 18H5z"/><path d="m12 15 5-9"/></svg></span><div><h2>メトロノーム</h2><p>拍子・分割・音色・スウィングを選べる。なみぐるをタップしてBPM計測も。</p><span class="tags"><span>タップテンポ</span><span>3連・16分</span><span>カウベル</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
+    <li><a class="card" href="piano.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M12 5v14M16 5v14"/><path class="f" d="M7 5h2v8H7zM15 5h2v8h-2z"/></svg></span><div><h2>ピアノ</h2><p>和音のコード名と、移調楽器での音名を表示。8つの音色・サンプラー・メトロノームつき。演奏はMIDIでも保存。</p><span class="tags"><span>コード名</span><span>MIDI対応</span><span>サンプラー</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
+    <li><a class="card" href="jam.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 9.5v5l4.5-2.5z" class="f"/><path d="M4 12h-2M22 12h-2M12 4V2M12 22v-2"/></svg></span><div><h2>ジャムモード</h2><p>おしゃれ進行や自分で作った進行を、ドラム・ベース・鍵盤でループ再生。変拍子も。ドラム入りMIDIで書き出し。</p><span class="tags"><span>ループ</span><span>11リズム</span><span>MIDI</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
+    <li><a class="card" href="drums.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span><div><h2>ドラムパッド</h2><p>808・909・チップの3キット。叩いたり、ステップでビートを組んだり。エフェクトやMIDI保存も。</p><span class="tags"><span>808・909</span><span>シーケンサー</span><span>サンプラー</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
     <li><a class="card" href="ear.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15a6 6 0 1 1 10-4.5c0 2.5-2.5 3.5-3.5 5S12.5 20 10 20a3 3 0 0 1-3-3"/><path d="M10 10.5a2 2 0 1 1 3.5 1.3"/></svg></span><div><h2>耳トレ</h2><p>鳴った和音や音程を当てるクイズ。M9・m11・13 などおしゃれコードの聞き分けにも。</p><span class="tags"><span>コード当て</span><span>音程</span><span>聞き比べ</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
     <li><a class="card" href="mora.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/><circle class="f" cx="18" cy="16" r="3.2"/></svg></span><div><h2>歌詞の音数カウンター</h2><p>歌詞の1行ごとのモーラ数を数えます。拗音は1音、「っ」「ん」「ー」も1音。ボカロの作詞に。</p><span class="tags"><span>作詞</span><span>モーラ</span><span>ボカロ</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
     <li><a class="card" href="gacha.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="6"/><path d="M6 10h12"/><path d="M8 20h8M12 16v4"/><circle class="f" cx="12" cy="10" r="1.6"/></svg></span><div><h2>お題ガチャ</h2><p>テーマ・ジャンル・歌声(合成音声)・キーワード・縛りをランダムに出す、作詞と曲づくりのお題メーカー。</p><span class="tags"><span>作詞</span><span>お題</span><span>ジャンル</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
@@ -272,6 +276,41 @@ header.top .logo{flex:none}
   <ul class="cards">
     <li><a class="card" href="https://github.com/namigroove/reaper_export_item_length.lua" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M3 4v16M21 4v16M7 12h10"/><path d="m9 10-2 2 2 2M15 10l2 2-2 2"/></svg></span><div><h2>REAPER 選択アイテムの長さ表示</h2><p>REAPERで選んだアイテムの長さを一覧で表示し、合計時間も出すLuaスクリプト。ライブの尺確認などに。</p><span class="tags"><span>REAPER</span><span>Lua</span><span>GitHub</span></span></div><span class="go-ar" aria-hidden="true">↗</span></a></li>
   </ul>
+  <div class="hub-sec" id="updates">
+    <p class="eyebrow">UPDATES</p>
+    <h2 class="hub-h">更新履歴</h2>
+  </div>
+  <div class="log">
+    <h3>2026.10.19</h3>
+    <ul>
+      <li>ピアノ:メトロノームを追加(録音・MIDIにクリックを入れるかを選べる。MIDIは小節の頭にそろう)</li>
+      <li>ドラムパッド:パッドごとに音量を変えられるように</li>
+      <li>メトロノーム:スウィングの幅を調整できるように(初期値は3連のハネ)</li>
+      <li>ドラムパッド:キットの選び方をプルダウンに(スマホでパッドがずれないように)</li>
+    </ul>
+    <h3>2026.10.18</h3>
+    <ul>
+      <li>新しいツール:ピアノ・ドラムパッド・コード表・スケール表・ジャムモード・キー&amp;BPM判定・耳トレ・歌詞の音数カウンター・お題ガチャ・金管楽器運指表</li>
+      <li>お気に入り:ツールやコード進行の☆で登録できるように(この端末に保存)</li>
+      <li>コード進行を自分で作れるように(ピアノ・コード表・ジャムモードで共通)</li>
+      <li>おしゃれ進行に「なみぐる楽曲」「エレスイ風」「ボサノバ」「アニソン風」「キリンジ風」などを追加</li>
+      <li>演奏をMIDIで保存できるように(ピアノ・ドラムパッド)。ドラムのパターンもMIDIに</li>
+      <li>サンプラーにエフェクト(ピッチ・テープストップ・ルーズ・逆再生)</li>
+    </ul>
+    <details>
+      <summary>10/18のそのほかの更新</summary>
+      <ul>
+        <li>ドラムパッド:チップチューン(ファミコン風)キット、パッドの色・画像を変えられるように</li>
+        <li>ピアノ:チップチューンの波形(矩形波・パルス・三角波・ノコギリ波)、ピアノとエレピの音をよりリアルに</li>
+        <li>ジャムモード:3拍子・ハチロク(6/8)・5拍子・7拍子のリズム、BPMをドラッグで変えられるように</li>
+        <li>チューナー&amp;メトロノームがオフラインでも使えるように(ホーム画面に追加すると便利)</li>
+        <li>コード・進行・スケールを共有リンクで送れるように。進行はMIDIでも書き出せる</li>
+        <li>木管楽器運指表(サックス・クラリネット・フルート・リコーダー)</li>
+        <li>BPMmsCalculatorをこのサイトの中に移動</li>
+        <li>シェアに #namigroovetools が付くように</li>
+      </ul>
+    </details>
+  </div>
 </main>
 
 
