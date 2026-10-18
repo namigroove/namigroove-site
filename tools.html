@@ -305,5 +305,8 @@ var namiAC=null;
 function namiBell(){try{if(!namiAC){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;namiAC=new AC({latencyHint:"interactive"});}if(namiAC.state!=="running")namiAC.resume();var g=namiAC.createGain();g.gain.value=0.8;g.connect(namiAC.destination);puniSound(namiAC,g,namiAC.currentTime);}catch(e){}}
 document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){namiBell();tapBpm();b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
 </script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
 </body>
 </html>

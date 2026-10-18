@@ -329,6 +329,7 @@ header.top .logo{flex:none}
   <section class="how">
     <h2>使い方のメモ</h2>
     <ul>
+      <li>一度開いておけば、電波のない場所(ライブハウスやスタジオ)でもオフラインで使えます。スマホならホーム画面に追加しておくと便利です。</li>
       <li>チューナーはマイクを使います。初回はブラウザの許可を求められるので「許可」を選んでください。音声は端末の中だけで処理し、どこにも送信しません。</li>
       <li>iPhoneでメトロノームの音が出ないときは、本体のマナーモードを解除してみてください。</li>
       <li>木管楽器の運指は <a href="fingering.html">木管楽器運指表</a> へ。</li>
@@ -627,6 +628,9 @@ if(sb) sb.addEventListener("click",async()=>{
 });
 function toast(t){const d=document.createElement("div");d.className="ng-toast";d.textContent=t;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}
 })();
+</script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
 </body>
 </html>

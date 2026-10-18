@@ -440,5 +440,8 @@ if(sb) sb.addEventListener("click",async()=>{
 function toast(t){const d=document.createElement("div");d.className="ng-toast";d.textContent=t;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}
 })();
 </script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
 </body>
 </html>
