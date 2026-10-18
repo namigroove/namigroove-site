@@ -512,14 +512,18 @@ function buses(a){
 }
 function pluck(midis,gap,bass){
   const a=audio();buses(a);const t0=a.currentTime+0.02, n=midis.length;
-  midis.forEach((m,i)=>{const t=t0+i*gap;
-    const src=a.createBufferSource();src.buffer=ksBuf(a,m,bass);
-    const g=a.createGain();g.gain.value=(bass?0.75:0.5)/Math.sqrt(Math.max(1,n*0.6));
-    src.connect(g);g.connect(bass?bsBus:gtBus);src.start(t);
-    if(bass){/* 基音のサインを重ねて芯を太く */
-      const o=a.createOscillator(),og=a.createGain();o.type="sine";o.frequency.value=440*Math.pow(2,(m-69)/12);
-      og.gain.setValueAtTime(0.0001,t);og.gain.linearRampToValueAtTime(0.22/Math.sqrt(Math.max(1,n*0.6)),t+0.012);og.gain.setTargetAtTime(0.0001,t+0.05,0.7);
-      o.connect(og);og.connect(bsBus);o.start(t);o.stop(t+3);}
+  midis.forEach((m,i)=>{const t=t0+i*gap, f=440*Math.pow(2,(m-69)/12), v=1/Math.sqrt(Math.max(1,n*0.6));
+    if(bass){/* 打ち込み系のシンセベース:サインの芯+フィルターを閉じていくノコギリ波 */
+      const o=a.createOscillator(),og=a.createGain();o.type="sine";o.frequency.value=f;
+      og.gain.setValueAtTime(0.0001,t);og.gain.linearRampToValueAtTime(0.55*v,t+0.006);og.gain.setTargetAtTime(0.35*v,t+0.02,0.25);og.gain.setTargetAtTime(0.0001,t+0.9,0.25);
+      const sw=a.createOscillator(),lp=a.createBiquadFilter(),sg=a.createGain();sw.type="sawtooth";sw.frequency.value=f;
+      lp.type="lowpass";lp.Q.value=1.2;lp.frequency.setValueAtTime(Math.min(1400,f*8),t);lp.frequency.setTargetAtTime(f*1.5,t+0.005,0.12);
+      sg.gain.setValueAtTime(0.0001,t);sg.gain.linearRampToValueAtTime(0.22*v,t+0.006);sg.gain.setTargetAtTime(0.0001,t+0.9,0.25);
+      o.connect(og);og.connect(bsBus);sw.connect(lp);lp.connect(sg);sg.connect(bsBus);
+      o.start(t);sw.start(t);o.stop(t+2.5);sw.stop(t+2.5);return;}
+    const src=a.createBufferSource();src.buffer=ksBuf(a,m,false);
+    const g=a.createGain();g.gain.value=0.5*v;
+    src.connect(g);g.connect(gtBus);src.start(t);
   });
 }
 
