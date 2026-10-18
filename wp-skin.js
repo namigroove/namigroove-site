@@ -93,7 +93,19 @@
     document.querySelectorAll("#header-nav a").forEach(function (a) { if (/₺ƾらせ/.test(a.textContent)) { a.textContent = "mochinfo"; a.setAttribute("translate", "no"); } });
   }
   var _run0 = run; run = function () { _run0(); mochinfo(); };
-  var _run = run; run = function () { _run(); addEN(); };
+  var _run = run; run = function () { _run(); addEN(); addTools(); };
+  // ヘッダーメニューの「Works」の後ろに「Tools」を追加
+  function addTools() {
+    var ul = document.querySelector("#header-nav ul");
+    if (!ul || document.getElementById("ngTools")) return;
+    var links = ul.querySelectorAll(":scope > li > a"), after = null;
+    for (var i = 0; i < links.length; i++) { if (/^\s*works\s*$/i.test(links[i].textContent)) { after = links[i].parentElement; break; } }
+    var li = after ? after.cloneNode(false) : document.createElement("li"), a = document.createElement("a");
+    li.removeAttribute("id"); li.classList.remove("current-menu-item", "current_page_item");
+    a.id = "ngTools"; a.href = "/tools/"; a.textContent = "Tools";
+    li.appendChild(a);
+    if (after) after.after(li); else ul.insertBefore(li, ul.firstChild);
+  }
   // ページによって要素がなくても、あとの処理(404など)が止まらないように
   var safeRun = function () { try { run(); } catch (e) {} };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", safeRun); else safeRun();

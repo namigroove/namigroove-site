@@ -188,6 +188,14 @@ footer a{color:var(--sea)}
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
 </head>
 <body>
 
@@ -196,8 +204,9 @@ footer a{color:var(--sea)}
     <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
     <nav class="main" aria-label="メインメニュー">
       <a href="works.html">Works</a>
+      <a href="tools.html" aria-current="page">Tools</a>
       <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
-      <a href="index.html#links">リンク</a>
+      <a href="index.html#links" class="opt">リンク</a>
       <a href="index.html#contact">依頼</a>
       <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
 /* EN⇔JP:Google翻訳(英語)との切り替え */
@@ -242,6 +251,14 @@ footer a{color:var(--sea)}
   <ul class="cards">
     <li><a class="card" href="chords.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v18M13 3v18M5 8h14M5 13h14"/><circle class="f" cx="9" cy="10.5" r="1.6"/><circle class="f" cx="13" cy="15.5" r="1.6"/></svg></span><div><h2>ギター・ベース コード表</h2><p>コード名から押さえ方、押さえた形からコード名。カポとベースの構成音にも対応。</p><span class="tags"><span>順引き</span><span>逆引き</span><span>カポ</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
     <li><a class="card" href="fingering.html"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h3v3l-4 10a4 4 0 0 1-7.5-1.5"/><circle class="f" cx="13" cy="8" r="1.2"/><circle class="f" cx="11.5" cy="11.5" r="1.2"/><circle class="f" cx="10" cy="15" r="1.2"/></svg></span><div><h2>木管楽器運指表</h2><p>サックス・クラリネット・フルート・リコーダーの運指を図で確認。実音表示・替え指つき。</p><span class="tags"><span>サックス</span><span>クラリネット</span><span>フルート</span><span>リコーダー</span></span></div><span class="go-ar" aria-hidden="true">›</span></a></li>
+  </ul>
+  <div class="hub-sec">
+    <p class="eyebrow">FOR DAW</p>
+    <h2 class="hub-h">DAWで使うスクリプト</h2>
+    <p class="hub-p">曲づくりやライブの準備に使っているスクリプトを配布しています。</p>
+  </div>
+  <ul class="cards">
+    <li><a class="card" href="https://github.com/namigroove/reaper_export_item_length.lua" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M3 4v16M21 4v16M7 12h10"/><path d="m9 10-2 2 2 2M15 10l2 2-2 2"/></svg></span><div><h2>REAPER 選択アイテムの長さ表示</h2><p>REAPERで選んだアイテムの長さを一覧で表示し、合計時間も出すLuaスクリプト。ライブの尺確認などに。</p><span class="tags"><span>REAPER</span><span>Lua</span><span>GitHub</span></span></div><span class="go-ar" aria-hidden="true">↗</span></a></li>
   </ul>
 </main>
 
