@@ -221,6 +221,10 @@ footer a{color:var(--sea)}
 .mt-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize}.mt-v output{font-family:var(--f-display);font-size:26px;min-width:2.6ch;text-align:center;color:var(--ink)}.mt-v small{font-size:10px}
 .mt-c{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .mt-dots{display:flex;gap:6px}.mt-dots i{width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}.mt-dots i.on{background:var(--sea);border-color:var(--sea)}.mt-dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.mp{margin:12px auto 0;max-width:640px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.mp-box{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 12px;padding:10px 12px;border-radius:12px;background:var(--wash)}
+.mp-name{width:100%;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mp-dl{display:inline-flex;align-items:center;gap:6px}
 .take{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--wash);display:flex;flex-direction:column;align-items:center;gap:8px}
 .take audio{width:100%;max-width:520px}
 .take-b{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
@@ -386,6 +390,16 @@ header.top .logo{flex:none}
         <button class="btn" type="button" id="takeDel">消す</button>
       </div>
     </div>
+    <div class="mp" id="mp">
+      <button class="btn" type="button" id="mpOpen" title="MIDIファイルを読み込んで、この鍵盤で再生します">⬆ MIDIファイルを再生</button>
+      <span class="mp-box" id="mpBox" hidden>
+        <span class="mp-name" id="mpName"></span>
+        <button class="btn" type="button" id="mpPlay" aria-pressed="false">▶ 再生</button>
+        <label class="mt-c">速さ <select id="mpSpd" class="sel"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.25">125%</option><option value="1.5">150%</option></select></label>
+        <span class="mp-pos num" id="mpPos"></span>
+        <span class="mp-dl">コード分析:<button class="btn" type="button" id="mpCsv">CSV</button><button class="btn" type="button" id="mpTxt">TXT</button></span>
+      </span>
+    </div>
 
     <details class="opts" open>
       <summary>設定</summary>
@@ -493,6 +507,7 @@ header.top .logo{flex:none}
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/sampler.js"></script>
 <script src="https://namigroove.github.io/namigroove-site/waveedit.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/midiread.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=3"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
@@ -1159,6 +1174,57 @@ if(qMyC){$("clTabs").querySelector('[data-m="prog"]').click();builder.render();s
 else if(qPi>=0||qR!=null){const sec=document.getElementById("chordLook");if(qPi>=0)$("clTabs").querySelector('[data-m="prog"]').click();
   setTimeout(()=>{const el=qPi>=0?document.querySelector(`.cl-pg[data-p="${qPi}"]`):sec;if(el){el.scrollIntoView({behavior:"smooth",block:"center"});if(qPi>=0)el.classList.add("shared");}},300);}
 $("clShare").onclick=()=>shareLink({r:clRoot,t:CL_TYPES[clType][0]||"M"},CLR[clRoot]+CL_TYPES[clType][0]+" – なみぐる！ピアノ");
+
+/* ===== MIDIファイルの再生とコード分析 ===== */
+let mpSong=null,mpName="",mpT0=0,mpPos=0,mpIdx=0,mpTimer=null,mpOn=[];
+const mpSpd=()=>+$("mpSpd").value||1;
+function mpStop(keep){clearInterval(mpTimer);mpTimer=null;mpOn.forEach(o=>lift(o.n));mpOn=[];$("mpPlay").textContent="▶ 再生";$("mpPlay").setAttribute("aria-pressed","false");if(!keep){mpPos=0;mpIdx=0;}mpShowPos();}
+function mpShowPos(){if(!mpSong)return;const f=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");$("mpPos").textContent=f(mpPos)+" / "+f(mpSong.endSec);}
+function mpTick(){const now=(performance.now()-mpT0)/1000*mpSpd()+mpPos0;mpPos=now;const ns=mpSong.mel;
+  while(mpIdx<ns.length&&ns[mpIdx].sec<=now){const x=ns[mpIdx++];press(x.n,x.v/127);mpOn.push({n:x.n,off:x.sec+Math.max(0.05,x.secDur)});}
+  mpOn=mpOn.filter(o=>{if(o.off<=now){lift(o.n);return false;}return true;});
+  if(mpIdx>=ns.length&&!mpOn.length){mpStop();return;}mpShowPos();}
+let mpPos0=0;
+function mpPlay(){if(!mpSong)return;audio();if(mpTimer){mpStop(true);return;}mpPos0=mpPos;mpT0=performance.now();mpIdx=mpSong.mel.findIndex(x=>x.sec>=mpPos);if(mpIdx<0){mpIdx=0;mpPos=mpPos0=0;}
+  mpTimer=setInterval(mpTick,10);$("mpPlay").textContent="■ 止める";$("mpPlay").setAttribute("aria-pressed","true");}
+$("mpSpd").addEventListener("change",()=>{if(mpTimer){mpStop(true);mpPlay();}});
+$("mpPlay").onclick=mpPlay;
+$("mpOpen").onclick=()=>NamiMidiRead.pick((r,name)=>{mpStop();
+  const mel=r.notes.filter(x=>x.ch!==9);if(!mel.length){toast("鳴らせる音(ドラム以外)が入っていないMIDIでした");return;}
+  mpSong=Object.assign(r,{mel});mpName=name.replace(/\.(mid|midi)$/i,"");$("mpName").textContent="♪ "+name+"(BPM "+r.bpm+"・"+r.ts[0]+"/"+r.ts[1]+")";$("mpBox").hidden=false;mpShowPos();
+  if(window.ngTrack)ngTrack("midi_import",{tool:"piano"});},()=>toast("このファイルは読み込めませんでした"));
+/* 拍ごとに鳴っている音からコードを推定 */
+const AN_T=TPL.filter((t,i)=>i<5||i>7).concat([["13",[0,2,4,7,9,10]],["m11",[0,2,3,5,7,10]],["M7(♯11)",[0,4,6,7,11]]]);
+function anChord(w,bassPc){const ps=[];for(let i=0;i<12;i++)if(w[i]>0)ps.push(i);if(!ps.length)return null;
+  const tot=ps.reduce((a,p)=>a+w[p],0),mean=tot/ps.length;if(ps.length===1)return {n:CH[ps[0]],s:1};
+  let best=null;
+  for(const r of ps)for(const [name,iv] of AN_T){if(name==="5"&&ps.length>2)continue;const T=iv.map(x=>(x+r)%12);
+    if(iv.includes(3)&&!w[(r+3)%12])continue;if(iv.includes(4)&&!w[(r+4)%12])continue;
+    let inW=0,miss=0;T.forEach(p=>{if(w[p]>0)inW+=w[p];else miss++;});const outW=tot-inW;
+    const sc=inW-0.6*outW-0.45*mean*miss-0.06*mean*T.length+(r===bassPc?0.35*mean:0);
+    if(!best||sc>best.sc)best={sc,r,name,T};}
+  if(!best)return {n:ps.map(p=>CH[p]).join("・"),s:ps};
+  return {n:CH[best.r]+best.name+(bassPc!=null&&bassPc!==best.r?"/"+CH[bassPc]:""),s:ps,T:best.T};}
+function analyze(){const r=mpSong,beat=r.ppq*4/r.ts[1],bar=beat*r.ts[0],out=[],ns=r.mel;let j=0;
+  for(let b0=0;b0<r.endTick;b0+=beat){const b1=b0+beat,w=Array(12).fill(0);let low=null;
+    for(const x of ns){if(x.tick>=b1)break;const ov=Math.min(b1,x.tick+x.dur)-Math.max(b0,x.tick);if(ov<beat*0.2)continue;{const q=pc(x.n);w[q]=Math.max(w[q],ov/beat*(x.dur>=beat*0.9?1:0.35));}if(low==null||x.n<low)low=x.n;}
+    if(low!=null)w[pc(low)]*=1.2;const mx=Math.max(...w);for(let i=0;i<12;i++)if(w[i]<mx*0.35)w[i]=0;
+    const c=anChord(w,low==null?null:pc(low)),bi=Math.floor(b0/bar),be=Math.round((b0-bi*bar)/beat)+1;
+    const nm=c?c.n:"N.C.",tones=c&&Array.isArray(c.s)?c.s.map(p=>CH[p]).join(" "):"";
+    const last=out[out.length-1];if(last&&last.c===nm)continue;
+    /* 小節の頭(4拍子系は小節の真ん中も、ベースがルートなら)以外で、前のコードの構成音だけなら同じコードの続きとみなす */
+    const head=be===1||(r.ts[0]%2===0&&be===r.ts[0]/2+1&&c&&c.T&&low!=null&&c.T[0]===pc(low)&&last&&last.T&&last.T[0]!==pc(low));
+    if(last&&!head&&last.T&&c&&Array.isArray(c.s)&&c.s.every(p=>last.T.includes(p)))continue;
+    out.push({bar:bi+1,beat:be,sec:r.toSec(b0),c:nm,t:tones,T:c&&c.T});}
+  return out;}
+$("mpCsv").onclick=()=>{if(!mpSong)return;const a=analyze(),q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const csv="﻿"+["小節,拍,時間(秒),コード,鳴っている音"].concat(a.map(x=>[x.bar,x.beat,x.sec.toFixed(2),q(x.c),q(x.t)].join(","))).join("\r\n");
+  download(new Blob([csv],{type:"text/csv"}),"namigroove-chords-"+mpName+".csv");if(window.ngTrack)ngTrack("chord_export",{fmt:"csv"});};
+$("mpTxt").onclick=()=>{if(!mpSong)return;const a=analyze(),bars={};a.forEach(x=>{(bars[x.bar]=bars[x.bar]||[]).push(x.c);});
+  let lastBar=0,lines=["♪ "+mpName,"BPM "+mpSong.bpm+" / "+mpSong.ts[0]+"/"+mpSong.ts[1]+"拍子","(なみぐる！ピアノのコード自動分析。目安としてどうぞ)",""],prev="";
+  const nb=Math.ceil(mpSong.endTick/(mpSong.ppq*4/mpSong.ts[1]*mpSong.ts[0]));
+  for(let b=1;b<=nb;b++){const cs=bars[b];if(cs){prev=cs[cs.length-1];lines.push(b+"小節: "+cs.join(" | "));}else lines.push(b+"小節: "+(prev?"( "+prev+" )":"N.C."));}
+  download(new Blob([lines.join("\r\n")+"\r\n"],{type:"text/plain"}),"namigroove-chords-"+mpName+".txt");if(window.ngTrack)ngTrack("chord_export",{fmt:"txt"});};
 
 /* シェア */
 const sb=$("shareBtn");
