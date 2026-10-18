@@ -178,7 +178,8 @@ a.credit:hover .c-thumb img{transform:scale(1.03)}
 @media (max-width:761px){.credits:not(.open) .credit:nth-child(n+5){display:none}}
 @media (max-width:511px){.credits:not(.open) .credit:nth-child(n+4){display:none}}
 .more-link a{color:var(--ink-soft)}
-.more-link a::after{content:" →"}
+.more-link a::after{content:"";display:inline-block;width:1em;height:1em;margin-left:.25em;vertical-align:-.15em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23000%27 stroke-width=%272.2%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M5 12h14M13 6l6 6-6 6%27/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23000%27 stroke-width=%272.2%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M5 12h14M13 6l6 6-6 6%27/%3E%3C/svg%3E") center/contain no-repeat}
+.arr{display:inline-block;width:1em;height:1em;margin-left:.25em;vertical-align:-.15em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .c-role{font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
 
 /* partners */
@@ -367,9 +368,9 @@ header.top .logo{flex:none}
   <div class="wrap hero">
     <div>
       <p class="eyebrow">VOCALOID Producer / Sax DJ</p>
-      <div class="pw pw-sp"><a class="tool-tip" href="tools.html">ツール一覧 ›</a><button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
+      <div class="pw pw-sp"><a class="tool-tip" href="tools.html">ツール一覧<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a><button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
       <h1><span class="ngname" translate="no">なみぐる</span><span class="en">NAMIGROOVE</span></h1>
-      <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。<b>ゲーム・アニメ・CM・VTuber</b>への楽曲提供、作曲、編曲、作詞、映像製作、楽器演奏まで手がけています。</p>
+      <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。楽曲提供から映像・演奏まで手がけています。</p>
       <div class="cta">
         <a class="btn primary" href="#contact">製作を依頼する</a>
         <a class="btn ghost" href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener"><i class="bico" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/youtube.svg)"></i>YouTube</a>
@@ -377,7 +378,7 @@ header.top .logo{flex:none}
       </div>
       <p class="tide"><span><b>SINCE</b> 2021</span><span>VOCALOID / R&amp;B / Electro Swing / Funk / Sax</span><span>いい波、起こします~(･ω･~)</span></p>
     </div>
-    <div class="pw pw-pc"><a class="tool-tip" href="tools.html">ツール一覧はこちら ›</a><button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
+    <div class="pw pw-pc"><a class="tool-tip" href="tools.html">ツール一覧はこちら<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a><button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
   </div>
 
   <canvas class="sea" id="sea" aria-hidden="true"></canvas>
@@ -386,11 +387,9 @@ header.top .logo{flex:none}
     <div class="wrap">
       <div class="sec-head">
         <div><p class="eyebrow">Selected</p><h2>Works</h2></div>
-        <p>代表的なWorksをピックアップ</p>
       </div>
       <div class="credits" id="creditList"></div>
-      <div class="credits-more"><button class="btn ghost" type="button" onclick="document.getElementById('creditList').classList.add('open')">もっと見る</button></div>
-      <div class="works-cta"><a class="btn primary" href="works.html">Works一覧を見る →</a><p>Works &amp; これまでの歩みをまとめています</p></div>
+      <div class="works-cta"><a class="btn primary" href="works.html">Works一覧を見る<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
     </div>
   </section>
 
@@ -400,8 +399,7 @@ header.top .logo{flex:none}
         <div>
           <p class="eyebrow">Tools</p>
           <h2>ブラウザで使える<br>音楽ツール</h2>
-          <p class="lead">チューナーやピアノ、ドラムパッド、コード表、キー&amp;BPM判定まで。インストールなしで、練習や曲づくりのあいまにさっと使えます。</p>
-          <div class="btns"><a class="btn" href="tools.html">ツール一覧へ ›</a></div>
+                    <div class="btns"><a class="btn" href="tools.html">ツール一覧へ<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></div>
         </div>
         <svg class="tools-art" viewBox="0 0 440 300" role="img" aria-label="ピアノ・チューナー・ドラムパッド・コード表のイラストと、なみぐる">
   <g class="fl"><g transform="rotate(4 115 85)"><rect x="60" y="20" width="110" height="132" rx="14" fill="#fff"/>
@@ -432,20 +430,19 @@ header.top .logo{flex:none}
     <div class="wrap">
       <div class="sec-head">
         <div><p class="eyebrow">Activity</p><h2><span class="mochi" translate="no">₺ƾらせ</span>・出現情報</h2></div>
-        <p>X(@namigroove)とブログの新着をまとめて表示</p>
       </div>
       <div class="filters" role="group" aria-label="お知らせの種類で絞り込み" id="newsFilters"></div>
       <div class="notes" id="noteList"></div>
-      <div class="more"><button class="btn ghost" id="newsMore" type="button">もっと見る</button></div>
+      <div class="more"><button class="btn ghost" id="newsMore" type="button">お知らせ一覧を見る</button></div>
       <div class="schedule">
         <h3 class="sched-title">スケジュール</h3>
         <div class="sched-grid">
           <div class="sched-card">
-            <p class="sched-head">カレンダー<a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener">TimeTreeで見る →</a></p>
+            <p class="sched-head">カレンダー<a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener">TimeTreeで見る<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
             <iframe title="なみぐるの出演カレンダー(TimeTree)" src="https://timetreeapp.com/public_calendars/namigroove/embed?calendar_name=true&amp;frame_color=%232ecc87" loading="lazy"></iframe>
           </div>
           <div class="sched-card">
-            <p class="sched-head">出現情報<a href="https://www.bandsintown.com/a/15592125-_namigroove" target="_blank" rel="noopener">Bandsintownで見る →</a></p>
+            <p class="sched-head">出現情報<a href="https://www.bandsintown.com/a/15592125-_namigroove" target="_blank" rel="noopener">Bandsintownで見る<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
             <div class="bit-wrap">
               <a class="bit-widget-initializer" data-artist-name="id_15592125" data-display-local-dates="false" data-display-past-dates="true" data-display-limit="6" data-auto-style="false" data-background-color="rgba(0,0,0,0)" data-separator-color="rgba(57,108,223,0.2)" data-text-color="#101f45" data-link-color="#396cdf" data-link-text-color="#ffffff" data-font="Helvetica" data-display-details="false" data-display-lineup="false" data-social-share-icon="false" data-language="ja"></a>
             </div>
@@ -510,7 +507,7 @@ header.top .logo{flex:none}
         </div></div>
         <div class="link-group"><h3>応援</h3><div class="links">
           <a href="https://ouen55.com/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i><span>ファンレター・プレゼント</span><small>宛先はこちら</small></a>
-          <a href="https://bit.ly/3O1mSgc" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12"/><path d="M12 9S10.5 4 8 4.5 7 9 12 9zm0 0s1.5-5 4-4.5S17 9 12 9z"/></svg></i><span>Amazonほしい物リスト</span><small>プレゼントを送れます</small></a>
+          <a href="https://bit.ly/3O1mSgc" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12"/><path d="M12 9S10.5 4 8 4.5 7 9 12 9zm0 0s1.5-5 4-4.5S17 9 12 9z"/></svg></i><span>ほしい物リストを開く</span></a>
         </div></div>
       </div>
     </div>
@@ -527,8 +524,8 @@ header.top .logo{flex:none}
         </ul>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
-        <p>内容・納期・ご予算をフォームからお送りください。法人のお取引にも対応しています。</p>
-        <a class="btn" href="https://www.namigroove.com/contact/" target="_blank" rel="noopener">お問い合わせフォーム</a>
+        <p>法人のお取引にも対応しています。</p>
+        <a class="btn" href="https://www.namigroove.com/contact/" target="_blank" rel="noopener">製作を依頼する</a>
       </div>
     </div>
   </section>
@@ -615,7 +612,7 @@ function renderNews(){
   const list = NEWS.filter(x=>inTab(x,newsFilter));
   /* 出現情報タブの先頭には、予定がまとまったTimeTreeを常に表示 */
   const pin = newsFilter==="event" ? `
-  <a class="note pin k-event" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出現情報はカレンダーでチェック</h3><time>なみぐるの出現スケジュール →</time></a>` : "";
+  <a class="note pin k-event" href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><span class="tag">出現情報 · TimeTree</span><h3>今後の出現情報はカレンダーでチェック</h3><time>なみぐるの出現スケジュール<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></time></a>` : "";
   document.getElementById("noteList").innerHTML = pin + list.slice(0,newsShown-(pin?1:0)).map(n=>`
   <a class="note k-${tabType(n)}" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag" translate="no">${NEWS_T[tabType(n)]}${n.src==="wp"||n.type==="blog"?"":" · X"}</span><h3>${esc(n.t)}</h3><time datetime="${n.d}">${n.d.replaceAll("-",".")}</time></a>`).join("");
   document.getElementById("newsMore").hidden = list.length<=newsShown-(pin?1:0);
