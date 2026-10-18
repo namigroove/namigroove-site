@@ -310,6 +310,7 @@ header.top .logo{flex:none}
       </div>
       <div class="seg pg-cat" id="pgCat" role="group" aria-label="進行のジャンル"></div>
       <div id="pgMy" hidden style="margin:0 0 14px"></div>
+      <p class="note-s" id="pgFavEmpty" hidden style="text-align:left">進行の☆を押すと、ここに集まります(ピアノ・コード表・ジャムモードで共通)。</p>
       <div class="pg-list" id="pgList"></div>
     </div>
   </section>
@@ -362,6 +363,7 @@ header.top .logo{flex:none}
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=3"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/favs.js?v=1"></script>
 <script>
 (()=>{
 "use strict";
@@ -707,7 +709,7 @@ function lead(p){
 function pgRender(){
   pgData=PGS.map(p=>lead(p.c));
   const isG=inst==="gt";
-  $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-jam" type="button" data-jam="${i}" title="ドラムとベースつきでジャム" aria-label="ジャムモードで鳴らす">🥁</button><button class="btn pg-shr" type="button" data-shr="${i}" title="この進行のリンクを共有" aria-label="この進行のリンクを共有">🔗</button><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
+  $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><span class="pg-btns">${i===MYI||!window.NamiFav?"":NamiFav.html("prog",NamiFav.pid(p.n),p.n,"ng-fav-p")}<button class="btn pg-jam" type="button" data-jam="${i}" title="ドラムとベースつきでジャム" aria-label="ジャムモードで鳴らす">🥁</button><button class="btn pg-shr" type="button" data-shr="${i}" title="この進行のリンクを共有" aria-label="この進行のリンクを共有">🔗</button><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
 }
 function pgPlay(p,j){
   const c=pgData[p][j];
@@ -719,9 +721,10 @@ function pgPlay(p,j){
 }
 function pgStop(){clearTimeout(pgTimer);pgTimer=null;}
 const PCAT=window.NamiProg.CAT;
-let pgCat=store.get("chPgCat","pop");if(pgCat!=="all"&&pgCat!=="my"&&!PCAT[pgCat])pgCat="pop";if(qMyC)pgCat="my";
-function pgFilter(){[...$("pgCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===pgCat));$("pgMy").hidden=pgCat!=="my";document.querySelectorAll("#pgList .pg").forEach(el=>{const g=PGS[+el.dataset.p].g;el.hidden=pgCat==="all"?g==="my":g!==pgCat;});}
-$("pgCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button><button type="button" data-g="my">✏️ 自分で作る</button>`;
+let pgCat=store.get("chPgCat","pop");if(pgCat!=="all"&&pgCat!=="my"&&pgCat!=="fav"&&!PCAT[pgCat])pgCat="pop";if(qMyC)pgCat="my";
+function pgFilter(){[...$("pgCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===pgCat));$("pgMy").hidden=pgCat!=="my";document.querySelectorAll("#pgList .pg").forEach(el=>{const g=PGS[+el.dataset.p].g;el.hidden=pgCat==="fav"?(g==="my"||!(window.NamiFav&&NamiFav.has("prog",NamiFav.pid(PGS[+el.dataset.p].n)))):pgCat==="all"?g==="my":g!==pgCat;});const fe=$("pgFavEmpty");if(fe)fe.hidden=!(pgCat==="fav"&&!document.querySelector("#pgList .pg:not([hidden])"));}
+if(window.NamiFav)NamiFav.onChange(k=>{if(k==="prog"&&pgCat==="fav")pgFilter();});
+$("pgCat").innerHTML=`<button type="button" data-g="fav">★ お気に入り</button>`+Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button><button type="button" data-g="my">✏️ 自分で作る</button>`;
 builder=NB.mount($("pgMy"),{key:()=>pgKey,initial:myC,types:TYPES.map(t=>t[0]),onChange:a=>{myC=a;PGS[MYI].c=a;pgStop();pgRender();pgFilter();}});
 $("pgCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pgCat=b.dataset.g;store.set("chPgCat",pgCat);pgStop();pgFilter();});
 /* MIDI書き出し:ギターは選ばれている押さえ方の実音(カポ込み)、ベースはルート */

@@ -235,6 +235,7 @@ footer a{color:var(--sea)}
 .jm-h{font-size:16px;margin:0 0 8px;font-family:var(--f-display);font-weight:400}
 .pg-cat{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 10px}
 .jm-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.jm-it{position:relative;display:grid}.jm-it>.ng-fav{position:absolute;top:8px;right:8px}.jm-it>button[data-i]{padding-right:44px}
 .jm-list button{text-align:left;font:inherit;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer}
 .jm-list button b{display:block;font-size:14px}
 
@@ -346,6 +347,7 @@ header.top .logo{flex:none}
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=3"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/favs.js?v=1"></script>
 <script>
 (()=>{
 "use strict";
@@ -456,12 +458,13 @@ $("jMidi").onclick=midi;
 function renderNow(){const P=cur();$("jTitle").textContent=P.n+"(キー"+KEYN[key]+")";$("jChips").innerHTML=P.c.map(c=>`<span>${chName(c)}</span>`).join("");}
 function renderList(){[...$("jCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===cat));
   $("jMy").hidden=cat!=="my";$("jList").hidden=cat==="my";if(cat==="my"){if(builder)builder.render();return;}
-  $("jList").innerHTML=LIST.map((p,i)=>p.g!==cat?"":`<button type="button" data-i="${i}" aria-pressed="${!useMy&&i===pi}"><b>${p.n}</b><small>${p.c.map(chName).join(" → ")}</small></button>`).join("");}
+  const isF=p=>window.NamiFav&&NamiFav.has("prog",NamiFav.pid(p.n));
+  $("jList").innerHTML=LIST.map((p,i)=>(cat==="fav"?!isF(p):p.g!==cat)?"":`<div class="jm-it"><button type="button" data-i="${i}" aria-pressed="${!useMy&&i===pi}"><b>${p.n}</b><small>${p.c.map(chName).join(" → ")}</small></button>${window.NamiFav?NamiFav.html("prog",NamiFav.pid(p.n),p.n,"ng-fav-p"):""}</div>`).join("")||(cat==="fav"?`<p class="note-s" style="text-align:left;grid-column:1/-1">進行の☆を押すと、ここに集まります(ピアノ・コード表・ジャムモードで共通)。</p>`:"");}
 function save(){store.set("jamP",pid(LIST[pi].n));store.set("jamUseMy",useMy);store.set("jamKey",key);store.set("jamStyle",style);store.set("jamBpm",bpm);store.set("jamBars",bars);}
 $("jStyle").innerHTML=Object.entries(ST).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");$("jStyle").value=style;
 $("jKey").innerHTML=KEYN.map((n,i)=>`<option value="${i}">${n}</option>`).join("");$("jKey").value=String(key);
 $("jBpm").value=bpm;$("jBars").value=String(bars);
-$("jCat").innerHTML=Object.entries(NP.CAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="my">✏️ 自分で作る</button>`;
+$("jCat").innerHTML=`<button type="button" data-g="fav">★ お気に入り</button>`+Object.entries(NP.CAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="my">✏️ 自分で作る</button>`;
 $("jStyle").addEventListener("change",()=>{style=$("jStyle").value;save();});
 $("jKey").addEventListener("change",()=>{key=+$("jKey").value;renderNow();renderList();save();});
 $("jBpm").addEventListener("change",()=>{bpm=Math.max(50,Math.min(200,+$("jBpm").value||92));$("jBpm").value=bpm;save();});
@@ -469,7 +472,8 @@ $("jBars").addEventListener("change",()=>{bars=+$("jBars").value;save();if(playi
 $("jCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;cat=b.dataset.g;if(cat==="my"&&!useMy){useMy=true;renderNow();save();if(playing)prepare();}renderList();});
 /* ---------- 自分で作る(progbuilder.js) ---------- */
 builder=NB.mount($("jMy"),{key:()=>key,initial:my,onChange:a=>{my=a;useMy=true;save();renderNow();renderList();if(playing)prepare();}});
-$("jList").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pi=+b.dataset.i;useMy=false;style=LIST[pi].st||DEF[LIST[pi].g]||style;$("jStyle").value=style;if(LIST[pi].k!=null){key=LIST[pi].k;$("jKey").value=String(key);}renderNow();renderList();save();if(playing){stop();start();}});
+if(window.NamiFav)NamiFav.onChange(k=>{if(k==="prog"&&cat==="fav")renderList();});
+$("jList").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;pi=+b.dataset.i;useMy=false;style=LIST[pi].st||DEF[LIST[pi].g]||style;$("jStyle").value=style;if(LIST[pi].k!=null){key=LIST[pi].k;$("jKey").value=String(key);}renderNow();renderList();save();if(playing){stop();start();}});
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
 $("jShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);if(useMy)u.searchParams.set("prog",NB.enc(my));else u.searchParams.set("pg",pid(LIST[pi].n));u.searchParams.set("k",key);u.searchParams.set("st",style);u.searchParams.set("b",bpm);const url=u.href,title=(useMy?my.map(chName).join("→"):LIST[pi].n)+"(キー"+KEYN[key]+"・"+ST[style].n+")– なみぐる！ジャムモード";
   if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title+" #namigroovetools",url}).catch(()=>{});return;}
