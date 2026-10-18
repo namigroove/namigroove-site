@@ -314,7 +314,7 @@ header.top .logo{flex:none}
     <ul>
       <li>カードをタップすると、そのカードだけ回し直せます。🔒を押すと、次に回しても残ります。</li>
       <li>BPMとキーは、出たジャンルによくあるテンポの中から選んでいます。あくまできっかけなので、自由に変えてね。</li>
-      <li>「歌声」はVOCALOID・CeVIO AI・Synthesizer V・VoiSona・NEUTRINO・VOICEVOX・UTAUなどの合成音声から選びます。「出すカードを選ぶ」で、持っているソフトだけにしぼれます。</li>
+      <li>「歌声」はVOCALOID・Synthesizer V・CeVIO AI・VoiSona・UTAU・VOICEVOX・NEUTRINO・ACE Studioなど、いま手に入る合成音声およそ350人から選びます。海外の声も入っています。「出すカードを選ぶ」で、持っているソフトだけにしぼれます。</li>
       <li>ときどき金のカプセルが出ます。中身はお楽しみ。</li>
       <li>このお題で曲を作ったら、<a href="https://x.com/search?q=%23namigroovetools" target="_blank" rel="noopener">#namigroovetools</a> をつけて教えてね。歌詞の音数は<a href="mora.html">歌詞の音数カウンター</a>で数えられます。</li>
     </ul>
@@ -353,7 +353,7 @@ function roll(id){
   if(id==="theme")return{v:pick(G.THEME)};
   if(id==="rule")return{v:pick(G.RULE)};
   if(id==="mood")return{v:pick(G.MOOD)};
-  if(id==="voice"){const list=G.VOICE.filter(x=>engines[x.e]!==0);const v=pick(list.length?list:G.VOICE);return{v:v.n,e:v.e};}
+  if(id==="voice"){const list=G.VOICE.filter(x=>x.e.some(e=>engines[e]!==0));const v=pick(list.length?list:G.VOICE);return{v:v.n,e:v.e.join(" / ")};}
   if(id==="genre"){const g=pick(G.GENRE);return{v:g.n,b:g.b};}
   if(id==="extra"){const g=G.GENRE.find(x=>cur.genre&&x.n===cur.genre.v)||pick(G.GENRE);const bpm=g.b[0]+Math.round(Math.random()*(g.b[1]-g.b[0])/2)*2;
     const minor=Math.random()<0.5;return{v:`BPM ${bpm} ・ ${pick(G.KEYS)}${minor?"マイナー":"メジャー"}`,bpm};}
@@ -399,7 +399,7 @@ const USE_LB={theme:"テーマ",genre:"ジャンル",voice:"歌声",w:"キーワ
 $("useSeg").innerHTML=Object.keys(USE_LB).map(k=>`<label><input type="checkbox" data-k="${k}"${use[k]?" checked":""}>${USE_LB[k]}</label>`).join("");
 /* 歌声のソフト(持っているソフトだけにしぼれる) */
 let engines=store.get("gachaEngines",{});
-const ENG=[...new Set(G.VOICE.map(x=>x.e))];
+const ENG=[...new Set(G.VOICE.flatMap(x=>x.e))];
 $("engSeg").innerHTML=ENG.map(e=>`<label><input type="checkbox" data-e="${e}"${engines[e]!==0?" checked":""}>${e}</label>`).join("");
 $("engSeg").addEventListener("change",e=>{engines[e.target.dataset.e]=e.target.checked?1:0;store.set("gachaEngines",engines);if(!locks.has("voice")){cur.voice=roll("voice");store.set("gachaCur",cur);render(["voice"]);}});
 $("useSeg").addEventListener("change",e=>{const k=e.target.dataset.k;use[k]=e.target.checked?1:0;store.set("gachaUse",use);
