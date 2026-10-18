@@ -1,15 +1,43 @@
 {
-  "name": "チューナー&メトロノーム – なみぐる！",
-  "short_name": "チューナー",
-  "description": "ブラウザだけで使える無料のチューナーとメトロノーム",
+  "name": "なみぐる！TOOLS – ブラウザで使える音楽ツール",
+  "short_name": "なみぐるTOOLS",
+  "description": "チューナー&メトロノーム、ピアノ、ドラムパッド、コード表、スケール表、運指表、キー&BPM判定。インストール不要の無料音楽ツール",
   "lang": "ja",
+  "id": "https://www.namigroove.com/tools/",
   "start_url": "https://www.namigroove.com/tools/",
   "scope": "https://www.namigroove.com/tools/",
   "display": "standalone",
   "background_color": "#f5f8fe",
   "theme_color": "#396cdf",
   "icons": [
-    {"src": "https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247.png", "sizes": "512x512", "type": "image/png"}
+    {
+      "src": "https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "チューナー&メトロノーム",
+      "short_name": "チューナー",
+      "url": "https://www.namigroove.com/tools/tuner/"
+    },
+    {
+      "name": "ピアノ",
+      "url": "https://www.namigroove.com/tools/piano/"
+    },
+    {
+      "name": "コード表",
+      "url": "https://www.namigroove.com/tools/chords/"
+    },
+    {
+      "name": "スケール表",
+      "url": "https://www.namigroove.com/tools/scales/"
+    }
   ]
 }

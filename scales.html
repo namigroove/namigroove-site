@@ -491,6 +491,16 @@ if(sb) sb.addEventListener("click",async()=>{
 });
 })();
 </script>
+<script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
+(()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
+const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
+ ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
+ [".cp,.ro","copy_ms"],["#scSeg button","scale_select"],["#typeSeg button,#clType button","chord_select"],["#pgCat button,#clCat button","genre_select"],["#drop","file_pick"]];
+document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.target.closest(sel);if(!el)continue;
+  const h=el.closest(".pg,.cl-pg");const label=((h&&h.querySelector("h3")&&h.querySelector("h3").textContent)||el.dataset.g||el.textContent||"").trim().slice(0,60);
+  ngTrack(name,{label});break;}},true);})();
+</script>
 <script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
 if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
