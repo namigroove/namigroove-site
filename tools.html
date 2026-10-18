@@ -157,6 +157,8 @@ footer a{color:var(--sea)}
 
 /* ツール一覧 */
 .hub-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.hash-share{display:inline-block;margin-top:6px;font-family:var(--f-mono);font-size:14px;letter-spacing:.02em;color:var(--sea);text-decoration:none;border-bottom:1px dashed currentColor}
+.hash-share:hover{border-bottom-style:solid}
 .hub-intro .puni{width:110px;flex:none;margin-bottom:-6px}
 @media (max-width:480px){.hub-intro .puni{width:80px}.hub-intro .puni .bpm{font-size:10px}}
 .puni{display:block;width:100%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;justify-self:center}
@@ -234,6 +236,7 @@ header.top .logo{flex:none}
     <div>
       <p class="eyebrow">TOOLS</p>
       <h1>なみぐる！のツール</h1>
+      <a class="hash-share" href="https://x.com/intent/post?text=%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81%E3%81%AE%E3%83%84%E3%83%BC%E3%83%AB&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2F&amp;hashtags=namigroovetools" target="_blank" rel="noopener" title="Xでシェア" translate="no">#namigroovetools</a>
       <p class="lead">ブラウザだけで使える音楽ツールです。インストールも登録もいりません。練習に、曲作りに、ちょっとした音遊びにどうぞ。</p>
     </div>
     <button class="puni" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button>
