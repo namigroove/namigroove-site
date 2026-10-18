@@ -27,6 +27,11 @@ var CSS=".ng-fav{display:inline-flex;align-items:center;justify-content:center;w
 ".ng-fav-h1{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.ng-fav-h1 h1{margin:0}"+
 ".cards>li{position:relative}.cards>li>.ng-fav{position:absolute;top:10px;right:10px;width:30px;height:30px;z-index:1}.cards>li>.ng-fav svg{width:16px;height:16px}"+
 ".cards>li[hidden],.hub-sec[hidden],.cards[hidden]{display:none}.ng-fav-sec[hidden]{display:none}.ng-fav-empty{font-size:13px;color:var(--ink-soft);margin:0 0 12px}"+
+".ng-inst{color:var(--sea)}"+
+".ng-ig{position:fixed;inset:0;z-index:9999;background:rgba(10,20,50,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px}"+
+".ng-ig-c{background:var(--panel,#fff);color:var(--ink,#101f45);border-radius:16px;max-width:420px;width:100%;padding:18px 18px 14px;box-shadow:0 10px 40px rgba(0,0,0,.25);font-size:14px;line-height:1.7}"+
+".ng-ig-t{font-weight:700;margin:0 0 6px}.ng-ig-c ol{margin:0;padding-left:1.4em}.ng-ig-s{font-size:12px;color:var(--ink-soft,#4a5a80);margin:8px 0 0}"+
+".ng-ig-x{display:block;margin:12px auto 0;font:inherit;padding:6px 18px;border-radius:999px;border:1px solid var(--line,#d5e0f5);background:var(--chip,#fff);color:inherit;cursor:pointer}"+
 ".ng-fav-p{width:28px;height:28px;border-radius:999px}.ng-fav-p svg{width:15px;height:15px}";
 function css(){if(document.getElementById("ng-fav-css"))return;var s=document.createElement("style");s.id="ng-fav-css";s.textContent=CSS;document.head.appendChild(s);}
 /* 星ボタンを作る(kind・idを指定) */
@@ -63,7 +68,24 @@ function page(){
   var id=toolId(location.href.split("#")[0]);if(id==="tuner")id="tuner#tuner";
   var wrap=document.createElement("div");wrap.className="ng-fav-h1";h1.parentNode.insertBefore(wrap,h1);wrap.appendChild(h1);wrap.appendChild(button("tool",id,h1.textContent));
 }
-function init(){hub();page();}
+/* ---------- ホーム画面に追加(アイコン化)の案内 ---------- */
+var deferred=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;});
+var DL='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4.5 16.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></svg>';
+function isStandalone(){return (window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;}
+function guide(){
+  var ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),and=/Android/.test(ua),
+    steps=ios?"<ol><li>Safariの<b>共有ボタン</b>(□に↑のマーク)をタップ</li><li>「<b>ホーム画面に追加</b>」を選ぶ</li><li>右上の「追加」を押すと、このツールのアイコンができます</li></ol><p class=\"ng-ig-s\">ChromeなどSafari以外のアプリでは、メニューの「ホーム画面に追加」から。</p>"
+    :and?"<ol><li>Chromeの右上の<b>︙</b>をタップ</li><li>「<b>ホーム画面に追加</b>」または「アプリをインストール」を選ぶ</li></ol>"
+    :"<ol><li>Chrome・Edgeなら、アドレスバーの右の<b>インストール</b>のアイコンを押す</li><li>またはメニューの「<b>なみぐるTOOLSをインストール</b>」(「アプリ」→「インストール」)を選ぶ</li></ol>";
+  var d=document.createElement("div");d.className="ng-ig";d.setAttribute("role","dialog");d.setAttribute("aria-label","ホーム画面に追加");
+  d.innerHTML='<div class="ng-ig-c"><p class="ng-ig-t">ホーム画面にアイコンを置く</p>'+steps+'<p class="ng-ig-s">アプリのようにすぐ開けて、オフラインでも使えます。</p><button type="button" class="ng-ig-x">閉じる</button></div>';
+  d.addEventListener("click",function(e){if(e.target===d||e.target.closest(".ng-ig-x"))d.remove();});document.body.appendChild(d);
+}
+function installBtn(){css();var b=document.createElement("button");b.type="button";b.className="ng-fav ng-inst";b.title="ホーム画面に追加(アイコンにする)";b.setAttribute("aria-label","ホーム画面に追加(アイコンにする)");b.innerHTML=DL;
+  b.addEventListener("click",function(){if(window.ngTrack)window.ngTrack("install_click",{prompt:!!deferred});if(deferred){var e=deferred;deferred=null;e.prompt();}else guide();});return b;}
+function install(){if(isStandalone())return;var h1=document.querySelector("main h1");if(!h1)return;var w=h1.parentNode.classList.contains("ng-fav-h1")?h1.parentNode:null;
+  if(!w){w=document.createElement("div");w.className="ng-fav-h1";h1.parentNode.insertBefore(w,h1);w.appendChild(h1);}w.appendChild(installBtn());}
+function init(){hub();page();install();}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 window.NamiFav={has:has,toggle:toggle,list:list,onChange:onChange,pid:pid,toolId:toolId,button:button,html:html};
 })();
