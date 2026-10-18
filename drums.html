@@ -68,6 +68,9 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);l
 
 /* 共通の操作部品 */
 .row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.sw-v{display:inline-block;min-width:2.8em;text-align:right;font-weight:400}
+.seq-opts .ctl{white-space:nowrap}
+@media (max-width:420px){.seq-opts .ctl input[type=range]{width:90px!important}}
 .ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
 .seg{display:inline-flex;flex-wrap:wrap;gap:4px}
 .seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
@@ -383,7 +386,7 @@ header.top .logo{flex:none}
         <span id="midBarRow" hidden><select id="midBar" aria-label="読み込む小節"></select> <button class="btn" type="button" id="midBarGo">この小節を読み込む</button></span>
       </div>
       <div class="row seq-opts">
-        <div class="ctl">スウィング <input type="range" id="swing" min="0" max="0.6" step="0.02" value="0" style="width:110px;margin:0" aria-label="スウィング"><b class="num" id="swingOut">0%</b></div>
+        <div class="ctl">スウィング <input type="range" id="swing" min="0" max="0.6" step="0.02" value="0" style="width:110px;margin:0" aria-label="スウィング"><b class="num sw-v" id="swingOut">0%</b></div>
         <div class="ctl">音量 <input type="range" id="vol" min="0" max="1" step="0.05" value="0.8" style="width:110px;margin:0" aria-label="音量"></div>
       </div>
       <div class="row seq-opts">
