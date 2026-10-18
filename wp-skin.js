@@ -105,6 +105,7 @@
     a.id = "ngTools"; a.href = "/tools/"; a.textContent = "Tools";
     li.appendChild(a);
     if (after) after.after(li); else ul.insertBefore(li, ul.firstChild);
+    for (var j = 0; j < links.length; j++) { if (/^\s*リンク\s*$/.test(links[j].textContent)) links[j].parentElement.classList.add("ng-opt"); }
   }
   // ページによって要素がなくても、あとの処理(404など)が止まらないように
   var safeRun = function () { try { run(); } catch (e) {} };
