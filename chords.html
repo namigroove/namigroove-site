@@ -189,6 +189,7 @@ footer a{color:var(--sea)}
 .vo-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
 .vo-c:hover{border-color:var(--sea)}
 .vo-c.main{border:2px solid var(--sea)}
+.vo-c small i.lib{font-style:normal;font-size:10px;color:#fff;background:var(--coral);border-radius:999px;padding:0 6px;margin-right:4px}
 .vo-c small{font-size:11px;color:var(--ink-soft)}
 .cd{width:120px;height:auto;display:block}
 .cd .st{stroke:var(--ink-soft);stroke-width:1}
@@ -335,7 +336,8 @@ header.top .logo{flex:none}
       <li>カポを付けると、順引きでは「その形で押さえるとこのコードが鳴る」押さえ方を、逆引きでは実際に鳴るコード名を表示します。</li>
       <li>チューニングはレギュラー(ギター EADGBE、ベース EADG / BEADG)です。</li>
       <li>オレンジ色のコードは、M9・m11・13・7(♯9) などのおしゃれ系です。選ぶとひとこと解説が出ます。テンションの音は指板でもオレンジで表示します。</li>
-      <li>「おしゃれ進行」はキーを変えられます。ギターはそれぞれのコードの押さえ方つき、ベースはルート音を表示します。</li>
+      <li>「定番」マークは、ジャズやネオソウルでよく使われる押さえ方です。6弦・5弦・4弦ルートの形を優先して並べています。</li>
+      <li>「おしゃれ進行」はキーを変えられます。ギターは前のコードから手の位置があまり動かない押さえ方を自動で選びます。ベースはルート音を表示します。</li>
       <li>鍵盤で和音を確かめたいときは <a href="piano.html">ピアノ</a> もどうぞ。</li>
     </ul>
   </section>
@@ -376,8 +378,27 @@ const ENN=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let inst=store.get("chInst","gt"), root=store.get("chRoot",0), type=store.get("chType",0), capo=store.get("chCapo",0);
 if(!TUN[inst])inst="gt"; if(!TYPES[type])type=0;
 
+/* ===== ギターの定番フォーム(ジャズ・ネオソウルでよく使う形) =====
+   ルート弦のフレットを0としたときの相対フレット。-9は弾かない弦 */
+const LIB={"M7":[[0,-9,1,1,0,-9],[-9,0,2,1,2,0],[-9,0,-9,1,2,0],[-9,-9,0,2,2,2]],"m7":[[0,-9,0,0,0,-9],[-9,0,2,0,1,0],[-9,-9,0,2,1,1]],"7":[[0,-9,0,1,0,-9],[-9,0,2,0,2,0],[-9,-9,0,2,1,2]],"M9":[[-9,0,-1,1,0,-9],[0,-9,1,1,0,2],[-9,-9,0,-1,2,0]],"m9":[[-9,0,-2,0,0,-9],[0,-9,0,0,0,2],[-9,-9,0,-2,1,0]],"9":[[-9,0,-1,0,0,0],[0,-9,0,1,0,2],[-9,-9,0,-1,1,0]],"13":[[0,-9,0,1,2,-9],[-9,0,-1,0,0,2]],"7(♭9)":[[-9,0,-1,0,-1,-9],[0,-9,0,1,0,1]],"7(♯9)":[[-9,0,-1,0,1,-9]],"m11":[[-9,0,-2,0,0,-2],[0,-9,0,0,-2,-9]],"M7(♯11)":[[0,-9,1,1,-1,-9],[-9,0,-1,1,-9,-1]],"6/9":[[-9,0,-1,-1,0,0],[0,-1,-1,-1,0,0]],"9sus4":[[-9,0,0,0,0,-9],[0,-9,0,2,0,2]],"7sus4":[[-9,0,2,0,3,0],[0,-9,0,2,0,-9]],"mM7":[[-9,0,2,1,1,0],[0,-9,1,0,0,-9]],"m7(♭5)":[[-9,0,1,0,1,-9],[0,-9,0,0,-1,-9],[-9,-9,0,1,1,1]],"dim7":[[-9,0,1,-1,1,-9],[0,-9,-1,0,-1,-9],[-9,-9,0,1,0,1]],"6":[[-9,0,-1,-1,-2,-9],[0,-9,-1,1,0,-9]],"m6":[[-9,0,-2,-1,-2,-9],[0,-9,-1,0,0,-9]]};
+function libVoicings(rp,name){
+  const out=[];(LIB[name]||[]).forEach(sh=>{
+    const rs=sh.findIndex(o=>o!==-9), f0=pc(rp-TUN.gt[rs]);
+    [f0,f0+12].forEach(base=>{
+      if(sh.some(o=>o!==-9&&(o+base<0||o+base>15)))return;
+      const fr=sh.map(o=>o===-9?-1:o+base), used=fr.filter(f=>f>=0);
+      const fretted=used.filter(f=>f>0);
+      if(used.includes(0)&&Math.max(...fretted)>4)return; /* 開放弦はローポジションだけ */
+      if(sh.some(o=>o!==-9&&o+base===0)&&base>0&&base>4)return;
+      const minF=fretted.length?Math.min(...fretted):0;
+      const atMin=fr.map((f,k)=>[f,k]).filter(([f])=>f===minF&&f>0).map(x=>x[1]);
+      let barre=null;if(atMin.length>=2){const a=Math.min(...atMin),b=Math.max(...atMin);let ok=true;for(let k=a;k<=b;k++)if(fr[k]<minF)ok=false;if(ok)barre=[minF,a,b];}
+      out.push({fr,barre,minF,lib:true,score:Math.abs(minF-5)*0.3+(minF<1?2:0)});
+    });});
+  return out.sort((a,b)=>a.minF-b.minF);
+}
 /* ===== ギターの押さえ方を探す ===== */
-function voicings(r,iv,opt,name,bass){
+function voicings(r,iv,opt,name,bass,all){
   const tun=TUN.gt, need=new Set(iv.map(x=>pc(r+x))), rootPc=bass==null?pc(r):pc(bass);
   if(bass!=null)need.add(pc(bass));
   const opt5=iv.length>=4&&iv.includes(7); /* 4和音以上なら5度は省略してもよい */
@@ -388,12 +409,7 @@ function voicings(r,iv,opt,name,bass){
   const SH={"0,4,7":[[0,2,2,1,0,0],[-1,0,2,2,2,0]],"0,3,7":[[0,2,2,0,0,0],[-1,0,2,2,1,0]],"0,4,7,10":[[0,2,0,1,0,0],[-1,0,2,0,2,0]],"0,3,7,10":[[0,2,0,0,0,0],[-1,0,2,0,1,0]],
     "0,4,7,11":[[0,-1,1,1,0,-1],[-1,0,2,1,2,0]],"0,5,7":[[0,2,2,2,0,0],[-1,0,2,2,3,0]],"0,5,7,10":[[0,2,0,2,0,0],[-1,0,2,0,3,0]],"0,3,6,10":[[0,-1,0,0,-1,-1],[-1,0,1,0,1,-1]],
     "0,3,6,9":[[0,-1,-1,0,-1,0],[-1,0,1,2,1,2]],"0,4,7,9":[[0,-1,-1,1,2,0],[-1,0,2,2,2,2]],"0,3,7,9":[[0,-1,-1,0,2,0],[-1,0,2,2,1,2]]};
-  /* テンション系の定番フォーム(Cのときのフレット。ずらして使う) */
-  const SH2={"M9":[[null,3,2,4,3,null]],"m9":[[null,3,1,3,3,null]],"9":[[null,3,2,3,3,3],[8,null,8,7,8,8]],"13":[[8,null,8,9,10,null],[null,3,2,3,3,5]],
-    "7(♭9)":[[null,3,2,3,2,null]],"7(♯9)":[[null,3,2,3,4,null]],"M7(♯11)":[[8,null,9,9,7,null]],"6/9":[[null,3,2,2,3,3]],
-    "m11":[[8,null,8,8,6,null],[null,3,1,3,3,1]],"9sus4":[[null,3,3,3,3,null],[8,null,8,7,6,null]]};
   const pref=new Set(), pref2=new Set();
-  if(bass==null)(SH2[name]||[]).forEach(sh=>{const d=pc(r);[d,d-12,d+12].forEach(o=>{const ok=sh.every(x=>x==null||(x+o>=1&&x+o<=15));if(ok){const k=sh.map(x=>x==null?-1:x+o).join(",");pref.add(k);pref2.add(k);}});});
   if(bass==null)(SH[iv.join(",")]||[]).forEach((sh,k)=>{const s0=k===0?tun[0]:tun[1];const off=pc(r-s0);[off,off+12].forEach(o=>{if(o>12)return;pref.add(sh.map(f=>f<0?-1:f+o).join(","));});});
   for(let base=0;base<=12;base++){
     const lo=base===0?1:base, hi=lo+3;
@@ -428,8 +444,10 @@ function voicings(r,iv,opt,name,bass){
     })(0);
   }
   out.sort((a,b)=>a.score-b.score);
-  /* 似たポジションばかりにならないよう、位置がちがう形を優先して選ぶ */
-  const pick=[];for(const v of out){if(pick.length>=5)break;if(pick.some(p=>Math.abs(p.minF-v.minF)<2&&p.fr.filter((f,i)=>f===v.fr[i]).length>=3))continue;pick.push(v);}
+  /* 定番フォームを先頭に。そのあと、位置がちがう形を自動で探したものから足す */
+  const lib=bass==null?libVoicings(pc(r),name):[], max=all?40:(lib.length?6:5);
+  const pick=lib.slice(0,all?40:4);const keys=new Set(pick.map(v=>v.fr.join(",")));
+  for(const v of out){if(pick.length>=max)break;if(keys.has(v.fr.join(",")))continue;if(!all&&pick.some(p=>Math.abs(p.minF-v.minF)<2&&p.fr.filter((f,i)=>f===v.fr[i]).length>=3))continue;pick.push(v);keys.add(v.fr.join(","));}
   return pick;
 }
 
@@ -550,7 +568,7 @@ function renderFwd(){
   if(isG){
     vlist=voicings(shapeRoot+48,iv,T[3],T[0]);vsel=0;
     $("chSub").innerHTML=(c?`カポ${c}:<b>${chordName(shapeRoot,type)}</b> の形で弾くと ${chordName(root,type)} が鳴ります<br>`:"")+"構成音 "+tones;
-    $("voicings").innerHTML=vlist.length?vlist.map((v,i)=>`<button type="button" class="vo-c${i===0?" main":""}" data-i="${i}">${diagram(v.fr,v.barre,shapeRoot)}<small>${v.fr.map(f=>f<0?"x":f).join(v.fr.some(f=>f>9)?"-":"")}</small></button>`).join(""):'<p class="note-s">この範囲では押さえやすい形が見つかりませんでした</p>';
+    $("voicings").innerHTML=vlist.length?vlist.map((v,i)=>`<button type="button" class="vo-c${i===0?" main":""}" data-i="${i}">${diagram(v.fr,v.barre,shapeRoot)}<small>${v.lib?'<i class="lib">定番</i>':""}${v.fr.map(f=>f<0?"x":f).join(v.fr.some(f=>f>9)?"-":"")}</small></button>`).join(""):'<p class="note-s">この範囲では押さえやすい形が見つかりませんでした</p>';
     $("voicings").hidden=false;$("fbWrap").hidden=true;
   }else{
     $("chSub").innerHTML="構成音 "+tones;
@@ -642,7 +660,15 @@ const PGS=[
   {n:"小室進行",d:"Ⅵm→Ⅳ→Ⅴ→Ⅰ。疾走感のある90年代の黄金進行",c:[[9,"m7"],[5,"M7"],[7,"7sus4"],[0,"add9"]]},
   {n:"カノン進行(おしゃれ版)",d:"ベースが1音ずつ下がっていく、どこか懐かしい進行",c:[[0,"add9"],[7,"",11],[9,"m7"],[4,"m",7],[5,"M7"],[0,"",4],[2,"m9"],[7,"7sus4"]]},
   {n:"サブドミナントマイナー",d:"Ⅳ△7→Ⅳm6→Ⅰ△9。最後にほろっと泣かせる終わり方",c:[[5,"M7"],[5,"m6"],[0,"M9"]]},
-  {n:"ネオソウル循環",d:"Ⅱm11→Ⅴ9sus4→Ⅰ△9→Ⅵ7(♯9)。ゆったりループさせたい進行",c:[[2,"m11"],[7,"9sus4"],[0,"M9"],[9,"7(♯9)"]]}
+  {n:"ネオソウル循環",d:"Ⅱm11→Ⅴ9sus4→Ⅰ△9→Ⅵ7(♯9)。ゆったりループさせたい進行",c:[[2,"m11"],[7,"9sus4"],[0,"M9"],[9,"7(♯9)"]]},
+  {n:"循環進行(ジャズ)",d:"Ⅱm9→Ⅴ13→Ⅰ△9→Ⅵ7(♭9)。最後のⅥ7がⅡへ戻る力をつくる",c:[[2,"m9"],[7,"13"],[0,"M9"],[9,"7(♭9)"]]},
+  {n:"R&Bループ",d:"Ⅱm9→Ⅴ13→Ⅵm7→♭Ⅲ9。半音上の9thからⅡmへすべり込む",c:[[2,"m9"],[7,"13"],[9,"m7"],[3,"9"]]},
+  {n:"ネオソウルの定番",d:"Ⅰ△9→Ⅴm9→Ⅰ9→Ⅳ△9。Ⅰをセブンスにして次のⅣへ流れ込む",c:[[0,"M9"],[7,"m9"],[0,"9"],[5,"M9"]]},
+  {n:"ソウル・ループ",d:"Ⅳ△7→Ⅲ7(♯9)→Ⅵ7(♭9)。解決しきらずに、ぐるぐる回り続ける",c:[[5,"M7"],[4,"7(♯9)"],[9,"7(♭9)"]]},
+  {n:"並べ替えでおしゃれ",d:"Ⅳ△7→Ⅵm9→Ⅱm9→Ⅲ7(♭9)。よくあるコードも順番しだいでぐっと大人っぽく",c:[[5,"M7"],[9,"m9"],[2,"m9"],[4,"7(♭9)"]]},
+  {n:"ディミニッシュ経由",d:"Ⅵm9→♯Ⅰdim7→Ⅱm9→♭Ⅶ9。dim7で半音ずつ上がるつなぎ",c:[[9,"m9"],[1,"dim7"],[2,"m9"],[10,"9"]]},
+  {n:"上昇マイナー",d:"Ⅱm9→Ⅲm7→Ⅳ△7→Ⅵ7(♭9)。マイナーで駆け上がってオルタードで締める",c:[[2,"m9"],[4,"m7"],[5,"M7"],[9,"7(♭9)"]]},
+  {n:"チル進行",d:"Ⅰ△7→Ⅴm7→Ⅳ△7→♭Ⅵ△7。指弾きでゆったり。最後の♭Ⅵで景色が変わる",c:[[0,"M7"],[7,"m7"],[5,"M7"],[8,"M7"]]}
 ];
 const PKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let pgKey=store.get("chPgKey",7); if(!(pgKey>=0&&pgKey<12))pgKey=7;
@@ -650,17 +676,24 @@ $("pgKey").innerHTML=PKEY.map((n,i)=>`<option value="${i}">${n}</option>`).join(
 let pgData=[], pgTimer=null;
 function pgChord(c){
   const r=pc(c[0]+pgKey), t=TNAME[c[1]], T=TYPES[t], b=c[2]==null?null:pc(c[2]+pgKey);
-  const nm=PKEY[r]+T[0]+(b==null?"":"/"+PKEY[b]);
-  let v=null;
-  if(inst==="gt"){
-    const sr=pc(r-capo), sb=b==null?null:pc(b-capo)+40;
-    const vs=voicings(sr+48,T[1],T[3],T[0],sb==null?null:sb);
-    v=vs[0]||null;
-  }
-  return {r,t,b,nm,v,sr:pc(r-capo)};
+  const SHP=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
+  const nm=(T[0]==="dim7"&&[1,3,8].includes(r)?SHP[r]:PKEY[r])+T[0]+(b==null?"":"/"+PKEY[b]);
+  return {r,t,b,nm,v:null,sr:pc(r-capo)};
+}
+/* 前のコードから手の位置があまり動かない押さえ方を選ぶ(定番フォーム優先) */
+function lead(p){
+  const cs=p.map(pgChord);if(inst!=="gt")return cs;
+  const cand=cs.map(c=>{const T=TYPES[c.t],sb=c.b==null?null:pc(c.b-capo)+48;let vs=voicings(c.sr+48,T[1],T[3],T[0],sb,true);if(!vs.length)vs=[null];return vs;});
+  const ctr=v=>{if(!v)return 5;const f=v.fr.filter(x=>x>0);return f.length?f.reduce((a,b)=>a+b,0)/f.length:1.5;};
+  const own=v=>v?(v.lib?0:2.2)+(v.score!=null&&!v.lib?Math.min(3,Math.max(0,v.score*0.15)):0)+(ctr(v)>10?1.5:0):9;
+  let dp=cand[0].map(v=>({c:own(v)+Math.abs(ctr(v)-5)*0.35,b:-1}));const back=[dp];
+  for(let i=1;i<cand.length;i++){dp=cand[i].map(v=>{let best=1e9,bi=0;back[i-1].forEach((d,k)=>{const x=d.c+Math.abs(ctr(v)-ctr(cand[i-1][k]))*0.9;if(x<best){best=x;bi=k;}});return {c:best+own(v),b:bi};});back.push(dp);}
+  let k=dp.reduce((bi,d,i)=>d.c<dp[bi].c?i:bi,0);
+  for(let i=cand.length-1;i>=0;i--){cs[i].v=cand[i][k];k=back[i][k].b;}
+  return cs;
 }
 function pgRender(){
-  pgData=PGS.map(p=>p.c.map(pgChord));
+  pgData=PGS.map(p=>lead(p.c));
   const isG=inst==="gt";
   $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
 }
