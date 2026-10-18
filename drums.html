@@ -243,6 +243,8 @@ footer a{color:var(--sea)}
 .pad.has-img{background-size:cover!important;background-position:center!important;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 1px rgba(0,0,0,.9)}
 .pad.custom.hit{filter:brightness(1.45) saturate(1.15)}
 .look-row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.nm-in{width:11em;font:500 15px var(--f-body);text-align:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
+.pad .nm{word-break:break-all;overflow:hidden;max-height:3.9em}
 .look-row input[type=color]{width:46px;height:34px;padding:0;border:1px solid var(--line);border-radius:8px;background:none;cursor:pointer}
 .eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
 .eb-link:hover{border-bottom-style:solid}
@@ -334,9 +336,10 @@ header.top .logo{flex:none}
       </details>
       <details class="fx" id="lookBox"><summary>パッドの見た目 <span class="fx-state" id="lookState"></span></summary>
         <div class="look-row"><label for="lookColor">色</label><input type="color" id="lookColor" value="#e3ebfb"><button class="btn mini" type="button" id="lookColorAll">全部のパッドをこの色に</button></div>
+        <div class="look-row"><label for="lookName">名前</label><input type="text" id="lookName" class="nm-in" maxlength="24" autocomplete="off" aria-label="パッドの名前(絵文字もOK)"><button class="btn mini" type="button" id="lookNameDel">元の名前に戻す</button></div>
         <div class="look-row"><button class="btn mini" type="button" id="lookImg">画像を選ぶ</button><button class="btn mini" type="button" id="lookImgDel" hidden>画像を外す</button></div>
         <div class="fx-btns"><button class="btn mini" type="button" id="lookReset">このパッドを戻す</button><button class="btn mini" type="button" id="lookResetAll">全部戻す</button></div>
-        <p class="fx-note">選んでいるパッドの色や画像を変えられます(この端末に保存)。</p>
+        <p class="fx-note">選んでいるパッドの名前・色・画像を変えられます。名前には絵文字も使えます(この端末に保存)。</p>
       </details>
     </div>
     <div class="take" id="take" hidden>
@@ -345,6 +348,7 @@ header.top .logo{flex:none}
         <button class="btn" type="button" id="saveMp3">MP3で保存</button>
         <button class="btn" type="button" id="saveWav">WAVで保存</button>
         <button class="btn" type="button" id="saveMid" hidden>MIDIで保存</button>
+        <button class="btn" type="button" id="saveStems" hidden title="パッドごとに分けたWAVを、ZIPにまとめて保存">パラで保存(ZIP)</button>
         <button class="btn" type="button" id="takeDel">消す</button>
       </div>
     </div>
@@ -596,22 +600,25 @@ function playBuf(id,s,t,v){const f=F(id),src=ac.createBufferSource(),g=ac.create
   if(id==="ohh")ohhGain=g;}
 const GMN=id=>{const p=PADS[IDX[id]];return (p&&p.gm&&p.gm[0])||({snap:75,sub:35})[id]||39;};
 function play(id,v,t){const r=REP[F(id).rep];audio();t=t==null?ac.currentTime:t;play1(id,v,t);if(r)for(let k=1;k<r.n;k++)play1(id,v*Math.pow(0.86,k),t+k*60/bpm/r.d);}
-function play1(id,v,t){v=Math.max(0.15,Math.min(1,v));if(recOn)midiEv.push([t-recStart,GMN(id),Math.round(v*127)]);{const pv=F(id).vol;if(pv!=null)v*=pv;if(v<=0.001)return;}const s=samples[id];if(s&&s.buffer){playBuf(id,s,t,v);return;}if(!s&&fxActive(id)){const b=renderBuilt(id);if(b.buffer){playBuf(id,b,t,v);return;}}snd(id)(t,v);}
+function play1(id,v,t){v=Math.max(0.15,Math.min(1,v));if(recOn){midiEv.push([t-recStart,GMN(id),Math.round(v*127)]);stemEv.push([t-recStart,id,v]);}{const pv=F(id).vol;if(pv!=null)v*=pv;if(v<=0.001)return;}const s=samples[id];if(s&&s.buffer){playBuf(id,s,t,v);return;}if(!s&&fxActive(id)){const b=renderBuilt(id);if(b.buffer){playBuf(id,b,t,v);return;}}snd(id)(t,v);}
 
 /* ===== パッド ===== */
 let sel=store.get("drSel","kick");
 const padsEl=$("pads"), padEl={};
 const KEYLBL=c=>c.replace("Digit","").replace("Key","");
 PADS.forEach(p=>{const b=document.createElement("button");b.type="button";b.className="pad";b.dataset.id=p.id;b.dataset.g=p.g;
-  b.innerHTML='<span class="k">'+KEYLBL(p.key)+'</span><span class="dot"></span><span>'+p.n+"</span>";b.setAttribute("aria-label",plain(p.n));padsEl.appendChild(b);padEl[p.id]=b;});
+  b.innerHTML='<span class="k">'+KEYLBL(p.key)+'</span><span class="dot"></span><span class="nm">'+p.n+"</span>";b.setAttribute("aria-label",plain(p.n));padsEl.appendChild(b);padEl[p.id]=b;});
 /* ===== パッドの見た目(色・画像。この端末に保存) ===== */
 let look=store.get("drumsLook",{})||{};
 const lum=hex=>{const n=parseInt(hex.slice(1),16),f=c=>{c/=255;return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);};return 0.2126*f(n>>16&255)+0.7152*f(n>>8&255)+0.0722*f(n&255);};
-function applyLook(id){const b=padEl[id],L=look[id]||{};b.classList.toggle("custom",!!(L.c||L.img));b.classList.toggle("has-img",!!L.img);
+function applyLook(id){const b=padEl[id],L=look[id]||{};{const nm=b.querySelector(".nm");if(L.nm)nm.textContent=L.nm;else nm.innerHTML=PADS[IDX[id]].n;b.setAttribute("aria-label",L.nm||plain(PADS[IDX[id]].n));}b.classList.toggle("custom",!!(L.c||L.img));b.classList.toggle("has-img",!!L.img);
   b.style.backgroundColor=L.c||"";b.style.backgroundImage=L.img?'linear-gradient(rgba(0,0,0,.28),rgba(0,0,0,.28)),url("'+L.img+'")':"";
   b.style.setProperty("--fg",L.img?"#fff":(L.c?(lum(L.c)>0.4?"#101f45":"#fff"):""));}
 function saveLook(){try{localStorage.setItem("ngTools.drumsLook",JSON.stringify(look));return true;}catch(e){toast("保存できる容量をこえました。画像を減らしてね");return false;}}
-function lookView(){const L=look[sel]||{};$("lookColor").value=L.c||"#e3ebfb";$("lookImgDel").hidden=!L.img;const n=Object.keys(look).length;$("lookState").textContent=n?"("+n+"個カスタム中)":"";}
+const esc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const padLabel=id=>{const L=look[id];return L&&L.nm?esc(L.nm):plain(PADS[IDX[id]].n);};
+function nameView(){const h=padLabel(sel);["selName","seqName","smpPad"].forEach(k=>{const e=$(k);if(e)e.innerHTML=h;});}
+function lookView(){const L=look[sel]||{};if(document.activeElement!==$("lookName"))$("lookName").value=L.nm||"";$("lookName").placeholder=plain(PADS[IDX[sel]].n).replace(/<[^>]*>/g,"");$("lookNameDel").hidden=!L.nm;$("lookColor").value=L.c||"#e3ebfb";$("lookImgDel").hidden=!L.img;const n=Object.keys(look).length;$("lookState").textContent=n?"("+n+"個カスタム中)":"";}
 function setLook(id,patch){const L=Object.assign({},look[id]||{},patch);Object.keys(L).forEach(k=>{if(!L[k])delete L[k];});if(Object.keys(L).length)look[id]=L;else delete look[id];saveLook();applyLook(id);lookView();}
 function flash(id){const b=padEl[id];b.classList.remove("hit");void b.offsetWidth;b.classList.add("hit");clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove("hit"),110);}
 function hit(id,v){play(id,v);flash(id);select(id);if(rec&&playing)recordHit(id);}
@@ -641,7 +648,7 @@ function renderSteps(){
   [...stepsEl.children].forEach((b,i)=>{b.setAttribute("aria-pressed",!!pat[sel][i]);b.classList.toggle("ghost",!!(prevSel&&prevSel!==sel&&pat[prevSel]&&pat[prevSel][i]));});
   [...lanesEl.children].forEach((x,i)=>x.classList.toggle("on",PADS.some(p=>pat[p.id][i])));
   PADS.forEach(p=>padEl[p.id].classList.toggle("used",pat[p.id].some(Boolean)));
-  $("selName").innerHTML=$("seqName").innerHTML=plain(PADS[IDX[sel]].n);
+  nameView();
 }
 stepsEl.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const i=+b.dataset.i;pat[sel][i]=pat[sel][i]?0:1;save();renderSteps();if(pat[sel][i]&&!playing)play(sel,0.85);});
 $("clearOne").onclick=()=>{pat[sel].fill(0);save();renderSteps();};
@@ -743,11 +750,15 @@ $("lookImg").onclick=()=>{const inp=document.createElement("input");inp.type="fi
     const id=sel,old=look[id]&&look[id].img;setLook(id,{img:cv.toDataURL("image/jpeg",0.82)});if(!saveLook()){setLook(id,{img:old||""});}}
   catch(e){toast("この画像は読み込めませんでした");}};inp.click();};
 $("lookImgDel").onclick=()=>setLook(sel,{img:""});
-$("lookReset").onclick=()=>setLook(sel,{c:"",img:""});
-$("lookResetAll").onclick=()=>{look={};saveLook();PADS.forEach(p=>applyLook(p.id));lookView();};
+/* 名前:好きな名前(絵文字もOK)。12文字(見た目の文字)まで */
+const nmCut=t=>{t=String(t||"").replace(/\s+/g," ").trim();const a=window.Intl&&Intl.Segmenter?[...new Intl.Segmenter("ja",{granularity:"grapheme"}).segment(t)].map(x=>x.segment):[...t];return a.slice(0,12).join("");};
+$("lookName").addEventListener("input",e=>{setLook(sel,{nm:nmCut(e.target.value)});nameView();});$("lookName").addEventListener("change",e=>{e.target.value=nmCut(e.target.value);});
+$("lookNameDel").onclick=()=>{$("lookName").value="";setLook(sel,{nm:""});nameView();};
+$("lookReset").onclick=()=>{setLook(sel,{c:"",img:"",nm:""});nameView();};
+$("lookResetAll").onclick=()=>{look={};setTimeout(nameView);saveLook();PADS.forEach(p=>applyLook(p.id));lookView();};
 PADS.forEach(p=>applyLook(p.id));lookView();
 function smpView(){
-  $("smpPad").innerHTML=plain(PADS[IDX[sel]].n);
+  nameView();
   $("smpName").textContent=samples[sel]?samples[sel].name:"内蔵の音";
   $("smpReset").hidden=!samples[sel];fxView();
   PADS.forEach(p=>padEl[p.id].classList.toggle("smpl",!!samples[p.id]));
@@ -813,7 +824,7 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing)st
 /* ===== 演奏の録音(MP3・WAVで保存) ===== */
 let tap=null, recL=[], recR=[], recOn=false, recStart=0, take=null, takeURL="";
 /* 録音中に鳴った音をMIDIでも記録(GMドラムの音番号・10ch) */
-let midiEv=[];
+let midiEv=[],stemEv=[];
 /* 標準MIDIファイル(フォーマット1)を作る。tracks:[{name,ch,ev:[[tick,[bytes]],...]}] */
 function smfBlob(tracks,bpm,ts){ts=ts||[4,4];const TPQ=480,vlq=n=>{n=Math.max(0,Math.round(n));const b=[n&0x7f];while(n>>=7)b.unshift((n&0x7f)|0x80);return b;},
   txt=(ty,s)=>{const b=[...new TextEncoder().encode(s)].filter(x=>x<128);return [0xff,ty,...vlq(b.length),...b];},us=Math.round(60000000/bpm),
@@ -833,7 +844,7 @@ function recToggle(){
     const o=e.outputBuffer;for(let c=0;c<o.numberOfChannels;c++)o.getChannelData(c).fill(0);
     if(a.currentTime-recStart>600)recStop();};
   master.connect(tap); tap.connect(a.destination);
-  midiEv=[];recOn=true; recStart=a.currentTime; recBtn.setAttribute("aria-pressed","true"); recBtn.textContent="■ 録音を止める";
+  midiEv=[];stemEv=[];recOn=true; recStart=a.currentTime; recBtn.setAttribute("aria-pressed","true"); recBtn.textContent="■ 録音を止める";
 }
 function recStop(){
   recOn=false; recBtn.setAttribute("aria-pressed","false"); recBtn.textContent="● 演奏を録音";
@@ -844,7 +855,7 @@ function recStop(){
   const th=0.0015;let s=0,e=n-1;while(s<n&&Math.abs(L[s])<th&&Math.abs(R[s])<th)s++;while(e>s&&Math.abs(L[e])<th&&Math.abs(R[e])<th)e--;
   if(s>=e){toast("音が入っていませんでした");return;}
   const sr=ac.sampleRate; s=Math.max(0,s-Math.floor(sr*0.02)); e=Math.min(n-1,e+Math.floor(sr*0.3));
-  take={L:L.slice(s,e),R:R.slice(s,e),sr};
+  take={L:L.slice(s,e),R:R.slice(s,e),sr,off:s/sr,stems:stemEv.slice()};stemEv=[];$("saveStems").hidden=!take.stems.length;
   {const mev=midiEv;midiEv=[];const t0=mev.length?Math.min(...mev.map(x=>x[0])):0;take.midi=mev.map(([t,n,v])=>[t-t0,n,v]);take.bpm=bpm;$("saveMid").hidden=!take.midi.length;}
   if(takeURL)URL.revokeObjectURL(takeURL); takeURL=URL.createObjectURL(wavBlob(take));
   $("takeAudio").src=takeURL; $("take").hidden=false;
@@ -897,6 +908,33 @@ $("patMidIn").onclick=()=>NamiMidiRead.pick((r,name)=>{
   if(window.ngTrack)ngTrack("midi_import",{tool:"drums"});
 },()=>toast("このファイルは読み込めませんでした"));
 $("midBarGo").onclick=()=>midLoadBar(+$("midBar").value);
+/* ===== パラ録音:録音中に叩いた記録から、パッドごとに音を作り直してWAVにする(ハイハットはクローズとオープンをまとめる) ===== */
+const STEM_GROUP=id=>id==="ohh"||id==="chh"?"hihat":id;
+function crc32(u){let c,t=crc32.t;if(!t){t=crc32.t=new Uint32Array(256);for(let n=0;n<256;n++){c=n;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;t[n]=c>>>0;}}c=0xffffffff;for(let i=0;i<u.length;i++)c=t[(c^u[i])&255]^(c>>>8);return (c^0xffffffff)>>>0;}
+/* 無圧縮のZIP。files:[{name,data:Uint8Array}] */
+function zipBlob(files){const parts=[],cen=[];let off=0;const enc=new TextEncoder(),d=new Date(),dt=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1)),dd=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate());
+  files.forEach(f=>{const nm=enc.encode(f.name),crc=crc32(f.data),h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x800,true);h.setUint16(10,dt,true);h.setUint16(12,dd,true);h.setUint32(14,crc,true);h.setUint32(18,f.data.length,true);h.setUint32(22,f.data.length,true);h.setUint16(26,nm.length,true);
+    parts.push(h.buffer,nm,f.data);const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x800,true);c.setUint16(12,dt,true);c.setUint16(14,dd,true);c.setUint32(16,crc,true);c.setUint32(20,f.data.length,true);c.setUint32(24,f.data.length,true);c.setUint16(28,nm.length,true);c.setUint32(42,off,true);cen.push(c.buffer,nm);off+=30+nm.length+f.data.length;});
+  const cs=cen.reduce((a,b)=>a+b.byteLength,0),e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+  return new Blob([...parts,...cen,e.buffer],{type:"application/zip"});}
+async function renderStem(ids,ev,len,sr){const off=new OfflineAudioContext(2,len,sr),nb=off.createBuffer(1,noiseBuf.length,sr);nb.getChannelData(0).set(noiseBuf.getChannelData(0));
+  const sv=[ac,comp,noiseBuf,ohhGain,rvNode,Object.assign({},dlBuses)],out=off.createGain();out.gain.value=vol;out.connect(off.destination);
+  ac=off;comp=out;noiseBuf=nb;ohhGain=null;rvNode=null;Object.keys(dlBuses).forEach(k=>delete dlBuses[k]);
+  try{ev.forEach(([t,id,v])=>{if(ids.includes(id)&&t>=0)play1(id,v,t);});}
+  finally{[ac,comp,noiseBuf,ohhGain,rvNode]=sv;Object.keys(dlBuses).forEach(k=>delete dlBuses[k]);Object.assign(dlBuses,sv[5]);}
+  return off.startRendering();}
+$("saveStems").onclick=async()=>{if(!take||!take.stems||!take.stems.length)return;const b=$("saveStems"),t0=b.textContent;b.disabled=true;
+  try{const sr=take.sr,len=take.L.length+Math.round(sr*2),ev=take.stems.map(([t,id,v])=>[t-take.off,id,v]),groups={};
+    ev.forEach(([,id])=>{const g=STEM_GROUP(id);(groups[g]=groups[g]||new Set()).add(id);});
+    /* エフェクト用の内蔵音を先に作っておく */
+    Object.values(groups).forEach(set=>set.forEach(id=>{if(!samples[id]&&fxActive(id))renderBuilt(id);}));await new Promise(r=>setTimeout(r,300));
+    const files=[],order=PADS.map(p=>STEM_GROUP(p.id)).filter((g,i,a)=>a.indexOf(g)===i&&groups[g]);let n=0;
+    for(const g of order){n++;b.textContent="書き出し中… "+n+"/"+order.length;const buf=await renderStem([...groups[g]],ev,len,sr);
+      let L=buf.getChannelData(0),R=buf.getChannelData(1),e=L.length-1;while(e>take.L.length&&Math.abs(L[e])<1e-4&&Math.abs(R[e])<1e-4)e--;e=Math.max(e+1,take.L.length);
+      const blob=wavBlob({L:L.subarray(0,e),R:R.subarray(0,e),sr});files.push({name:String(n).padStart(2,"0")+"_"+g+".wav",data:new Uint8Array(await blob.arrayBuffer())});}
+    download(zipBlob(files),fname("zip").replace("drums-","drums-stems-"));toast(files.length+"本のパラデータを保存しました");if(window.ngTrack)ngTrack("stems_export",{n:files.length});}
+  catch(e){toast("パラデータを作れませんでした");}
+  b.disabled=false;b.textContent=t0;};
 $("saveMp3").onclick=async()=>{if(!take)return;const b=$("saveMp3"),t0=b.textContent;b.disabled=true;b.textContent="変換中…";
   try{download(await mp3Blob(take),fname("mp3"));}catch(e){toast("MP3に変換できませんでした。WAVで保存してね");}
   b.disabled=false;b.textContent=t0;};
