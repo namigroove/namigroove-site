@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>歌詞の音数カウンター(モーラ数・ボカロ作詞用) – なみぐる！</title>
+<meta name="description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、音の区切りも表示。漢字は《よみ》で指定でき、目標の音数との比較も。ボカロの作詞・打ち込みに。">
+<meta property="og:title" content="歌詞の音数カウンター – なみぐる！">
+<meta property="og:description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、音の区切りも表示。漢字は《よみ》で指定でき、目標の音数との比較も。ボカロの作詞・打ち込みに。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/mora/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools.jpg">
+<link rel="canonical" href="https://www.namigroove.com/tools/mora/">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-180x180.png">
+<link rel="manifest" href="https://namigroove.github.io/namigroove-site/manifest-tools.webmanifest">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+/* コード表 */
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+.tabs.fam{margin-bottom:16px}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 2px}}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.ch-pick{display:flex;flex-direction:column;gap:8px;margin:14px 0 6px;align-items:center}
+.ch-pick .seg{justify-content:center}
+.ch-pick .roots button{min-width:44px}
+.ch-head{display:flex;flex-direction:column;align-items:center;gap:4px;margin:12px 0 6px;text-align:center}
+.ch-name{font-family:var(--f-display);font-size:clamp(40px,10vw,60px);line-height:1.1;min-height:1.1em}
+.ch-name .dim{font-size:15px;color:var(--ink-soft);font-family:var(--f-body)}
+.ch-sub{font-size:13px;color:var(--ink-soft);min-height:1.5em}
+.ch-sub b{color:var(--sea)}
+.seg.types button.fancy{border-color:var(--coral);color:var(--coral)}
+.seg.types button.fancy[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:#fff}
+.ch-desc{font-size:13px;color:var(--coral);min-height:1.4em;margin:0}
+.pg-wrap{margin-top:26px;border-top:1px dashed var(--line);padding-top:16px}
+.pg-wrap h2{font-size:16px;margin:0 0 4px;font-family:var(--f-display);font-weight:400}
+.pg-wrap .row{margin-bottom:10px}
+.pg-cat{margin:0 0 12px;display:flex;flex-wrap:wrap;gap:4px}
+.pg-list{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.pg{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
+.pg h3{margin:0 0 2px;font-size:15px}
+.pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
+.pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.pg .pg-btns .btn{font-size:12px;padding:3px 10px}
+.pg-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.pg-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer;font:500 14px var(--f-body)}
+.pg-c .cd{width:76px;height:auto}
+.pg-c small{font-size:11px;color:var(--ink-soft)}
+.pg-c.now{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral) inset}
+.pg-c.now b{color:var(--coral)}
+.vo{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.vo-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
+.vo-c:hover{border-color:var(--sea)}
+.vo-c.main{border:2px solid var(--sea)}
+.vo-c small i.lib{font-style:normal;font-size:10px;color:#fff;background:var(--coral);border-radius:999px;padding:0 6px;margin-right:4px}
+.vo-c small{font-size:11px;color:var(--ink-soft)}
+.cd{width:120px;height:auto;display:block}
+.cd .st{stroke:var(--ink-soft);stroke-width:1}
+.cd .fr{stroke:var(--line);stroke-width:1.2}
+.cd .nut{stroke:var(--ink);stroke-width:4}
+.cd .dot{fill:var(--sea)}
+.cd .dot.r{fill:var(--coral)}
+.cd .bar{fill:var(--sea);opacity:.9}
+.cd .mk{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.cd .pos{font:10px var(--f-mono);fill:var(--ink-soft)}
+.fb-wrap{overflow-x:auto;margin-top:10px}
+.fb{min-width:640px}
+.fb svg{display:block;width:100%;height:auto}
+.fb .str{stroke:var(--ink-soft)}
+.fb .fw{stroke:var(--line);stroke-width:1.5}
+.fb .nutl{stroke:var(--ink);stroke-width:4}
+.fb .inl{fill:var(--wash)}
+.fb .nd{stroke:var(--panel);stroke-width:1.5}
+.fb .nt{font:10px var(--f-mono);fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.fb .fn{font:10px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.fb-leg{font-size:12px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
+.fb-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
+.rev-grid{display:flex;justify-content:center;margin:14px 0 4px}
+.rev-grid svg{width:min(100%,300px);max-height:none;height:auto;touch-action:manipulation;user-select:none}
+.rev-grid .cell{fill:transparent;cursor:pointer}
+.rev-grid .cell:hover{fill:var(--wash)}
+.rev-grid .om{font:16px var(--f-mono);fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;cursor:pointer}
+.rev-grid .omh{fill:transparent;cursor:pointer}
+/* 音数カウンター */
+.lyr{width:100%;box-sizing:border-box;font:16px/1.9 var(--f-body);padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--chip);color:var(--ink);resize:vertical}
+.lyr:focus{outline:2px solid var(--sea);outline-offset:1px}
+.mo-opts{justify-content:flex-start;margin-top:10px;gap:8px 16px}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
+.mo-sum{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:13px;color:var(--ink-soft);margin-bottom:10px}
+.mo-sum b{font:500 20px var(--f-mono);color:var(--ink);margin:0 2px}
+.mo-lines{list-style:none;margin:0 0 14px;padding:0;counter-reset:ln}
+.mo-lines li{display:grid;grid-template-columns:2.2em 3.4em 1fr;gap:8px;align-items:start;padding:8px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.mo-lines li:nth-child(even){background:var(--wash)}
+.mo-lines li .ln{font:12px var(--f-mono);color:var(--ink-soft);padding-top:4px}
+.mo-lines li .ct{font:500 20px var(--f-mono);text-align:right}
+.mo-lines li.over .ct{color:var(--warn)}.mo-lines li.under .ct{color:var(--sea)}.mo-lines li.just .ct{color:var(--ok)}
+.mo-lines li .tx{font-size:15px;word-break:break-all}
+.mo-lines li .mo{display:none;flex-wrap:wrap;gap:3px;margin-top:6px}
+.mo-lines li.open .mo{display:flex}
+.mo-lines li .mo span{font-size:13px;min-width:1.6em;text-align:center;padding:1px 4px;border-radius:6px;background:var(--panel);border:1px solid var(--line)}
+.mo-lines li .mo span.en{border-color:var(--sea)}
+.mo-lines li .warn{display:block;font-size:12px;color:var(--coral);margin-top:2px}
+.mo-lines li.empty{display:none}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"歌詞の音数カウンター","url":"https://www.namigroove.com/tools/mora/","description":"歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、音の区切りも表示。漢字は《よみ》で指定でき、目標の音数との比較も。ボカロの作詞・打ち込みに。","applicationCategory":"MultimediaApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["1行ごとのモーラ数","音の区切り表示","漢字の読み指定","目標音数との比較","英語の音節数のめやす"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"歌詞の音数カウンター","item":"https://www.namigroove.com/tools/mora/"}]}]}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html">Works</a>
+      <a href="tools.html">Tools</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links" class="opt">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
+/* EN⇔JP:Google翻訳(英語)との切り替え */
+(()=>{const a=document.getElementById("toEN"); if(!a) return;
+ const tr=/\.translate\.goog$/.test(location.hostname);
+ if(tr){
+  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
+  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
+  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
+  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
+ } else {
+  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
+ }
+})();
+</script>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>歌詞の音数カウンター</h1>
+    <p class="lead">歌詞の1行ごとの音数(モーラ)を数えます。「きゃ」は1音、「っ」「ん」「ー」も1音。ボカロの打ち込みやメロディへの歌詞のはめ込みにどうぞ。</p>
+  </div>
+
+  <section class="panel" aria-label="歌詞を入力">
+    <textarea id="lyr" class="lyr" rows="9" placeholder="ここに歌詞を入力(1行ずつ数えます)&#10;漢字は 漢字《かんじ》 や 漢字(かんじ) のように読みを書くと正確に数えられます"></textarea>
+    <div class="row mo-opts">
+      <label class="chk"><input type="checkbox" id="oSokuon" checked> 「っ」を1音</label>
+      <label class="chk"><input type="checkbox" id="oN" checked> 「ん」を1音</label>
+      <label class="chk"><input type="checkbox" id="oBar" checked> 「ー」を1音</label>
+      <label class="chk"><input type="checkbox" id="oSmall" checked> 「ぁぃぅぇぉ」は前とまとめる</label>
+      <div class="ctl">目標 <input id="target" class="sel num" type="number" min="0" max="99" placeholder="—" style="width:4em" aria-label="1行あたりの目標の音数"> 音</div>
+    </div>
+    <p class="note-s">入力した歌詞はこの端末の中だけで数えます。どこにも送信されません(下書きはこのブラウザに保存されます)。</p>
+  </section>
+
+  <section class="panel" aria-live="polite">
+    <div class="mo-sum" id="sum"></div>
+    <ol class="mo-lines" id="lines"></ol>
+    <div class="row"><button class="btn" type="button" id="copyBtn">結果をコピー</button><button class="btn" type="button" id="clearBtn">クリア</button></div>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>1行ごとに音数(モーラ)を数えて、音の区切りも表示します。区切りをタップすると、その行の分け方を確認できます。</li>
+      <li>「きゃ・しゅ・ちょ」などの拗音は1音、「っ」「ん」「ー」も1音で数えます(ボカロの打ち込みと同じ数え方)。チェックを外すと数えない設定にできます。</li>
+      <li>漢字や数字は読みがわからないので、<b>漢字《かんじ》</b> や <b>漢字(かんじ)</b> のように読みを書いてください。読みがない漢字はオレンジで知らせます。</li>
+      <li>英語は母音のまとまりから音節数を目安で数えます(カタカナで書くといちばん正確です)。</li>
+      <li>「目標」に音数を入れると、多い行・少ない行に色がつきます。メロディの音符の数に合わせるときに便利です。</li>
+    </ul>
+  </section>
+</main>
+
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E6%AD%8C%E8%A9%9E%E3%81%AE%E9%9F%B3%E6%95%B0%E3%82%AB%E3%82%A6%E3%83%B3%E3%82%BF%E3%83%BC%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fmora%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fmora%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
+const SMALL_Y="ゃゅょゎ", SMALL_V="ぁぃぅぇぉ";
+const isKana=c=>/[ぁ-ゖゔー]/.test(c), isKanji=c=>/[㐀-鿿豈-﫿々〆ヶ0-9]/.test(c);
+const toHira=s=>s.replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60)).replace(/ヷ/g,"ゔぁ").replace(/ヺ/g,"ゔぉ");
+/* 英単語の音節数のめやす:母音のまとまりの数(語末の e は数えない) */
+function syl(w){w=w.toLowerCase();if(w.length<=3)return 1;w=w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/,"").replace(/^y/,"");const m=w.match(/[aeiouy]{1,2}/g);return Math.max(1,m?m.length:1);}
+function count(line,o){
+  let s=line.normalize("NFKC");
+  /* 漢字《よみ》・漢字(よみ)・漢字（よみ） → よみ */
+  s=s.replace(/([㐀-鿿豈-﫿々〆ヶ0-9A-Za-z]+)[《(（]([^》)）]+)[》)）]/g,(_,b,r)=>r);
+  s=toHira(s);
+  const tk=[],unknown=[];let i=0;
+  while(i<s.length){const c=s[i];
+    if(/[A-Za-z]/.test(c)){let w="";while(i<s.length&&/[A-Za-z']/.test(s[i]))w+=s[i++];const n=syl(w.replace(/'/g,""));tk.push({t:w,n,en:1});continue;}
+    if(isKana(c)){const prev=tk.length&&!tk[tk.length-1].en?tk[tk.length-1]:null;
+      const merge=(SMALL_Y.includes(c))||(o.small&&SMALL_V.includes(c))||(c==="っ"&&!o.sokuon)||(c==="ん"&&!o.n)||(c==="ー"&&!o.bar);
+      if(merge&&prev)prev.t+=c;else tk.push({t:c,n:1});i++;continue;}
+    if(isKanji(c)){unknown.push(c);}
+    i++;
+  }
+  return {n:tk.reduce((a,b)=>a+b.n,0),tk,unknown};
+}
+const opts=()=>({sokuon:$("oSokuon").checked,n:$("oN").checked,bar:$("oBar").checked,small:$("oSmall").checked});
+let open=new Set(),last=[];
+function render(){
+  const o=opts(),lines=$("lyr").value.split(/\r?\n/),tgt=parseInt($("target").value,10);
+  last=lines.map(l=>({l,...count(l,o)}));
+  let total=0,cnt=0,warn=0;
+  $("lines").innerHTML=last.map((r,i)=>{const empty=!r.l.trim();if(!empty){total+=r.n;cnt++;if(r.unknown.length)warn++;}
+    const cls=[empty?"empty":"",open.has(i)?"open":"",!empty&&tgt>0?(r.n>tgt?"over":r.n<tgt?"under":"just"):""].join(" ");
+    const esc=t=>t.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+    return `<li class="${cls}" data-i="${i}"><span class="ln">${i+1}</span><span class="ct">${r.n}</span><span class="tx">${esc(r.l)}${r.unknown.length?`<span class="warn">読みがわからない字:${esc([...new Set(r.unknown)].join(""))}(《よみ》をつけると数えられます)</span>`:""}<span class="mo">${r.tk.map(x=>`<span class="${x.en?"en":""}">${esc(x.t)}${x.en?`<small>${x.n}</small>`:""}</span>`).join("")}</span></span></li>`;}).join("");
+  $("sum").innerHTML=`<span>行数<b>${cnt}</b></span><span>合計<b>${total}</b>音</span>${cnt?`<span>1行平均<b>${(total/cnt).toFixed(1)}</b>音</span>`:""}${warn?`<span style="color:var(--coral)">読みの確認が必要な行:${warn}</span>`:""}`;
+  store.set("moraDraft",$("lyr").value);store.set("moraOpts",o);store.set("moraTarget",$("target").value);
+}
+const sv=store.get("moraOpts",null);if(sv){$("oSokuon").checked=sv.sokuon;$("oN").checked=sv.n;$("oBar").checked=sv.bar;$("oSmall").checked=sv.small;}
+$("lyr").value=store.get("moraDraft","");$("target").value=store.get("moraTarget","");
+["lyr","target"].forEach(id=>$(id).addEventListener("input",render));
+["oSokuon","oN","oBar","oSmall"].forEach(id=>$(id).addEventListener("change",render));
+$("lines").addEventListener("click",e=>{const li=e.target.closest("li");if(!li)return;const i=+li.dataset.i;open.has(i)?open.delete(i):open.add(i);li.classList.toggle("open");});
+function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
+$("copyBtn").onclick=()=>{const txt=last.filter(r=>r.l.trim()).map(r=>`${r.n}音\t${r.l}`).join("\n");(navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast("結果をコピーしました")).catch(()=>{});if(window.ngTrack)ngTrack("mora_copy",{lines:last.length});};
+$("clearBtn").onclick=()=>{$("lyr").value="";open.clear();render();$("lyr").focus();};
+render();
+window.__mora=(t,o)=>count(t,Object.assign({sokuon:true,n:true,bar:true,small:true},o||{}));
+
+const sb=$("shareBtn");
+if(sb) sb.addEventListener("click",async()=>{
+  const data={title:document.title,url:"https://www.namigroove.com/tools/mora/"};
+  try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);toast("リンクをコピーしました");}catch(e){}
+});
+})();
+</script>
+<script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
+(()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
+const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
+ ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
+ [".cp,.ro","copy_ms"],["#scSeg button","scale_select"],["#typeSeg button,#clType button","chord_select"],["#pgCat button,#clCat button","genre_select"],["#drop","file_pick"]];
+document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.target.closest(sel);if(!el)continue;
+  const h=el.closest(".pg,.cl-pg");const label=((h&&h.querySelector("h3")&&h.querySelector("h3").textContent)||el.dataset.g||el.textContent||"").trim().slice(0,60);
+  ngTrack(name,{label});break;}},true);})();
+</script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
+</body>
+</html>
