@@ -316,7 +316,7 @@ header.top .logo{flex:none}
       <li>BPMとキーは、出たジャンルによくあるテンポの中から選んでいます。あくまできっかけなので、自由に変えてね。</li>
       <li>「歌声」はVOCALOID・Synthesizer V・CeVIO AI・VoiSona・UTAU・VOICEVOX・NEUTRINOの、いま手に入る合成音声およそ120人から選びます。「出すカードを選ぶ」で、持っているソフトだけにしぼれます。</li>
       <li>ときどき金のカプセルが出ます。中身はお楽しみ。</li>
-      <li>このお題で曲を作ったら、<a href="https://x.com/search?q=%23namigroovetools" target="_blank" rel="noopener">#namigroovetools</a> をつけて教えてね。歌詞の音数は<a href="mora.html">歌詞の音数カウンター</a>で数えられます。</li>
+      <li>このお題で曲を作ったら、<a href="https://x.com/intent/post?text=%23namigroovetools%20" target="_blank" rel="noopener" title="Xでポスト">#namigroovetools</a> をつけて教えてね。歌詞の音数は<a href="mora.html">歌詞の音数カウンター</a>で数えられます。</li>
     </ul>
   </section>
 </main>
@@ -326,7 +326,7 @@ header.top .logo{flex:none}
 <footer>
 <div class="share-row">
   <span class="share-label">このページをシェア</span>
-  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%81%8A%E9%A1%8C%E3%82%AC%E3%83%81%E3%83%A3%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fgacha%2F&amp;hashtags=namigroovetools" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%81%8A%E9%A1%8C%E3%82%AC%E3%83%81%E3%83%A3%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81%20%23namigroovetools&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fgacha%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
   <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fgacha%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
   <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
 </div>
@@ -382,7 +382,7 @@ function render(changed){
   $("rareMsg").hidden=!rareNow;
   const cap=$("capsule");cap.classList.remove("pop","gold");void cap.offsetWidth;if(changed.size){cap.classList.add("pop");if(rareNow)cap.classList.add("gold");}
   const t=text();
-  $("postBtn").href="https://x.com/intent/post?text="+encodeURIComponent("お題ガチャで出たお題\n"+t+"\n")+"&url="+encodeURIComponent("https://www.namigroove.com/tools/gacha/")+"&hashtags=namigroovetools";
+  $("postBtn").href="https://x.com/intent/post?text="+encodeURIComponent("お題ガチャで出たお題\n"+t+"\n#namigroovetools\n")+"&url="+encodeURIComponent("https://www.namigroove.com/tools/gacha/");
   $("metroBtn").hidden=!(use.extra&&cur.extra&&cur.extra.bpm);
 }
 function text(){return active().filter(s=>cur[s.id]).map(s=>`${s.lb}:${cur[s.id].v}`).join("\n");}
@@ -394,7 +394,7 @@ $("cards").addEventListener("click",e=>{
 function hop(){const n=$("nami");n.classList.remove("hop","acc");void n.offsetWidth;n.classList.add("hop","acc");}
 $("spin").onclick=()=>{hop();spin();};
 $("namiBtn").onclick=()=>{hop();spin();};
-$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(text());toast("お題をコピーしました");}catch(e){}};
+$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(text()+"\n#namigroovetools");toast("お題をコピーしました");}catch(e){}};
 $("metroBtn").addEventListener("click",()=>{if(cur.extra&&cur.extra.bpm)store.set("bpm",cur.extra.bpm);});
 /* 出すカード */
 const USE_LB={theme:"テーマ",genre:"ジャンル",voice:"歌声",w:"キーワード",rule:"縛り",mood:"気分・視点",extra:"BPM・キー"};
