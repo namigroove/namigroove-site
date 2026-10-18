@@ -701,7 +701,7 @@ function lead(p){
 function pgRender(){
   pgData=PGS.map(p=>lead(p.c));
   const isG=inst==="gt";
-  $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-shr" type="button" data-shr="${i}" title="この進行のリンクを共有" aria-label="この進行のリンクを共有">🔗</button><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
+  $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-jam" type="button" data-jam="${i}" title="ドラムとベースつきでジャム" aria-label="ジャムモードで鳴らす">🥁</button><button class="btn pg-shr" type="button" data-shr="${i}" title="この進行のリンクを共有" aria-label="この進行のリンクを共有">🔗</button><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
 }
 function pgPlay(p,j){
   const c=pgData[p][j];
@@ -760,7 +760,7 @@ function pgMidi(p){
     else{const r0=48+pc(c.r);notes=T[1].filter(x=>x!==0||c.b==null).map(x=>r0+x);}
     return {name:c.nm,notes,bass};});
   NamiMidi.save(NamiMidi.build(cs,pgBpm,PGS[p].n+" ("+PKEY[pgKey]+")"),"namigroove_"+PGS[p].n+"_"+PKEY[pgKey]+"_"+pgBpm+"bpm");}
-$("pgList").addEventListener("click",e=>{const sh=e.target.closest("[data-shr]");if(sh){const P=PGS[+sh.dataset.shr],prm={p:pid(P.n),k:pgKey};if(inst!=="gt")prm.i=inst;shareLink(prm,P.n+"(キー"+PKEY[pgKey]+")– なみぐる！コード表");return;}const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
+$("pgList").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+"?p="+pid(PGS[+jm.dataset.jam].n)+"&k="+pgKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const P=PGS[+sh.dataset.shr],prm={p:pid(P.n),k:pgKey};if(inst!=="gt")prm.i=inst;shareLink(prm,P.n+"(キー"+PKEY[pgKey]+")– なみぐる！コード表");return;}const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
   const pl=e.target.closest("[data-play]");
   if(pl){pgStop();const p=+pl.dataset.play,n=pgData[p].length;let j=0;const step=()=>{pgPlay(p,j);j++;if(j<n)pgTimer=setTimeout(step,1400);else pgTimer=setTimeout(()=>document.querySelectorAll(".pg-c.now").forEach(x=>x.classList.remove("now")),1400);};step();return;}
   const b=e.target.closest("[data-c]");if(!b)return;pgStop();
