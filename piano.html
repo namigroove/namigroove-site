@@ -223,6 +223,7 @@ footer a{color:var(--sea)}
 .cl-pg .chips{display:flex;flex-wrap:wrap;gap:6px}
 .cl-pg .chips button{font:500 14px var(--f-body);padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer}
 .cl-pg .chips button.now{background:var(--coral);border-color:var(--coral);color:#fff}
+.cl-pg.shared{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral)}
 .cl-pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.cl-pg .pg-btns .btn{font-size:12px;padding:3px 10px}
 .cl-mini{position:sticky;top:64px;z-index:3;background:var(--panel);padding:6px 0 8px;margin-bottom:6px}
 .cl-mini svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
@@ -397,7 +398,7 @@ header.top .logo{flex:none}
         <div class="cl-big" id="clBig">C</div>
         <div class="cl-tones" id="clTones"></div>
         <p class="cl-desc" id="clDesc"></p>
-        <div class="row"><button class="btn" type="button" id="clPlay">♪ 鍵盤に出して鳴らす</button>
+        <div class="row"><button class="btn" type="button" id="clPlay">♪ 鍵盤に出して鳴らす</button><button class="btn" type="button" id="clShare" title="このコードのリンクを共有">🔗 共有</button>
           <span class="seg" id="clVo" role="group" aria-label="ボイシング"><button type="button" data-v="0" aria-pressed="true">基本形</button><button type="button" data-v="1" aria-pressed="false">第1転回</button><button type="button" data-v="2" aria-pressed="false">第2転回</button></span></div>
       </div>
     </div>
@@ -928,7 +929,7 @@ function catFilter(){[...$("clCat").children].forEach(b=>b.setAttribute("aria-pr
 $("clCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button>`;
 $("clCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clCat=b.dataset.g;store.set("clPgCat",clCat);catFilter();});
 function progRender(){
-  $("clProgs").innerHTML=PROGS.map((p,i)=>`<div class="cl-pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="chips">${p.c.map((c,j)=>`<button type="button" data-c="${j}">${chName(c)}</button>`).join("")}</div></div>`).join("");;catFilter();
+  $("clProgs").innerHTML=PROGS.map((p,i)=>`<div class="cl-pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-shr" type="button" data-shr="${i}" title="この進行のリンクを共有" aria-label="この進行のリンクを共有">🔗</button><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="chips">${p.c.map((c,j)=>`<button type="button" data-c="${j}">${chName(c)}</button>`).join("")}</div></div>`).join("");;catFilter();
 }
 let progTimer=0;
 function playChord(p,j){const c=PROGS[p].c[j],ms=c[2].map(m=>m+kOff());audio();hint(ms);sound(ms,1300);
@@ -975,12 +976,28 @@ let clBpm=store.get("clBpm",90);$("clBpm").value=clBpm;$("clBpm").addEventListen
 function progMidi(p){const P=PROGS[p],k=kOff();
   const cs=P.c.map(c=>{const ms=c[2].map(m=>m+k);return {name:chName(c),bass:ms[0],notes:ms.slice(1)};});
   NamiMidi.save(NamiMidi.build(cs,clBpm,P.n+" ("+CLKEY[clKey]+")"),"namigroove_"+P.n+"_"+CLKEY[clKey]+"_"+clBpm+"bpm");}
-$("clProgs").addEventListener("click",e=>{const md=e.target.closest("[data-mid]");if(md){progMidi(+md.dataset.mid);return;}const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
+$("clProgs").addEventListener("click",e=>{const sh=e.target.closest("[data-shr]");if(sh){const P=PROGS[+sh.dataset.shr];shareLink({p:pid(P.n),k:clKey},P.n+"(キー"+CLKEY[clKey]+")– なみぐる！ピアノ");return;}const md=e.target.closest("[data-mid]");if(md){progMidi(+md.dataset.mid);return;}const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
   const b=e.target.closest("[data-c]");if(!b)return;const p=+b.closest(".cl-pg").dataset.p;clearTimeout(progTimer);playChord(p,+b.dataset.c);});
 $("clProgPlay").onclick=()=>{clearTimeout(progTimer);const L=PROGS.map((_,i)=>i).filter(i=>clCat==="all"||PROGS[i].g===clCat);let k=0,j=0;const step=()=>{const p=L[k];playChord(p,j);j++;if(j>=PROGS[p].c.length){k++;j=0;}if(k<L.length)progTimer=setTimeout(step,1500);};if(L.length)step();};
 $("clKey").addEventListener("change",()=>{clKey=+$("clKey").value;store.set("clKey",clKey);progRender();});
 $("clTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const m=b.dataset.m;[...$("clTabs").children].forEach(x=>x.setAttribute("aria-selected",x===b));$("clName").hidden=m!=="name";$("clProg").hidden=m!=="prog";clearTimeout(progTimer);});
+/* ===== 共有リンク(選んだ状態をURLに入れる) ===== */
+const pid=s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.codePointAt(0))>>>0;return h.toString(36);};
+const QS=new URLSearchParams(location.search);
+function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2200);}
+function shareLink(params,title){
+  const u=new URL(location.href.split("#")[0].split("?")[0]);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const url=u.href;
+  if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title,url}).catch(()=>{});return;}
+  (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("リンクをコピーしました")).catch(()=>toast(url));
+}
+/* 共有リンクから開いたとき */
+const qR=QS.get("r"),qT=QS.get("t");if(qR!=null&&+qR>=0&&+qR<12){clRoot=+qR;const ti=CL_TYPES.findIndex(t=>(t[0]||"M")===qT);if(ti>=0)clType=ti;}
+const qP=QS.get("p"),qPi=qP?PROGS.findIndex(x=>pid(x.n)===qP):-1;
+if(qPi>=0){const k=+QS.get("k");if(k>=0&&k<12){clKey=k;$("clKey").value=String(k);}clCat=PROGS[qPi].g;}
 clRender();progRender();mini(clNotes());
+if(qPi>=0||qR!=null){const sec=document.getElementById("chordLook");if(qPi>=0)$("clTabs").querySelector('[data-m="prog"]').click();
+  setTimeout(()=>{const el=qPi>=0?document.querySelector(`.cl-pg[data-p="${qPi}"]`):sec;if(el){el.scrollIntoView({behavior:"smooth",block:"center"});if(qPi>=0)el.classList.add("shared");}},300);}
+$("clShare").onclick=()=>shareLink({r:clRoot,t:CL_TYPES[clType][0]||"M"},CLR[clRoot]+CL_TYPES[clType][0]+" – なみぐる！ピアノ");
 
 /* シェア */
 const sb=$("shareBtn");

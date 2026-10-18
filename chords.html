@@ -179,6 +179,7 @@ footer a{color:var(--sea)}
 .pg{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
 .pg h3{margin:0 0 2px;font-size:15px}
 .pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
+.pg.shared{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral)}
 .pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.pg .pg-btns .btn{font-size:12px;padding:3px 10px}
 .pg-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .pg-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer;font:500 14px var(--f-body)}
@@ -292,7 +293,7 @@ header.top .logo{flex:none}
       <div class="ch-name" id="chName">C</div>
       <div class="ch-sub" id="chSub"></div>
       <p class="ch-desc" id="chDesc"></p>
-      <button class="btn" type="button" id="playBtn">♪ 音を聴く</button>
+      <span class="row" style="gap:8px"><button class="btn" type="button" id="playBtn">♪ 音を聴く</button><button class="btn" type="button" id="chShare" title="このコードのリンクを共有">🔗 共有</button></span>
     </div>
     <div class="vo" id="voicings"></div>
     <div class="fb-wrap" id="fbWrap" hidden><div class="fb" id="fb"></div><p class="fb-leg" id="fbLeg"></p></div>
@@ -729,7 +730,7 @@ function lead(p){
 function pgRender(){
   pgData=PGS.map(p=>lead(p.c));
   const isG=inst==="gt";
-  $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
+  $("pgList").innerHTML=PGS.map((p,i)=>`<div class="pg" data-p="${i}"><span class="pg-btns"><button class="btn pg-shr" type="button" data-shr="${i}" title="この進行のリンクを共有" aria-label="この進行のリンクを共有">🔗</button><button class="btn pg-mid" type="button" data-mid="${i}" title="MIDIファイルで保存">⬇ MIDI</button><button class="btn pg-play" type="button" data-play="${i}">▶ 鳴らす</button></span><h3>${p.n}</h3><p>${p.d}</p><div class="pg-row">${pgData[i].map((c,j)=>`<button type="button" class="pg-c" data-c="${j}"><b>${c.nm}</b>${isG?(c.v?diagram(c.v.fr,c.v.barre,c.b==null?c.sr:null):"<small>—</small>"):`<small>ルート ${PKEY[c.b==null?c.r:c.b]}</small>`}</button>`).join("")}</div></div>`).join("");
 }
 function pgPlay(p,j){
   const c=pgData[p][j];
@@ -788,7 +789,7 @@ function pgMidi(p){
     else{const r0=48+pc(c.r);notes=T[1].filter(x=>x!==0||c.b==null).map(x=>r0+x);}
     return {name:c.nm,notes,bass};});
   NamiMidi.save(NamiMidi.build(cs,pgBpm,PGS[p].n+" ("+PKEY[pgKey]+")"),"namigroove_"+PGS[p].n+"_"+PKEY[pgKey]+"_"+pgBpm+"bpm");}
-$("pgList").addEventListener("click",e=>{const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
+$("pgList").addEventListener("click",e=>{const sh=e.target.closest("[data-shr]");if(sh){const P=PGS[+sh.dataset.shr],prm={p:pid(P.n),k:pgKey};if(inst!=="gt")prm.i=inst;shareLink(prm,P.n+"(キー"+PKEY[pgKey]+")– なみぐる！コード表");return;}const md=e.target.closest("[data-mid]");if(md){pgMidi(+md.dataset.mid);return;}
   const pl=e.target.closest("[data-play]");
   if(pl){pgStop();const p=+pl.dataset.play,n=pgData[p].length;let j=0;const step=()=>{pgPlay(p,j);j++;if(j<n)pgTimer=setTimeout(step,1400);else pgTimer=setTimeout(()=>document.querySelectorAll(".pg-c.now").forEach(x=>x.classList.remove("now")),1400);};step();return;}
   const b=e.target.closest("[data-c]");if(!b)return;pgStop();
@@ -799,11 +800,27 @@ $("pgList").addEventListener("click",e=>{const md=e.target.closest("[data-mid]")
 $("pgKey").addEventListener("change",()=>{pgKey=+$("pgKey").value;store.set("chPgKey",pgKey);pgStop();pgRender();pgFilter();});
 $("pgStop").onclick=()=>{pgStop();document.querySelectorAll(".pg-c.now").forEach(x=>x.classList.remove("now"));};
 
+/* ===== 共有リンク(選んだ状態をURLに入れる) ===== */
+const pid=s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.codePointAt(0))>>>0;return h.toString(36);};
+const QS=new URLSearchParams(location.search);
+function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2200);}
+function shareLink(params,title){
+  const u=new URL(location.href.split("#")[0].split("?")[0]);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const url=u.href;
+  if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title,url}).catch(()=>{});return;}
+  (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("リンクをコピーしました")).catch(()=>toast(url));
+}
 /* モード */
 let mode=store.get("chMode","fwd");
 function setMode(m){mode=m;store.set("chMode",m);$("fwd").hidden=m!=="fwd";$("rev").hidden=m!=="rev";[...$("modeTabs").children].forEach(b=>b.setAttribute("aria-selected",b.dataset.m===m));}
 $("modeTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setMode(b.dataset.m);});
+/* 共有リンクから開いたとき */
+const qI=QS.get("i");if(qI&&TUN[qI]&&qI!==inst){inst=qI;store.set("chInst",inst);[...$("instSeg").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.i===inst));}
+const qR=QS.get("r"),qT=QS.get("t");if(qR!=null&&ROOTS.some((n,i)=>String(i)===qR)){root=+qR;const ti=TYPES.findIndex(t=>(t[0]||"M")===qT);if(ti>=0)type=ti;mode="fwd";}
+const qP=QS.get("p"),qPi=qP?PGS.findIndex(x=>pid(x.n)===qP):-1;
+if(qPi>=0){const k=+QS.get("k");if(k>=0&&k<12){pgKey=k;$("pgKey").value=String(k);}pgCat=PGS[qPi].g;mode="fwd";}
 pgRender();pgFilter();$("pgList").dataset.k=inst+":"+capo;renderFwd();renderRev();setMode(mode==="rev"?"rev":"fwd");
+if(qPi>=0)setTimeout(()=>{const el=document.querySelector(`.pg[data-p="${qPi}"]`);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.add("shared");}},300);
+$("chShare").onclick=()=>shareLink({r:root,t:TYPES[type][0]||"M"},chordName(root,type)+" の押さえ方 – なみぐる！コード表");
 
 const sb=$("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{
