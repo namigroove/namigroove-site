@@ -695,7 +695,13 @@ const PGS=[
   {g:"anison",n:"ディミニッシュでつなぐ王道",d:"Ⅳ△7→♯Ⅳdim7→Ⅴ→Ⅵm7。ベースが半音ずつ上がって、ぐっと盛り上がる",c:[[5,"M7"],[6,"dim7"],[7,""],[9,"m7"]]},
   {g:"anison",n:"階段進行",d:"Ⅱm7→Ⅲm7→Ⅳ△7→Ⅴ7sus4。ルートが1段ずつ上がる、サビ前の駆け上がり",c:[[2,"m7"],[4,"m7"],[5,"M7"],[7,"7sus4"]]},
   {g:"anison",n:"♭Ⅵ→♭Ⅶ→Ⅰ(勝利の進行)",d:"♭Ⅵ△7→♭Ⅶ→Ⅰadd9。ゲームやアニメのクライマックスでおなじみ、突き抜ける終わり方",c:[[8,"M7"],[10,""],[0,"add9"]]},
-  {g:"anison",n:"半音上転調(ラスサビ)",d:"Ⅴ7sus4→♭Ⅵ7→♭Ⅱ△9。♭Ⅵ7をはさんで、キーを半音上げてラスサビへ",c:[[7,"7sus4"],[8,"7"],[1,"M9"]]}
+  {g:"anison",n:"半音上転調(ラスサビ)",d:"Ⅴ7sus4→♭Ⅵ7→♭Ⅱ△9。♭Ⅵ7をはさんで、キーを半音上げてラスサビへ",c:[[7,"7sus4"],[8,"7"],[1,"M9"]]},
+  {g:"bossa",n:"Ⅰ△7→Ⅱ7→Ⅱm7→♭Ⅱ7",d:"「イパネマの娘」のAメロでおなじみ。Ⅱ7で明るく浮いて、♭Ⅱ7(裏コード)でⅠへ戻る",c:[[0,"M7"],[2,"9"],[2,"m9"],[1,"9"]]},
+  {g:"bossa",n:"裏コードのツーファイブ",d:"Ⅱm9→♭Ⅱ9→Ⅰ△9。Ⅴ7のかわりに半音上の♭Ⅱ7で、ベースが半音ずつ下がって解決",c:[[2,"m9"],[1,"9"],[0,"M9"]]},
+  {g:"bossa",n:"♯Ⅰdim7から始まるボサ",d:"Ⅰ△7→♯Ⅰdim7→Ⅱm7→Ⅴ13。ボサノバの冒頭によくある、半音で上がるつなぎ",c:[[0,"M7"],[1,"dim7"],[2,"m7"],[7,"13"]]},
+  {g:"bossa",n:"6/9で始まるターンアラウンド",d:"Ⅰ6/9→Ⅵ7(♭9)→Ⅱm9→Ⅴ13。開放的なⅠ6/9から、ぐるっと一周して戻る",c:[[0,"6/9"],[9,"7(♭9)"],[2,"m9"],[7,"13"]]},
+  {g:"bossa",n:"メジャーから同主マイナーへ",d:"Ⅰ△7→Ⅰm7→Ⅳ13→♭Ⅶ△7。Ⅰm7をⅡm-Ⅴの入口にして、♭Ⅶへすっと転調する",c:[[0,"M7"],[0,"m7"],[5,"13"],[10,"M7"]]},
+  {g:"bossa",n:"哀愁のマイナー・ボサ",d:"Ⅵm9→Ⅱm9→Ⅲ7(♭9)→Ⅵm6。ギター1本でも雰囲気が出る、マイナーボサの定番",c:[[9,"m9"],[2,"m9"],[4,"7(♭9)"],[9,"m6"]]}
 ];
 const PKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let pgKey=store.get("chPgKey",7); if(!(pgKey>=0&&pgKey<12))pgKey=7;
@@ -733,7 +739,7 @@ function pgPlay(p,j){
     const iv=TYPES[c.t][1].filter(x=>x!==0||c.b==null).map(x=>tn[0]+12+pc(c.r-tn[0])+x);setTimeout(()=>pluck(iv,0.05,true),120);}
 }
 function pgStop(){clearTimeout(pgTimer);pgTimer=null;}
-const PCAT={"pop": "定番", "neo": "ネオソウル・R&B", "jazz": "ジャズ", "cliche": "クリシェ", "anison": "アニソン風", "kirinji": "キリンジ風"};
+const PCAT={"pop": "定番", "neo": "ネオソウル・R&B", "jazz": "ジャズ", "bossa": "ボサノバ", "cliche": "クリシェ", "anison": "アニソン風", "kirinji": "キリンジ風"};
 let pgCat=store.get("chPgCat","pop");if(pgCat!=="all"&&!PCAT[pgCat])pgCat="pop";
 function pgFilter(){[...$("pgCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===pgCat));document.querySelectorAll("#pgList .pg").forEach(el=>{el.hidden=pgCat!=="all"&&PGS[+el.dataset.p].g!==pgCat;});}
 $("pgCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button>`;
