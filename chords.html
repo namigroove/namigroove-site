@@ -354,7 +354,7 @@ header.top .logo{flex:none}
 <footer>
 <div class="share-row">
   <span class="share-label">このページをシェア</span>
-  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%82%AE%E3%82%BF%E3%83%BC%E3%83%BB%E3%83%99%E3%83%BC%E3%82%B9%20%E3%82%B3%E3%83%BC%E3%83%89%E8%A1%A8%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fchords%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E3%82%AE%E3%82%BF%E3%83%BC%E3%83%BB%E3%83%99%E3%83%BC%E3%82%B9%20%E3%82%B3%E3%83%BC%E3%83%89%E8%A1%A8%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fchords%2F&amp;hashtags=namigroovetools" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
   <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fchords%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
   <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
 </div>
@@ -777,7 +777,7 @@ const QS=new URLSearchParams(location.search);
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2200);}
 function shareLink(params,title){
   const u=new URL(location.href.split("#")[0].split("?")[0]);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const url=u.href;
-  if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title,url}).catch(()=>{});return;}
+  if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title+" #namigroovetools",url}).catch(()=>{});return;}
   (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("リンクをコピーしました")).catch(()=>toast(url));
 }
 /* モード */
@@ -795,7 +795,7 @@ $("chShare").onclick=()=>shareLink({r:root,t:TYPES[type][0]||"M"},chordName(root
 
 const sb=$("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{
-  const data={title:document.title,url:"https://www.namigroove.com/tools/chords/"};
+  const data={title:document.title,text:document.title+" #namigroovetools",url:"https://www.namigroove.com/tools/chords/"};
   try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);const d=document.createElement("div");d.className="ng-toast";d.textContent="リンクをコピーしました";document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}catch(e){}
 });
 })();
