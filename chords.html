@@ -383,8 +383,9 @@ if(!TUN[inst])inst="gt"; if(!TYPES[type])type=0;
 /* ===== ギターの定番フォーム(ジャズ・ネオソウルでよく使う形) =====
    ルート弦のフレットを0としたときの相対フレット。-9は弾かない弦 */
 const LIB={"M7":[[0,-9,1,1,0,-9],[-9,0,2,1,2,0],[-9,0,-9,1,2,0],[-9,-9,0,2,2,2]],"m7":[[0,-9,0,0,0,-9],[-9,0,2,0,1,0],[-9,-9,0,2,1,1]],"7":[[0,-9,0,1,0,-9],[-9,0,2,0,2,0],[-9,-9,0,2,1,2]],"M9":[[-9,0,-1,1,0,-9],[0,-9,1,1,0,2],[-9,-9,0,-1,2,0]],"m9":[[-9,0,-2,0,0,-9],[0,-9,0,0,0,2],[-9,-9,0,-2,1,0]],"9":[[-9,0,-1,0,0,0],[0,-9,0,1,0,2],[-9,-9,0,-1,1,0]],"13":[[0,-9,0,1,2,-9],[-9,0,-1,0,0,2]],"7(♭9)":[[-9,0,-1,0,-1,-9],[0,-9,0,1,0,1]],"7(♯9)":[[-9,0,-1,0,1,-9]],"m11":[[-9,0,-2,0,0,-2],[0,-9,0,0,-2,-9]],"M7(♯11)":[[0,-9,1,1,-1,-9],[-9,0,-1,1,-9,-1]],"6/9":[[-9,0,-1,-1,0,0],[0,-1,-1,-1,0,0]],"9sus4":[[-9,0,0,0,0,-9],[0,-9,0,2,0,2]],"7sus4":[[-9,0,2,0,3,0],[0,-9,0,2,0,-9]],"mM7":[[-9,0,2,1,1,0],[0,-9,1,0,0,-9]],"m7(♭5)":[[-9,0,1,0,1,-9],[0,-9,0,0,-1,-9],[-9,-9,0,1,1,1]],"dim7":[[-9,0,1,-1,1,-9],[0,-9,-1,0,-1,-9],[-9,-9,0,1,0,1]],"6":[[-9,0,-1,-1,-2,-9],[0,-9,-1,1,0,-9]],"m6":[[-9,0,-2,-1,-2,-9],[0,-9,-1,0,0,-9]],"add9":[[-9,0,-1,-3,0,0],[-9,0,-1,-3,0,-9],[0,-1,-3,-1,-3,0],[-9,-9,0,-1,-2,0]],"madd9":[[-9,0,-2,-3,0,-9]],"7(♯5)":[[-9,0,-9,0,2,1],[0,-9,0,1,1,-9]]};
-function libVoicings(rp,name){
-  const out=[];(LIB[name]||[]).forEach(sh=>{
+const TRI={"":[[0,2,2,1,0,0],[-9,0,2,2,2,0],[-9,-9,0,2,3,2]],"m":[[0,2,2,0,0,0],[-9,0,2,2,1,0],[-9,-9,0,2,3,1]]}; /* 進行の中で使うバレーコードの形 */
+function libVoicings(rp,name,tri){
+  const out=[];(LIB[name]||(tri&&TRI[name])||[]).forEach(sh=>{
     const rs=sh.findIndex(o=>o!==-9), f0=pc(rp-TUN.gt[rs]);
     [f0,f0+12].forEach(base=>{
       if(sh.some(o=>o!==-9&&(o+base<0||o+base>15)))return;
@@ -396,6 +397,9 @@ function libVoicings(rp,name){
       const minF=fretted.length?Math.min(...fretted):0;
       const atMin=fr.map((f,k)=>[f,k]).filter(([f])=>f===minF&&f>0).map(x=>x[1]);
       let barre=null;if(atMin.length>=2){const a=Math.min(...atMin),b=Math.max(...atMin);let ok=true;for(let k=a;k<=b;k++)if(fr[k]<minF)ok=false;if(ok)barre=[minF,a,b];}
+      /* 必要な指の数(同じフレットで並んだ弦は1本の指でまとめて押さえられるものとして数える) */
+      let fing=0;[...new Set(fretted)].forEach(f=>{const ks=fr.map((x,k)=>x===f?k:-1).filter(k=>k>=0);fing++;for(let i=1;i<ks.length;i++){let brk=false;for(let k=ks[i-1]+1;k<ks[i];k++)if(fr[k]>=0&&fr[k]<f)brk=true;if(brk)fing++;}});
+      if(fing>4)return; /* 指が5本以上いる形は外す */
       out.push({fr,barre,minF,lib:true,score:Math.abs(minF-5)*0.3+(minF<1?2:0)});
     });});
   return out.sort((a,b)=>a.minF-b.minF);
@@ -439,7 +443,7 @@ function voicings(r,iv,opt,name,bass,all){
         if(seen.has(key))return;seen.add(key);
         const opens=fr.filter(f=>f===0).length, mutes=6-count;
         const topMute=fr[5]<0?1.2:0;
-        const score=minF*2.2+fingers*1.1+mutes*1.3+topMute+(barre?0.8:0)-opens*0.5+(maxF-minF)*0.4-(have.size===need.size?0.6:0)-(isPref?(base===0?3:4.2):0)-(pref2.has(key)?6:0)+(base>0&&opens?1.5:0)+(opens&&maxF>=5?2.5:0)-(bass!=null&&first===0&&fr[1]<0?1.2:0);
+        const score=minF*2.2+fingers*1.1+mutes*1.3+topMute+(barre?0.8:0)-opens*0.5+(maxF-minF)*0.4-(have.size===need.size?0.6:0)-(isPref?(base===0?3:4.2):0)-(pref2.has(key)?6:0)+(base>0&&opens?1.5:0)+(opens&&maxF>=5?2.5:0)+(maxF>=3&&fr.some((f,k)=>f===0&&fr.slice(0,k).some(x=>x>0)&&fr.slice(k+1).some(x=>x>0))?1.6:0)-(bass!=null&&first===0&&fr[1]<0?1.2:0);
         out.push({fr,barre,score,minF});
         return;
       }
@@ -448,7 +452,7 @@ function voicings(r,iv,opt,name,bass,all){
   }
   out.sort((a,b)=>a.score-b.score);
   /* 定番フォームを先頭に。そのあと、位置がちがう形を自動で探したものから足す */
-  const lib=bass==null?libVoicings(pc(r),name):[], max=all?40:(lib.length?6:5);
+  const lib=bass==null?libVoicings(pc(r),name,all):[], max=all?40:(lib.length?6:5);
   const pick=lib.slice(0,all?40:4);const keys=new Set(pick.map(v=>v.fr.join(",")));
   for(const v of out){if(pick.length>=max)break;if(keys.has(v.fr.join(",")))continue;if(!all&&pick.some(p=>Math.abs(p.minF-v.minF)<2&&p.fr.filter((f,i)=>f===v.fr[i]).length>=3))continue;pick.push(v);keys.add(v.fr.join(","));}
   return pick;
@@ -686,7 +690,12 @@ const PGS=[
   {g:"jazz",n:"枯葉(Autumn Leaves)の進行",d:"Ⅱm7→Ⅴ7→Ⅰ△7→Ⅳ△7→Ⅶm7(♭5)→Ⅲ7→Ⅵm6。メジャーとマイナーのツーファイブをつなぐジャズの定番",c:[[2,"m7"],[7,"7"],[0,"M7"],[5,"M7"],[11,"m7(♭5)"],[4,"7(♭9)"],[9,"m6"]]},
   {g:"jazz",n:"マイナー・ツーファイブ",d:"Ⅶm7(♭5)→Ⅲ7(♭9)→Ⅵm9。マイナーキーで解決するときの基本",c:[[11,"m7(♭5)"],[4,"7(♭9)"],[9,"m9"]]},
   {g:"jazz",n:"ジャズ・ブルース",d:"12小節のブルースに、ツーファイブと経過ディミニッシュを足したジャズ版",c:[[0,"13"],[5,"9"],[0,"13"],[7,"m7"],[0,"7(♭9)"],[5,"9"],[6,"dim7"],[0,"13"],[9,"7(♭9)"],[2,"m9"],[7,"13"],[0,"13"],[9,"7(♭9)"],[2,"m9"],[7,"13"]]},
-  {g:"jazz",n:"コルトレーン・チェンジ",d:"長3度ずつ転調していく、ジャズの難関。3つのキーをくるっと一周する",c:[[0,"M7"],[3,"7"],[8,"M7"],[11,"7"],[4,"M7"],[7,"7"],[0,"M7"]]}
+  {g:"jazz",n:"コルトレーン・チェンジ",d:"長3度ずつ転調していく、ジャズの難関。3つのキーをくるっと一周する",c:[[0,"M7"],[3,"7"],[8,"M7"],[11,"7"],[4,"M7"],[7,"7"],[0,"M7"]]},
+  {g:"anison",n:"王道進行のⅢ7で切なく",d:"Ⅳ△7→Ⅴ→Ⅲ7(♭9)→Ⅵm7。王道進行のⅢmをⅢ7にして、サビ頭の泣きを強める",c:[[5,"M7"],[7,""],[4,"7(♭9)"],[9,"m7"]]},
+  {g:"anison",n:"ディミニッシュでつなぐ王道",d:"Ⅳ△7→♯Ⅳdim7→Ⅴ→Ⅵm7。ベースが半音ずつ上がって、ぐっと盛り上がる",c:[[5,"M7"],[6,"dim7"],[7,""],[9,"m7"]]},
+  {g:"anison",n:"階段進行",d:"Ⅱm7→Ⅲm7→Ⅳ△7→Ⅴ7sus4。ルートが1段ずつ上がる、サビ前の駆け上がり",c:[[2,"m7"],[4,"m7"],[5,"M7"],[7,"7sus4"]]},
+  {g:"anison",n:"♭Ⅵ→♭Ⅶ→Ⅰ(勝利の進行)",d:"♭Ⅵ△7→♭Ⅶ→Ⅰadd9。ゲームやアニメのクライマックスでおなじみ、突き抜ける終わり方",c:[[8,"M7"],[10,""],[0,"add9"]]},
+  {g:"anison",n:"半音上転調(ラスサビ)",d:"Ⅴ7sus4→♭Ⅵ7→♭Ⅱ△9。♭Ⅵ7をはさんで、キーを半音上げてラスサビへ",c:[[7,"7sus4"],[8,"7"],[1,"M9"]]}
 ];
 const PKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let pgKey=store.get("chPgKey",7); if(!(pgKey>=0&&pgKey<12))pgKey=7;
@@ -703,7 +712,7 @@ function lead(p){
   const cs=p.map(pgChord);if(inst!=="gt")return cs;
   const cand=cs.map(c=>{const T=TYPES[c.t],sb=c.b==null?null:pc(c.b-capo)+48;let vs=voicings(c.sr+48,T[1],T[3],T[0],sb,true);if(!vs.length)vs=[null];return vs;});
   const ctr=v=>{if(!v)return 5;const f=v.fr.filter(x=>x>0);return f.length?Math.min(...f)+0.25*(Math.max(...f)-Math.min(...f)):1;}; /* 人さし指の位置 */
-  const own=v=>v?(v.lib?0:2.2)+(v.score!=null&&!v.lib?Math.min(3,Math.max(0,v.score*0.15)):0)+Math.max(0,ctr(v)-6)*0.6:9;
+  const own=v=>v?(v.lib||(v.fr.includes(0)&&Math.max(...v.fr)<=3&&v.score<7)?0:2.2)+(v.score!=null&&!v.lib?Math.min(3,Math.max(0,v.score*0.15)):0)+Math.max(0,ctr(v)-6)*0.6:9;
   let dp=cand[0].map(v=>({c:own(v)+Math.abs(ctr(v)-5)*0.35,b:-1}));const back=[dp];
   for(let i=1;i<cand.length;i++){dp=cand[i].map(v=>{let best=1e9,bi=0;back[i-1].forEach((d,k)=>{const x=d.c+Math.abs(ctr(v)-ctr(cand[i-1][k]))*0.9;if(x<best){best=x;bi=k;}});return {c:best+own(v),b:bi};});back.push(dp);}
   let k=dp.reduce((bi,d,i)=>d.c<dp[bi].c?i:bi,0);
@@ -724,7 +733,7 @@ function pgPlay(p,j){
     const iv=TYPES[c.t][1].filter(x=>x!==0||c.b==null).map(x=>tn[0]+12+pc(c.r-tn[0])+x);setTimeout(()=>pluck(iv,0.05,true),120);}
 }
 function pgStop(){clearTimeout(pgTimer);pgTimer=null;}
-const PCAT={"pop": "定番", "neo": "ネオソウル・R&B", "jazz": "ジャズ", "cliche": "クリシェ", "anison": "アニソン(田中秀和風)", "kirinji": "キリンジ風"};
+const PCAT={"pop": "定番", "neo": "ネオソウル・R&B", "jazz": "ジャズ", "cliche": "クリシェ", "anison": "アニソン風", "kirinji": "キリンジ風"};
 let pgCat=store.get("chPgCat","pop");if(pgCat!=="all"&&!PCAT[pgCat])pgCat="pop";
 function pgFilter(){[...$("pgCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===pgCat));document.querySelectorAll("#pgList .pg").forEach(el=>{el.hidden=pgCat!=="all"&&PGS[+el.dataset.p].g!==pgCat;});}
 $("pgCat").innerHTML=Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button>`;
