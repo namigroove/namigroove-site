@@ -459,7 +459,10 @@ function audio(){
     const AC=window.AudioContext||window.webkitAudioContext; ac=new AC({latencyHint:"interactive"});
     comp=ac.createDynamicsCompressor(); comp.threshold.value=-14; comp.ratio.value=4; comp.attack.value=0.003; comp.release.value=0.2;
     master=ac.createGain(); master.gain.value=vol*0.9;
-    comp.connect(master); master.connect(ac.destination);
+    /* 音割れ防止:速いリミッター → 最後に0.8を超えたぶんだけ丸めるソフトクリップ */
+    const lim=ac.createDynamicsCompressor(); lim.threshold.value=-4; lim.knee.value=0; lim.ratio.value=20; lim.attack.value=0.001; lim.release.value=0.12;
+    const clip=ac.createWaveShaper(),cv=new Float32Array(2048); for(let i=0;i<2048;i++){const x=i/1023.5-1,ax=Math.abs(x);cv[i]=Math.sign(x)*(ax<0.8?ax:0.8+0.2*Math.tanh((ax-0.8)/0.2));} clip.curve=cv; clip.oversample="4x";
+    comp.connect(lim); lim.connect(clip); clip.connect(master); master.connect(ac.destination);
     /* 小さな部屋の響き(ノイズから作った残響) */
     const len=ac.sampleRate*1.6, ir=ac.createBuffer(2,len,ac.sampleRate);
     for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3.2);}
@@ -504,7 +507,7 @@ const INST={
     const sum=a.createGain(),lp=a.createBiquadFilter();lp.type="lowpass";lp.Q.value=0.3;
     lp.frequency.setValueAtTime(Math.min(16000,f*(6+18*v)),t);lp.frequency.setTargetAtTime(Math.min(11000,Math.max(f*3,900)),t+0.02,tau0*0.22);
     sum.connect(lp);lp.connect(env);
-    const srcs=[];let norm=0;const N=Math.min(14,Math.floor(maxF/f));
+    const srcs=[];let norm=0;const N=Math.min(10,Math.floor(maxF/f));
     for(let n=1;n<=N;n++){
       const fn=n*f*Math.sqrt(1+B*n*n);if(fn>maxF)break;
       let amp=Math.pow(n,-0.8)*Math.exp(-(fn-f)/bright)*(0.3+0.7*Math.abs(Math.sin(Math.PI*n/7.4))); /* 打点は弦の約1/7 */
@@ -515,21 +518,21 @@ const INST={
       g.gain.setTargetAtTime(amp*0.34,t+0.003,tq);                    /* 打鍵直後にすっと落ちて */
       g.gain.setTargetAtTime(0.0001,t+tq*2.5,tf);                      /* そのあと長く伸びる */
       g.connect(sum);
-      const sd=n<=6?det:[0];
+      const sd=n<=3?det:[0];
       sd.forEach(c=>{const o=a.createOscillator();o.type="sine";o.frequency.value=fn;o.detune.value=c+(n>1?(Math.random()-0.5)*0.4:0);
-        if(sd.length>1){const x=a.createGain();x.gain.value=1/sd.length;o.connect(x);x.connect(g);}else o.connect(g);o.start(t);srcs.push(o);});
+        if(sd.length>1){const x=a.createGain();x.gain.value=1/sd.length;o.connect(x);x.connect(g);}else o.connect(g);o.start(t);o._end=t+tq*2.5+tf*5;o.stop(o._end);srcs.push(o);}); /* 聞こえなくなった倍音から止めて、処理を軽く */
     }
     sum.gain.value=1.15/Math.max(1,norm);
     srcs.push(noiseHit(a,t,env,Math.min(3500,f*3.5),0.06*v,0.03));      /* ハンマーの「コツッ」 */
-    env.gain.setValueAtTime(1.25*Math.pow(v,1.25),t);
-    return {srcs,rel:0.085,rev:1,end:t+tau0*6+0.3};
+    env.gain.setValueAtTime(1.0*Math.pow(v,1.25),t);
+    return {srcs,rel:0.085,rev:1,end:t+Math.min(tau0*5,16)};
   },
   epiano(a,f,v,t,env){ /* ローズ風:ティンを叩いた音(FM)+ピックアップのひずみ(強く弾くと「バーク」)+打鍵の「チン」+トレモロ */
     const tau=Math.max(0.7,Math.min(5,3.2*Math.pow(261.6/f,0.45)));
     const car=a.createOscillator();car.type="sine";car.frequency.value=f;
     const mod=a.createOscillator();mod.type="sine";mod.frequency.value=f;const mg=a.createGain();
     mg.gain.setValueAtTime(f*(0.35+2.4*v*v),t);mg.gain.setTargetAtTime(f*0.1,t,0.16+0.22*(1-v));mod.connect(mg);mg.connect(car.frequency);
-    const ws=a.createWaveShaper();ws.curve=epCurve(1+3.2*v);ws.oversample="2x";
+    const ws=a.createWaveShaper();ws.curve=epCurve(1+1.3*v*v);ws.oversample="2x";
     const hp=a.createBiquadFilter();hp.type="highpass";hp.frequency.value=35;
     car.connect(ws);ws.connect(hp);
     const bell=a.createOscillator();bell.type="sine";bell.frequency.value=f*7.08;const bg=a.createGain();
@@ -539,10 +542,10 @@ const INST={
     let out=lp;if(a.createStereoPanner){const pn=a.createStereoPanner();epTrem(a).connect(pn.pan);lp.connect(pn);out=pn;}
     out.connect(env);
     [car,mod,bell].forEach(o=>o.start(t));
-    const peak=0.16*Math.pow(v,1.1);
+    const peak=0.3*Math.pow(v,1.1);
     env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(peak,t+0.002);
     env.gain.setTargetAtTime(peak*0.55,t+0.01,0.22);env.gain.setTargetAtTime(0.0001,t+0.35,tau);
-    return {srcs:[car,mod,bell],rel:0.13,rev:0.9,end:t+tau*7+0.5};
+    return {srcs:[car,mod,bell],rel:0.13,rev:0.9,end:t+Math.min(tau*6,12)};
   },
   organ(a,f,v,t,env){ /* ドローバー風:倍音を足し算。押している間ずっと鳴る */
     const w=pwave("organ",[1,0.75,0.5,0.45,0,0.3,0,0.25]);
@@ -599,7 +602,7 @@ function noteOn(m,vel){
   const vc=(INST[inst]||INST.piano)(a,f,v,t,env);
   env.connect(out); out.gain.value=0.5; out.connect(comp);
   rg.gain.value=vc.rev; out.connect(rg); rg.connect(rev);
-  if(vc.end) vc.srcs.forEach(o=>{try{o.stop(vc.end)}catch(e){}});
+  if(vc.end) vc.srcs.forEach(o=>{try{o.stop(o._end?Math.min(o._end,vc.end):vc.end)}catch(e){}});
   vc.srcs.forEach(o=>{if(o.detune&&!o._noBend){o._d=o.detune.value;if(bend)o.detune.value=o._d+bend*bendRange*100;}});
   voices.set(m,{env,srcs:vc.srcs,rel:vc.rel,held:true,t});
 }
@@ -609,7 +612,7 @@ function release(m,force){
   if(sustain&&!force) return;
   const t=ac.currentTime;
   vc.env.gain.cancelScheduledValues(t); vc.env.gain.setValueAtTime(Math.max(0.0001,vc.env.gain.value),t); vc.env.gain.setTargetAtTime(0.0001,t,vc.rel);
-  vc.srcs.forEach(o=>{try{o.stop(t+vc.rel*8+0.05)}catch(e){}});
+  vc.srcs.forEach(o=>{try{const e=t+vc.rel*8+0.05;o.stop(o._end?Math.min(o._end,e):e)}catch(e){}});
   voices.delete(m);
 }
 function setSustain(on){

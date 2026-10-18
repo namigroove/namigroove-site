@@ -423,7 +423,7 @@ const SND={
   crash(t,v){ /* ノイズ中心にして高域をなだらかに。立ち上がりも少しやわらかく */
     const nb=filt("bandpass",5000,0.45),nl=filt("lowpass",kit==="909"?9500:8500,0.4);noise(t,3,nb);nb.connect(nl);nl.connect(vca(t,0.27*v,0.7,0.008));
     const mh=filt("highpass",3000),ml=filt("lowpass",6500,0.5);metal(t,2,mh,2.4);mh.connect(ml);ml.connect(vca(t,0.035*v,0.45,0.008));},
-  tomh(t,v){tom(t,v,kit==="909"?220:180);},tomm(t,v){tom(t,v,kit==="909"?160:130);},toml(t,v){tom(t,v,kit==="909"?115:95);},
+  tomh(t,v){tom(t,v,kit==="909"?300:260);},tomm(t,v){tom(t,v,kit==="909"?225:195);},toml(t,v){tom(t,v,kit==="909"?165:145);},
   tamb(t,v){const hp=filt("highpass",6500),bp=filt("bandpass",9000,2);
     [0,0.015,0.03].forEach((d,i)=>{noise(t+d,0.2,hp);metal(t+d,0.2,hp,3);});hp.connect(bp);bp.connect(vca(t,0.4*v,0.06));},
   shk(t,v){const bp=filt("bandpass",6500,1.5);noise(t,0.15,bp);bp.connect(vca(t,0.45*v,0.025,0.012));},
