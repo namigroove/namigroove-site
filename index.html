@@ -93,9 +93,6 @@ nav.main a:hover{color:#ffffff}
 /* スマホ:文字の右に回り込ませて、文字と重ならないように */
 @media (max-width:899px){.pw-sp{display:block;float:right;width:min(30vw,150px);margin:-6px 0 6px 8px}.hero h1 .ngname{white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){.puni img{animation:none}}
-.tool-tip{display:block;width:fit-content;margin:0 auto 6px;padding:2px 10px;border:1px solid var(--line);border-radius:999px;background:var(--chip);font-size:12px;line-height:1.6;color:var(--sea);text-decoration:none;white-space:nowrap}
-.tool-tip:hover{border-color:var(--sea)}
-.pw-sp .tool-tip{font-size:10px;padding:1px 7px;margin-bottom:2px;white-space:normal;text-align:center;line-height:1.35}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .btn{font-family:var(--f-body);display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid var(--ink)}
 .btn.primary{background:var(--ink);color:var(--paper)}
@@ -368,7 +365,7 @@ header.top .logo{flex:none}
   <div class="wrap hero">
     <div>
       <p class="eyebrow">VOCALOID Producer / Sax DJ</p>
-      <div class="pw pw-sp"><a class="tool-tip" href="tools.html">ツール一覧<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a><button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
+      <div class="pw pw-sp"><button class="puni puni-sp" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
       <h1><span class="ngname" translate="no">なみぐる</span><span class="en">NAMIGROOVE</span></h1>
       <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。楽曲提供から映像・演奏まで手がけています。</p>
       <div class="cta">
@@ -378,7 +375,7 @@ header.top .logo{flex:none}
       </div>
       <p class="tide"><span><b>SINCE</b> 2021</span><span>VOCALOID / R&amp;B / Electro Swing / Funk / Sax</span><span>いい波、起こします~(･ω･~)</span></p>
     </div>
-    <div class="pw pw-pc"><a class="tool-tip" href="tools.html">ツール一覧はこちら<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a><button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
+    <div class="pw pw-pc"><button class="puni puni-pc" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button></div>
   </div>
 
   <canvas class="sea" id="sea" aria-hidden="true"></canvas>
