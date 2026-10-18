@@ -195,11 +195,18 @@ footer a{color:var(--sea)}
 .smp-t #smpName{color:var(--sea);font-weight:700}
 .smp-t b{color:var(--ink);font-family:var(--f-mono);display:inline-block;min-width:2.6em}
 .btn.mini{padding:0 8px;line-height:1.6}
-.smp-pitch{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px 0 2px;font-size:13px;color:var(--ink-soft)}
-.smp-pitch input[type=range]{width:min(260px,60vw);accent-color:var(--sea)}
-.smp-pitch b{color:var(--ink);font-family:var(--f-mono);min-width:4.6em;display:inline-block}
-.smp-pitch[hidden]{display:none}
+.fx{max-width:560px;margin:10px auto 0;text-align:left;font-size:13px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:4px}
+.fx>summary{cursor:pointer;list-style:none;text-align:center;color:var(--sea);padding:6px;font-weight:700;-webkit-tap-highlight-color:transparent}
+.fx>summary::-webkit-details-marker{display:none}
+.fx>summary::before{content:"▸ "}.fx[open]>summary::before{content:"▾ "}
+.fx-state{color:var(--coral);font-weight:400}
+.fx-row{display:grid;grid-template-columns:7em 1fr 5.4em;align-items:center;gap:8px;margin:10px 0}
+.fx-row input[type=range]{width:100%;accent-color:var(--sea)}
+.fx-row b{color:var(--ink);font-family:var(--f-mono);text-align:right;font-weight:400}
+.fx-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.fx-note{font-size:12px;margin:8px 0 2px;text-align:center}
 #smpRev[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
+.chip-row{display:flex;justify-content:center;margin:-4px 0 12px}.chip-row[hidden]{display:none}.chip-row .seg{justify-content:center}
 
 .smp-b{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 #smpRec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
@@ -309,9 +316,16 @@ header.top .logo{flex:none}
       <button type="button" data-i="organ" aria-pressed="false">オルガン</button>
       <button type="button" data-i="pad" aria-pressed="false">パッド</button>
       <button type="button" data-i="lead" aria-pressed="false">リード</button>
-      <button type="button" data-i="chip" aria-pressed="false">8bit</button>
+      <button type="button" data-i="chip" aria-pressed="false">チップチューン</button>
       <button type="button" data-i="bell" aria-pressed="false">ベル</button>
       <button type="button" data-i="sample" aria-pressed="false">サンプル</button>
+    </span></div>
+    <div class="chip-row" id="chipRow" hidden><span class="seg" id="chipSeg" role="group" aria-label="チップチューンの波形">
+      <button type="button" data-w="sq50" aria-pressed="false">矩形波 50%</button>
+      <button type="button" data-w="sq25" aria-pressed="true">パルス 25%</button>
+      <button type="button" data-w="sq12" aria-pressed="false">パルス 12.5%</button>
+      <button type="button" data-w="tri" aria-pressed="false">三角波</button>
+      <button type="button" data-w="saw" aria-pressed="false">ノコギリ波</button>
     </span></div>
     <div class="smp" id="smp" hidden>
       <p class="smp-t">サンプル:<span id="smpName">まだありません</span><span class="smp-root" id="smpRootBox" hidden> ・ 元の音程 <button class="btn mini" type="button" id="rootDown" aria-label="元の音程を下げる">−</button><b id="smpRoot">C4</b><button class="btn mini" type="button" id="rootUp" aria-label="元の音程を上げる">＋</button></span></p>
@@ -319,8 +333,14 @@ header.top .logo{flex:none}
         <button class="btn" type="button" id="smpFile">ファイルから読み込む</button>
         <button class="btn" type="button" id="smpRec">● マイクで録音</button>
       </div>
-      <div class="smp-pitch" id="smpPitchBox" hidden><label for="smpPitch">ピッチ</label><input type="range" id="smpPitch" min="-24" max="24" step="0.1" value="0" aria-describedby="smpPitchV"><b id="smpPitchV">±0 半音</b><button class="btn mini" type="button" id="smpPitch0">0に戻す</button><button class="btn mini" type="button" id="smpRev" aria-pressed="false" title="サンプルを後ろから鳴らす">⇄ 逆再生</button></div>
       <p class="err" id="smpErr" hidden></p>
+      <details class="fx" id="fxBox" hidden><summary>エフェクト <span class="fx-state" id="fxState"></span></summary>
+        <div class="fx-row"><label for="smpPitch">ピッチ</label><input type="range" id="smpPitch" min="-24" max="24" step="0.1" value="0"><b id="smpPitchV">±0 半音</b></div>
+        <div class="fx-row"><label for="fxStop">テープストップ</label><input type="range" id="fxStop" min="0" max="2" step="0.05" value="0"><b id="fxStopV">オフ</b></div>
+        <div class="fx-row"><label for="fxLoose">ルーズ</label><input type="range" id="fxLoose" min="0" max="12" step="0.1" value="0"><b id="fxLooseV">オフ</b></div>
+        <div class="fx-btns"><button class="btn mini" type="button" id="smpRev" aria-pressed="false" title="音を後ろから鳴らす">⇄ 逆再生</button><button class="btn mini" type="button" id="fxReset">エフェクトを全部戻す</button></div>
+        <p class="fx-note">サンプル全体にかかります。ピッチは鳴っている音もその場で変わります。</p>
+      </details>
     </div>
     <div class="kb-bar">
       <button class="btn round" type="button" id="octDown" aria-label="1オクターブ下へ">‹</button>
@@ -424,7 +444,7 @@ header.top .logo{flex:none}
     <h2>使い方のメモ</h2>
     <ul>
       <li>鍵盤の下の方をタップすると強く、上の方だと弱く鳴ります。スマホでは複数の指で和音も弾けます。</li>
-      <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。「ピッチ」のスライダーで、サンプル全体の高さを±2オクターブまで自由に変えられます(鳴っている音もその場で変わります)。「⇄ 逆再生」を押すと、サンプルを後ろから鳴らします。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
+      <li>サンプラー:音色で「サンプル」を選んで、音声ファイルを読み込むか録音すると、その音を鍵盤の高さで鳴らせます。元の音程は自動で推定します(ずれていたら −/＋ で直せます)。「エフェクト」を開くと、ピッチ(±2オクターブ)・テープストップ(弾くたびに止まるように減速)・ルーズ(弾くたびにピッチがランダムにずれる)・逆再生をかけられます。音はこの端末のブラウザの中だけに保存され、どこにも送信されません。</li>
       <li>「● 演奏を録音」を押して弾くと、演奏を録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。録音はこの端末の中だけで処理します。</li>
       <li>「コードを調べる」では、コード名を選ぶと鍵盤にオレンジで押さえる場所を出して鳴らします。オレンジの枠のボタンはおしゃれ系のコードです。「おしゃれ進行」では定番進行をテンション入りのボイシングで聴けます(キーも変えられます)。</li>
       <li>鍵盤の左のホイールを上下にドラッグするとピッチベンド。離すと元の高さに戻ります。幅は設定で±1・±2・±12半音から選べます。</li>
@@ -490,6 +510,12 @@ function audio(){
 const voices=new Map(); /* midi -> voice */
 let inst=store.get("pianoInst","piano");
 const waves={};
+function swave(key,smp){ /* 1周期ぶんの波形(サンプル列)から波形を作る(段々の三角波など) */
+  if(!waves[key]){const N=smp.length,H=Math.floor(N/2),re=new Float32Array(H),im=new Float32Array(H);
+    for(let n=1;n<H;n++){let c=0,si=0;for(let j=0;j<N;j++){const ph=2*Math.PI*n*j/N;c+=smp[j]*Math.cos(ph);si+=smp[j]*Math.sin(ph);}re[n]=2*c/N;im[n]=2*si/N;}
+    waves[key]=ac.createPeriodicWave(re,im);}
+  return waves[key];
+}
 function pwave(key,amps){ /* 倍音の強さの並びから波形を作る(作ったら使い回す) */
   if(!waves[key]){const re=new Float32Array(amps.length+1),im=new Float32Array(amps.length+1);amps.forEach((a,i)=>im[i+1]=a);waves[key]=ac.createPeriodicWave(re,im);}
   return waves[key];
@@ -582,16 +608,17 @@ const INST={
     env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.13*(0.6+0.4*v),t+0.008);env.gain.setTargetAtTime(0.095*(0.6+0.4*v),t+0.01,0.2);
     return {srcs:s,rel:0.06,rev:0.8};
   },
-  chip(a,f,v,t,env){ /* ファミコンっぽい矩形波(デューティ25%) */
-    const w=pwave("pulse25",Array.from({length:40},(_,i)=>{const n=i+1;return Math.sin(Math.PI*n*0.25)/n;}));
-    const s=[osc(a,w,f,t,env)];
-    env.gain.setValueAtTime(0.3,t);env.gain.setValueAtTime(0.25,t+0.06);
+  chip(a,f,v,t,env){ /* チップチューン:矩形波(デューティ50/25/12.5%)・ファミコン風の段々の三角波・ノコギリ波 */
+    const pulse=d=>Array.from({length:48},(_,i)=>{const n=i+1;return Math.sin(Math.PI*n*d)/n;});
+    const k=chipWave,w=k==="sq50"?pwave("pulse50",pulse(0.5)):k==="sq12"?pwave("pulse12",pulse(0.125)):k==="tri"?swave("tri4",Array.from({length:32},(_,i)=>{const q=i<16?i:31-i;return q/7.5-1;})):k==="saw"?pwave("saw",Array.from({length:48},(_,i)=>1/(i+1))):pwave("pulse25",pulse(0.25));
+    const s=[osc(a,w,f,t,env)],lv=k==="tri"?0.42:k==="sq50"?0.24:0.28;
+    env.gain.setValueAtTime(lv,t);env.gain.setValueAtTime(lv*0.85,t+0.06);
     return {srcs:s,rel:0.012,rev:0.35};
   },
   sample(a,f,v,t,env){ /* サンプラー:読み込んだ音を、鍵盤の高さに合わせて速さを変えて鳴らす */
     if(!smp||!smp.buffer) return INST.piano(a,f,v,t,env);
-    const m=69+12*Math.log2(f/440), src=a.createBufferSource(),R=smpRev?revOf(smp):smp;src.buffer=R.buffer;src._base=Math.pow(2,(m-smp.root)/12);src.playbackRate.value=src._base*Math.pow(2,smpPitch/12);smpLive.add(src);src.onended=()=>smpLive.delete(src);
-    src.connect(env);env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.55*v*smp.gain,t+0.003);src.start(t,R.offset);
+    const m=69+12*Math.log2(f/440), src=a.createBufferSource(),R=smpRev?revOf(smp):smp;src.buffer=R.buffer;src._base=Math.pow(2,(m-smp.root)/12)*(smpLoose?Math.pow(2,(Math.random()*2-1)*smpLoose/12):1);const r0=src._base*Math.pow(2,smpPitch/12);src.playbackRate.setValueAtTime(r0,t);if(smpStop){src._stop=1;src.playbackRate.exponentialRampToValueAtTime(Math.max(0.01,r0*0.02),t+smpStop);}smpLive.add(src);src.onended=()=>smpLive.delete(src);
+    src.connect(env);env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.55*v*smp.gain,t+0.003);src.start(t,R.offset);if(smpStop)src.stop(t+smpStop+0.02);
     return {srcs:[src],rel:0.12,rev:0.8};
   },
   bell(a,f,v,t,env){ /* FM:はんぱな比率で揺らして金属っぽく */
@@ -744,7 +771,9 @@ const KEYLAB={0:"C",11:"D♭",10:"D",9:"E♭",8:"E",7:"F",6:"G♭",5:"G",4:"A♭
  ts.addEventListener("change",()=>{trans=+ts.value;store.set("trans",trans);build();show();});}
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);build();show();});
 segInit($("lblSeg"),"l",lbl,v=>{lbl=v;store.set("pianoLbl",lbl);build();});
-segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("pianoInst",inst);smpView();});
+segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("pianoInst",inst);smpView();$("chipRow").hidden=inst!=="chip";});
+let chipWave=store.get("pianoChipWave","sq25");if(!["sq50","sq25","sq12","tri","saw"].includes(chipWave))chipWave="sq25";
+segInit($("chipSeg"),"w",chipWave,v=>{chipWave=v;store.set("pianoChipWave",v);});$("chipRow").hidden=inst!=="chip";
 
 /* ===== 演奏の録音(MP3・WAVで保存) ===== */
 let tap=null, recL=[], recR=[], recOn=false, recStart=0, take=null, takeURL="";
@@ -811,20 +840,25 @@ const revOf=s=>{if(s._rev)return s._rev;const b=s.buffer,r=new AudioBuffer({leng
   for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c),y=r.getChannelData(c),n=x.length;for(let i=0;i<n;i++){const v=x[n-1-i];y[i]=v;const a=v<0?-v:v;if(a>peak)peak=a;}}
   const th=Math.max(0.0005,peak*0.005),d0=r.getChannelData(0);let st=0;for(let i=0;i<d0.length;i++)if((d0[i]<0?-d0[i]:d0[i])>th){st=i;break;}
   return s._rev={buffer:r,offset:Math.max(0,st/b.sampleRate-0.004)};};
-let smpRev=!!store.get("pianoSmpRev",false);
-function setRev(on){smpRev=on;$("smpRev").setAttribute("aria-pressed",on?"true":"false");store.set("pianoSmpRev",on);}
-$("smpRev").onclick=()=>{setRev(!smpRev);if(smp&&smp.buffer){noteOn(smp.root,0.8);setTimeout(()=>release(smp.root,true),700);}};setRev(smpRev);
-let smpPitch=+store.get("pianoSmpPitch",0)||0;const smpLive=new Set();
-function setPitch(v,save){smpPitch=Math.max(-24,Math.min(24,Math.round(v*10)/10));$("smpPitch").value=smpPitch;$("smpPitchV").textContent=pitchTxt(smpPitch);
-  if(ac)smpLive.forEach(s=>{try{s.playbackRate.setTargetAtTime(s._base*Math.pow(2,smpPitch/12),ac.currentTime,0.01);}catch(e){}});if(save)store.set("pianoSmpPitch",smpPitch);}
-$("smpPitch").addEventListener("input",()=>setPitch(+$("smpPitch").value,false));$("smpPitch").addEventListener("change",()=>setPitch(+$("smpPitch").value,true));
-$("smpPitch0").onclick=()=>setPitch(0,true);setPitch(smpPitch,false);
+const stopTxt=v=>v>0?v.toFixed(2)+" 秒":"オフ",looseTxt=v=>v>0?"±"+v.toFixed(1)+" 半音":"オフ";
+let smpRev=!!store.get("pianoSmpRev",false),smpStop=+store.get("pianoSmpStop",0)||0,smpLoose=+store.get("pianoSmpLoose",0)||0,smpPitch=+store.get("pianoSmpPitch",0)||0;const smpLive=new Set();
+const demo=()=>{if(smp&&smp.buffer){noteOn(smp.root,0.8);setTimeout(()=>release(smp.root,true),700);}};
+function fxView(){$("smpPitch").value=smpPitch;$("smpPitchV").textContent=pitchTxt(smpPitch);$("fxStop").value=smpStop;$("fxStopV").textContent=stopTxt(smpStop);$("fxLoose").value=smpLoose;$("fxLooseV").textContent=looseTxt(smpLoose);
+  $("smpRev").setAttribute("aria-pressed",smpRev?"true":"false");const on=[smpPitch?"ピッチ"+pitchTxt(smpPitch).replace(" 半音",""):"",smpStop?"テープストップ":"",smpLoose?"ルーズ":"",smpRev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";}
+function fxSave(){store.set("pianoSmpPitch",smpPitch);store.set("pianoSmpStop",smpStop);store.set("pianoSmpLoose",smpLoose);store.set("pianoSmpRev",smpRev);fxView();}
+$("smpPitch").addEventListener("input",()=>{smpPitch=Math.max(-24,Math.min(24,Math.round(+$("smpPitch").value*10)/10));fxSave();
+  if(ac)smpLive.forEach(x=>{if(!x._stop)try{x.playbackRate.setTargetAtTime(x._base*Math.pow(2,smpPitch/12),ac.currentTime,0.01);}catch(e){}});});
+$("fxStop").addEventListener("input",()=>{smpStop=Math.round(+$("fxStop").value*100)/100;fxSave();});$("fxStop").addEventListener("change",demo);
+$("fxLoose").addEventListener("input",()=>{smpLoose=Math.round(+$("fxLoose").value*10)/10;fxSave();});$("fxLoose").addEventListener("change",demo);
+$("smpRev").onclick=()=>{smpRev=!smpRev;fxSave();demo();};
+$("fxReset").onclick=()=>{smpPitch=0;smpStop=0;smpLoose=0;smpRev=false;fxSave();demo();};
+fxView();
 const SM=window.NamiSampler;let smp=null; /* {buffer,offset,gain,root,name} */
 function smpErr(t){const e=$("smpErr");e.textContent=t||"";e.hidden=!t;}
 function smpView(){
   $("smp").hidden=inst!=="sample";
   $("smpName").textContent=smp?smp.name:"まだありません(読み込むか録音してね)";
-  $("smpRootBox").hidden=!smp;$("smpPitchBox").hidden=!smp; if(smp) $("smpRoot").textContent=nm(smp.root,true);
+  $("smpRootBox").hidden=!smp;$("fxBox").hidden=!smp; if(smp) $("smpRoot").textContent=nm(smp.root,true);
 }
 /* 録った音の音程をざっくり推定(自己相関) */
 function guessRoot(buf,off){
