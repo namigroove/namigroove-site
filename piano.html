@@ -362,6 +362,7 @@ header.top .logo{flex:none}
       <details class="fx-i" data-k="fxStop"><summary><span>テープストップ</span><b id="fxStopV">オフ</b></summary><div class="fx-row"><input type="range" id="fxStop" aria-label="テープストップ" min="0" max="2" step="0.05" value="0"></div></details>
       <details class="fx-i" data-k="fxFlt"><summary><span>フィルター</span><b id="fxFltV">オフ</b></summary><div class="fx-row"><input type="range" id="fxFlt" min="-100" max="100" step="1" value="0" aria-label="フィルター(左でこもる、右で細くなる)"></div></details>
       <details class="fx-i" data-k="fxRv"><summary><span>リバーブ</span><b id="fxRvV">40%</b></summary><div class="fx-row"><input type="range" id="fxRv" aria-label="リバーブ" min="0" max="100" step="1" value="40"></div></details>
+      <details class="fx-i" data-k="fxDs"><summary><span>ディストーション</span><b id="fxDsV">オフ</b></summary><div class="fx-row"><input type="range" id="fxDs" aria-label="ディストーション" min="0" max="100" step="1" value="0"></div></details>
       <details class="fx-i" data-k="fxBc"><summary><span>ビットクラッシュ</span><b id="fxBcV">オフ</b></summary><div class="fx-row"><input type="range" id="fxBc" aria-label="ビットクラッシュ" min="0" max="100" step="1" value="0"></div></details>
       <details class="fx-i" data-k="fxRep"><summary><span>リピート</span><b id="fxRepV">オフ</b></summary><div class="fx-row"><select id="fxRep" aria-label="リピート" class="sel"><option value="">オフ</option><option value="8">8分×2</option><option value="16">16分×4</option><option value="32">32分×8</option><option value="t16">16分3連×6</option></select></div></details>
       <details class="fx-i" data-k="fxDl"><summary><span>ディレイ</span><b id="fxDlV">オフ</b></summary><div class="fx-row fx-row2"><input type="range" id="fxDl" aria-label="ディレイの量" min="0" max="100" step="1" value="0"><select id="fxDlt" class="sel" aria-label="ディレイの間隔"><option value="16">16分</option><option value="8" selected>8分</option><option value="8d">付点8分</option><option value="4">4分</option></select></div></details>
@@ -695,7 +696,7 @@ function noteOn(m,vel){
   const env=a.createGain(), out=a.createGain(), rg=a.createGain();
   if(recOn){if(midiOpen.has(m))midiPush([0x80,m,0]);midiPush([0x90,m,Math.max(1,Math.min(127,Math.round(v*127)))]);midiOpen.add(m);}
   const isS=inst==="sample"&&smp&&smp.buffer;let vc,vEnv=env;
-  if(isS){vc=INST.sample(a,f,v,t,env);env.connect(out);}
+  if(isS){vc=INST.sample(a,f,v,t,env);if(smpDs){const d=dsNode(a,smpDs);env.connect(d.i);d.o.connect(out);}else env.connect(out);}
   else{ /* 内蔵の音色にもエフェクト:ピッチ・ルーズは音の高さ、フィルター・ビットクラッシュは後ろにつなぐ、リピートは鳴らし直す */
     const I=INST[inst]||INST.piano,f2=f*Math.pow(2,(smpPitch+(smpLoose?(Math.random()*2-1)*smpLoose:0))/12),pre=a.createGain(),mix=a.createGain();
     vc=I(a,f2,v,t,env);env.connect(pre);pre.connect(mix);
@@ -706,6 +707,7 @@ function noteOn(m,vel){
       pre.gain.setValueAtTime(1,t+smpStop*0.7);pre.gain.linearRampToValueAtTime(0.0001,t+smpStop);}
     let tail=mix;if(smpBc){const g1=a.createGain(),ws=a.createWaveShaper(),g2=a.createGain(),q=Math.pow(2,bcBits(smpBc)-1),c=new Float32Array(4096);for(let i=0;i<4096;i++){const x=i/2048-1;c[i]=Math.round(x*q)/q;}ws.curve=c;g1.gain.value=3;g2.gain.value=1/3;tail.connect(g1);g1.connect(ws);ws.connect(g2);tail=g2;}
     if(smpFlt){const fl=fltNode(a,smpFlt);tail.connect(fl);tail=fl;}
+    if(smpDs){const d=dsNode(a,smpDs);tail.connect(d.i);tail=d.o;}
     tail.connect(out);vEnv=pre;vc.rev*=smpRv/40;}
   out.gain.value=0.5; out.connect(comp);
   rg.gain.value=vc.rev; out.connect(rg); rg.connect(rev);
@@ -961,12 +963,17 @@ function crushOf(o,a){if(o._bcA===a&&o._bcB)return o._bcB;const b=o.buffer,q=Mat
   for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c),y=r.getChannelData(c);let h=0;for(let i=0;i<x.length;i++){if(i%hold===0)h=Math.round(x[i]*q)/q;y[i]=h;}}o._bcA=a;o._bcB=r;return r;}
 /* リピート(スタッター):叩くたびにテンポに合わせて細かく連打する。d=1拍をいくつに割るか、n=回数 */
 const REP={"8":{d:2,n:2},"16":{d:4,n:4},"32":{d:8,n:8},"t16":{d:6,n:6}},REPN={"8":"8分×2","16":"16分×4","32":"32分×8","t16":"16分3連×6"};
+/* ディストーション:音を持ち上げて、なめらかに頭を潰す(tanh)。0〜100 */
+const dsCurve={};function dsNode(a,amt){const pre=a.createGain(),ws=a.createWaveShaper(),post=a.createGain(),k=Math.round(amt);
+  if(!dsCurve[k]){const c=new Float32Array(2048);for(let i=0;i<2048;i++){const x=i/1023.5-1;c[i]=Math.tanh(x*(1+k/25))/Math.tanh(1+k/25);}dsCurve[k]=c;}
+  ws.curve=dsCurve[k];ws.oversample="4x";pre.gain.value=1+k*0.15;post.gain.value=Math.min(1,0.9/Math.sqrt(pre.gain.value));pre.connect(ws);ws.connect(post);return {i:pre,o:post};}
+const dsTxt=v=>v?v+"%":"オフ";
 /* ディレイ:テンポに合わせたやまびこ。間隔ごとに1本ずつ作って使い回す */
 const DLT={"16":0.25,"8":0.5,"8d":0.75,"4":1},DLN={"16":"16分","8":"8分","8d":"付点8分","4":"4分"};const dlBuses={};
 function dlyBus(a,key,bpmNow){const sec=Math.min(1.9,60/bpmNow*(DLT[key]||0.5));let b=dlBuses[key];if(!b||b.ctx!==a){const i=a.createGain(),d=a.createDelay(2),fb=a.createGain(),lp=a.createBiquadFilter();lp.type="lowpass";lp.frequency.value=4200;fb.gain.value=0.38;i.connect(d);d.connect(lp);lp.connect(fb);fb.connect(d);lp.connect(comp);b=dlBuses[key]={ctx:a,i,d};}
   b.d.delayTime.setTargetAtTime(sec,a.currentTime,0.02);return b.i;}
 const dlTxt=(v,k)=>v?v+"%・"+(DLN[k]||"8分"):"オフ";
-let smpDl=+store.get("pianoSmpDl",0)||0,smpDlt=store.get("pianoSmpDlt","8");if(!DLT[smpDlt])smpDlt="8";
+let smpDs=+store.get("pianoSmpDs",0)||0,smpDl=+store.get("pianoSmpDl",0)||0,smpDlt=store.get("pianoSmpDlt","8");if(!DLT[smpDlt])smpDlt="8";
 let smpWv=store.get("pianoSmpWv",null);
 let smpRep=store.get("pianoSmpRep","")||"";if(!REP[smpRep])smpRep="";
 let smpBc=+store.get("pianoSmpBc",0)||0,smpFlt=+store.get("pianoSmpFlt",0)||0,smpRv=+store.get("pianoSmpRv",40);if(!(smpRv>=0&&smpRv<=100))smpRv=40;
@@ -974,13 +981,13 @@ let smpRev=!!store.get("pianoSmpRev",false),smpStop=+store.get("pianoSmpStop",0)
 const demo=()=>{const sm=inst==="sample";if(sm&&!(smp&&smp.buffer))return;const m=sm?smp.root:60;noteOn(m,0.8);setTimeout(()=>release(m,true),700);};
 var fxFirst=true,fxWideMQ=matchMedia("(min-width:700px)");
 function fxView(){wvDraw();$("fxRep").value=smpRep;$("fxBc").value=smpBc;$("fxBcV").textContent=bcTxt(smpBc);$("fxRv").value=smpRv;$("fxRvV").textContent=smpRv?smpRv+"%":"オフ";$("fxFlt").value=smpFlt;$("fxFltV").textContent=fltTxt(smpFlt);$("smpPitch").value=smpPitch;$("smpPitchV").textContent=pitchTxt(smpPitch);$("fxStop").value=smpStop;$("fxStopV").textContent=stopTxt(smpStop);$("fxLoose").value=smpLoose;$("fxLooseV").textContent=looseTxt(smpLoose);
-  $("fxDl").value=smpDl;$("fxDlt").value=smpDlt;$("fxDlV").textContent=dlTxt(smpDl,smpDlt);$("fxRepV").textContent=smpRep?REPN[smpRep]:"オフ";
+  $("fxDs").value=smpDs;$("fxDsV").textContent=dsTxt(smpDs);$("fxDl").value=smpDl;$("fxDlt").value=smpDlt;$("fxDlV").textContent=dlTxt(smpDl,smpDlt);$("fxRepV").textContent=smpRep?REPN[smpRep]:"オフ";
   {const S=inst==="sample",W=window.NamiWave,wst=W&&smpWv?W.norm(smpWv):null;$("wvSum").textContent=wst?[wst.s>0||wst.e<1?"切り出し":"",wst.fi?"フェードイン":"",wst.fo?"フェードアウト":"",wst.n?"ノーマライズ":""].filter(Boolean).join("・"):"そのまま";
    $("wvBox").hidden=!S;$("smpRev").hidden=!S;$("fxNote").textContent=S?"サンプル全体にかかります。ピッチは鳴っている音もその場で変わります。":"いま選んでいる音色にかかります(波形編集と逆再生はサンプラーだけ)。";
-   const ACT={smpPitch:!!smpPitch,fxStop:!!smpStop,fxFlt:!!smpFlt,fxRv:smpRv!==40,fxBc:!!smpBc,fxRep:!!smpRep,fxLoose:!!smpLoose,fxDl:!!smpDl,wv:!!smpWv};
+   const ACT={smpPitch:!!smpPitch,fxStop:!!smpStop,fxFlt:!!smpFlt,fxRv:smpRv!==40,fxBc:!!smpBc,fxRep:!!smpRep,fxLoose:!!smpLoose,fxDl:!!smpDl,fxDs:!!smpDs,wv:!!smpWv};
    document.querySelectorAll("#fxBox .fx-i").forEach(d=>{const on=ACT[d.dataset.k];d.classList.toggle("on",on);if(fxFirst&&on&&!fxWideMQ.matches)d.open=true;});fxFirst=false;}
-  $("smpRev").setAttribute("aria-pressed",smpRev?"true":"false");const on=[smpDl?"ディレイ":"",smpPitch?"ピッチ"+pitchTxt(smpPitch).replace(" 半音",""):"",smpStop?"テープストップ":"",smpLoose?"ルーズ":"",smpFlt?"フィルター":"",smpBc?"ビットクラッシュ":"",smpRep?"リピート":"",smpWv?"波形":"",smpRv!==40?"リバーブ"+smpRv+"%":"",smpRev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";}
-function fxSave(){store.set("pianoSmpWv",smpWv);store.set("pianoSmpRep",smpRep);store.set("pianoSmpBc",smpBc);store.set("pianoSmpRv",smpRv);store.set("pianoSmpFlt",smpFlt);store.set("pianoSmpPitch",smpPitch);store.set("pianoSmpStop",smpStop);store.set("pianoSmpLoose",smpLoose);store.set("pianoSmpRev",smpRev);store.set("pianoSmpDl",smpDl);store.set("pianoSmpDlt",smpDlt);fxView();}
+  $("smpRev").setAttribute("aria-pressed",smpRev?"true":"false");const on=[smpDs?"ディストーション":"",smpDl?"ディレイ":"",smpPitch?"ピッチ"+pitchTxt(smpPitch).replace(" 半音",""):"",smpStop?"テープストップ":"",smpLoose?"ルーズ":"",smpFlt?"フィルター":"",smpBc?"ビットクラッシュ":"",smpRep?"リピート":"",smpWv?"波形":"",smpRv!==40?"リバーブ"+smpRv+"%":"",smpRev?"逆再生":""].filter(Boolean);$("fxState").textContent=on.length?"("+on.join("・")+")":"";}
+function fxSave(){store.set("pianoSmpWv",smpWv);store.set("pianoSmpRep",smpRep);store.set("pianoSmpBc",smpBc);store.set("pianoSmpRv",smpRv);store.set("pianoSmpFlt",smpFlt);store.set("pianoSmpPitch",smpPitch);store.set("pianoSmpStop",smpStop);store.set("pianoSmpLoose",smpLoose);store.set("pianoSmpRev",smpRev);store.set("pianoSmpDl",smpDl);store.set("pianoSmpDs",smpDs);store.set("pianoSmpDlt",smpDlt);fxView();}
 $("smpPitch").addEventListener("input",()=>{smpPitch=Math.max(-24,Math.min(24,Math.round(+$("smpPitch").value*10)/10));fxSave();
   if(ac)smpLive.forEach(x=>{if(!x._stop)try{x.playbackRate.setTargetAtTime(x._base*Math.pow(2,smpPitch/12),ac.currentTime,0.01);}catch(e){}});});
 $("fxStop").addEventListener("input",()=>{smpStop=Math.round(+$("fxStop").value*100)/100;fxSave();});$("fxStop").addEventListener("change",demo);
@@ -997,10 +1004,11 @@ $("fxRep").addEventListener("change",()=>{smpRep=$("fxRep").value;fxSave();demo(
 $("fxBc").addEventListener("input",()=>{smpBc=Math.round(+$("fxBc").value);fxSave();});$("fxBc").addEventListener("change",demo);
 $("fxRv").addEventListener("input",()=>{smpRv=Math.round(+$("fxRv").value);fxSave();});$("fxRv").addEventListener("change",demo);
 $("fxFlt").addEventListener("input",()=>{smpFlt=Math.round(+$("fxFlt").value);fxSave();});$("fxFlt").addEventListener("change",demo);
+$("fxDs").addEventListener("input",()=>{smpDs=Math.round(+$("fxDs").value);fxSave();});$("fxDs").addEventListener("change",demo);
 $("fxDl").addEventListener("input",()=>{smpDl=Math.round(+$("fxDl").value);fxSave();});$("fxDl").addEventListener("change",demo);$("fxDlt").addEventListener("change",()=>{smpDlt=$("fxDlt").value;fxSave();demo();});
 $("fxLoose").addEventListener("input",()=>{smpLoose=Math.round(+$("fxLoose").value*10)/10;fxSave();});$("fxLoose").addEventListener("change",demo);
 $("smpRev").onclick=()=>{smpRev=!smpRev;fxSave();demo();};
-$("fxReset").onclick=()=>{smpDl=0;smpWv=null;smpRep="";smpBc=0;smpRv=40;smpFlt=0;smpPitch=0;smpStop=0;smpLoose=0;smpRev=false;fxSave();demo();};
+$("fxReset").onclick=()=>{smpDs=0;smpDl=0;smpWv=null;smpRep="";smpBc=0;smpRv=40;smpFlt=0;smpPitch=0;smpStop=0;smpLoose=0;smpRev=false;fxSave();demo();};
 fxView();
 /* エフェクトを1つずつ畳むのはスマホ幅だけ。広い画面では全部開いておく */
 function fxWide(){const w=fxWideMQ.matches;$("fxBox").classList.toggle("fx-wide",w);if(w)document.querySelectorAll("#fxBox .fx-i").forEach(d=>d.open=true);}
