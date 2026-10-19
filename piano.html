@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>オンラインピアノ(コード名表示・おしゃれコード進行・MIDI書き出し) – なみぐる！</title>
-<meta name="description" content="ブラウザで弾ける無料のピアノ。和音のコード名表示、M9・m11などのおしゃれコードの順引き、ネオソウル・ジャズ・ボサノバ・アニソンなどのコード進行集(MIDI書き出し・共有リンク対応)、12の音色、サンプラー、録音、MIDIキーボード対応。">
+<meta name="description" content="ブラウザで弾ける無料のピアノ。和音のコード名表示、M9・m11などのおしゃれコードの順引き、ネオソウル・ジャズ・ボサノバ・アニソンなどのコード進行集(MIDI書き出し・共有リンク対応)、21の音色、サンプラー、録音、MIDIキーボード対応。">
 <meta property="og:title" content="オンラインピアノ(コード名表示・おしゃれコード進行・MIDI書き出し) – なみぐる！">
-<meta property="og:description" content="ブラウザで弾ける無料のピアノ。和音のコード名表示、M9・m11などのおしゃれコードの順引き、ネオソウル・ジャズ・ボサノバ・アニソンなどのコード進行集(MIDI書き出し・共有リンク対応)、12の音色、サンプラー、録音、MIDIキーボード対応。">
+<meta property="og:description" content="ブラウザで弾ける無料のピアノ。和音のコード名表示、M9・m11などのおしゃれコードの順引き、ネオソウル・ジャズ・ボサノバ・アニソンなどのコード進行集(MIDI書き出し・共有リンク対応)、21の音色、サンプラー、録音、MIDIキーボード対応。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.namigroove.com/tools/piano/">
 <meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg">
@@ -189,7 +189,11 @@ footer a{color:var(--sea)}
 .kb .lb{position:absolute;left:0;right:0;bottom:8px;text-align:center;font:11px var(--f-mono);color:#7a87a8;pointer-events:none;white-space:nowrap}
 .kb .b .lb{bottom:6px;color:#c9d3e8;font-size:9px}
 .kb .w.on .lb{color:var(--ink)}
-.inst-row{display:flex;justify-content:center;margin-bottom:12px}
+.inst-row{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:12px}
+.inst-cat{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 4px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.inst-cat button{font:500 12.5px var(--f-body);padding:4px 8px;border:0;border-bottom:2px solid transparent;background:none;color:var(--ink-soft);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.inst-cat button[aria-pressed="true"]{color:var(--sea);border-bottom-color:var(--sea)}
+#instSeg button[hidden]{display:none}
 .inst-row .seg{justify-content:center}
 .smp{max-width:640px;margin:0 auto 12px;padding:10px 12px;border-radius:12px;background:var(--wash);text-align:center}
 .smp-t{margin:0 0 8px;font-size:13px;color:var(--ink-soft)}
@@ -291,7 +295,7 @@ header.top .logo{flex:none}
 @media (max-width:374px){header.top nav.main .opt{display:none}}
 @media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"オンラインピアノ(コード名表示・おしゃれコード進行・MIDI書き出し)","url":"https://www.namigroove.com/tools/piano/","description":"ブラウザで弾ける無料のピアノ。和音のコード名表示、M9・m11などのおしゃれコードの順引き、ネオソウル・ジャズ・ボサノバ・アニソンなどのコード進行集(MIDI書き出し・共有リンク対応)、12の音色、サンプラー、録音、MIDIキーボード対応。","applicationCategory":"MultimediaApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["和音のコード名表示","コードの順引き(構成音・転回形)","コード進行集とMIDI書き出し","12の音色とサンプラー","演奏の録音(MP3・WAV)","MIDIキーボード・ピッチベンド対応"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"オンラインピアノ(コード名表示・おしゃれコード進行・MIDI書き出し)","item":"https://www.namigroove.com/tools/piano/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"オンラインピアノ(コード名表示・おしゃれコード進行・MIDI書き出し)","url":"https://www.namigroove.com/tools/piano/","description":"ブラウザで弾ける無料のピアノ。和音のコード名表示、M9・m11などのおしゃれコードの順引き、ネオソウル・ジャズ・ボサノバ・アニソンなどのコード進行集(MIDI書き出し・共有リンク対応)、21の音色、サンプラー、録音、MIDIキーボード対応。","applicationCategory":"MultimediaApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["和音のコード名表示","コードの順引き(構成音・転回形)","コード進行集とMIDI書き出し","21の音色とサンプラー","演奏の録音(MP3・WAV)","MIDIキーボード・ピッチベンド対応"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"オンラインピアノ(コード名表示・おしゃれコード進行・MIDI書き出し)","item":"https://www.namigroove.com/tools/piano/"}]}]}</script>
 </head>
 <body>
 
@@ -337,20 +341,30 @@ header.top .logo{flex:none}
       <div class="ptrans" id="ptrans">&nbsp;</div>
     </div>
 
-    <div class="inst-row"><span class="seg" id="instSeg" role="group" aria-label="音色">
-      <button type="button" data-i="piano" aria-pressed="true">ピアノ</button>
-      <button type="button" data-i="epiano" aria-pressed="false">エレピ</button>
-      <button type="button" data-i="organ" aria-pressed="false">オルガン</button>
-      <button type="button" data-i="pad" aria-pressed="false">パッド</button>
-      <button type="button" data-i="lead" aria-pressed="false">リード</button>
-      <button type="button" data-i="chip" aria-pressed="false">チップチューン</button>
-      <button type="button" data-i="bell" aria-pressed="false">ベル</button>
-      <button type="button" data-i="synbass" aria-pressed="false">シンセベース</button>
-      <button type="button" data-i="brass" aria-pressed="false">ブラス</button>
-      <button type="button" data-i="strings" aria-pressed="false">ストリングス</button>
-      <button type="button" data-i="clav" aria-pressed="false">クラビ</button>
-      <button type="button" data-i="marimba" aria-pressed="false">マリンバ</button>
-      <button type="button" data-i="sample" aria-pressed="false">サンプル</button>
+    <div class="inst-row"><span class="inst-cat" id="instCat" role="group" aria-label="音色のジャンル"><button type="button" data-c="key" aria-pressed="false">鍵盤</button><button type="button" data-c="synth" aria-pressed="false">シンセ</button><button type="button" data-c="gtr" aria-pressed="false">ギター</button><button type="button" data-c="game" aria-pressed="false">ゲーム機</button><button type="button" data-c="smp" aria-pressed="false">サンプル</button></span>
+      <span class="seg" id="instSeg" role="group" aria-label="音色">
+      <button type="button" data-i="piano" data-c="key" aria-pressed="false">ピアノ</button>
+      <button type="button" data-i="epiano" data-c="key" aria-pressed="false">エレピ</button>
+      <button type="button" data-i="organ" data-c="key" aria-pressed="false">オルガン</button>
+      <button type="button" data-i="clav" data-c="key" aria-pressed="false">クラビ</button>
+      <button type="button" data-i="marimba" data-c="key" aria-pressed="false">マリンバ</button>
+      <button type="button" data-i="bell" data-c="key" aria-pressed="false">ベル</button>
+      <button type="button" data-i="pad" data-c="synth" aria-pressed="false">パッド</button>
+      <button type="button" data-i="lead" data-c="synth" aria-pressed="false">リード</button>
+      <button type="button" data-i="synbass" data-c="synth" aria-pressed="false">シンセベース</button>
+      <button type="button" data-i="brass" data-c="synth" aria-pressed="false">ブラス</button>
+      <button type="button" data-i="strings" data-c="synth" aria-pressed="false">ストリングス</button>
+      <button type="button" data-i="agtr" data-c="gtr" aria-pressed="false">アコギ</button>
+      <button type="button" data-i="egtr" data-c="gtr" aria-pressed="false">エレキ(クリーン)</button>
+      <button type="button" data-i="dgtr" data-c="gtr" aria-pressed="false">ディストーション</button>
+      <button type="button" data-i="ebass" data-c="gtr" aria-pressed="false">エレキベース</button>
+      <button type="button" data-i="chip" data-c="game" aria-pressed="false">チップチューン</button>
+      <button type="button" data-i="sfcstr" data-c="game" aria-pressed="false">SFC風ストリングス</button>
+      <button type="button" data-i="sfcbrass" data-c="game" aria-pressed="false">SFC風ブラス</button>
+      <button type="button" data-i="sfcharp" data-c="game" aria-pressed="false">SFC風ハープ</button>
+      <button type="button" data-i="pschoir" data-c="game" aria-pressed="false">PS風クワイア</button>
+      <button type="button" data-i="pspiano" data-c="game" aria-pressed="false">PS風ピアノ</button>
+      <button type="button" data-i="sample" data-c="smp" aria-pressed="false">サンプル</button>
     </span></div>
     <div class="chip-row" id="chipRow" hidden><span class="seg" id="chipSeg" role="group" aria-label="チップチューンの波形">
       <button type="button" data-w="sq50" aria-pressed="false">矩形波 50%</button>
@@ -600,6 +614,26 @@ function epCurve(k){k=Math.round(k*4)/4;if(epCurves[k])return epCurves[k];const 
 /* エレピ用:左右にゆれるトレモロ(全部の音で共通の揺れ) */
 let epLfo=null;
 function epTrem(a){if(!epLfo){const o=a.createOscillator();o.frequency.value=4.6;const g=a.createGain();g.gain.value=0.38;o.connect(g);o.start();epLfo=g;}return epLfo;}
+const dsCurveP=k=>{const key="g"+k;if(epCurves[key])return epCurves[key];const c=new Float32Array(2048);for(let i=0;i<2048;i++){const x=i/1023.5-1;c[i]=Math.tanh(x*(1+k/10))/Math.tanh(1+k/10);}return epCurves[key]=c;};
+/* ギター用:カープラス・ストロング(弦をはじいた音を、遅延のくり返しで作る)。音の高さ・種類ごとに1度作って使い回す */
+const ksCache=new Map();
+function ksBuf(a,f,kind){const sr=a.sampleRate,N=Math.max(2,Math.floor(sr/f-0.5)),key=kind+":"+N+":"+sr;let b=ksCache.get(key);
+  if(!b){const P={ag:{dur:3.2,br:0.55,dec:0.9975,pick:0.13},eg:{dur:3.6,br:0.4,dec:0.9984,pick:0.22},dg:{dur:4.5,br:0.5,dec:0.9993,pick:0.18},bs:{dur:3,br:0.25,dec:0.9988,pick:0.25},hp:{dur:3,br:0.35,dec:0.9978,pick:0.5}}[kind];
+    const len=Math.floor(sr*P.dur),buf=a.createBuffer(1,len,sr),y=buf.getChannelData(0),dec=Math.pow(P.dec,440/Math.max(60,f)*0.35+0.65);
+    let lp=0;const ex=new Float32Array(N+1);for(let i=0;i<=N;i++){lp+=(Math.random()*2-1-lp)*P.br;ex[i]=lp;}
+    const pk=Math.max(1,Math.round(N*P.pick));for(let i=0;i<=N;i++){y[i]=ex[i]-(i>=pk?ex[i-pk]:0)*0.9;}
+    for(let i=N+1;i<len;i++)y[i]=dec*0.5*(y[i-N]+y[i-N-1]);
+    let pkv=0;for(let i=0;i<Math.min(len,sr);i++)pkv=Math.max(pkv,Math.abs(y[i]));if(pkv>0)for(let i=0;i<len;i++)y[i]/=pkv;
+    b={buf,f0:sr/(N+0.5)};ksCache.set(key,b);if(ksCache.size>400)ksCache.delete(ksCache.keys().next().value);}
+  const src=a.createBufferSource();src.buffer=b.buf;src.playbackRate.value=f/b.f0;return src;}
+/* ゲーム機風:16bit機のサンプル音源っぽく(こもった音+ちょっとザラつき+やまびこ) */
+let sfcEchoNode=null;
+function sfcEcho(a){if(sfcEchoNode&&sfcEchoNode.context===a)return sfcEchoNode;const i=a.createGain(),d=a.createDelay(1),fb=a.createGain(),lp=a.createBiquadFilter(),o=a.createGain();
+  d.delayTime.value=0.24;fb.gain.value=0.42;lp.type="lowpass";lp.frequency.value=2800;o.gain.value=0.38;i.connect(d);d.connect(lp);lp.connect(fb);fb.connect(d);lp.connect(o);o.connect(comp);return sfcEchoNode=i;}
+const crushCurves={};
+function crushWs(a,bits){const ws=a.createWaveShaper();if(!crushCurves[bits]){const q=Math.pow(2,bits-1),c=new Float32Array(4096);for(let i=0;i<4096;i++){const x=i/2047.5-1;c[i]=Math.round(x*q)/q;}crushCurves[bits]=c;}ws.curve=crushCurves[bits];return ws;}
+/* こもらせて少しザラつかせる出口(dest へつなぐ)。echo=true でやまびこも */
+function lofiOut(a,env,cut,bits,echo){const lp=a.createBiquadFilter();lp.type="lowpass";lp.frequency.value=cut;lp.Q.value=0.6;const pre=a.createGain(),post=a.createGain();pre.gain.value=0.4;post.gain.value=2.5;const ws=crushWs(a,bits);lp.connect(pre);pre.connect(ws);ws.connect(post);post.connect(env);if(echo){const eg=a.createGain();eg.gain.value=1;env.connect(eg);eg.connect(sfcEcho(a));}return lp;}
 /* 音色ごとの作り方:{env(音量), srcs(止める音源), rel(離したときの消え方), rev(響きの量)} を返す */
 const INST={
   piano(a,f,v,t,env){ /* 倍音ごとに減衰の速さを変えた加算合成。弦2〜3本のうなり、倍音のずれ(インハーモニシティ)、ハンマーの打点とノイズ */
@@ -750,6 +784,63 @@ const INST={
     const pk=0.32*Math.pow(v,1.1);
     env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(pk,t+0.002);env.gain.setTargetAtTime(0.0001,t+0.004,tau);
     return {srcs:s,rel:0.08,rev:1,end:t+tau*7};
+  },
+  agtr(a,f,v,t,env){ /* アコースティックギター:はじいた弦+ボディの響き */
+    const src=ksBuf(a,f,"ag"),body=a.createBiquadFilter(),b2=a.createBiquadFilter(),lp=a.createBiquadFilter();
+    body.type="peaking";body.frequency.value=110;body.Q.value=1.2;body.gain.value=5;b2.type="peaking";b2.frequency.value=2400;b2.Q.value=0.8;b2.gain.value=3;lp.type="lowpass";lp.frequency.value=Math.min(12000,3500+7000*v);
+    src.connect(body);body.connect(b2);b2.connect(lp);lp.connect(env);src.start(t);
+    env.gain.setValueAtTime(0.66*Math.pow(v,1.1),t);
+    return {srcs:[src],rel:0.09,rev:0.8,end:t+3.3};
+  },
+  egtr(a,f,v,t,env){ /* エレキギター(クリーン):少し丸く、ゆるいコーラス */
+    const src=ksBuf(a,f,"eg"),lp=a.createBiquadFilter(),hp=a.createBiquadFilter();lp.type="lowpass";lp.frequency.value=Math.min(6000,2400+2600*v);lp.Q.value=0.9;hp.type="highpass";hp.frequency.value=90;
+    src.connect(hp);hp.connect(lp);lp.connect(env);
+    const lfo=a.createOscillator(),lg=a.createGain();lfo.frequency.value=0.9;lg.gain.value=7;lfo.connect(lg);lg.connect(src.detune);lfo.start(t);lfo._noBend=true;src.start(t);
+    env.gain.setValueAtTime(0.63*Math.pow(v,1.1),t);
+    return {srcs:[src,lfo],rel:0.07,rev:0.9,end:t+3.7};
+  },
+  dgtr(a,f,v,t,env){ /* ディストーションギター:長く伸びる弦 → 歪み → アンプのキャビネットっぽいフィルター。パワーコード向き */
+    const src=ksBuf(a,f,"dg"),pre=a.createGain(),ws=a.createWaveShaper(),hp=a.createBiquadFilter(),mid=a.createBiquadFilter(),lp=a.createBiquadFilter();
+    pre.gain.value=14*(0.5+0.5*v);ws.curve=dsCurveP(60);ws.oversample="4x";hp.type="highpass";hp.frequency.value=100;mid.type="peaking";mid.frequency.value=800;mid.Q.value=0.9;mid.gain.value=-4;lp.type="lowpass";lp.frequency.value=4200;lp.Q.value=1.1;
+    src.connect(pre);pre.connect(ws);ws.connect(hp);hp.connect(mid);mid.connect(lp);lp.connect(env);src.start(t);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.13,t+0.004);env.gain.setTargetAtTime(0.1,t+0.05,0.8);
+    return {srcs:[src],rel:0.06,rev:0.6,end:t+4.6};
+  },
+  ebass(a,f,v,t,env){ /* エレキベース(指弾き) */
+    const src=ksBuf(a,f,"bs"),lp=a.createBiquadFilter(),lo=a.createBiquadFilter();lp.type="lowpass";lp.frequency.value=Math.min(3000,900+1600*v);lp.Q.value=0.8;lo.type="lowshelf";lo.frequency.value=120;lo.gain.value=4;
+    src.connect(lo);lo.connect(lp);lp.connect(env);src.start(t);
+    env.gain.setValueAtTime(0.55*Math.pow(v,1.05),t);
+    return {srcs:[src],rel:0.05,rev:0.2,end:t+3.1};
+  },
+  sfcstr(a,f,v,t,env){ /* SFC風ストリングス:こもったノコギリ波+ビブラート+やまびこ */
+    const out=lofiOut(a,env,3200,9,true),w=pwave("sfcstr",[1,0.55,0.4,0.3,0.24,0.18,0.14,0.1,0.07,0.05]);
+    const s=[osc(a,w,f,t,out,-7),osc(a,w,f,t,out,7)];
+    const lfo=a.createOscillator(),lg=a.createGain();lfo.frequency.value=5.2;lg.gain.setValueAtTime(0,t);lg.gain.linearRampToValueAtTime(12,t+0.6);lfo.connect(lg);s.forEach(o=>lg.connect(o.detune));lfo.start(t);lfo._noBend=true;s.push(lfo);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.17*(0.6+0.4*v),t+0.12);
+    return {srcs:s,rel:0.25,rev:0.4};
+  },
+  sfcbrass(a,f,v,t,env){ /* SFC風ブラス:「パーッ」と明るく、すぐ少し落ち着く */
+    const out=lofiOut(a,env,3600,9,true),w=pwave("sfcbrass",[1,0.8,0.6,0.5,0.4,0.3,0.22,0.15,0.1]);
+    const s=[osc(a,w,f,t,out,-4),osc(a,w,f,t,out,4)];s.forEach(o=>{o.frequency.setValueAtTime(f*0.97,t);o.frequency.exponentialRampToValueAtTime(f,t+0.04);});
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.22*(0.6+0.4*v),t+0.03);env.gain.setTargetAtTime(0.15*(0.6+0.4*v),t+0.05,0.2);
+    return {srcs:s,rel:0.1,rev:0.4};
+  },
+  sfcharp(a,f,v,t,env){ /* SFC風ハープ:RPGのフィールドっぽいポロロン */
+    const out=lofiOut(a,env,3000,9,true),src=ksBuf(a,f,"hp");src.connect(out);src.start(t);
+    env.gain.setValueAtTime(0.56*Math.pow(v,1.05),t);
+    return {srcs:[src],rel:0.3,rev:0.5,end:t+3.1};
+  },
+  pschoir(a,f,v,t,env){ /* PS風クワイア:ノコギリ波を「アー」の口の形(フォルマント)に通した合唱。深いリバーブ */
+    const out=lofiOut(a,env,6000,12,false),mix=a.createGain();mix.gain.value=1;mix.connect(out);
+    [[800,6,1],[1150,7,0.6],[2900,9,0.25]].forEach(([fr,q,g])=>{const b=a.createBiquadFilter();b.type="bandpass";b.frequency.value=fr;b.Q.value=q;const gg=a.createGain();gg.gain.value=g*3;b.connect(gg);gg.connect(mix);mix._in=(mix._in||[]).concat(b);});
+    const s=[-10,0,10].map(d=>{const o=a.createOscillator();o.type="sawtooth";o.frequency.value=f;o.detune.value=d;mix._in.forEach(b=>o.connect(b));o.start(t);return o;});
+    const lfo=a.createOscillator(),lg=a.createGain();lfo.frequency.value=4.6;lg.gain.setValueAtTime(0,t);lg.gain.linearRampToValueAtTime(10,t+0.7);lfo.connect(lg);s.forEach(o=>lg.connect(o.detune));lfo.start(t);lfo._noBend=true;s.push(lfo);
+    env.gain.setValueAtTime(0.0001,t);env.gain.linearRampToValueAtTime(0.2*(0.6+0.4*v),t+0.3);
+    return {srcs:s,rel:0.5,rev:2.2};
+  },
+  pspiano(a,f,v,t,env){ /* PS風ピアノ:ピアノを少しこもらせてザラつかせ、響きを多めに */
+    const g=a.createGain(),out=lofiOut(a,env,7000,11,false);g.connect(out);const vc=INST.piano(a,f,v,t,g);
+    env.gain.setValueAtTime(0.9,t);vc.rev=1.9;return vc;
   }
 };
 function noteOn(m,vel){
@@ -911,6 +1002,12 @@ const KEYLAB={0:"C",11:"D♭",10:"D",9:"E♭",8:"E",7:"F",6:"G♭",5:"G",4:"A♭
 segInit($("nameSeg"),"n",names,v=>{names=v;store.set("names",names);build();show();});
 segInit($("lblSeg"),"l",lbl,v=>{lbl=v;store.set("pianoLbl",lbl);build();});
 segInit($("instSeg"),"i",inst,v=>{inst=v;store.set("pianoInst",inst);smpView();$("chipRow").hidden=inst!=="chip";});
+/* 音色のジャンル:選んだジャンルの音色だけ並べる */
+if(!document.querySelector('#instSeg [data-i="'+inst+'"]'))inst="piano";
+let instCat=(document.querySelector('#instSeg [data-i="'+inst+'"]')||{dataset:{c:"key"}}).dataset.c;
+function instCatView(){[...$("instCat").children].forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.c===instCat)));[...$("instSeg").children].forEach(b=>b.hidden=b.dataset.c!==instCat);}
+$("instCat").addEventListener("click",e=>{const b=e.target.closest("button[data-c]");if(!b)return;instCat=b.dataset.c;instCatView();});
+instCatView();
 let chipWave=store.get("pianoChipWave","sq25");if(!["sq50","sq25","sq12","tri","saw"].includes(chipWave))chipWave="sq25";
 segInit($("chipSeg"),"w",chipWave,v=>{chipWave=v;store.set("pianoChipWave",v);});$("chipRow").hidden=inst!=="chip";
 
