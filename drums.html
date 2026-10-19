@@ -525,12 +525,12 @@ const SND={
   rim(t,v){const bp=filt("bandpass",1150,3),lp=filt("lowpass",2600,0.5);tone("triangle",1150,t,0.09,bp);tone("square",430,t,0.06,bp);bp.connect(lp);lp.connect(vca(t,0.36*v,0.014));},
   snap(t,v){const bp=filt("bandpass",2600,3);noise(t,0.08,bp);bp.connect(vca(t,0.9*v,0.012));tone("sine",1900,t,0.04,vca(t,0.15*v,0.008));},
   chh(t,v){if(ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setTargetAtTime(0.0001,t,0.006);ohhGain=null;} /* クローズでオープンを止める */
-    const hp=filt("highpass",7500),bp=filt("bandpass",10000,1);
+    const hp=filt("highpass",7000),bp=filt("bandpass",8500,0.8),lp=filt("lowpass",10000,0.5);
     if(kit==="909"){noise(t,0.2,hp);}else metal(t,0.2,hp);
-    hp.connect(bp);bp.connect(vca(t,(kit==="909"?0.35:0.28)*v,0.022));},
-  ohh(t,v){const hp=filt("highpass",7000),bp=filt("bandpass",10000,0.8);
+    hp.connect(bp);bp.connect(lp);lp.connect(vca(t,(kit==="909"?0.3:0.24)*v,0.022));},
+  ohh(t,v){const hp=filt("highpass",6500),bp=filt("bandpass",8500,0.7);
     if(kit==="909"){noise(t,1.2,hp);metal(t,1.2,hp,1.6);}else metal(t,1.2,hp);
-    hp.connect(bp);const g=vca(t,(kit==="909"?0.3:0.26)*v,0.17);bp.connect(g);ohhGain=g;},
+    const lp=filt("lowpass",10000,0.5);hp.connect(bp);bp.connect(lp);const g=vca(t,(kit==="909"?0.26:0.22)*v,0.17);lp.connect(g);ohhGain=g;},
   ride(t,v){ /* 金属音は高域を削って控えめに、ノイズのシャーッで包む(丸めの音) */
     const mh=filt("highpass",2400),ml=filt("lowpass",kit==="909"?7000:6000,0.5),mg=ac.createGain();mg.gain.value=0.45;
     metal(t,2.5,mh,kit==="909"?2.2:1.8);mh.connect(ml);ml.connect(mg);mg.connect(vca(t,0.065*v,0.55,0.003));
@@ -545,7 +545,7 @@ const SND={
     [0,0.006,0.015,0.027].forEach((d,i)=>{const a=v*(i?0.6-i*0.08:1),tt=t+d;
       const hp=filt("highpass",5000),bp=filt("bandpass",9000,0.8);noise(tt,0.2,hp);hp.connect(bp);bp.connect(vca(tt,0.12*a,0.035+0.012*i,0.0015));
       R.forEach(f=>{const b=filt("bandpass",f*(1+(Math.random()-0.5)*0.04),18);noise(tt,0.35,b);b.connect(vca(tt,0.22*a,0.06+Math.random()*0.03,0.0015));});});},
-  shk(t,v){const bp=filt("bandpass",6500,1.5);noise(t,0.15,bp);bp.connect(vca(t,0.45*v,0.025,0.012));},
+  shk(t,v){const bp=filt("bandpass",6000,1.5);noise(t,0.15,bp);bp.connect(vca(t,0.38*v,0.025,0.012));},
   cow(t,v){ /* メトロノームと同じカウベル */
     const g=ac.createGain(),amp=0.7*v;const o1=ac.createOscillator(),o2=ac.createOscillator(),bp=filt("bandpass",900,1.5);o1.type=o2.type="square";o1.frequency.value=540;o2.frequency.value=800;
     g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(amp*0.5,t+0.002);g.gain.exponentialRampToValueAtTime(0.0001,t+0.18);
@@ -576,15 +576,15 @@ const CHIP={
   clap(t,v){[0,0.016,0.032].forEach(d=>cNz(t+d,0.03,0.6,"long",cEnv(t+d,0.42*v,0.03)));cNz(t+0.05,0.14,0.6,"long",cEnv(t+0.05,0.3*v,0.14));},
   rim(t,v){cOsc("p12",t,0.05,950,900,cEnv(t,0.32*v,0.05));},
   snap(t,v){cNz(t,0.06,0.9,"long",cEnv(t,0.4*v,0.06));},
-  chh(t,v){if(ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setValueAtTime(0,t);ohhGain=null;}cNz(t,0.06,0.7,"short",cLp(7000,cEnv(t,0.17*v,0.06)));},
-  ohh(t,v){const g=cEnv(t,0.14*v,0.4);cNz(t,0.4,0.7,"short",cLp(7000,g));ohhGain=g;},
-  ride(t,v){cNz(t,0.9,0.45,"short",cLp(5500,cEnv(t,0.065*v,0.9)));cOsc("p12",t,0.35,1900,1900,cLp(4000,cEnv(t,0.025*v,0.35)));},
-  crash(t,v){cNz(t,1.3,0.55,"long",cLp(6500,cEnv(t,0.16*v,1.3)));},
+  chh(t,v){if(ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setValueAtTime(0,t);ohhGain=null;}cNz(t,0.06,0.5,"short",cLp(4800,cEnv(t,0.13*v,0.06)));},
+  ohh(t,v){const g=cEnv(t,0.1*v,0.4);cNz(t,0.4,0.5,"short",cLp(4800,g));ohhGain=g;},
+  ride(t,v){cNz(t,0.9,0.35,"short",cLp(4200,cEnv(t,0.05*v,0.9)));cOsc("p12",t,0.35,1900,1900,cLp(3200,cEnv(t,0.018*v,0.35)));},
+  crash(t,v){cNz(t,1.3,0.4,"long",cLp(4800,cEnv(t,0.12*v,1.3)));},
   tomh(t,v){cOsc("tri",t,0.28,400,220,cEnv(t,0.75*v,0.28));},
   tomm(t,v){cOsc("tri",t,0.3,300,165,cEnv(t,0.75*v,0.3));},
   toml(t,v){cOsc("tri",t,0.34,220,120,cEnv(t,0.75*v,0.34));},
-  tamb(t,v){[0,0.035].forEach((d,i)=>cNz(t+d,0.09,1,"long",cEnv(t+d,(i?0.18:0.28)*v,0.09)));},
-  shk(t,v){cNz(t,0.08,1,"long",cEnv(t,0.24*v,0.08));},
+  tamb(t,v){[0,0.035].forEach((d,i)=>cNz(t+d,0.09,0.6,"long",cLp(5500,cEnv(t+d,(i?0.13:0.2)*v,0.09))));},
+  shk(t,v){cNz(t,0.08,0.6,"long",cLp(5500,cEnv(t,0.17*v,0.08)));},
   cow(t,v){const g=cEnv(t,0.26*v,0.14);cOsc("p50",t,0.14,540,540,g);cOsc("p50",t,0.14,800,800,g);}
 };
 const snd=id=>kit==="chip"&&CHIP[id]?CHIP[id]:SND[id];

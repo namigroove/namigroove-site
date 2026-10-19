@@ -233,7 +233,8 @@ footer a{color:var(--sea)}
 .jm-beat i.on{background:var(--sea);border-color:var(--sea)}
 .jm-grid{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center}
 .jm-mix{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;margin-top:12px}
-.mixc{display:flex;flex-direction:column;align-items:center;gap:2px}.mixc input.mixv{width:84px;margin:2px 0 0;accent-color:var(--sea)}
+.mixc{display:flex;flex-direction:column;align-items:center;gap:2px}.mixs{font-size:12px;padding:2px 6px;margin-top:4px}
+.mixc input.mixv{width:84px;margin:2px 0 0;accent-color:var(--sea)}
 .chk{display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer}
 .bpm-box{display:flex;align-items:center;gap:8px;touch-action:none;user-select:none}
 .bpm-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize}
@@ -321,7 +322,7 @@ header.top .logo{flex:none}
       <label class="ctl">1コード <select id="jBars" class="sel"><option value="1">1小節</option><option value="2">2小節</option><option value="0.5">2拍</option></select></label>
     </div>
     <div class="jm-mix">
-      <div class="mixc"><label class="chk"><input type="checkbox" id="mKeys" checked> 鍵盤</label><input type="range" class="mixv" data-i="0" min="0" max="1.5" step="0.05" value="1" aria-label="鍵盤の音量"></div>
+      <div class="mixc"><label class="chk"><input type="checkbox" id="mKeys" checked> 鍵盤</label><input type="range" class="mixv" data-i="0" min="0" max="1.5" step="0.05" value="1" aria-label="鍵盤の音量"><select id="jKeysSnd" class="sel mixs" aria-label="鍵盤の音"><option value="piano">ピアノ</option><option value="ep">エレピ</option></select></div>
       <div class="mixc"><label class="chk"><input type="checkbox" id="mBass" checked> ベース</label><input type="range" class="mixv" data-i="1" min="0" max="1.5" step="0.05" value="1" aria-label="ベースの音量"></div>
       <div class="mixc"><label class="chk"><input type="checkbox" id="mDrums" checked> ドラム</label><input type="range" class="mixv" data-i="2" min="0" max="1.5" step="0.05" value="1" aria-label="ドラムの音量"></div>
     </div>
@@ -426,31 +427,44 @@ const SHK=[2,4,6,7,9,11];
 const chName=c=>{const r=pc(c[0]+key),N=SHK.includes(key)?SHP:KEYN;return (c[1]==="dim7"&&[1,3,8].includes(r)?SHP:N)[r]+c[1]+(c[2]!=null?"/"+N[pc(c[2]+key)]:"");};
 
 /* ---------- 音 ---------- */
-let ac=null,out=null,noise=null,cp=null,busK=null,busB=null,busD=null;
+let ac=null,out=null,noise=null,cp=null,busK=null,busB=null,busD=null,busM=null;
 /* パートごとの音量(0〜1.5) */
 const VOLK=["jamVolK","jamVolB","jamVolD"],vols=VOLK.map(k=>{const v=+store.get(k,1);return v>=0&&v<=1.5?v:1;});
-function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC({latencyHint:"interactive"});cp=ac.createDynamicsCompressor();cp.threshold.value=-12;cp.ratio.value=3;cp.attack.value=0.003;out=ac.createGain();out.gain.value=0.85;out.connect(cp);cp.connect(ac.destination);[busK,busB,busD]=vols.map(v=>{const g=ac.createGain();g.gain.value=v;g.connect(out);return g;});
+function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC({latencyHint:"interactive"});cp=ac.createDynamicsCompressor();cp.threshold.value=-12;cp.ratio.value=3;cp.attack.value=0.003;out=ac.createGain();out.gain.value=0.85;out.connect(cp);cp.connect(ac.destination);[busK,busB,busD]=vols.map(v=>{const g=ac.createGain();g.gain.value=v;g.connect(out);return g;});busM=ac.createBiquadFilter();busM.type="lowpass";busM.frequency.value=7800;busM.Q.value=0.5;busM.connect(busD); /* 金物は高域を丸めてからドラムへ */
   noise=ac.createBuffer(1,ac.sampleRate,ac.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;}
   if(ac.state!=="running")ac.resume();return ac;}
 const env=(t,pk,dec,att)=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+(att||0.002));g.gain.setTargetAtTime(0.0001,t+(att||0.002),dec);g.connect(busD);return g;};
+const envM=(t,pk,dec,att)=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+(att||0.002));g.gain.setTargetAtTime(0.0001,t+(att||0.002),dec);g.connect(busM);return g;};
 const nz=(t,dur,dest,type,f,q)=>{const s=ac.createBufferSource(),b=ac.createBiquadFilter();s.buffer=noise;b.type=type;b.frequency.value=f;if(q)b.Q.value=q;s.connect(b);b.connect(dest);s.start(t,Math.random()*0.5);s.stop(t+dur);};
 const DR={
  k(t,v){const o=ac.createOscillator();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(48,t+0.09);o.connect(env(t,0.9*v,0.18));o.start(t);o.stop(t+0.8);},
  s(t,v){const o=ac.createOscillator();o.type="triangle";o.frequency.setValueAtTime(210,t);o.frequency.exponentialRampToValueAtTime(180,t+0.03);o.connect(env(t,0.25*v,0.05));o.start(t);o.stop(t+0.3);nz(t,0.3,env(t,0.32*v,0.07),"highpass",1800);},
- h(t,v){nz(t,0.08,env(t,0.11*v,0.02),"highpass",7500);},
- o(t,v){nz(t,0.4,env(t,0.09*v,0.13),"highpass",7000);},
+ h(t,v){nz(t,0.08,envM(t,0.09*v,0.02),"highpass",6500);},
+ o(t,v){nz(t,0.4,envM(t,0.075*v,0.13),"highpass",6000);},
  r(t,v){ /* リム(クロススティック):高域を抑えた丸めの音 */const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=2600;lp.Q.value=0.5;lp.connect(env(t,0.2*v,0.014));const b=ac.createBiquadFilter();b.type="bandpass";b.frequency.value=1150;b.Q.value=3;b.connect(lp);[["triangle",1150,0.09],["square",430,0.06]].forEach(a=>{const o=ac.createOscillator();o.type=a[0];o.frequency.value=a[1];o.connect(b);o.start(t);o.stop(t+a[2]);});},
  c(t,v){[0,0.01,0.02].forEach(d=>nz(t+d,0.03,env(t+d,0.4*v,0.006),"bandpass",1150,1.2));nz(t+0.03,0.3,env(t+0.03,0.3*v,0.06),"bandpass",1150,1.2);},
- y(t,v){ /* ライド:高域を削った丸めの音 */const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=5000;lp.Q.value=0.4;lp.connect(env(t,0.048*v,0.32,0.004));nz(t,0.9,lp,"bandpass",4000,0.6);const o=ac.createOscillator();o.frequency.value=2350;o.connect(env(t,0.007*v,0.2,0.003));o.start(t);o.stop(t+0.8);},
- f(t,v){nz(t,0.06,env(t,0.07*v,0.015),"bandpass",3500,1);},
- x(t,v){const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=9000;lp.connect(env(t,0.07*v,0.55,0.003));nz(t,1.6,lp,"highpass",4200);},
- b(t,v){nz(t,0.12,env(t,0.06*v,0.04,0.003),"bandpass",8500,1.5);},
+ y(t,v){ /* ライド:高域を削った丸めの音 */const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=5000;lp.Q.value=0.4;lp.connect(envM(t,0.048*v,0.32,0.004));nz(t,0.9,lp,"bandpass",4000,0.6);const o=ac.createOscillator();o.frequency.value=2350;o.connect(env(t,0.007*v,0.2,0.003));o.start(t);o.stop(t+0.8);},
+ f(t,v){nz(t,0.06,envM(t,0.06*v,0.015),"bandpass",3500,1);},
+ x(t,v){const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=9000;lp.connect(envM(t,0.06*v,0.55,0.003));nz(t,1.6,lp,"highpass",4200);},
+ b(t,v){nz(t,0.12,envM(t,0.05*v,0.04,0.003),"bandpass",7000,1.5);},
  w(t,v){const bp=ac.createBiquadFilter();bp.type="bandpass";bp.frequency.value=900;bp.Q.value=2.5;bp.connect(env(t,0.22*v,0.07));[562,845].forEach(f=>{const o=ac.createOscillator();o.type="square";o.frequency.value=f;o.connect(bp);o.start(t);o.stop(t+0.4);});},
- z(t,v){nz(t,0.07,env(t,0.05*v,0.02,0.008),"highpass",5500);},
+ z(t,v){nz(t,0.07,envM(t,0.042*v,0.02,0.008),"highpass",5000);},
  t(t,v){const o=ac.createOscillator();o.frequency.setValueAtTime(205,t);o.frequency.exponentialRampToValueAtTime(185,t+0.08);o.connect(env(t,0.32*v,0.12));o.start(t);o.stop(t+0.6);nz(t,0.02,env(t,0.06*v,0.008),"bandpass",2500,1);},
  u(t,v){const o=ac.createOscillator();o.frequency.setValueAtTime(320,t);o.frequency.exponentialRampToValueAtTime(295,t+0.06);o.connect(env(t,0.28*v,0.09));o.start(t);o.stop(t+0.5);nz(t,0.02,env(t,0.06*v,0.008),"bandpass",3000,1);}
 };
-function keyNote(m,t,dur,lv){const f=440*Math.pow(2,(m-69)/12),car=ac.createOscillator(),mod=ac.createOscillator(),mg=ac.createGain(),g=ac.createGain();
+/* 鍵盤の音:ピアノはピアノのページと同じ録音(Salamander Grand Piano/Alexander Holm/CC BY 3.0)。読み込むまではエレピで鳴らす */
+const PS_BASE="https://namigroove.github.io/namigroove-site/audio/piano/";
+const PS_N=(()=>{const o=[[21,"A0"]];for(let oc=1;oc<=7;oc++)["C","Ds","Fs","A"].forEach((x,i)=>o.push([12*(oc+1)+i*3,x+oc]));o.push([108,"C8"]);return o;})();
+const psBuf={};let psLoading=false,keysSnd=store.get("jamKeysSnd","piano")==="ep"?"ep":"piano";
+function psLoad(){if(psLoading)return;psLoading=true;let dc;try{dc=new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(2,1,44100);}catch(e){return;}
+  PS_N.filter(([m])=>m>=33&&m<=96).sort((x,y)=>Math.abs(x[0]-60)-Math.abs(y[0]-60)).forEach(([m,nm])=>{fetch(PS_BASE+nm+".mp3").then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();})
+    .then(ab=>new Promise((res,rej)=>{const p=dc.decodeAudioData(ab,res,rej);if(p&&p.catch)p.catch(rej);})).then(b=>{psBuf[m]=b;}).catch(()=>{});});}
+function psNear(m){let best=null,d=9;for(const k in psBuf){const dd=Math.abs(k-m);if(dd<d){d=dd;best=+k;}}return d<=3.5?best:null;}
+function keyNote(m,t,dur,lv){const k=keysSnd==="piano"?psNear(m):null;if(k==null)return keyNoteEP(m,t,dur,lv);
+  const src=ac.createBufferSource(),lp=ac.createBiquadFilter(),g=ac.createGain(),r=Math.pow(2,(m-k)/12);src.buffer=psBuf[k];src.playbackRate.value=r;
+  lp.type="lowpass";lp.frequency.value=7000;lp.Q.value=0.4;src.connect(lp);lp.connect(g);g.connect(busK);
+  g.gain.setValueAtTime(3.6*lv,t);g.gain.setValueAtTime(3.6*lv,t+dur);g.gain.setTargetAtTime(0.0001,t+dur,0.12);src.start(t);src.stop(t+dur+1);}
+function keyNoteEP(m,t,dur,lv){const f=440*Math.pow(2,(m-69)/12),car=ac.createOscillator(),mod=ac.createOscillator(),mg=ac.createGain(),g=ac.createGain();
   car.type=mod.type="sine";car.frequency.value=f;mod.frequency.value=f;mg.gain.setValueAtTime(f*1.0,t);mg.gain.setTargetAtTime(f*0.1,t,0.25);mod.connect(mg);mg.connect(car.frequency);
   g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(lv,t+0.004);g.gain.setTargetAtTime(lv*0.5,t+0.01,0.3);g.gain.setTargetAtTime(0.0001,t+dur,0.12);
   car.connect(g);g.connect(busK);car.start(t);mod.start(t);car.stop(t+dur+1);mod.stop(t+dur+1);}
@@ -543,6 +557,7 @@ function bpmTyping(v,out,get,set){let y0=null,moved=false;v.tabIndex=0;v.setAttr
 {const v=document.querySelector("#jBpmBox .bpm-v");let y0=null,b0=0;v.addEventListener("pointerdown",e=>{y0=e.clientY;b0=bpm;v.setPointerCapture(e.pointerId);});
  v.addEventListener("pointermove",e=>{if(y0!=null)setBpm(b0+(y0-e.clientY)/4);});["pointerup","pointercancel"].forEach(t=>v.addEventListener(t,()=>{y0=null;}));}
 bpmTyping(document.querySelector("#jBpmBox .bpm-v"),$("jBpm"),()=>bpm,setBpm);
+$("jKeysSnd").value=keysSnd;$("jKeysSnd").addEventListener("change",()=>{keysSnd=$("jKeysSnd").value;store.set("jamKeysSnd",keysSnd);if(keysSnd==="piano")psLoad();});if(keysSnd==="piano")setTimeout(psLoad,1200);
 document.querySelectorAll(".mixv").forEach(r=>{const i=+r.dataset.i;r.value=String(vols[i]);r.title=Math.round(vols[i]*100)+"%";
   r.addEventListener("input",()=>{vols[i]=+r.value;r.title=Math.round(vols[i]*100)+"%";store.set(VOLK[i],vols[i]);const b=[busK,busB,busD][i];if(b)b.gain.setTargetAtTime(vols[i],ac.currentTime,0.02);});});
 $("jBars").addEventListener("change",()=>{bars=+$("jBars").value;save();if(playing){stop();start();}});
