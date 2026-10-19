@@ -228,6 +228,11 @@ footer a{color:var(--sea)}
 .jm-chips span{font:500 16px var(--f-body);padding:8px 14px;border-radius:12px;background:var(--wash);transition:background .1s,color .1s}
 .jm-chips span.hf{font-size:13px;padding:8px 9px;border-radius:9px}
 .jm-chips span.now{background:var(--coral);color:#fff}
+.jm-kb{margin:0 0 14px}.jm-kb svg{display:block;width:100%;height:46px}
+.jm-kb rect.w{fill:#fff;stroke:var(--line)}.jm-kb rect.b{fill:#1b2440}.jm-kb text{font-size:6px;fill:#8a96b8;text-anchor:middle}
+.jm-kb rect.ok{fill:var(--coral)}.jm-kb rect.ob{fill:var(--sea)}
+.octc{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:11px}.octc b{font-weight:400;min-width:4.2em;text-align:center;font-variant-numeric:tabular-nums}
+.octc button{width:24px;height:22px;padding:0;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;font:inherit;line-height:1}
 .jm-beat{display:flex;gap:10px;justify-content:center;margin:0 0 14px}
 .jm-beat i{width:14px;height:14px;border-radius:50%;background:var(--wash);border:2px solid var(--line)}
 .jm-beat i.on{background:var(--sea);border-color:var(--sea)}
@@ -307,6 +312,7 @@ header.top .logo{flex:none}
     <p class="jm-title" id="jTitle">—</p>
     <div class="jm-chips" id="jChips"></div>
     <div class="jm-beat" id="jBeat" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="jm-kb" id="jKb"></div>
     <div class="row" style="gap:10px">
       <button class="go" type="button" id="jPlay">▶ ジャム開始</button>
       <button class="btn" type="button" id="jMidi">⬇ MIDI(ドラム入り)</button>
@@ -322,8 +328,8 @@ header.top .logo{flex:none}
       <label class="ctl">1コード <select id="jBars" class="sel"><option value="1">1小節</option><option value="2">2小節</option><option value="0.5">2拍</option></select></label>
     </div>
     <div class="jm-mix">
-      <div class="mixc"><label class="chk"><input type="checkbox" id="mKeys" checked> 鍵盤</label><input type="range" class="mixv" data-i="0" min="0" max="1.5" step="0.05" value="1" aria-label="鍵盤の音量"><select id="jKeysSnd" class="sel mixs" aria-label="鍵盤の音"><option value="piano">ピアノ</option><option value="ep">エレピ</option></select></div>
-      <div class="mixc"><label class="chk"><input type="checkbox" id="mBass" checked> ベース</label><input type="range" class="mixv" data-i="1" min="0" max="1.5" step="0.05" value="1" aria-label="ベースの音量"></div>
+      <div class="mixc"><label class="chk"><input type="checkbox" id="mKeys" checked> 鍵盤</label><input type="range" class="mixv" data-i="0" min="0" max="1.5" step="0.05" value="1" aria-label="鍵盤の音量"><span class="octc" data-o="0"><button type="button" data-d="-1" aria-label="鍵盤を1オクターブ下げる">−</button><b>oct ±0</b><button type="button" data-d="1" aria-label="鍵盤を1オクターブ上げる">＋</button></span><select id="jKeysSnd" class="sel mixs" aria-label="鍵盤の音"><option value="piano">ピアノ</option><option value="ep">エレピ</option></select></div>
+      <div class="mixc"><label class="chk"><input type="checkbox" id="mBass" checked> ベース</label><input type="range" class="mixv" data-i="1" min="0" max="1.5" step="0.05" value="1" aria-label="ベースの音量"><span class="octc" data-o="1"><button type="button" data-d="-1" aria-label="ベースを1オクターブ下げる">−</button><b>oct ±0</b><button type="button" data-d="1" aria-label="ベースを1オクターブ上げる">＋</button></span></div>
       <div class="mixc"><label class="chk"><input type="checkbox" id="mDrums" checked> ドラム</label><input type="range" class="mixv" data-i="2" min="0" max="1.5" step="0.05" value="1" aria-label="ドラムの音量"></div>
     </div>
   </section>
@@ -427,18 +433,21 @@ const SHK=[2,4,6,7,9,11];
 const chName=c=>{const r=pc(c[0]+key),N=SHK.includes(key)?SHP:KEYN;return (c[1]==="dim7"&&[1,3,8].includes(r)?SHP:N)[r]+c[1]+(c[2]!=null?"/"+N[pc(c[2]+key)]:"");};
 
 /* ---------- 音 ---------- */
-let ac=null,out=null,noise=null,cp=null,busK=null,busB=null,busD=null,busM=null;
+let ac=null,out=null,noise=null,cp=null,busK=null,busB=null,busD=null,busM=null,busS=null;
+/* オクターブ(鍵盤・ベース、−2〜+2) */
+const oct=[+store.get("jamOctK",0)||0,+store.get("jamOctB",0)||0].map(v=>Math.max(-2,Math.min(2,Math.round(v))));
 /* パートごとの音量(0〜1.5) */
 const VOLK=["jamVolK","jamVolB","jamVolD"],vols=VOLK.map(k=>{const v=+store.get(k,1);return v>=0&&v<=1.5?v:1;});
-function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC({latencyHint:"interactive"});cp=ac.createDynamicsCompressor();cp.threshold.value=-12;cp.ratio.value=3;cp.attack.value=0.003;out=ac.createGain();out.gain.value=0.85;out.connect(cp);cp.connect(ac.destination);[busK,busB,busD]=vols.map(v=>{const g=ac.createGain();g.gain.value=v;g.connect(out);return g;});busM=ac.createBiquadFilter();busM.type="lowpass";busM.frequency.value=7800;busM.Q.value=0.5;busM.connect(busD); /* 金物は高域を丸めてからドラムへ */
+function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC({latencyHint:"interactive"});cp=ac.createDynamicsCompressor();cp.threshold.value=-12;cp.ratio.value=3;cp.attack.value=0.003;out=ac.createGain();out.gain.value=0.85;out.connect(cp);cp.connect(ac.destination);[busK,busB,busD]=vols.map(v=>{const g=ac.createGain();g.gain.value=v;g.connect(out);return g;});busM=ac.createBiquadFilter();busM.type="lowpass";busM.frequency.value=7800;busM.Q.value=0.5;busM.connect(busD); /* 金物は高域を丸めてからドラムへ */busS=ac.createBiquadFilter();busS.type="lowpass";busS.frequency.value=6000;busS.Q.value=0.5;busS.connect(busD); /* スネアのザラつきも丸める */
   noise=ac.createBuffer(1,ac.sampleRate,ac.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;}
   if(ac.state!=="running")ac.resume();return ac;}
 const env=(t,pk,dec,att)=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+(att||0.002));g.gain.setTargetAtTime(0.0001,t+(att||0.002),dec);g.connect(busD);return g;};
 const envM=(t,pk,dec,att)=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+(att||0.002));g.gain.setTargetAtTime(0.0001,t+(att||0.002),dec);g.connect(busM);return g;};
+const envS=(t,pk,dec,att)=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+(att||0.002));g.gain.setTargetAtTime(0.0001,t+(att||0.002),dec);g.connect(busS);return g;};
 const nz=(t,dur,dest,type,f,q)=>{const s=ac.createBufferSource(),b=ac.createBiquadFilter();s.buffer=noise;b.type=type;b.frequency.value=f;if(q)b.Q.value=q;s.connect(b);b.connect(dest);s.start(t,Math.random()*0.5);s.stop(t+dur);};
 const DR={
  k(t,v){const o=ac.createOscillator();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(48,t+0.09);o.connect(env(t,0.9*v,0.18));o.start(t);o.stop(t+0.8);},
- s(t,v){const o=ac.createOscillator();o.type="triangle";o.frequency.setValueAtTime(210,t);o.frequency.exponentialRampToValueAtTime(180,t+0.03);o.connect(env(t,0.25*v,0.05));o.start(t);o.stop(t+0.3);nz(t,0.3,env(t,0.32*v,0.07),"highpass",1800);},
+ s(t,v){const o=ac.createOscillator();o.type="triangle";o.frequency.setValueAtTime(210,t);o.frequency.exponentialRampToValueAtTime(180,t+0.03);o.connect(env(t,0.25*v,0.05));o.start(t);o.stop(t+0.3);nz(t,0.3,envS(t,0.26*v,0.07),"highpass",1600);},
  h(t,v){nz(t,0.08,envM(t,0.09*v,0.02),"highpass",6500);},
  o(t,v){nz(t,0.4,envM(t,0.075*v,0.13),"highpass",6000);},
  r(t,v){ /* リム(クロススティック):高域を抑えた丸めの音 */const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=2600;lp.Q.value=0.5;lp.connect(env(t,0.2*v,0.014));const b=ac.createBiquadFilter();b.type="bandpass";b.frequency.value=1150;b.Q.value=3;b.connect(lp);[["triangle",1150,0.09],["square",430,0.06]].forEach(a=>{const o=ac.createOscillator();o.type=a[0];o.frequency.value=a[1];o.connect(b);o.start(t);o.stop(t+a[2]);});},
@@ -492,6 +501,7 @@ function stepEvents(abs){
       ev.push({type:"bass",note:n,len:4});}}
   else{(S.bass||[]).forEach(([p,w,l])=>{if(p===inBar&&p<len){const n=w==="R"?root:w==="5"?root+7:w==="8"?root+12:root+third;ev.push({type:"bass",note:n,len:Math.min(l,clen-sinceChord)});}});
     if(sinceChord===0&&!ev.some(e=>e.type==="bass")&&(S.bass||[]).length)ev.push({type:"bass",note:root,len:Math.min(clen,4)});}
+  ev.forEach(e=>{if(e.type==="keys")e.notes=e.notes.map(m=>m+12*oct[0]);if(e.type==="bass")e.note+=12*oct[1];});
   const G=GRP(S);return {ev,ci,sinceChord,beat:G.filter(g=>g<=inBar).length-1,isBeat:G.includes(inBar)||sinceChord===0,inBar};
 }
 const swingOff=(inBar,stepDur)=>{const S=ST[style];let d=0;if(S.sw&&inBar%4===2)d=S.sw*stepDur*0.667;if(S.sw16&&inBar%2===1)d+=S.sw*stepDur*0.33;return d;};
@@ -501,10 +511,21 @@ let playing=false,timer=0,nextT=0,abs=0;const vq=[];
 function sched(){const stepDur=60/bpm/4;
   while(nextT<ac.currentTime+0.12){const {ev,ci,beat,isBeat,inBar}=stepEvents(abs),t=nextT+swingOff(inBar,stepDur);
     ev.forEach(e=>{if(e.type==="d"&&$("mDrums").checked)DR[e.d](t,e.v);if(e.type==="keys"&&$("mKeys").checked)e.notes.forEach(m=>keyNote(m,t,e.len*stepDur,0.16/Math.sqrt(e.notes.length)*2));if(e.type==="bass"&&$("mBass").checked)bassNote(e.note,t,e.len*stepDur);});
+    ev.forEach(e=>{if(e.type==="keys"&&$("mKeys").checked)kvq.push({t,end:t+e.len*stepDur,ms:e.notes,p:"k"});if(e.type==="bass"&&$("mBass").checked)kvq.push({t,end:t+e.len*stepDur,ms:[e.note],p:"b"});});
     if(isBeat)vq.push({t:nextT,ci,beat});nextT+=stepDur;abs++;}}
-function draw(){if(!playing)return;while(vq.length&&vq[0].t<=ac.currentTime){const q=vq.shift();[...$("jChips").children].forEach((x,i)=>x.classList.toggle("now",i===q.ci));[...$("jBeat").children].forEach((x,i)=>x.classList.toggle("on",i===q.beat));}requestAnimationFrame(draw);}
+/* 鍵盤の表示:いま鳴っている鍵盤(コーラル)とベース(青)を光らせる */
+const kvq=[];let kbLo=0,kbHi=0;const kbEl=new Map();
+function kbBuild(){const lo=Math.min(24,24+12*oct[1]),hi=Math.max(84,84+12*oct[0]);kbLo=lo;kbHi=hi;kbEl.clear();
+  const BK=[1,3,6,8,10],wh=[];for(let m=lo;m<=hi;m++)if(!BK.includes(m%12))wh.push(m);const W=wh.length*10;
+  let v=`<svg viewBox="0 0 ${W} 46" preserveAspectRatio="none" aria-hidden="true">`;
+  wh.forEach((m,i)=>{v+=`<rect data-m="${m}" class="w" x="${i*10+0.5}" y="0.5" width="9" height="45" rx="1.5"/>`;if(m%12===0)v+=`<text x="${i*10+5}" y="42">${m/12-1}</text>`;});
+  for(let m=lo;m<=hi;m++)if(BK.includes(m%12)){const i=wh.indexOf(m-1);v+=`<rect data-m="${m}" class="b" x="${i*10+6.6}" y="0.5" width="6.8" height="28" rx="1"/>`;}
+  $("jKb").innerHTML=v+"</svg>";$("jKb").querySelectorAll("rect").forEach(r=>kbEl.set(+r.dataset.m,r));}
+function kbPaint(now){const on=new Map();for(let i=kvq.length-1;i>=0;i--){const q=kvq[i];if(q.end<now-0.05){kvq.splice(i,1);continue;}if(q.t<=now&&now<q.end)q.ms.forEach(m=>{const o=on.get(m);on.set(m,o&&o!==q.p?"kb":q.p);});}
+  kbEl.forEach((r,m)=>{const p=on.get(m)||"";if(r.dataset.p!==p){r.dataset.p=p;r.classList.toggle("ok",p==="k");r.classList.toggle("ob",p==="b"||p==="kb");}});}
+function draw(){if(!playing){kvq.length=0;kbPaint(0);return;}kbPaint(ac.currentTime);while(vq.length&&vq[0].t<=ac.currentTime){const q=vq.shift();[...$("jChips").children].forEach((x,i)=>x.classList.toggle("now",i===q.ci));[...$("jBeat").children].forEach((x,i)=>x.classList.toggle("on",i===q.beat));}requestAnimationFrame(draw);}
 function start(){audio();prepare();abs=0;nextT=ac.currentTime+0.08;vq.length=0;playing=true;timer=setInterval(sched,25);sched();requestAnimationFrame(draw);$("jPlay").textContent="■ ストップ";if(window.ngTrack)ngTrack("jam_play",{label:useMy?"my:"+NB.enc(my):LIST[pi].n,style});}
-function stop(){playing=false;clearInterval(timer);$("jPlay").textContent="▶ ジャム開始";[...$("jChips").children].forEach(x=>x.classList.remove("now"));[...$("jBeat").children].forEach(x=>x.classList.remove("on"));}
+function stop(){playing=false;kvq.length=0;setTimeout(()=>kbPaint(0),0);clearInterval(timer);$("jPlay").textContent="▶ ジャム開始";[...$("jChips").children].forEach(x=>x.classList.remove("now"));[...$("jBeat").children].forEach(x=>x.classList.remove("on"));}
 $("jPlay").onclick=()=>playing?stop():start();
 
 /* ---------- MIDI(鍵盤・ベース・ドラム) ---------- */
@@ -557,6 +578,9 @@ function bpmTyping(v,out,get,set){let y0=null,moved=false;v.tabIndex=0;v.setAttr
 {const v=document.querySelector("#jBpmBox .bpm-v");let y0=null,b0=0;v.addEventListener("pointerdown",e=>{y0=e.clientY;b0=bpm;v.setPointerCapture(e.pointerId);});
  v.addEventListener("pointermove",e=>{if(y0!=null)setBpm(b0+(y0-e.clientY)/4);});["pointerup","pointercancel"].forEach(t=>v.addEventListener(t,()=>{y0=null;}));}
 bpmTyping(document.querySelector("#jBpmBox .bpm-v"),$("jBpm"),()=>bpm,setBpm);
+const octView=()=>document.querySelectorAll(".octc").forEach(c=>{const v=oct[+c.dataset.o];c.querySelector("b").textContent="oct "+(v>0?"+"+v:v<0?"−"+(-v):"±0");});
+document.querySelectorAll(".octc").forEach(c=>c.addEventListener("click",e=>{const b=e.target.closest("button[data-d]");if(!b)return;const i=+c.dataset.o;oct[i]=Math.max(-2,Math.min(2,oct[i]+ +b.dataset.d));store.set(i?"jamOctB":"jamOctK",oct[i]);octView();kbBuild();}));
+octView();kbBuild();
 $("jKeysSnd").value=keysSnd;$("jKeysSnd").addEventListener("change",()=>{keysSnd=$("jKeysSnd").value;store.set("jamKeysSnd",keysSnd);if(keysSnd==="piano")psLoad();});if(keysSnd==="piano")setTimeout(psLoad,1200);
 document.querySelectorAll(".mixv").forEach(r=>{const i=+r.dataset.i;r.value=String(vols[i]);r.title=Math.round(vols[i]*100)+"%";
   r.addEventListener("input",()=>{vols[i]=+r.value;r.title=Math.round(vols[i]*100)+"%";store.set(VOLK[i],vols[i]);const b=[busK,busB,busD][i];if(b)b.gain.setTargetAtTime(vols[i],ac.currentTime,0.02);});});

@@ -518,7 +518,7 @@ const SND={
     o.connect(ws);ws.connect(vca(t,0.6*v,0.5));o.start(t);o.stop(t+2.6);},
   snare(t,v){const is9=kit==="909";
     [is9?190:180,is9?330:330].forEach((f,i)=>{const o=ac.createOscillator();o.type="triangle";o.frequency.setValueAtTime(f*1.15,t);o.frequency.exponentialRampToValueAtTime(f,t+0.02);o.connect(vca(t,(i?0.18:0.35)*v,0.05));o.start(t);o.stop(t+0.4);});
-    const hp=filt("highpass",is9?2200:1600),bp=filt("peaking",is9?6000:4000,1);bp.gain.value=4;noise(t,0.5,hp);hp.connect(bp);bp.connect(vca(t,(is9?0.5:0.4)*v,is9?0.09:0.07));},
+    const hp=filt("highpass",is9?2200:1600),bp=filt("peaking",is9?5000:3500,1),lp=filt("lowpass",is9?8500:7000,0.5);bp.gain.value=1.5;noise(t,0.5,hp);hp.connect(bp);bp.connect(lp);lp.connect(vca(t,(is9?0.44:0.36)*v,is9?0.09:0.07));},
   clap(t,v){const bp=filt("bandpass",1150,1.2);
     [0,0.011,0.022].forEach(d=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t+d);g.gain.linearRampToValueAtTime(1.4*v,t+d+0.001);g.gain.setTargetAtTime(0.0001,t+d+0.001,0.004);g.connect(comp);const b=filt("bandpass",1150,1.2);noise(t+d,0.03,b);b.connect(g);});
     noise(t+0.03,0.5,bp);bp.connect(vca(t+0.03,1.1*v,0.06));},
