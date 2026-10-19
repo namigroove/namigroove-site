@@ -354,7 +354,7 @@ header.top .logo{flex:none}
 </div>
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=8"></script>
-<script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=2"></script>
 <script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=2"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script>
@@ -415,7 +415,7 @@ const NB=window.NamiBuilder;
 let my=NB.load();
 let useMy=!!store.get("jamUseMy",false),builder=null;
 const qMs=QS.get("prog")||QS.get("m"),qM=qMs?NB.dec(qMs):null;if(qM){my=qM;useMy=true;}else if((QS.get("pg")||QS.get("p")))useMy=false;
-const cur=()=>useMy?{g:"my",n:"マイ進行",c:my}:LIST[pi];
+const cur=()=>useMy?{g:"my",n:"マイ進行",c:my,ln:NB.lns(my)}:LIST[pi];
 let bars=+store.get("jamBars",1),cat=useMy?"my":LIST[pi].g;
 let V=[];const kOff=()=>key>6?key-12:key;
 function prepare(){V=NP.piano(cur().c);}

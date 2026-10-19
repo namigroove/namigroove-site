@@ -363,7 +363,7 @@ header.top .logo{flex:none}
 </div>
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=8"></script>
-<script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=2"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script>
 (()=>{
@@ -683,7 +683,7 @@ $("revPlay").onclick=()=>{const ms=rf.map((f,i)=>f<0?null:TUN.gt[i]+f+capo).filt
 const PGS=window.NamiProg.LIST.slice();
 /* 自分で作った進行(progbuilder.js。ジャムモード・ピアノと共通) */
 const NB=window.NamiBuilder;let myC=NB.load();const qMy=(new URLSearchParams(location.search).get("prog")||new URLSearchParams(location.search).get("m")),qMyC=qMy?NB.dec(qMy):null;if(qMyC)myC=qMyC;
-const MYI=PGS.length;PGS.push({g:"my",n:"マイ進行",d:"自分で作った進行。上でコードを変えると、押さえ方もすぐ変わります",c:myC});
+const MYI=PGS.length;PGS.push({g:"my",n:"マイ進行",d:"自分で作った進行。上でコードを変えると、押さえ方もすぐ変わります",ln:NB.lns(myC),c:myC});
 let builder=null;
 const PKEY=["C","D♭","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let pgKey=store.get("chPgKey",7); if(!(pgKey>=0&&pgKey<12))pgKey=7;
@@ -726,7 +726,7 @@ let pgCat=store.get("chPgCat","pop");if(pgCat!=="all"&&pgCat!=="my"&&pgCat!=="fa
 function pgFilter(){[...$("pgCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===pgCat));$("pgMy").hidden=pgCat!=="my";document.querySelectorAll("#pgList .pg").forEach(el=>{const g=PGS[+el.dataset.p].g;el.hidden=pgCat==="fav"?(g==="my"||!(window.NamiFav&&NamiFav.has("prog",NamiFav.pid(PGS[+el.dataset.p].n)))):pgCat==="all"?g==="my":g!==pgCat;});const fe=$("pgFavEmpty");if(fe)fe.hidden=!(pgCat==="fav"&&!document.querySelector("#pgList .pg:not([hidden])"));}
 if(window.NamiFav)NamiFav.onChange(k=>{if(k==="prog"&&pgCat==="fav")pgFilter();});
 $("pgCat").innerHTML=`<button type="button" data-g="fav">★ お気に入り</button>`+Object.entries(PCAT).map(([k,v])=>`<button type="button" data-g="${k}">${v}</button>`).join("")+`<button type="button" data-g="all">すべて</button><button type="button" data-g="my">✏️ 自分で作る</button>`;
-builder=NB.mount($("pgMy"),{key:()=>pgKey,initial:myC,types:TYPES.map(t=>t[0]),onChange:a=>{myC=a;PGS[MYI].c=a;pgStop();pgRender();pgFilter();}});
+builder=NB.mount($("pgMy"),{key:()=>pgKey,initial:myC,types:TYPES.map(t=>t[0]),onChange:a=>{myC=a;PGS[MYI].c=a;PGS[MYI].ln=NB.lns(a);pgStop();pgRender();pgFilter();}});
 $("pgCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pgCat=b.dataset.g;store.set("chPgCat",pgCat);pgStop();pgFilter();});
 /* MIDI書き出し:ギターは選ばれている押さえ方の実音(カポ込み)、ベースはルート */
 /* ===== MIDIファイル書き出し(SMFフォーマット1:テンポ+コード+ベース) ===== */
