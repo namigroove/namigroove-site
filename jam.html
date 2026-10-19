@@ -235,6 +235,8 @@ footer a{color:var(--sea)}
 .chk{display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer}
 .bpm-box{display:flex;align-items:center;gap:8px;touch-action:none;user-select:none}
 .bpm-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize}
+.bpm-in{width:3.4ch;font:inherit;font-family:var(--f-display);font-size:inherit;text-align:center;border:1px solid var(--sea);border-radius:8px;background:var(--panel);color:var(--ink);padding:0 2px;line-height:1.1}
+.bpm-v .bpm-in{font-size:28px}
 .bpm-v output{font-family:var(--f-display);font-size:30px;min-width:2.6ch;text-align:center}
 .bpm-v small{font-size:10px;color:var(--ink-soft)}
 .jm-h{font-size:16px;margin:0 0 8px;font-family:var(--f-display);font-weight:400}
@@ -517,8 +519,18 @@ $("jKey").addEventListener("change",()=>{key=+$("jKey").value;renderNow();render
 let bpmSave=0;function setBpm(v){bpm=Math.max(50,Math.min(200,Math.round(v)));$("jBpm").textContent=bpm;clearTimeout(bpmSave);bpmSave=setTimeout(save,300);}
 $("jBpmDown").onclick=()=>setBpm(bpm-1);$("jBpmUp").onclick=()=>setBpm(bpm+1);
 $("jBpmBox").addEventListener("wheel",e=>{e.preventDefault();setBpm(bpm+(e.deltaY<0?1:-1)*(e.shiftKey?5:1));},{passive:false});
+/* BPMの数字をタップ(クリック)すると、直接入力できる。ドラッグしたときは入力にしない */
+function bpmTyping(v,out,get,set){let y0=null,moved=false;v.tabIndex=0;v.setAttribute("role","button");v.setAttribute("aria-label","BPM(タップで入力、上下ドラッグで変更)");
+  v.addEventListener("pointerdown",e=>{y0=e.clientY;moved=false;});v.addEventListener("pointermove",e=>{if(y0!=null&&Math.abs(e.clientY-y0)>4)moved=true;});
+  v.addEventListener("pointerup",()=>{const m=moved;y0=null;if(!m)open();});v.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target===v){e.preventDefault();open();}});
+  function open(){if(v.querySelector("input"))return;const i=document.createElement("input");i.type="text";i.inputMode="numeric";i.value=String(get());i.className="bpm-in";i.setAttribute("aria-label","BPMを入力");
+    out.hidden=true;v.insertBefore(i,out);i.focus();i.select();let done=false;
+    const fin=ok=>{if(done)return;done=true;const n=parseFloat(i.value.replace(/[０-９．]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)));if(ok&&isFinite(n)&&n>0)set(n);i.remove();out.hidden=false;};
+    i.addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();fin(true);}else if(e.key==="Escape")fin(false);});i.addEventListener("keyup",e=>e.stopPropagation());
+    i.addEventListener("blur",()=>fin(true));["pointerdown","pointermove","pointerup","wheel"].forEach(t=>i.addEventListener(t,e=>e.stopPropagation()));}}
 {const v=document.querySelector("#jBpmBox .bpm-v");let y0=null,b0=0;v.addEventListener("pointerdown",e=>{y0=e.clientY;b0=bpm;v.setPointerCapture(e.pointerId);});
  v.addEventListener("pointermove",e=>{if(y0!=null)setBpm(b0+(y0-e.clientY)/4);});["pointerup","pointercancel"].forEach(t=>v.addEventListener(t,()=>{y0=null;}));}
+bpmTyping(document.querySelector("#jBpmBox .bpm-v"),$("jBpm"),()=>bpm,setBpm);
 $("jBars").addEventListener("change",()=>{bars=+$("jBars").value;save();if(playing){stop();start();}});
 $("jCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;cat=b.dataset.g;if(cat==="my"&&!useMy){useMy=true;renderNow();save();if(playing)prepare();}renderList();});
 /* ---------- 自分で作る(progbuilder.js) ---------- */

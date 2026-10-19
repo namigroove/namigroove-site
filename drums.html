@@ -179,7 +179,9 @@ footer a{color:var(--sea)}
 .seq-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 14px}
 .btn.rec[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
 .bpm-box{display:flex;align-items:center;gap:8px}
-.bpm-v{display:flex;flex-direction:column;align-items:center;line-height:1}
+.bpm-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize;touch-action:none;user-select:none;-webkit-user-select:none}
+.bpm-in{width:3.4ch;font:inherit;font-family:var(--f-display);font-size:inherit;text-align:center;border:1px solid var(--sea);border-radius:8px;background:var(--panel);color:var(--ink);padding:0 2px;line-height:1.1}
+.bpm-v .bpm-in{font-size:28px}
 .bpm-v output{font-family:var(--f-display);font-size:30px;min-width:2.6ch;text-align:center}
 .bpm-v small{font-size:10px;color:var(--ink-soft)}
 .seq-label{text-align:center;font-size:13px;margin:16px 0 8px;color:var(--ink-soft)}
@@ -765,6 +767,21 @@ $("preset").onchange=e=>{const p=PRESETS[e.target.value];if(!p)return;setMeter(p
 function setBpm(v){bpm=Math.max(40,Math.min(240,Math.round(v)));store.set("drBpm",bpm);$("bpmOut").textContent=bpm;}
 setBpm(bpm);
 $("bpmDown").onclick=()=>setBpm(bpm-1);$("bpmUp").onclick=()=>setBpm(bpm+1);
+/* BPMの数字をタップ(クリック)すると、直接入力できる。ドラッグしたときは入力にしない */
+function bpmTyping(v,out,get,set){let y0=null,moved=false;v.tabIndex=0;v.setAttribute("role","button");v.setAttribute("aria-label","BPM(タップで入力、上下ドラッグで変更)");
+  v.addEventListener("pointerdown",e=>{y0=e.clientY;moved=false;});v.addEventListener("pointermove",e=>{if(y0!=null&&Math.abs(e.clientY-y0)>4)moved=true;});
+  v.addEventListener("pointerup",()=>{const m=moved;y0=null;if(!m)open();});v.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target===v){e.preventDefault();open();}});
+  function open(){if(v.querySelector("input"))return;const i=document.createElement("input");i.type="text";i.inputMode="numeric";i.value=String(get());i.className="bpm-in";i.setAttribute("aria-label","BPMを入力");
+    out.hidden=true;v.insertBefore(i,out);i.focus();i.select();let done=false;
+    const fin=ok=>{if(done)return;done=true;const n=parseFloat(i.value.replace(/[０-９．]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)));if(ok&&isFinite(n)&&n>0)set(n);i.remove();out.hidden=false;};
+    i.addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();fin(true);}else if(e.key==="Escape")fin(false);});i.addEventListener("keyup",e=>e.stopPropagation());
+    i.addEventListener("blur",()=>fin(true));["pointerdown","pointermove","pointerup","wheel"].forEach(t=>i.addEventListener(t,e=>e.stopPropagation()));}}
+/* BPMの数字を上下にドラッグ・ホイールでも変えられる(ピアノのメトロノームと同じ) */
+{const bx=document.querySelector(".bpm-box"),v=document.querySelector(".bpm-v");bx.title="数字を上下にドラッグ・ホイールでも変えられます";
+  bx.addEventListener("wheel",e=>{if(!e.target.closest(".bpm-v"))return;e.preventDefault();setBpm(bpm+(e.deltaY<0?1:-1)*(e.shiftKey?5:1));},{passive:false});
+  let y0=null,b0=0;v.addEventListener("pointerdown",e=>{if(e.target.closest("input"))return;y0=e.clientY;b0=bpm;v.setPointerCapture(e.pointerId);});
+  v.addEventListener("pointermove",e=>{if(y0!=null)setBpm(b0+(y0-e.clientY)/4);});["pointerup","pointercancel"].forEach(t=>v.addEventListener(t,()=>{y0=null;}));}
+bpmTyping(document.querySelector(".bpm-v"),$("bpmOut"),()=>bpm,setBpm);
 let taps=[];$("tapBtn").addEventListener("pointerdown",e=>{e.preventDefault();play("cow",0.8);const t=performance.now();if(taps.length&&t-taps[taps.length-1]>2000)taps=[];taps.push(t);if(taps.length>8)taps.shift();if(taps.length>=2)setBpm(60000/((taps[taps.length-1]-taps[0])/(taps.length-1)));});
 $("swing").value=swing;const swOut=()=>$("swingOut").textContent=Math.round(swing*100)+"%";swOut();
 $("swing").addEventListener("input",e=>{swing=+e.target.value;store.set("drSwing",swing);swOut();});
