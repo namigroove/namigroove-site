@@ -232,7 +232,8 @@ footer a{color:var(--sea)}
 .jm-beat i{width:14px;height:14px;border-radius:50%;background:var(--wash);border:2px solid var(--line)}
 .jm-beat i.on{background:var(--sea);border-color:var(--sea)}
 .jm-grid{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center}
-.jm-mix{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:12px}
+.jm-mix{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;margin-top:12px}
+.mixc{display:flex;flex-direction:column;align-items:center;gap:2px}.mixc input.mixv{width:84px;margin:2px 0 0;accent-color:var(--sea)}
 .chk{display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer}
 .bpm-box{display:flex;align-items:center;gap:8px;touch-action:none;user-select:none}
 .bpm-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize}
@@ -320,9 +321,9 @@ header.top .logo{flex:none}
       <label class="ctl">1コード <select id="jBars" class="sel"><option value="1">1小節</option><option value="2">2小節</option><option value="0.5">2拍</option></select></label>
     </div>
     <div class="jm-mix">
-      <label class="chk"><input type="checkbox" id="mKeys" checked> 鍵盤</label>
-      <label class="chk"><input type="checkbox" id="mBass" checked> ベース</label>
-      <label class="chk"><input type="checkbox" id="mDrums" checked> ドラム</label>
+      <div class="mixc"><label class="chk"><input type="checkbox" id="mKeys" checked> 鍵盤</label><input type="range" class="mixv" data-i="0" min="0" max="1.5" step="0.05" value="1" aria-label="鍵盤の音量"></div>
+      <div class="mixc"><label class="chk"><input type="checkbox" id="mBass" checked> ベース</label><input type="range" class="mixv" data-i="1" min="0" max="1.5" step="0.05" value="1" aria-label="ベースの音量"></div>
+      <div class="mixc"><label class="chk"><input type="checkbox" id="mDrums" checked> ドラム</label><input type="range" class="mixv" data-i="2" min="0" max="1.5" step="0.05" value="1" aria-label="ドラムの音量"></div>
     </div>
   </section>
 
@@ -425,11 +426,13 @@ const SHK=[2,4,6,7,9,11];
 const chName=c=>{const r=pc(c[0]+key),N=SHK.includes(key)?SHP:KEYN;return (c[1]==="dim7"&&[1,3,8].includes(r)?SHP:N)[r]+c[1]+(c[2]!=null?"/"+N[pc(c[2]+key)]:"");};
 
 /* ---------- 音 ---------- */
-let ac=null,out=null,noise=null,cp=null;
-function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC({latencyHint:"interactive"});cp=ac.createDynamicsCompressor();cp.threshold.value=-12;cp.ratio.value=3;cp.attack.value=0.003;out=ac.createGain();out.gain.value=0.85;out.connect(cp);cp.connect(ac.destination);
+let ac=null,out=null,noise=null,cp=null,busK=null,busB=null,busD=null;
+/* パートごとの音量(0〜1.5) */
+const VOLK=["jamVolK","jamVolB","jamVolD"],vols=VOLK.map(k=>{const v=+store.get(k,1);return v>=0&&v<=1.5?v:1;});
+function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC({latencyHint:"interactive"});cp=ac.createDynamicsCompressor();cp.threshold.value=-12;cp.ratio.value=3;cp.attack.value=0.003;out=ac.createGain();out.gain.value=0.85;out.connect(cp);cp.connect(ac.destination);[busK,busB,busD]=vols.map(v=>{const g=ac.createGain();g.gain.value=v;g.connect(out);return g;});
   noise=ac.createBuffer(1,ac.sampleRate,ac.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;}
   if(ac.state!=="running")ac.resume();return ac;}
-const env=(t,pk,dec,att)=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+(att||0.002));g.gain.setTargetAtTime(0.0001,t+(att||0.002),dec);g.connect(out);return g;};
+const env=(t,pk,dec,att)=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+(att||0.002));g.gain.setTargetAtTime(0.0001,t+(att||0.002),dec);g.connect(busD);return g;};
 const nz=(t,dur,dest,type,f,q)=>{const s=ac.createBufferSource(),b=ac.createBiquadFilter();s.buffer=noise;b.type=type;b.frequency.value=f;if(q)b.Q.value=q;s.connect(b);b.connect(dest);s.start(t,Math.random()*0.5);s.stop(t+dur);};
 const DR={
  k(t,v){const o=ac.createOscillator();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(48,t+0.09);o.connect(env(t,0.9*v,0.18));o.start(t);o.stop(t+0.8);},
@@ -450,11 +453,11 @@ const DR={
 function keyNote(m,t,dur,lv){const f=440*Math.pow(2,(m-69)/12),car=ac.createOscillator(),mod=ac.createOscillator(),mg=ac.createGain(),g=ac.createGain();
   car.type=mod.type="sine";car.frequency.value=f;mod.frequency.value=f;mg.gain.setValueAtTime(f*1.0,t);mg.gain.setTargetAtTime(f*0.1,t,0.25);mod.connect(mg);mg.connect(car.frequency);
   g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(lv,t+0.004);g.gain.setTargetAtTime(lv*0.5,t+0.01,0.3);g.gain.setTargetAtTime(0.0001,t+dur,0.12);
-  car.connect(g);g.connect(out);car.start(t);mod.start(t);car.stop(t+dur+1);mod.stop(t+dur+1);}
+  car.connect(g);g.connect(busK);car.start(t);mod.start(t);car.stop(t+dur+1);mod.stop(t+dur+1);}
 function bassNote(m,t,dur){const f=440*Math.pow(2,(m-69)/12),o=ac.createOscillator(),sw=ac.createOscillator(),lp=ac.createBiquadFilter(),g=ac.createGain(),g2=ac.createGain();
   o.type="sine";o.frequency.value=f;sw.type="sawtooth";sw.frequency.value=f;lp.type="lowpass";lp.Q.value=1;lp.frequency.setValueAtTime(Math.min(1200,f*7),t);lp.frequency.setTargetAtTime(f*1.6,t+0.005,0.1);
   g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(0.42,t+0.006);g.gain.setTargetAtTime(0.28,t+0.02,0.25);g.gain.setTargetAtTime(0.0001,t+dur*0.92,0.05);
-  g2.gain.value=0.35;o.connect(g);sw.connect(lp);lp.connect(g2);g2.connect(g);g.connect(out);o.start(t);sw.start(t);o.stop(t+dur+0.5);sw.stop(t+dur+0.5);}
+  g2.gain.value=0.35;o.connect(g);sw.connect(lp);lp.connect(g2);g2.connect(g);g.connect(busB);o.start(t);sw.start(t);o.stop(t+dur+0.5);sw.stop(t+dur+0.5);}
 
 /* ---------- 1ステップごとに鳴らす音を決める(再生とMIDIで共通) ---------- */
 /* コードごとの長さ(ステップ数)。進行データの ln(0.5=半分)に合わせる */
@@ -500,9 +503,9 @@ function midi(){
   const GM={k:36,s:38,h:42,o:46,r:37,c:39,y:51,f:44,x:49,b:54,w:56,z:70,t:64,u:63},meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,TS[0],Math.log2(TS[1]),24,8],0]],K=[],B=[],D=[];
   for(let a=0;a<N;a++){const {ev,ci,inBar,sinceChord}=stepEvents(a),t0=a*st+Math.round(swingOff(inBar,1)*st);
     if(sinceChord===0)meta.push([a*st,txt(0x06,asc(chName(cur().c[ci]))),0]);
-    ev.forEach(e=>{if(e.type==="d"){D.push([t0,[0x99,GM[e.d],Math.round(100*e.v)],1]);D.push([t0+st-10,[0x89,GM[e.d],0],0]);}
-      if(e.type==="keys")e.notes.forEach(m=>{K.push([t0,[0x90,m,80],1]);K.push([t0+e.len*st-15,[0x80,m,0],0]);});
-      if(e.type==="bass"){B.push([t0,[0x91,e.note,100],1]);B.push([t0+e.len*st-15,[0x81,e.note,0],0]);}});}
+    ev.forEach(e=>{if(e.type==="d"){D.push([t0,[0x99,GM[e.d],Math.max(1,Math.min(127,Math.round(100*e.v*vols[2])))],1]);D.push([t0+st-10,[0x89,GM[e.d],0],0]);}
+      if(e.type==="keys")e.notes.forEach(m=>{K.push([t0,[0x90,m,Math.max(1,Math.min(127,Math.round(80*vols[0])))],1]);K.push([t0+e.len*st-15,[0x80,m,0],0]);});
+      if(e.type==="bass"){B.push([t0,[0x91,e.note,Math.max(1,Math.min(127,Math.round(100*vols[1])))],1]);B.push([t0+e.len*st-15,[0x81,e.note,0],0]);}});}
   const tr=[trk("Tempo",meta),trk("Keys",K),trk("Bass",B),trk("Drums",D)],head=[0x4d,0x54,0x68,0x64,0,0,0,6,0,1,0,tr.length,(TPQ>>8)&255,TPQ&255];
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([new Uint8Array([...head,...tr.flat()])],{type:"audio/midi"}));
   a.download=("namigroove_jam_"+(useMy?"my":LIST[pi].n)+"_"+KEYN[key]+"_"+ST[style].n+"_"+bpm+"bpm").replace(/[\\/:*?"<>|\s]+/g,"_")+".mid";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
@@ -540,6 +543,8 @@ function bpmTyping(v,out,get,set){let y0=null,moved=false;v.tabIndex=0;v.setAttr
 {const v=document.querySelector("#jBpmBox .bpm-v");let y0=null,b0=0;v.addEventListener("pointerdown",e=>{y0=e.clientY;b0=bpm;v.setPointerCapture(e.pointerId);});
  v.addEventListener("pointermove",e=>{if(y0!=null)setBpm(b0+(y0-e.clientY)/4);});["pointerup","pointercancel"].forEach(t=>v.addEventListener(t,()=>{y0=null;}));}
 bpmTyping(document.querySelector("#jBpmBox .bpm-v"),$("jBpm"),()=>bpm,setBpm);
+document.querySelectorAll(".mixv").forEach(r=>{const i=+r.dataset.i;r.value=String(vols[i]);r.title=Math.round(vols[i]*100)+"%";
+  r.addEventListener("input",()=>{vols[i]=+r.value;r.title=Math.round(vols[i]*100)+"%";store.set(VOLK[i],vols[i]);const b=[busK,busB,busD][i];if(b)b.gain.setTargetAtTime(vols[i],ac.currentTime,0.02);});});
 $("jBars").addEventListener("change",()=>{bars=+$("jBars").value;save();if(playing){stop();start();}});
 $("jCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;cat=b.dataset.g;if(cat==="my"&&!useMy){useMy=true;renderNow();save();if(playing)prepare();}renderList();});
 /* ---------- 自分で作る(progbuilder.js) ---------- */
