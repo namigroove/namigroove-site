@@ -422,7 +422,7 @@ const DR={
  s(t,v){const o=ac.createOscillator();o.type="triangle";o.frequency.setValueAtTime(210,t);o.frequency.exponentialRampToValueAtTime(180,t+0.03);o.connect(env(t,0.25*v,0.05));o.start(t);o.stop(t+0.3);nz(t,0.3,env(t,0.32*v,0.07),"highpass",1800);},
  h(t,v){nz(t,0.08,env(t,0.11*v,0.02),"highpass",7500);},
  o(t,v){nz(t,0.4,env(t,0.09*v,0.13),"highpass",7000);},
- r(t,v){const b=ac.createBiquadFilter();b.type="bandpass";b.frequency.value=1700;b.Q.value=5;const o=ac.createOscillator();o.type="triangle";o.frequency.value=1700;o.connect(b);b.connect(env(t,0.35*v,0.015));o.start(t);o.stop(t+0.1);},
+ r(t,v){ /* リム(クロススティック):高域を抑えた丸めの音 */const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=2600;lp.Q.value=0.5;lp.connect(env(t,0.2*v,0.014));const b=ac.createBiquadFilter();b.type="bandpass";b.frequency.value=1150;b.Q.value=3;b.connect(lp);[["triangle",1150,0.09],["square",430,0.06]].forEach(a=>{const o=ac.createOscillator();o.type=a[0];o.frequency.value=a[1];o.connect(b);o.start(t);o.stop(t+a[2]);});},
  c(t,v){[0,0.01,0.02].forEach(d=>nz(t+d,0.03,env(t+d,0.4*v,0.006),"bandpass",1150,1.2));nz(t+0.03,0.3,env(t+0.03,0.3*v,0.06),"bandpass",1150,1.2);},
  y(t,v){ /* ライド:高域を削った丸めの音 */const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=5000;lp.Q.value=0.4;lp.connect(env(t,0.048*v,0.32,0.004));nz(t,0.9,lp,"bandpass",4000,0.6);const o=ac.createOscillator();o.frequency.value=2350;o.connect(env(t,0.007*v,0.2,0.003));o.start(t);o.stop(t+0.8);},
  f(t,v){nz(t,0.06,env(t,0.07*v,0.015),"bandpass",3500,1);},
