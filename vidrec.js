@@ -18,8 +18,9 @@ var css=".vr-box{display:inline-flex;align-items:center;gap:6px;flex-wrap:nowrap
   ".vr-fmt{font:inherit;font-size:13px;padding:6px 10px;border-radius:999px;border:1px solid var(--line,#d6deef);background:var(--panel,#fff);color:var(--ink,#1b2440)}"+
   ".vr-modal{position:fixed;inset:0;z-index:1000;background:rgba(5,10,30,.72);display:flex;align-items:center;justify-content:center;padding:16px}"+
   ".vr-card{background:var(--panel,#fff);color:var(--ink,#1b2440);border-radius:16px;padding:14px;max-width:440px;width:100%;max-height:100%;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35);text-align:center}"+
-  ".vr-card video{display:block;width:100%;max-height:58vh;border-radius:10px;background:#000;margin:0 auto}"+
+  ".vr-card video{display:block;width:100%;max-height:46vh;border-radius:10px;background:#000;margin:0 auto}"+
   ".vr-meta{font-size:12px;color:var(--ink-soft,#5a6a8f);margin:8px 0}"+
+  ".vr-trim{margin:4px 0 12px;padding:8px 10px;border-radius:12px;background:var(--wash,#e3ebfb)}.vr-tr{display:grid;grid-template-columns:2.6em 1fr 4.2em;align-items:center;gap:8px;font-size:12.5px}.vr-tr input{width:100%;accent-color:var(--sea,#2c5ccc)}.vr-tr b{font-weight:400;text-align:right;font-variant-numeric:tabular-nums}.vr-trim .btn{margin-top:6px}.vr-trim .btn:disabled{opacity:.45;cursor:default}.vr-prog{font-size:12px;margin:6px 0 0;color:var(--ink-soft,#5a6a8f)}"+
   ".vr-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}"+
   ".vr-note{font-size:12px;color:var(--ink-soft,#5a6a8f);margin:10px 0 0;text-align:left;line-height:1.6}";
 var CAM='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11a2 2 0 0 1 2 2v1.5l4-2.5v10l-4-2.5V16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg>';
@@ -32,6 +33,22 @@ function fitText(g,txt,x,y,maxW,size,weight,color,align){size=Math.round(size);g
   g.fillStyle=color||C.ink;g.textAlign=align||"center";g.textBaseline="middle";g.fillText(txt,x,y);return size;}
 function rrect(g,x,y,w,h,r){r=Math.min(r,w/2,h/2);g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
 
+/* 動画の一部を切り出す:動画をその範囲だけ再生して、canvas と音を録り直す(Safariでも動くやり方) */
+function trimRec(url,s,e,onProg){return new Promise(function(res,rej){var v=document.createElement("video");v.playsInline=true;v.preload="auto";v.src=url;
+  var AC=window.AudioContext||window.webkitAudioContext,ac=new AC(),ms,dest;try{ms=ac.createMediaElementSource(v);dest=ac.createMediaStreamDestination();ms.connect(dest);}catch(x){rej(x);return;}
+  var fail=function(x){try{ac.close();}catch(y){}rej(x);};v.addEventListener("error",fail);
+  v.addEventListener("loadedmetadata",function(){var W=v.videoWidth||720,H=v.videoHeight||1280,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+    cv.style.cssText="position:fixed;left:-10000px;top:0;width:72px;height:"+Math.round(H/10)+"px;pointer-events:none";document.body.appendChild(cv);var g=cv.getContext("2d");
+    var st=new MediaStream(cv.captureStream(30).getVideoTracks().concat(dest.stream.getAudioTracks())),mime=pickMime(),mr;
+    try{mr=new MediaRecorder(st,mime?{mimeType:mime,videoBitsPerSecond:2500000,audioBitsPerSecond:160000}:undefined);}catch(x){cv.remove();fail(x);return;}
+    var ch=[],raf=0,done=false;mr.ondataavailable=function(ev){if(ev.data&&ev.data.size)ch.push(ev.data);};
+    var finish=function(){if(done)return;done=true;cancelAnimationFrame(raf);v.pause();try{mr.requestData();}catch(x){}try{mr.stop();}catch(x){}};
+    mr.onstop=function(){st.getTracks().forEach(function(t){t.stop();});cv.remove();try{ac.close();}catch(x){}res({blob:new Blob(ch,{type:(mr.mimeType||mime||"video/webm").split(";")[0]}),type:(mr.mimeType||mime||"video/webm").split(";")[0],dur:e-s});};
+    var draw=function(){try{g.drawImage(v,0,0,W,H);}catch(x){}if(onProg)onProg(v.currentTime-s,e-s);if(v.currentTime>=e-0.02||v.ended){finish();return;}raf=requestAnimationFrame(draw);};
+    v.addEventListener("seeked",function(){try{g.drawImage(v,0,0,W,H);}catch(x){}if(ac.state!=="running")try{ac.resume();}catch(x){}mr.start(500);
+      var p=v.play();if(p&&p.then)p.then(function(){raf=requestAnimationFrame(draw);}).catch(function(x){finish();});else raf=requestAnimationFrame(draw);
+      setTimeout(finish,(e-s)*1000+3000);},{once:true});
+    v.currentTime=Math.max(0.001,s);});});}
 function mount(o){
   if(!ok()||!o||!(o.after||o.into))return null;
   if(!document.getElementById("vr-css")){var st=document.createElement("style");st.id="vr-css";st.textContent=css;document.head.appendChild(st);}
@@ -81,21 +98,43 @@ function mount(o){
   function stop(){if(!R||R.stopping)return;R.stopping=true;try{R.mr.requestData();}catch(e){}try{R.mr.stop();}catch(e){}}
   btn.onclick=function(){if(R)stop();else start();};
 
-  function result(blob,type,dur){var ext=type.indexOf("mp4")>=0?"mp4":"webm",name="namigroove_"+o.name+"_"+stamp()+"."+ext,url=URL.createObjectURL(blob);
-    var m=document.createElement("div");m.className="vr-modal";m.setAttribute("role","dialog");m.setAttribute("aria-label","撮った動画");
-    var file=null;try{file=new File([blob],name,{type:type});}catch(e){}
-    var canShare=!!(file&&navigator.canShare&&navigator.share&&(function(){try{return navigator.canShare({files:[file]});}catch(e){return false;}})());
-    m.innerHTML='<div class="vr-card"><video controls playsinline src="'+url+'"></video><p class="vr-meta">'+fmtT(dur)+" ・ "+ext.toUpperCase()+" ・ "+(blob.size/1048576).toFixed(1)+' MB</p><div class="vr-btns">'+
-      (canShare?'<button class="go" type="button" data-a="share">シェア</button>':"")+'<button class="'+(canShare?"btn":"go")+'" type="button" data-a="save">保存</button><button class="btn" type="button" data-a="close">閉じる</button></div>'+
-      '<p class="vr-note">'+(canShare?"シェアからX・LINE・Instagramなどに送れます。":"保存した動画をSNSに投稿してね。")+" 投稿するときは <b>#namigroovetools</b> を付けてくれるとうれしいです！"+(ext==="webm"?"<br>※このブラウザではWebM形式になります。Xなどに投稿できないときは、MP4に変換してください。":"")+"</p></div>";
+  function result(blob0,type0,dur0){
+    var cur={},m=document.createElement("div");m.className="vr-modal";m.setAttribute("role","dialog");m.setAttribute("aria-label","撮った動画");
+    m.innerHTML='<div class="vr-card"><video controls playsinline></video><p class="vr-meta"></p>'+
+      '<div class="vr-trim"><div class="vr-tr"><span>開始</span><input type="range" data-t="s" step="0.1" min="0" aria-label="切り取りの開始"><b data-v="s"></b></div>'+
+      '<div class="vr-tr"><span>終了</span><input type="range" data-t="e" step="0.1" min="0" aria-label="切り取りの終了"><b data-v="e"></b></div>'+
+      '<button class="btn" type="button" data-a="trim">✂ この範囲で切り取る</button><p class="vr-prog" hidden></p></div>'+
+      '<div class="vr-btns"></div><p class="vr-note"></p></div>';
     document.body.appendChild(m);
-    var close=function(){m.remove();setTimeout(function(){URL.revokeObjectURL(url);},1000);document.removeEventListener("keydown",esc);};
-    var esc=function(e){if(e.key==="Escape")close();};document.addEventListener("keydown",esc);
-    m.addEventListener("click",function(e){if(e.target===m){close();return;}var b=e.target.closest("button[data-a]");if(!b)return;var a=b.dataset.a;
+    var vid=m.querySelector("video"),rs=m.querySelector('[data-t="s"]'),re=m.querySelector('[data-t="e"]'),busy=false;
+    function set(blob,type,dur){if(cur.url)URL.revokeObjectURL(cur.url);var ext=type.indexOf("mp4")>=0?"mp4":"webm";
+      cur={blob:blob,type:type,dur:dur,ext:ext,name:"namigroove_"+o.name+"_"+stamp()+"."+ext,url:URL.createObjectURL(blob)};
+      try{cur.file=new File([blob],cur.name,{type:type});}catch(e){cur.file=null;}
+      cur.share=!!(cur.file&&navigator.canShare&&navigator.share&&(function(){try{return navigator.canShare({files:[cur.file]});}catch(e){return false;}})());
+      vid.src=cur.url;m.querySelector(".vr-meta").textContent=fmtT(dur)+" ・ "+ext.toUpperCase()+" ・ "+(blob.size/1048576).toFixed(1)+" MB";
+      [rs,re].forEach(function(r){r.max=String(Math.max(0.1,Math.floor(dur*10)/10));});rs.value="0";re.value=re.max;tv();
+      m.querySelector(".vr-btns").innerHTML=(cur.share?'<button class="go" type="button" data-a="share">シェア</button>':"")+'<button class="'+(cur.share?"btn":"go")+'" type="button" data-a="save">保存</button><button class="btn" type="button" data-a="close">閉じる</button>';
+      m.querySelector(".vr-note").innerHTML=(cur.share?"シェアからX・LINE・Instagramなどに送れます。":"保存した動画をSNSに投稿してね。")+" 投稿するときは <b>#namigroovetools</b> を付けてくれるとうれしいです！"+(ext==="webm"?"<br>※このブラウザではWebM形式になります。Xなどに投稿できないときは、MP4に変換してください。":"");}
+    function f1(x){x=Math.max(0,x);return Math.floor(x/60)+":"+(x%60).toFixed(1).padStart(4,"0");}
+    function tv(){m.querySelector('[data-v="s"]').textContent=f1(+rs.value);m.querySelector('[data-v="e"]').textContent=f1(+re.value);
+      var full=+rs.value<=0.05&&+re.value>=+re.max-0.05;m.querySelector('[data-a="trim"]').disabled=full||busy;}
+    function onR(r){if(+re.value-+rs.value<0.5){if(r===rs)rs.value=String(Math.max(0,+re.value-0.5));else re.value=String(Math.min(+re.max,+rs.value+0.5));}tv();
+      try{vid.pause();vid.currentTime=+(r===rs?rs.value:re.value);}catch(e){}}
+    rs.addEventListener("input",function(){onR(rs);});re.addEventListener("input",function(){onR(re);});
+    /* 切り取り:選んだ範囲を頭から再生しながら、もう一度録り直す(端末の中だけで処理) */
+    function trim(){var s0=+rs.value,e0=+re.value,pg=m.querySelector(".vr-prog");busy=true;tv();pg.hidden=false;pg.textContent="切り取り中…";
+      m.querySelectorAll(".vr-btns button,.vr-trim input").forEach(function(x){x.disabled=true;});
+      trimRec(cur.url,s0,e0,function(a,b){pg.textContent="切り取り中… "+fmtT(a)+" / "+fmtT(b);}).then(function(r){busy=false;pg.hidden=true;m.querySelectorAll(".vr-trim input").forEach(function(x){x.disabled=false;});set(r.blob,r.type,r.dur);})
+        .catch(function(){busy=false;pg.textContent="切り取れませんでした";m.querySelectorAll(".vr-btns button,.vr-trim input").forEach(function(x){x.disabled=false;});tv();});}
+    set(blob0,type0,dur0);
+    var close=function(){m.remove();setTimeout(function(){URL.revokeObjectURL(cur.url);},1000);document.removeEventListener("keydown",esc);};
+    var esc=function(e){if(e.key==="Escape"&&!busy)close();};document.addEventListener("keydown",esc);
+    m.addEventListener("click",function(e){if(e.target===m){if(!busy)close();return;}var b=e.target.closest("button[data-a]");if(!b||b.disabled)return;var a=b.dataset.a;
       if(a==="close")close();
-      else if(a==="save"){var l=document.createElement("a");l.href=url;l.download=name;document.body.appendChild(l);l.click();l.remove();if(window.ngTrack)try{ngTrack("video_save",{tool:o.name});}catch(e2){}}
-      else if(a==="share"){navigator.share({files:[file],title:o.title+" – なみぐる！",text:o.title+" – なみぐる！ #namigroovetools "+(o.url||"")}).then(function(){if(window.ngTrack)try{ngTrack("video_share",{tool:o.name});}catch(e2){}}).catch(function(){});}});
-    var bt=m.querySelector("button[data-a]");if(bt)bt.focus();}
+      else if(a==="trim")trim();
+      else if(a==="save"){var l=document.createElement("a");l.href=cur.url;l.download=cur.name;document.body.appendChild(l);l.click();l.remove();if(window.ngTrack)try{ngTrack("video_save",{tool:o.name});}catch(e2){}}
+      else if(a==="share"){navigator.share({files:[cur.file],title:o.title+" – なみぐる！",text:o.title+" – なみぐる！ #namigroovetools "+(o.url||"")}).then(function(){if(window.ngTrack)try{ngTrack("video_share",{tool:o.name});}catch(e2){}}).catch(function(){});}});
+    var bt=m.querySelector(".vr-btns button");if(bt)bt.focus();}
   return {stop:stop,recording:function(){return !!R;}};
 }
 window.NamiVidRec={mount:mount,ok:ok,C:C};

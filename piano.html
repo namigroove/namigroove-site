@@ -241,6 +241,7 @@ footer a{color:var(--sea)}
 .mt-c{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .mt-dots{display:flex;gap:6px}.mt-dots i{width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}.mt-dots i.on{background:var(--sea);border-color:var(--sea)}.mt-dots i.on.acc{background:var(--coral);border-color:var(--coral)}
 .mp{margin:12px auto 0;max-width:640px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.mp-seek{display:flex;align-items:center;gap:8px;flex:1 1 100%;max-width:520px}.mp-seek input{flex:1;accent-color:var(--sea);min-width:0}
 .mp-box{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 12px;padding:10px 12px;border-radius:12px;background:var(--wash)}
 .mp-name{width:100%;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mp-dl{display:inline-flex;align-items:center;gap:6px}
@@ -435,7 +436,7 @@ header.top .logo{flex:none}
         <span class="mp-name" id="mpName"></span>
         <button class="btn" type="button" id="mpPlay" aria-pressed="false">▶ 再生</button>
         <label class="mt-c">速さ <select id="mpSpd" class="sel"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.25">125%</option><option value="1.5">150%</option></select></label>
-        <span class="mp-pos num" id="mpPos"></span>
+        <span class="mp-seek"><input type="range" id="mpSeek" min="0" max="1" step="0.1" value="0" aria-label="再生位置"><span class="mp-pos num" id="mpPos"></span></span>
         <span class="mp-dl">コード分析:<button class="btn" type="button" id="mpCsv">CSV</button><button class="btn" type="button" id="mpTxt">TXT</button></span>
       </span>
     </div>
@@ -550,7 +551,7 @@ header.top .logo{flex:none}
 <script src="https://namigroove.github.io/namigroove-site/midiread.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=5"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
-<script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=2"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script>
 (()=>{
@@ -1465,7 +1466,15 @@ $("clShare").onclick=()=>shareLink({r:clRoot,t:CL_TYPES[clType][0]||"M"},CLR[clR
 let mpSong=null,mpName="",mpT0=0,mpPos=0,mpIdx=0,mpTimer=null,mpOn=[];
 const mpSpd=()=>+$("mpSpd").value||1;
 function mpStop(keep){clearInterval(mpTimer);mpTimer=null;mpOn.forEach(o=>lift(o.n));mpOn=[];$("mpPlay").textContent="▶ 再生";$("mpPlay").setAttribute("aria-pressed","false");if(!keep){mpPos=0;mpIdx=0;}mpShowPos();}
-function mpShowPos(){if(!mpSong)return;const f=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");$("mpPos").textContent=f(mpPos)+" / "+f(mpSong.endSec);}
+function mpShowPos(){if(!mpSong)return;const f=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");$("mpPos").textContent=f(mpPos)+" / "+f(mpSong.endSec);
+  const sk=$("mpSeek");sk.max=String(Math.max(0.1,mpSong.endSec));if(!mpDrag)sk.value=String(Math.min(mpPos,mpSong.endSec));}
+/* 再生位置:バーを動かすとそこから(再生中ならそのまま続けて鳴らす) */
+let mpDrag=false;
+function mpSeekTo(sec){if(!mpSong)return;const was=!!mpTimer;if(was){clearInterval(mpTimer);mpTimer=null;}mpOn.forEach(o=>lift(o.n));mpOn=[];
+  mpPos=Math.max(0,Math.min(sec,mpSong.endSec));mpIdx=Math.max(0,mpSong.mel.findIndex(x=>x.sec>=mpPos));if(mpSong.mel.every(x=>x.sec<mpPos))mpIdx=mpSong.mel.length;
+  if(was){mpPos0=mpPos;mpT0=performance.now();mpTimer=setInterval(mpTick,10);}mpShowPos();}
+$("mpSeek").addEventListener("input",()=>{mpDrag=true;const f=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");$("mpPos").textContent=f(+$("mpSeek").value)+" / "+f(mpSong?mpSong.endSec:0);});
+$("mpSeek").addEventListener("change",()=>{mpDrag=false;mpSeekTo(+$("mpSeek").value);});
 function mpTick(){const now=(performance.now()-mpT0)/1000*mpSpd()+mpPos0;mpPos=now;const ns=mpSong.mel;
   while(mpIdx<ns.length&&ns[mpIdx].sec<=now){const x=ns[mpIdx++];press(x.n,x.v/127);mpOn.push({n:x.n,off:x.sec+Math.max(0.05,x.secDur)});}
   mpOn=mpOn.filter(o=>{if(o.off<=now){lift(o.n);return false;}return true;});
