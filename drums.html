@@ -549,6 +549,8 @@ function chipNoise(){if(chipNz)return chipNz;const sr=ac.sampleRate,mk=short=>{l
 function cEnv(t,peak,dur){const g=ac.createGain(),n=Math.max(2,Math.round(dur*60));g.gain.setValueAtTime(0,0);for(let i=0;i<=n;i++)g.gain.setValueAtTime(peak*Math.round(15*(1-i/n))/15,t+i/60);g.connect(comp);return g;}
 function cSteps(par,t,f0,f1,dur){const n=Math.max(1,Math.round(dur*60));for(let i=0;i<=n;i++)par.setValueAtTime(f0*Math.pow(f1/f0,i/n),t+i/60);}
 function cOsc(key,t,dur,f0,f1,dest){const o=ac.createOscillator();o.setPeriodicWave(cWave(key));cSteps(o.frequency,t,f0,f1==null?f0:f1,Math.min(dur,0.2));o.connect(dest);o.start(t);o.stop(t+dur+0.05);return o;}
+/* シンバル系の高域を丸めるローパス(出力→dest) */
+function cLp(f,dest){const b=ac.createBiquadFilter();b.type="lowpass";b.frequency.value=f;b.Q.value=0.5;b.connect(dest);return b;}
 function cNz(t,dur,rate,mode,dest){const s=ac.createBufferSource();s.buffer=chipNoise()[mode||"long"];s.loop=true;s.playbackRate.value=rate;s.connect(dest);s.start(t,Math.random()*0.5);s.stop(t+dur+0.05);return s;}
 const CHIP={
   kick(t,v){cOsc("tri",t,0.2,170,45,cEnv(t,1.0*v,0.2));cNz(t,0.04,0.08,"long",cEnv(t,0.35*v,0.04));},
@@ -557,10 +559,10 @@ const CHIP={
   clap(t,v){[0,0.016,0.032].forEach(d=>cNz(t+d,0.03,0.6,"long",cEnv(t+d,0.42*v,0.03)));cNz(t+0.05,0.14,0.6,"long",cEnv(t+0.05,0.3*v,0.14));},
   rim(t,v){cOsc("p12",t,0.05,950,900,cEnv(t,0.32*v,0.05));},
   snap(t,v){cNz(t,0.06,0.9,"long",cEnv(t,0.4*v,0.06));},
-  chh(t,v){if(ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setValueAtTime(0,t);ohhGain=null;}cNz(t,0.06,1,"short",cEnv(t,0.26*v,0.06));},
-  ohh(t,v){const g=cEnv(t,0.22*v,0.4);cNz(t,0.4,1,"short",g);ohhGain=g;},
-  ride(t,v){cNz(t,0.9,0.7,"short",cEnv(t,0.1*v,0.9));cOsc("p12",t,0.35,1900,1900,cEnv(t,0.035*v,0.35));},
-  crash(t,v){cNz(t,1.3,0.85,"long",cEnv(t,0.26*v,1.3));},
+  chh(t,v){if(ohhGain){ohhGain.gain.cancelScheduledValues(t);ohhGain.gain.setValueAtTime(0,t);ohhGain=null;}cNz(t,0.06,0.7,"short",cLp(7000,cEnv(t,0.17*v,0.06)));},
+  ohh(t,v){const g=cEnv(t,0.14*v,0.4);cNz(t,0.4,0.7,"short",cLp(7000,g));ohhGain=g;},
+  ride(t,v){cNz(t,0.9,0.45,"short",cLp(5500,cEnv(t,0.065*v,0.9)));cOsc("p12",t,0.35,1900,1900,cLp(4000,cEnv(t,0.025*v,0.35)));},
+  crash(t,v){cNz(t,1.3,0.55,"long",cLp(6500,cEnv(t,0.16*v,1.3)));},
   tomh(t,v){cOsc("tri",t,0.28,400,220,cEnv(t,0.75*v,0.28));},
   tomm(t,v){cOsc("tri",t,0.3,300,165,cEnv(t,0.75*v,0.3));},
   toml(t,v){cOsc("tri",t,0.34,220,120,cEnv(t,0.75*v,0.34));},
