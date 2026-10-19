@@ -532,6 +532,7 @@ header.top .logo{flex:none}
 <script src="https://namigroove.github.io/namigroove-site/midiread.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=4"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script>
 (()=>{
@@ -1002,6 +1003,25 @@ async function mp3Blob(t){
   return new Blob(out,{type:"audio/mpeg"});
 }
 recBtn.onclick=recToggle;
+/* 動画で撮る(vidrec.js):録画用の画面に、鍵盤とコード名を描く */
+if(window.NamiVidRec){let vLo=null,vPrev=new Set();const vFade=new Map(),OCT=2,BK=[1,3,6,8,10];
+  NamiVidRec.mount({after:recBtn,name:"piano",title:"ピアノ",url:"https://www.namigroove.com/tools/piano/",
+    tap:()=>{audio();return {ctx:ac,node:master};},
+    sub:()=>{const b=document.querySelector('#instSeg [aria-pressed="true"]');return b?"音色:"+b.textContent.trim():"";},
+    draw:(g,b,I)=>{const C=I.C,now=performance.now(),ms=[...down.keys()];
+      ms.forEach(m=>vFade.delete(m));vPrev.forEach(m=>{if(!down.has(m))vFade.set(m,now);});vPrev=new Set(ms);vFade.forEach((t,m)=>{if(now-t>400)vFade.delete(m);});
+      if(vLo==null)vLo=12*(startOct+1);
+      if(ms.length){const lo=Math.min(...ms),hi=Math.max(...ms);if(lo<vLo)vLo=12*Math.floor(lo/12);else if(hi>vLo+12*OCT)vLo=Math.min(12*Math.floor(lo/12),12*Math.ceil(hi/12)-12*OCT);}
+      const ch=$("chord"),txt=ch.querySelector(".dim")?"":ch.textContent.replace(/\s+/g," ").trim(),pn=$("pnotes").textContent.trim(),alive=ms.length>0;
+      const kbH=Math.min(b.h*0.45,b.w*(I.sq?0.36:0.5)),kbY=b.y+b.h-kbH,topH=kbY-b.y,cy=b.y+topH*(I.sq?0.42:0.45);
+      g.globalAlpha=alive?1:0.45;I.fit(g,txt||"♪",b.x+b.w/2,cy,b.w,I.sq?92:130,400,C.ink);g.globalAlpha=1;
+      if(pn&&alive)I.fit(g,pn,b.x+b.w/2,cy+(I.sq?66:96),b.w,I.sq?22:30,400,C.soft);
+      const whites=[];for(let m=vLo;m<=vLo+12*OCT;m++)if(!BK.includes(pc(m)))whites.push(m);
+      const kw=b.w/whites.length,lv=m=>down.has(m)?1:(vFade.has(m)?Math.max(0,1-(now-vFade.get(m))/400):0);
+      whites.forEach((m,i)=>{const x=b.x+i*kw,l=lv(m);I.rrect(g,x+1.5,kbY,kw-3,kbH,8);g.fillStyle="#f4f7ff";g.fill();if(l){g.globalAlpha=l;g.fillStyle=C.coral;g.fill();g.globalAlpha=1;}
+        if(pc(m)===0)I.fit(g,"C"+(m/12-1),x+kw/2,kbY+kbH-18,kw-6,I.sq?13:16,400,l>0.5?"#fff":"#8a96b8");});
+      for(let m=vLo;m<=vLo+12*OCT;m++)if(BK.includes(pc(m))){const i=whites.indexOf(m-1);if(i<0)continue;const x=b.x+(i+1)*kw-kw*0.32,l=lv(m);I.rrect(g,x,kbY,kw*0.64,kbH*0.6,6);g.fillStyle="#1b2440";g.fill();if(l){g.globalAlpha=l;g.fillStyle=C.coral;g.fill();g.globalAlpha=1;}}
+    }});}
 $("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
 $("saveMid").onclick=()=>{if(!take||!take.midi)return;const M=take.mt,bpmM=M?M.bpm:120,k=bpmM/60*480,tr=[{name:"Piano",ev:take.midi.map(([t,by])=>[t*k,by])}];
   if(M&&M.clicks.length){const ev=[];M.clicks.forEach(([t,b])=>{const n=b===0?76:77;ev.push([t*k,[0x99,n,b===0?110:80]]);ev.push([t*k+60,[0x89,n,0]]);});tr.push({name:"Click",ev});}

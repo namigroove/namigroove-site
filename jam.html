@@ -352,6 +352,7 @@ header.top .logo{flex:none}
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/progressions.js?v=4"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script>
 (()=>{
@@ -411,8 +412,8 @@ const SHP=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
 const chName=c=>{const r=pc(c[0]+key);return (c[1]==="dim7"&&[1,3,8].includes(r)?SHP:KEYN)[r]+c[1]+(c[2]!=null?"/"+KEYN[pc(c[2]+key)]:"");};
 
 /* ---------- 音 ---------- */
-let ac=null,out=null,noise=null;
-function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC({latencyHint:"interactive"});const cp=ac.createDynamicsCompressor();cp.threshold.value=-12;cp.ratio.value=3;cp.attack.value=0.003;out=ac.createGain();out.gain.value=0.85;out.connect(cp);cp.connect(ac.destination);
+let ac=null,out=null,noise=null,cp=null;
+function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC({latencyHint:"interactive"});cp=ac.createDynamicsCompressor();cp.threshold.value=-12;cp.ratio.value=3;cp.attack.value=0.003;out=ac.createGain();out.gain.value=0.85;out.connect(cp);cp.connect(ac.destination);
   noise=ac.createBuffer(1,ac.sampleRate,ac.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;}
   if(ac.state!=="running")ac.resume();return ac;}
 const env=(t,pk,dec,att)=>{const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+(att||0.002));g.gain.setTargetAtTime(0.0001,t+(att||0.002),dec);g.connect(out);return g;};
@@ -518,6 +519,22 @@ function toast(msg){const d=document.createElement("div");d.className="ng-toast"
 $("jShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);if(useMy)u.searchParams.set("prog",NB.enc(my));else u.searchParams.set("pg",pid(LIST[pi].n));u.searchParams.set("k",key);u.searchParams.set("st",style);u.searchParams.set("b",bpm);const url=u.href,title=(useMy?my.map(chName).join("→"):LIST[pi].n)+"(キー"+KEYN[key]+"・"+ST[style].n+")– なみぐる！ジャムモード";
   if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title+" #namigroovetools",url}).catch(()=>{});return;}
   (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("リンクをコピーしました")).catch(()=>toast(url));};
+/* 動画で撮る(vidrec.js):録画用の画面に、いまのコード・次のコード・拍・進行を描く */
+if(window.NamiVidRec)NamiVidRec.mount({after:$("jShare"),name:"jam",title:"ジャムモード",url:"https://www.namigroove.com/tools/jam/",
+  tap:()=>{audio();return {ctx:ac,node:cp};},
+  sub:()=>$("jTitle").textContent+" ・ "+ST[style].n+" ・ BPM "+bpm,
+  draw:(g,b,I)=>{const C=I.C,chips=[...$("jChips").children],names=chips.map(x=>x.textContent.trim()),ni=playing?chips.findIndex(x=>x.classList.contains("now")):-1,ci=ni<0?0:ni;
+    const cur=names[ci]||"",nx=names.length>1?names[(ci+1)%names.length]:"",cy=b.y+b.h*(I.sq?0.24:0.26);
+    I.fit(g,cur,b.x+b.w/2,cy,b.w,I.sq?110:170,400,ni<0?C.soft:C.ink);
+    if(nx)I.fit(g,"next → "+nx,b.x+b.w/2,cy+(I.sq?78:124),b.w,I.sq?22:32,400,C.soft);
+    const beats=[...$("jBeat").children],bn=beats.length,on=playing?beats.findIndex(x=>x.classList.contains("on")):-1,r=I.sq?9:13,by=b.y+b.h*(I.sq?0.6:0.58);
+    beats.forEach((x,i)=>{g.beginPath();g.arc(b.x+b.w/2+(i-(bn-1)/2)*r*3.4,by,r,0,7);g.fillStyle=i===on?C.coral:C.line;g.fill();});
+    const fs=I.sq?18:26,ph=fs*1.7,gap=8;g.font="500 "+fs+"px "+I.font;const rowsA=[[]];let rw=0;
+    names.forEach((n,i)=>{const w=g.measureText(n).width+fs*1.1;if(rw+w>b.w&&rowsA[rowsA.length-1].length){rowsA.push([]);rw=0;}rowsA[rowsA.length-1].push({n,i,w});rw+=w+gap;});
+    const rowsV=rowsA.slice(0,I.sq?2:4);let y=b.y+b.h-rowsV.length*(ph+gap);
+    rowsV.forEach(row=>{const tw=row.reduce((s,c)=>s+c.w,0)+gap*(row.length-1);let x=b.x+(b.w-tw)/2;
+      row.forEach(c=>{I.rrect(g,x,y,c.w,ph,12);g.fillStyle=c.i===ni?C.coral:C.panel;g.fill();I.fit(g,c.n,x+c.w/2,y+ph/2,c.w-6,fs,500,c.i===ni?"#fff":C.ink);x+=c.w+gap;});y+=ph+gap;});
+  }});
 renderNow();renderList();prepare();
 window.__jam={stepEvents,setStyle:s=>{style=s},prepare,get V(){return V}};
 

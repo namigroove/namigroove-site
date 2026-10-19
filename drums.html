@@ -162,6 +162,7 @@ footer a{color:var(--sea)}
 
 /* ドラムパッド */
 .wrap.drums-w{max-width:900px}
+.dr-vr{display:flex;justify-content:flex-end;margin:-4px 0 12px}.dr-vr:empty{display:none}
 .dr-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .dr-sel{font-family:var(--f-display);font-size:18px;color:var(--sea);flex:0 1 7.5em;min-width:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kit-sel{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-soft);white-space:nowrap}.kit-sel select{font:500 13px var(--f-body);color:var(--ink);padding:6px 26px 6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--chip) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234a5a80' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center/10px;-webkit-appearance:none;appearance:none;cursor:pointer;width:auto}
@@ -311,6 +312,7 @@ header.top .logo{flex:none}
       <button class="btn recb" type="button" id="recBtn" aria-pressed="false" title="叩いた音やシーケンサーの音を録音して、MP3やWAVで保存できます">● 演奏を録音</button>
       <span class="dr-sel" id="selName">キック</span>
     </div>
+    <div class="dr-vr" id="drVr"></div>
     <div class="pads" id="pads" role="group" aria-label="パッド"></div>
     <div class="smp" id="smp">
       <p class="smp-t"><b id="smpPad">キック</b> の音:<span id="smpName">内蔵の音</span></p>
@@ -457,6 +459,7 @@ header.top .logo{flex:none}
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
 <script src="https://namigroove.github.io/namigroove-site/sampler.js"></script>
 <script src="https://namigroove.github.io/namigroove-site/waveedit.js?v=1"></script>
+<script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/midiread.js?v=1"></script>
 <script>
 (()=>{
@@ -662,7 +665,8 @@ const padLabel=id=>{const L=look[id];return L&&L.nm?esc(L.nm):plain(PADS[IDX[id]
 function nameView(){const h=padLabel(sel);["selName","seqName","smpPad"].forEach(k=>{const e=$(k);if(e)e.innerHTML=h;});}
 function lookView(){const L=look[sel]||{};if(document.activeElement!==$("lookName"))$("lookName").value=L.nm||"";$("lookName").placeholder=plain(PADS[IDX[sel]].n).replace(/<[^>]*>/g,"");$("lookNameDel").hidden=!L.nm;$("lookColor").value=L.c||"#e3ebfb";$("lookImgDel").hidden=!L.img;const n=Object.keys(look).length;$("lookState").textContent=n?"("+n+"個カスタム中)":"";}
 function setLook(id,patch){const L=Object.assign({},look[id]||{},patch);Object.keys(L).forEach(k=>{if(!L[k])delete L[k];});if(Object.keys(L).length)look[id]=L;else delete look[id];saveLook();applyLook(id);lookView();}
-function flash(id){const b=padEl[id];b.classList.remove("hit");void b.offsetWidth;b.classList.add("hit");clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove("hit"),110);}
+const vHit={}; /* 動画用:パッドが光った時刻 */
+function flash(id){vHit[id]=performance.now();const b=padEl[id];b.classList.remove("hit");void b.offsetWidth;b.classList.add("hit");clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove("hit"),110);}
 function hit(id,v,hold){play(id,v,null,hold);flash(id);select(id);if(rec&&playing)recordHit(id);}
 /* リピート:パッドを押している間は、離すまでテンポに合わせて鳴らし続ける */
 const holds=new Map();
@@ -749,7 +753,7 @@ $("swing").addEventListener("input",e=>{swing=+e.target.value;store.set("drSwing
 $("vol").value=vol;$("vol").addEventListener("input",e=>{vol=+e.target.value;store.set("drVol",vol);if(master)master.gain.value=vol;});
 
 /* 再生:少し先までの音を予約しておく方式(画面が重くてもリズムがずれない) */
-let step=0,nextT=0,timer=0,queue=[],raf=0;
+let step=0,nextT=0,timer=0,queue=[],raf=0,vStep=-1;
 const stepDur=()=>60/bpm/4;
 function schedule(){
   while(nextT<ac.currentTime+0.12){
@@ -762,13 +766,13 @@ function schedule(){
 function draw(){
   const now=ac.currentTime-(ac.outputLatency||0);let cur=null;
   while(queue.length&&queue[0].t<=now){cur=queue.shift();}
-  if(cur){[...stepsEl.children].forEach((b,i)=>b.classList.toggle("now",i===cur.step));[...lanesEl.children].forEach((x,i)=>x.classList.toggle("now",i===cur.step));
+  if(cur){vStep=cur.step;[...stepsEl.children].forEach((b,i)=>b.classList.toggle("now",i===cur.step));[...lanesEl.children].forEach((x,i)=>x.classList.toggle("now",i===cur.step));
     PADS.forEach(p=>{if(pat[p.id][cur.step])flash(p.id);});}
   raf=requestAnimationFrame(draw);
 }
 function start(){audio();step=0;nextT=ac.currentTime+0.06;queue=[];schedule();timer=setInterval(schedule,25);raf=requestAnimationFrame(draw);playing=true;
   const b=$("playBtn");b.setAttribute("aria-pressed","true");b.querySelector("span").textContent="ストップ";b.querySelector("path").setAttribute("d","M6 5h12v14H6z");}
-function stop(){clearInterval(timer);cancelAnimationFrame(raf);playing=false;queue=[];
+function stop(){clearInterval(timer);cancelAnimationFrame(raf);playing=false;queue=[];vStep=-1;
   [...stepsEl.children].forEach(b=>b.classList.remove("now"));[...lanesEl.children].forEach(x=>x.classList.remove("now"));
   const b=$("playBtn");b.setAttribute("aria-pressed","false");b.querySelector("span").textContent="スタート";b.querySelector("path").setAttribute("d","M7 4.5v15l13-7.5z");}
 $("playBtn").onclick=()=>playing?stop():start();
@@ -958,6 +962,19 @@ async function mp3Blob(t){
   return new Blob(out,{type:"audio/mpeg"});
 }
 recBtn.onclick=recToggle;
+/* 動画で撮る(vidrec.js):録画用の画面に、16パッドとステップの位置を描く */
+if(window.NamiVidRec){const GC={kick:"#ff9f8a",snare:"#ffd36e",hat:"#9fe6c8",cym:"#b9e6ff",tom:"#d2b6ff",perc:"#ffb8dc"};
+  NamiVidRec.mount({into:$("drVr"),name:"drums",title:"ドラムパッド",url:"https://www.namigroove.com/tools/drums/",
+    tap:()=>{audio();return {ctx:ac,node:master};},
+    sub:()=>{const o=$("kitSel").selectedOptions[0];return (o?o.textContent+"キット":"")+" ・ BPM "+bpm;},
+    draw:(g,b,I)=>{const C=I.C,now=performance.now(),cols=4,rows=Math.ceil(PADS.length/cols),stepH=I.sq?22:40,gridH=b.h-stepH-(I.sq?14:36);
+      const sz=Math.min(b.w/cols,gridH/rows),gx=b.x+(b.w-sz*cols)/2,gy=b.y+(gridH-sz*rows)/2;
+      PADS.forEach((p,i)=>{const x=gx+(i%cols)*sz,y=gy+Math.floor(i/cols)*sz,L=look[p.id]||{},col=L.c||GC[p.g]||C.sea,h=vHit[p.id]?Math.max(0,1-(now-vHit[p.id])/240):0;
+        I.rrect(g,x+6,y+6,sz-12,sz-12,16);g.fillStyle=C.panel;g.fill();g.globalAlpha=0.22+0.78*h;g.fillStyle=col;g.fill();g.globalAlpha=1;
+        if(h>0){g.save();g.shadowColor=col;g.shadowBlur=36*h;g.strokeStyle=col;g.lineWidth=3;g.stroke();g.restore();}
+        const nm=((padEl[p.id].querySelector(".nm")||{}).textContent||"").trim();I.fit(g,nm,x+sz/2,y+sz/2,sz-26,I.sq?17:24,400,h>0.45?"#1b2440":C.ink);});
+      const sy=b.y+b.h-stepH,sw=b.w/N;for(let i=0;i<N;i++){I.rrect(g,b.x+i*sw+2,sy,sw-4,stepH,6);g.fillStyle=playing&&i===vStep?C.coral:(i%4?C.panel:C.line);g.fill();}
+    }});}
 $("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
 const drumEv=list=>{const ev=[];list.forEach(([tk,n,v])=>{ev.push([tk,[0x99,n,Math.max(1,Math.min(127,v))]]);ev.push([tk+110,[0x89,n,0]]);});return ev;};
 $("saveMid").onclick=()=>{if(!take||!take.midi)return;const k=take.bpm/60*480;download(smfBlob([{name:"Drums",ev:drumEv(take.midi.map(([t,n,v])=>[t*k,n,v]))}],take.bpm),fname("mid"));if(window.ngTrack)ngTrack("midi_export",{tool:"drums_take"});};
