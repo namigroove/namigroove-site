@@ -235,6 +235,7 @@ footer a{color:var(--sea)}
 .btn.mt[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
 .mt-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;margin:10px auto 0;padding:10px 12px;border-radius:12px;background:var(--wash);max-width:640px;font-size:13px;color:var(--ink-soft)}
 .mt-row[hidden]{display:none}
+.mt-tap{touch-action:manipulation;user-select:none;padding:8px 16px}.mt-tap.hit{animation:mtTapHit .15s}@keyframes mtTapHit{from{background:var(--sea);color:#fff}}
 .mt-bpm{display:flex;align-items:center;gap:8px;touch-action:none;user-select:none}
 .mt-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize}.mt-v output{font-family:var(--f-display);font-size:26px;min-width:2.6ch;text-align:center;color:var(--ink)}.mt-v small{font-size:10px}
 .mt-c{display:flex;align-items:center;gap:6px;white-space:nowrap}
@@ -410,6 +411,7 @@ header.top .logo{flex:none}
     </div>
     <div class="mt-row" id="mtRow" hidden>
       <div class="mt-bpm" id="mtBpmBox" title="ホイール・上下ドラッグでも変えられます"><button class="btn round" type="button" id="mtDown" aria-label="BPMを1下げる">−</button><span class="mt-v"><output id="mtBpm" class="num">100</output><small>BPM</small></span><button class="btn round" type="button" id="mtUp" aria-label="BPMを1上げる">＋</button></div>
+      <button class="btn mt-tap" type="button" id="mtTap" title="曲に合わせて何回かタップすると、そのテンポになります">タップ</button>
       <label class="mt-c">拍子 <select id="mtBeats" class="sel"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/8</option></select></label>
       <label class="mt-c"><input type="checkbox" id="mtRec"> 録音とMIDIにクリックも入れる</label>
       <span class="mt-dots" id="mtDots" aria-hidden="true"></span>
@@ -1014,6 +1016,10 @@ segInit($("chipSeg"),"w",chipWave,v=>{chipWave=v;store.set("pianoChipWave",v);})
 /* ===== メトロノーム(録音にクリックを入れるかは選べる。録音中に鳴っていれば、MIDIはそのテンポの拍に合わせて保存) ===== */
 let mtOn=false,mtBpm=+store.get("pianoMtBpm",100)||100,mtBeats=+store.get("pianoMtBeats",4)||4,mtRec=!!store.get("pianoMtRec",false),mtNext=0,mtBeat=0,mtTimer=0,mtQ=[],mtLog=[];
 $("mtBeats").value=String(mtBeats);$("mtRec").checked=mtRec;
+/* タップでBPM:2秒あいたら数え直し、最後の8回の平均 */
+let mtTaps=[];$("mtTap").addEventListener("pointerdown",e=>{e.preventDefault();const t=performance.now();if(mtTaps.length&&t-mtTaps[mtTaps.length-1]>2000)mtTaps=[];mtTaps.push(t);if(mtTaps.length>8)mtTaps.shift();
+  if(mtTaps.length>=2)mtSetBpm(60000/((mtTaps[mtTaps.length-1]-mtTaps[0])/(mtTaps.length-1)));const b=$("mtTap");b.classList.remove("hit");void b.offsetWidth;b.classList.add("hit");});
+$("mtTap").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();e.stopPropagation();$("mtTap").dispatchEvent(new PointerEvent("pointerdown"));}});
 function mtSetBpm(v){mtBpm=Math.max(30,Math.min(300,Math.round(v)));$("mtBpm").textContent=mtBpm;store.set("pianoMtBpm",mtBpm);}mtSetBpm(mtBpm);
 function mtDotsView(){$("mtDots").innerHTML=Array.from({length:mtBeats},(_,i)=>`<i class="${i?"":"acc"}"></i>`).join("");}mtDotsView();
 function mtClick(t,acc){const a=ac,o=a.createOscillator(),g=a.createGain();o.type="square";o.frequency.value=acc?1760:1320;
