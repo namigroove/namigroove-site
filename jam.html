@@ -350,7 +350,7 @@ header.top .logo{flex:none}
   <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
 </div>
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
-<script src="https://namigroove.github.io/namigroove-site/progressions.js?v=5"></script>
+<script src="https://namigroove.github.io/namigroove-site/progressions.js?v=6"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=2"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
@@ -417,7 +417,9 @@ let bars=+store.get("jamBars",1),cat=useMy?"my":LIST[pi].g;
 let V=[];const kOff=()=>key>6?key-12:key;
 function prepare(){V=NP.piano(cur().c);}
 const SHP=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
-const chName=c=>{const r=pc(c[0]+key);return (c[1]==="dim7"&&[1,3,8].includes(r)?SHP:KEYN)[r]+c[1]+(c[2]!=null?"/"+KEYN[pc(c[2]+key)]:"");};
+/* シャープ系のキー(D・E・F♯・G・A・B)ではシャープで書く */
+const SHK=[2,4,6,7,9,11];
+const chName=c=>{const r=pc(c[0]+key),N=SHK.includes(key)?SHP:KEYN;return (c[1]==="dim7"&&[1,3,8].includes(r)?SHP:N)[r]+c[1]+(c[2]!=null?"/"+N[pc(c[2]+key)]:"");};
 
 /* ---------- 音 ---------- */
 let ac=null,out=null,noise=null,cp=null;
@@ -522,7 +524,7 @@ $("jCat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
 /* ---------- 自分で作る(progbuilder.js) ---------- */
 builder=NB.mount($("jMy"),{key:()=>key,initial:my,onChange:a=>{my=a;useMy=true;save();renderNow();renderList();if(playing)prepare();}});
 if(window.NamiFav)NamiFav.onChange(k=>{if(k==="prog"&&cat==="fav")renderList();});
-$("jList").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;pi=+b.dataset.i;useMy=false;style=LIST[pi].st||DEF[LIST[pi].g]||style;$("jStyle").value=style;beatDots();if(LIST[pi].k!=null){key=LIST[pi].k;$("jKey").value=String(key);}renderNow();renderList();save();if(playing){stop();start();}});
+$("jList").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;pi=+b.dataset.i;useMy=false;style=LIST[pi].st||DEF[LIST[pi].g]||style;$("jStyle").value=style;beatDots();if(LIST[pi].k!=null){key=LIST[pi].k;$("jKey").value=String(key);}if(LIST[pi].bars){bars=LIST[pi].bars;$("jBars").value=String(bars);}renderNow();renderList();save();if(playing){stop();start();}});
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
 $("jShare").onclick=()=>{const u=new URL(location.href.split("#")[0].split("?")[0]);if(useMy)u.searchParams.set("prog",NB.enc(my));else u.searchParams.set("pg",pid(LIST[pi].n));u.searchParams.set("k",key);u.searchParams.set("st",style);u.searchParams.set("b",bpm);const url=u.href,title=(useMy?my.map(chName).join("→"):LIST[pi].n)+"(キー"+KEYN[key]+"・"+ST[style].n+")– なみぐる！ジャムモード";
   if(navigator.share&&matchMedia("(pointer:coarse)").matches){navigator.share({title,text:title+" #namigroovetools",url}).catch(()=>{});return;}
