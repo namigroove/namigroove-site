@@ -162,7 +162,7 @@ footer a{color:var(--sea)}
 
 /* ドラムパッド */
 .wrap.drums-w{max-width:900px}
-.dr-vr{display:flex;justify-content:flex-end;margin:-4px 0 12px}.dr-vr:empty{display:none}
+.dr-vr{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;margin:-4px 0 12px}.dr-vr .recb{white-space:nowrap}@media (max-width:400px){.dr-vr{gap:5px}.dr-vr .btn,.dr-vr .vr-fmt{padding:5px 8px;font-size:12px}}
 .dr-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .dr-sel{font-family:var(--f-display);font-size:18px;color:var(--sea);flex:0 1 7.5em;min-width:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kit-sel{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-soft);white-space:nowrap}.kit-sel select{font:500 13px var(--f-body);color:var(--ink);padding:6px 26px 6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--chip) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234a5a80' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center/10px;-webkit-appearance:none;appearance:none;cursor:pointer;width:auto}
@@ -309,10 +309,11 @@ header.top .logo{flex:none}
   <section class="panel dr-panel" aria-label="ドラムパッド">
     <div class="dr-top">
       <label class="kit-sel">キット <select id="kitSel" class="sel" aria-label="キット"><option value="808">808</option><option value="909">909</option><option value="chip">チップ</option></select></label>
-      <button class="btn recb" type="button" id="recBtn" aria-pressed="false" title="叩いた音やシーケンサーの音を録音して、MP3やWAVで保存できます">● 演奏を録音</button>
       <span class="dr-sel" id="selName">キック</span>
     </div>
-    <div class="dr-vr" id="drVr"></div>
+    <div class="dr-vr" id="drVr">
+        <button class="btn recb" type="button" id="recBtn" aria-pressed="false" title="叩いた音やシーケンサーの音を録音して、MP3やWAVで保存できます">● 演奏を録音</button>
+    </div>
     <div class="pads" id="pads" role="group" aria-label="パッド"></div>
     <div class="smp" id="smp">
       <p class="smp-t"><b id="smpPad">キック</b> の音:<span id="smpName">内蔵の音</span></p>
