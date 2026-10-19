@@ -458,7 +458,10 @@ function bassNote(m,t,dur){const f=440*Math.pow(2,(m-69)/12),o=ac.createOscillat
 
 /* ---------- 1ステップごとに鳴らす音を決める(再生とMIDIで共通) ---------- */
 /* コードごとの長さ(ステップ数)。進行データの ln(0.5=半分)に合わせる */
-function chordTL(){const len=barLen(ST[style]),ln=cur().ln||[];let acc=0;const L=V.map((_,i)=>Math.max(1,Math.round(len*(ln[i]||1)))),st=L.map(l=>{const a=acc;acc+=l;return a;});return {L,st,ns:acc};}
+function chordTL(){const len=barLen(ST[style]),bar=SB(ST[style]),ln=cur().ln||[];let acc=0;const L=V.map((_,i)=>Math.max(1,Math.round(len*(ln[i]||1))));
+  /* 合計が小節ぴったりでないときは、最後のコードをのばして小節の頭でループさせる */
+  const tot=L.reduce((x,y)=>x+y,0);if(tot%bar)L[L.length-1]+=bar-tot%bar;
+  const st=L.map(l=>{const a=acc;acc+=l;return a;});return {L,st,ns:acc};}
 function stepEvents(abs){
   const S=ST[style],len=barLen(S),T=chordTL(),s=abs%T.ns,inBar=s%SB(S),ko=kOff(),ev=[];let ci=0;while(ci+1<T.st.length&&T.st[ci+1]<=s)ci++;
   const c=V[ci],next=V[(ci+1)%V.length],clen=T.L[ci],sinceChord=s-T.st[ci];

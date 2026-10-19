@@ -747,7 +747,9 @@ const NamiMidi=(()=>{
     const bar=TPQ*4, us=Math.round(60000000/bpm);
     const meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,4,2,24,8],0],[0,txt(0x01,ascii(title)),0]];
     const ch=[],bs=[];
-    let tk=0;chords.forEach((c,i)=>{const t0=tk,t1=t0+Math.round(bar*(c.ln||1))-20;tk+=Math.round(bar*(c.ln||1)); /* ln:コードの長さ(0.5=半分) */
+    /* ln:コードの長さ(0.5=半分)。合計が小節ぴったりでないときは最後のコードをのばす */
+    const L=chords.map(c=>Math.round(bar*(c.ln||1))),tot=L.reduce((x,y)=>x+y,0);if(tot%bar)L[L.length-1]+=bar-tot%bar;
+    let tk=0;chords.forEach((c,i)=>{const t0=tk,t1=t0+L[i]-20;tk+=L[i];
       meta.push([t0,txt(0x06,ascii(c.name)),0]);
       c.notes.forEach(m=>{ch.push([t0,[0x90,m,84],1]);ch.push([t1,[0x80,m,0],0]);});
       if(c.bass!=null){bs.push([t0,[0x91,c.bass,96],1]);bs.push([t1,[0x81,c.bass,0],0]);}
