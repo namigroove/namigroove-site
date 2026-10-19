@@ -226,6 +226,7 @@ footer a{color:var(--sea)}
 .jm-title{font-family:var(--f-display);font-size:22px;margin:0 0 10px}
 .jm-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px}
 .jm-chips span{font:500 16px var(--f-body);padding:8px 14px;border-radius:12px;background:var(--wash);transition:background .1s,color .1s}
+.jm-chips span.hf{font-size:13px;padding:8px 9px;border-radius:9px}
 .jm-chips span.now{background:var(--coral);color:#fff}
 .jm-beat{display:flex;gap:10px;justify-content:center;margin:0 0 14px}
 .jm-beat i{width:14px;height:14px;border-radius:50%;background:var(--wash);border:2px solid var(--line)}
@@ -352,7 +353,7 @@ header.top .logo{flex:none}
   <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
 </div>
 <div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
-<script src="https://namigroove.github.io/namigroove-site/progressions.js?v=7"></script>
+<script src="https://namigroove.github.io/namigroove-site/progressions.js?v=8"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=2"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
@@ -456,17 +457,22 @@ function bassNote(m,t,dur){const f=440*Math.pow(2,(m-69)/12),o=ac.createOscillat
   g2.gain.value=0.35;o.connect(g);sw.connect(lp);lp.connect(g2);g2.connect(g);g.connect(out);o.start(t);sw.start(t);o.stop(t+dur+0.5);sw.stop(t+dur+0.5);}
 
 /* ---------- 1ステップごとに鳴らす音を決める(再生とMIDIで共通) ---------- */
+/* コードごとの長さ(ステップ数)。進行データの ln(0.5=半分)に合わせる */
+function chordTL(){const len=barLen(ST[style]),ln=cur().ln||[];let acc=0;const L=V.map((_,i)=>Math.max(1,Math.round(len*(ln[i]||1)))),st=L.map(l=>{const a=acc;acc+=l;return a;});return {L,st,ns:acc};}
 function stepEvents(abs){
-  const S=ST[style],len=barLen(S),ns=V.length*len,s=abs%ns,ci=Math.floor(s/len),inBar=s%SB(S),c=V[ci],next=V[(ci+1)%V.length],ko=kOff(),ev=[];
-  const sinceChord=s%len;
+  const S=ST[style],len=barLen(S),T=chordTL(),s=abs%T.ns,inBar=s%SB(S),ko=kOff(),ev=[];let ci=0;while(ci+1<T.st.length&&T.st[ci+1]<=s)ci++;
+  const c=V[ci],next=V[(ci+1)%V.length],clen=T.L[ci],sinceChord=s-T.st[ci];
   ["k","s","h","o","r","c","y","f","x","b","w","z","t","u"].forEach(d=>{if(S[d]&&S[d][inBar]==="x")ev.push({type:"d",d,v:d==="h"&&S===ST["16beat"]&&inBar%2?0.55:(S.walk&&d==="k"?0.35:1)});});
-  (S.keys||[]).forEach(([p,l])=>{if(p===inBar)ev.push({type:"keys",notes:c[2].slice(1).map(m=>m+ko),len:Math.min(l,len-sinceChord)});});
+  (S.keys||[]).forEach(([p,l])=>{if(p===inBar)ev.push({type:"keys",notes:c[2].slice(1).map(m=>m+ko),len:Math.min(l,clen-sinceChord)});});
+  /* 小節の途中でコードが変わるとき、刻みが無くても頭で鳴らす */
+  if(sinceChord===0&&!ev.some(e=>e.type==="keys")&&(S.keys||[]).length)ev.push({type:"keys",notes:c[2].slice(1).map(m=>m+ko),len:Math.min(clen,(()=>{const nx=(S.keys||[]).map(k=>k[0]).filter(p=>p>inBar);return nx.length?Math.min(...nx)-inBar:SB(S)-inBar;})())});
   const root=c[2][0]+ko,tri=cur().c[ci%cur().c.length][1],third=/^m|dim/.test(tri)&&!/^M/.test(tri)?3:4;
-  if(S.walk){if(inBar%4===0){const beat=inBar/4,last=(sinceChord+4>=len),nr=next[2][0]+ko;
+  if(S.walk){if(inBar%4===0){const beat=inBar/4,last=(sinceChord+4>=clen),nr=next[2][0]+ko;
       let n=root;if(last)n=nr+(nr>root?-1:1);else if(beat%4===1)n=root+third;else if(beat%4===2)n=root+7;else if(beat%4===3)n=root+(beat%2?10:5);
       ev.push({type:"bass",note:n,len:4});}}
-  else (S.bass||[]).forEach(([p,w,l])=>{if(p===inBar&&p<len){const n=w==="R"?root:w==="5"?root+7:w==="8"?root+12:root+third;ev.push({type:"bass",note:n,len:Math.min(l,len-sinceChord)});}});
-  const G=GRP(S);return {ev,ci,beat:G.filter(g=>g<=inBar).length-1,isBeat:G.includes(inBar),inBar};
+  else{(S.bass||[]).forEach(([p,w,l])=>{if(p===inBar&&p<len){const n=w==="R"?root:w==="5"?root+7:w==="8"?root+12:root+third;ev.push({type:"bass",note:n,len:Math.min(l,clen-sinceChord)});}});
+    if(sinceChord===0&&!ev.some(e=>e.type==="bass")&&(S.bass||[]).length)ev.push({type:"bass",note:root,len:Math.min(clen,4)});}
+  const G=GRP(S);return {ev,ci,sinceChord,beat:G.filter(g=>g<=inBar).length-1,isBeat:G.includes(inBar)||sinceChord===0,inBar};
 }
 const swingOff=(inBar,stepDur)=>{const S=ST[style];let d=0;if(S.sw&&inBar%4===2)d=S.sw*stepDur*0.667;if(S.sw16&&inBar%2===1)d+=S.sw*stepDur*0.33;return d;};
 
@@ -483,14 +489,14 @@ $("jPlay").onclick=()=>playing?stop():start();
 
 /* ---------- MIDI(鍵盤・ベース・ドラム) ---------- */
 function midi(){
-  prepare();const TS=ST[style].ts||[4,4],TPQ=480,st=TPQ/4,len=barLen(ST[style]),N=V.length*len,us=Math.round(60000000/bpm);
+  prepare();const TS=ST[style].ts||[4,4],TPQ=480,st=TPQ/4,len=barLen(ST[style]),N=chordTL().ns,us=Math.round(60000000/bpm);
   const vlq=n=>{const b=[n&0x7f];while(n>>=7)b.unshift((n&0x7f)|0x80);return b;};
   const txt=(ty,s)=>{const b=[...new TextEncoder().encode(s)];return [0xff,ty,...vlq(b.length),...b];};
   const asc=s=>s.replace(/♭/g,"b").replace(/♯/g,"#").replace(/[^\x20-\x7e]/g,"");
   const trk=(name,evs)=>{evs.sort((a,b)=>a[0]-b[0]||a[2]-b[2]);let o=[0,...txt(0x03,name)],t=0;evs.forEach(([tk,by])=>{o.push(...vlq(tk-t),...by);t=tk;});o.push(0,0xff,0x2f,0);return [0x4d,0x54,0x72,0x6b,(o.length>>>24)&255,(o.length>>>16)&255,(o.length>>>8)&255,o.length&255,...o];};
   const GM={k:36,s:38,h:42,o:46,r:37,c:39,y:51,f:44,x:49,b:54,w:56,z:70,t:64,u:63},meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,TS[0],Math.log2(TS[1]),24,8],0]],K=[],B=[],D=[];
-  for(let a=0;a<N;a++){const {ev,ci,inBar}=stepEvents(a),t0=a*st+Math.round(swingOff(inBar,1)*st);
-    if(a%len===0)meta.push([a*st,txt(0x06,asc(chName(cur().c[ci]))),0]);
+  for(let a=0;a<N;a++){const {ev,ci,inBar,sinceChord}=stepEvents(a),t0=a*st+Math.round(swingOff(inBar,1)*st);
+    if(sinceChord===0)meta.push([a*st,txt(0x06,asc(chName(cur().c[ci]))),0]);
     ev.forEach(e=>{if(e.type==="d"){D.push([t0,[0x99,GM[e.d],Math.round(100*e.v)],1]);D.push([t0+st-10,[0x89,GM[e.d],0],0]);}
       if(e.type==="keys")e.notes.forEach(m=>{K.push([t0,[0x90,m,80],1]);K.push([t0+e.len*st-15,[0x80,m,0],0]);});
       if(e.type==="bass"){B.push([t0,[0x91,e.note,100],1]);B.push([t0+e.len*st-15,[0x81,e.note,0],0]);}});}
@@ -501,7 +507,7 @@ function midi(){
 $("jMidi").onclick=midi;
 
 /* ---------- 画面 ---------- */
-function renderNow(){const P=cur();$("jTitle").textContent=P.n+"(キー"+KEYN[key]+")";$("jChips").innerHTML=P.c.map(c=>`<span>${chName(c)}</span>`).join("");}
+function renderNow(){const P=cur();$("jTitle").textContent=P.n+"(キー"+KEYN[key]+")";$("jChips").innerHTML=P.c.map((c,i)=>`<span${P.ln&&P.ln[i]<1?' class="hf" title="半分の長さ"':""}>${chName(c)}</span>`).join("");}
 function renderList(){[...$("jCat").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===cat));
   $("jMy").hidden=cat!=="my";$("jList").hidden=cat==="my";if(cat==="my"){if(builder)builder.render();return;}
   const isF=p=>window.NamiFav&&NamiFav.has("prog",NamiFav.pid(p.n));

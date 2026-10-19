@@ -551,7 +551,7 @@ header.top .logo{flex:none}
 <script src="https://namigroove.github.io/namigroove-site/sampler.js"></script>
 <script src="https://namigroove.github.io/namigroove-site/waveedit.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/midiread.js?v=1"></script>
-<script src="https://namigroove.github.io/namigroove-site/progressions.js?v=7"></script>
+<script src="https://namigroove.github.io/namigroove-site/progressions.js?v=8"></script>
 <script src="https://namigroove.github.io/namigroove-site/progbuilder.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=2"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
@@ -1386,7 +1386,7 @@ $("clType").addEventListener("click",e=>{const b=e.target.closest("button");if(!
 $("clVo").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clVo=+b.dataset.v;clRender();clGo();});
 $("clPlay").onclick=clGo;
 /* おしゃれ進行(キーCでの音。左手ベース+右手) */
-const PROGS=window.NamiProg.LIST.map(x=>({g:x.g,n:x.n,d:x.d,c:window.NamiProg.piano(x.c)}));
+const PROGS=window.NamiProg.LIST.map(x=>({g:x.g,n:x.n,d:x.d,ln:x.ln,c:window.NamiProg.piano(x.c)}));
 /* 自分で作った進行(progbuilder.js。ジャムモード・コード表と共通) */
 const NB=window.NamiBuilder;let myC=NB.load();const qMy=(new URLSearchParams(location.search).get("prog")||new URLSearchParams(location.search).get("m")),qMyC=qMy?NB.dec(qMy):null;if(qMyC)myC=qMyC;
 const MYI=PROGS.length;PROGS.push({g:"my",n:"マイ進行",d:"自分で作った進行。上でコードを変えると、ここにすぐ反映されます",c:window.NamiProg.piano(myC)});
@@ -1410,7 +1410,7 @@ let progTimer=0;
 function playChord(p,j){const c=PROGS[p].c[j],ms=c[2].map(m=>m+kOff());audio();hint(ms);sound(ms,1300);
   document.querySelectorAll(".cl-pg .chips button").forEach(b=>b.classList.remove("now"));
   const el=document.querySelector(`.cl-pg[data-p="${p}"] [data-c="${j}"]`);if(el)el.classList.add("now");}
-function playProg(p){clearTimeout(progTimer);let j=0;const n=PROGS[p].c.length;const step=()=>{playChord(p,j);j++;if(j<n)progTimer=setTimeout(step,1500);};step();}
+function playProg(p){clearTimeout(progTimer);let j=0;const n=PROGS[p].c.length;const step=()=>{playChord(p,j);const w=1500*((PROGS[p].ln&&PROGS[p].ln[j])||1);j++;if(j<n)progTimer=setTimeout(step,w);};step();}
 /* MIDI書き出し:左手ベースは別トラック、右手はコードトラック。今のキーに移調 */
 /* ===== MIDIファイル書き出し(SMFフォーマット1:テンポ+コード+ベース) ===== */
 const NamiMidi=(()=>{
@@ -1430,7 +1430,7 @@ const NamiMidi=(()=>{
     const bar=TPQ*4, us=Math.round(60000000/bpm);
     const meta=[[0,[0xff,0x51,3,(us>>16)&255,(us>>8)&255,us&255],0],[0,[0xff,0x58,4,4,2,24,8],0],[0,txt(0x01,ascii(title)),0]];
     const ch=[],bs=[];
-    chords.forEach((c,i)=>{const t0=i*bar,t1=t0+bar-20;
+    let tk=0;chords.forEach((c,i)=>{const t0=tk,t1=t0+Math.round(bar*(c.ln||1))-20;tk+=Math.round(bar*(c.ln||1)); /* ln:コードの長さ(0.5=半分) */
       meta.push([t0,txt(0x06,ascii(c.name)),0]);
       c.notes.forEach(m=>{ch.push([t0,[0x90,m,84],1]);ch.push([t1,[0x80,m,0],0]);});
       if(c.bass!=null){bs.push([t0,[0x91,c.bass,96],1]);bs.push([t1,[0x81,c.bass,0],0]);}
@@ -1449,11 +1449,11 @@ const NamiMidi=(()=>{
 
 let clBpm=store.get("clBpm",90);$("clBpm").value=clBpm;$("clBpm").addEventListener("change",()=>{clBpm=Math.max(40,Math.min(240,+$("clBpm").value||90));$("clBpm").value=clBpm;store.set("clBpm",clBpm);});
 function progMidi(p){const P=PROGS[p],k=kOff();
-  const cs=P.c.map(c=>{const ms=c[2].map(m=>m+k);return {name:chName(c),bass:ms[0],notes:ms.slice(1)};});
+  const cs=P.c.map((c,i)=>{const ms=c[2].map(m=>m+k);return {name:chName(c),bass:ms[0],notes:ms.slice(1),ln:P.ln&&P.ln[i]};});
   NamiMidi.save(NamiMidi.build(cs,clBpm,P.n+" ("+CLKEY[clKey]+")"),"namigroove_"+P.n+"_"+CLKEY[clKey]+"_"+clBpm+"bpm");}
 $("clProgs").addEventListener("click",e=>{const jm=e.target.closest("[data-jam]");if(jm){const u=(/github\.io$/.test(location.hostname)||location.protocol==="file:"?"jam.html":"/tools/jam/")+(+jm.dataset.jam===MYI?"?prog="+encodeURIComponent(NB.enc(myC)):"?pg="+pid(PROGS[+jm.dataset.jam].n))+"&k="+clKey;location.href=u;return;}const sh=e.target.closest("[data-shr]");if(sh){const P=PROGS[+sh.dataset.shr];shareLink(+sh.dataset.shr===MYI?{prog:NB.enc(myC),k:clKey}:{pg:pid(P.n),k:clKey},(+sh.dataset.shr===MYI?P.c.map(chName).join("→"):P.n)+"(キー"+CLKEY[clKey]+")– なみぐる！ピアノ");return;}const md=e.target.closest("[data-mid]");if(md){progMidi(+md.dataset.mid);return;}const pl=e.target.closest("[data-play]");if(pl){playProg(+pl.dataset.play);return;}
   const b=e.target.closest("[data-c]");if(!b)return;const p=+b.closest(".cl-pg").dataset.p;clearTimeout(progTimer);playChord(p,+b.dataset.c);});
-$("clProgPlay").onclick=()=>{clearTimeout(progTimer);const L=PROGS.map((_,i)=>i).filter(i=>clCat==="all"||PROGS[i].g===clCat);let k=0,j=0;const step=()=>{const p=L[k];playChord(p,j);j++;if(j>=PROGS[p].c.length){k++;j=0;}if(k<L.length)progTimer=setTimeout(step,1500);};if(L.length)step();};
+$("clProgPlay").onclick=()=>{clearTimeout(progTimer);const L=PROGS.map((_,i)=>i).filter(i=>clCat==="all"||PROGS[i].g===clCat);let k=0,j=0;const step=()=>{const p=L[k];playChord(p,j);const w=1500*((PROGS[p].ln&&PROGS[p].ln[j])||1);j++;if(j>=PROGS[p].c.length){k++;j=0;}if(k<L.length)progTimer=setTimeout(step,w);};if(L.length)step();};
 $("clKey").addEventListener("change",()=>{clKey=+$("clKey").value;store.set("clKey",clKey);progRender();if(builder)builder.render();});
 $("clTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const m=b.dataset.m;[...$("clTabs").children].forEach(x=>x.setAttribute("aria-selected",x===b));$("clName").hidden=m!=="name";$("clProg").hidden=m!=="prog";clearTimeout(progTimer);});
 /* ===== 共有リンク(選んだ状態をURLに入れる) ===== */
