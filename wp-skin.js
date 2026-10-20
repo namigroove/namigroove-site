@@ -77,7 +77,7 @@
     li.appendChild(a); ul.appendChild(li);
     if (!window.NamiI18n && !document.getElementById("nami-i18n-js")) {
       var s = document.createElement("script"); s.id = "nami-i18n-js";
-      s.src = "https://namigroove.github.io/namigroove-site/nami-i18n.js?v=3"; document.body.appendChild(s);
+      s.src = "https://namigroove.github.io/namigroove-site/nami-i18n.js?v=4"; document.body.appendChild(s);
     }
   }
   var _run = run; run = function () { _run(); addEN(); addTools(); };

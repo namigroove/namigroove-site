@@ -79,7 +79,8 @@ const MODE=(!TRANS&&DICT_PAGES.includes(PAGE)&&(IS_GH||/^\/(tools\/.*)?$/.test(l
 const q=new URLSearchParams(location.search);
 let LANG=q.get("lang")||"";
 if(LANG!=="en"&&LANG!=="ja"){try{LANG=localStorage.getItem("nami-lang")||"ja"}catch(e){LANG="ja"}}
-if(LANG!=="en"||MODE!=="dict")LANG="ja";
+if(LANG!=="en")LANG="ja";
+if(TRANS)LANG="ja";
 
 const tr=s=>LANG==="en"?(look(s)||s):s;
 
@@ -117,7 +118,7 @@ function apply(root=document.body){
   busy=false;
 }
 let tm;
-new MutationObserver(()=>{ if(busy||LANG!=="en")return; clearTimeout(tm); tm=setTimeout(()=>apply(),60); })
+new MutationObserver(()=>{ if(busy||LANG!=="en"||MODE!=="dict")return; clearTimeout(tm); tm=setTimeout(()=>apply(),60); })
   .observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:ATTR});
 /* 内部リンクに ?lang=en を引き継ぐ(英語時のみ。日本語時は除去) */
 function links(){
@@ -130,6 +131,27 @@ function links(){
     if(a.getAttribute("href")!==u.href)a.setAttribute("href",u.href);
   });
 }
+
+/* Google翻訳(ウィジェット方式): translate.goog に飛ばさず、そのページ内で翻訳する */
+function gCookie(on){
+  const h=location.hostname,parts=h.split("."),doms=["",";domain="+h];
+  if(parts.length>2)doms.push(";domain=."+parts.slice(-2).join("."));
+  doms.push(";domain=."+h);
+  doms.forEach(d=>{document.cookie="googtrans="+(on?"/ja/en":"")+";path=/"+d+(on?"":";expires=Thu, 01 Jan 1970 00:00:00 GMT");});
+}
+let gtLoaded=false;
+function gtOn(){
+  gCookie(true);
+  if(gtLoaded)return; gtLoaded=true;
+  const st=document.createElement("style");
+  st.textContent=".skiptranslate iframe,.goog-te-banner-frame,#goog-gt-tt,.goog-te-balloon-frame{display:none!important}body{top:0!important}#google_translate_element{display:none}font[style*='vertical-align']{vertical-align:baseline!important}";
+  document.head.appendChild(st);
+  const box=document.createElement("div");box.id="google_translate_element";document.body.appendChild(box);
+  window.googleTranslateElementInit=()=>{try{new google.translate.TranslateElement({pageLanguage:"ja",includedLanguages:"en",autoDisplay:false},"google_translate_element");}catch(e){}};
+  const sc=document.createElement("script");sc.src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";sc.async=true;
+  document.head.appendChild(sc);
+}
+function gtOff(){ gCookie(false); location.reload(); }
 let loaded=false;
 function loadDict(cb){
   if(loaded||MODE!=="dict"){cb();return;} loaded=true;
@@ -138,21 +160,21 @@ function loadDict(cb){
   el.onload=el.onerror=()=>cb();document.head.appendChild(el);
 }
 function set(l,push){
-  if(MODE!=="dict"||l===LANG)return;LANG=l;
+  if(l===LANG)return;LANG=l;
   try{localStorage.setItem("nami-lang",l)}catch(e){}
   const u=new URL(location.href);l==="en"?u.searchParams.set("lang","en"):u.searchParams.delete("lang");
   history.replaceState(null,"",u);
+  if(MODE==="google"){ if(l==="en"){gtOn();links();sync();}else gtOff(); return; }
   loadDict(()=>{apply();});sync();
 }
 /* 切替ボタン: <a data-lang href="?lang=en">EN</a> 。JS無効でもリンクとして動く */
 function gHost(){return location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");}
 function sync(){
   document.querySelectorAll("a[data-lang]").forEach(a=>{
-    if(MODE==="google"){
+    if(MODE==="google"&&TRANS){
       a.removeAttribute("data-to");
-      if(TRANS){const qq=new URLSearchParams(location.search);[...qq.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>qq.delete(k));
-        a.href="https://"+gHost()+location.pathname+(qq.toString()?"?"+qq:"")+location.hash;a.textContent="JP";a.lang="ja";a.title="日本語に戻す";}
-      else{a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);a.textContent="EN";a.lang="en";a.title="Translate this page into English (Google Translate)";}
+      const qq=new URLSearchParams(location.search);[...qq.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>qq.delete(k));
+      a.href="https://"+gHost()+location.pathname+(qq.toString()?"?"+qq:"")+location.hash;a.textContent="JP";a.lang="ja";a.title="日本語に戻す";
       return;
     }
     const to=LANG==="en"?"ja":"en",u=new URL(location.href);
@@ -164,11 +186,12 @@ function sync(){
 }
 document.addEventListener("click",e=>{
   const a=e.target.closest&&e.target.closest("a[data-lang]");
-  if(a&&MODE==="dict"){e.preventDefault();set(a.dataset.to||"en");}
+  if(a&&!TRANS){e.preventDefault();set(a.dataset.to||(LANG==="en"?"ja":"en"));}
 });
 window.tr=tr;
 window.NamiI18n={tr,apply,add:d=>Object.assign(EN,d),get lang(){return LANG},set};
-window.addEventListener("DOMContentLoaded",()=>{sync();if(LANG==="en")loadDict(()=>apply());
+window.addEventListener("DOMContentLoaded",()=>{sync();
+  if(LANG==="en"){ if(MODE==="dict")loadDict(()=>apply()); else {gtOn();links();} }
   if(TRANS)document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove");
   if(TRANS)document.querySelectorAll("#header-nav a,.mochi").forEach(a=>{if(/₺ƾらせ/.test(a.textContent)){a.textContent="mochinfo";a.setAttribute("translate","no");}});});
 })();
