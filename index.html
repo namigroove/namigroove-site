@@ -766,6 +766,6 @@ var namiAC=null;
 function namiBell(){try{if(!namiAC){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;namiAC=new AC({latencyHint:"interactive"});}if(namiAC.state!=="running")namiAC.resume();var g=namiAC.createGain();g.gain.value=0.8;g.connect(namiAC.destination);puniSound(namiAC,g,namiAC.currentTime);}catch(e){}}
 document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){namiBell();tapBpm();b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
 </script>
-<script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=2"></script>
+<script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=3"></script>
 </body>
 </html>
