@@ -78,7 +78,7 @@
     document.querySelectorAll("#header-nav a").forEach(function (x) { if (/^(Works|Tools|Links?)$/.test(x.textContent.trim())) x.setAttribute("translate", "no"); });
     if (!window.NamiI18n && !document.getElementById("nami-i18n-js")) {
       var s = document.createElement("script"); s.id = "nami-i18n-js";
-      s.src = "https://namigroove.github.io/namigroove-site/nami-i18n.js?v=4"; document.body.appendChild(s);
+      s.src = "https://namigroove.github.io/namigroove-site/nami-i18n.js?v=5"; document.body.appendChild(s);
     }
   }
   var _run = run; run = function () { _run(); addEN(); addTools(); };

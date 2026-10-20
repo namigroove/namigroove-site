@@ -94,6 +94,17 @@ function textNodes(root){
     return NodeFilter.FILTER_ACCEPT;}});
   const a=[];while(w.nextNode())a.push(w.currentNode);return a;
 }
+/* 固有名の表記: ₺ƾらせ → mochinfo(Google翻訳・辞書どちらでも) */
+function names(){
+  document.querySelectorAll(".mochi,#header-nav a,.ngname").forEach(e=>{
+    const isM=e.classList.contains("mochi")||/^\s*₺ƾらせ\s*$/.test(e.dataset.o0||e.textContent);
+    const isN=e.classList.contains("ngname");
+    if(!isM&&!isN)return;
+    if(e.dataset.o0==null)e.dataset.o0=e.textContent;
+    e.setAttribute("translate","no");
+    e.textContent=LANG==="en"?(isN?"namigroove":"mochinfo"):e.dataset.o0;
+  });
+}
 let busy=false;
 function apply(root=document.body){
   busy=true;
@@ -115,6 +126,7 @@ function apply(root=document.body){
   document.documentElement.lang=LANG;
   if(document.title){ if(!document._ot)document._ot=document.title; const nt=tr(document._ot); if(document.title!==nt)document.title=nt; }
   links();
+  names();
   busy=false;
 }
 let tm;
@@ -164,7 +176,7 @@ function set(l,push){
   try{localStorage.setItem("nami-lang",l)}catch(e){}
   const u=new URL(location.href);l==="en"?u.searchParams.set("lang","en"):u.searchParams.delete("lang");
   history.replaceState(null,"",u);
-  if(MODE==="google"){ if(l==="en"){gtOn();links();sync();}else gtOff(); return; }
+  if(MODE==="google"){ if(l==="en"){gtOn();links();names();sync();}else gtOff(); return; }
   loadDict(()=>{apply();});sync();
 }
 /* 切替ボタン: <a data-lang href="?lang=en">EN</a> 。JS無効でもリンクとして動く */
@@ -191,7 +203,6 @@ document.addEventListener("click",e=>{
 window.tr=tr;
 window.NamiI18n={tr,apply,add:d=>Object.assign(EN,d),get lang(){return LANG},set};
 window.addEventListener("DOMContentLoaded",()=>{sync();
-  if(LANG==="en"){ if(MODE==="dict")loadDict(()=>apply()); else {gtOn();links();} }
-  if(TRANS)document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove");
-  if(TRANS)document.querySelectorAll("#header-nav a,.mochi").forEach(a=>{if(/₺ƾらせ/.test(a.textContent)){a.textContent="mochinfo";a.setAttribute("translate","no");}});});
+  if(LANG==="en"){ if(MODE==="dict")loadDict(()=>apply()); else {gtOn();links();names();} }
+  if(TRANS){LANG="en";names();LANG="ja";}});
 })();
