@@ -138,7 +138,8 @@
     box.innerHTML =
       '<p class="ng-404-msg">お探しのページは、波にさらわれてしまったみたいです。</p>' +
       '<p class="ng-404-sub">URLが変わったか、ページが移動した可能性があります。</p>' +
-      '<p class="ng-404-btns"><a href="/">トップページへ</a><a href="/works/">Works</a><a href="/contact/">お問い合わせ</a></p>';
+      '<p class="ng-404-btns"><a href="/">トップページへ</a><a href="/works/">Works</a><a href="/contact/">お問い合わせ</a></p>' +
+      '<svg class="ng-404-wave" viewBox="0 0 1200 48" preserveAspectRatio="none" aria-hidden="true"><path class="w2" d="M0 22 Q100 8 200 22 T400 22 T600 22 T800 22 T1000 22 T1200 22 T1400 22 T1600 22 T1800 22 T2000 22 T2200 22 T2400 22 L2400 48 L0 48 Z" fill="currentColor" opacity=".45"/><path class="w1" d="M0 26 Q150 10 300 26 T600 26 T900 26 T1200 26 T1500 26 T1800 26 T2100 26 T2400 26 L2400 48 L0 48 Z" fill="currentColor"/></svg>';
     host.appendChild(box);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", page404); else page404();

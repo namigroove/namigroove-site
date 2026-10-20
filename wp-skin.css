@@ -181,6 +181,11 @@ details[id]{scroll-margin-top:90px}
 .ng-404-btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:0}
 .ng-404-btns a{display:inline-block;padding:10px 20px;border-radius:999px;border:1.5px solid #101f45;color:#101f45!important;text-decoration:none;font-family:"MaruMinyaM",sans-serif;font-size:14px}
 .ng-404-btns a:first-child{background:#101f45;color:#fff!important}
+.ng-404-wave{display:block;width:100%;height:56px;margin-top:32px;color:var(--ng-head,#396cdf)}
+.ng-404-wave path{animation:ng404Wave 14s linear infinite}
+.ng-404-wave .w2{animation-duration:9s;animation-direction:reverse}
+@keyframes ng404Wave{from{transform:translateX(0)}to{transform:translateX(-1200px)}}
+@media (prefers-reduced-motion:reduce){.ng-404-wave path{animation:none}}
 
 /* Music・Movie一覧の「一覧を見る」 */
 .ng-media-more{text-align:center;margin:18px 0 0!important}
