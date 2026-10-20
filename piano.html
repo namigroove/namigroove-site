@@ -240,6 +240,7 @@ footer a{color:var(--sea)}
 .mt-v .bpm-in{font-size:24px}
 .mt-bpm{display:flex;align-items:center;gap:8px;touch-action:none;user-select:none}
 .mt-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize}.mt-v output{font-family:var(--f-display);font-size:26px;min-width:2.6ch;text-align:center;color:var(--ink)}.mt-v small{font-size:10px}
+.mt-sp{display:inline-flex;align-items:center;gap:3px}.mt-ar{display:flex;flex-direction:column;gap:2px}.mt-ar button{width:30px;height:20px;padding:0;border:1px solid var(--line);border-radius:6px;background:var(--chip);color:var(--ink-soft);font-size:10px;line-height:1;cursor:pointer;touch-action:manipulation}.mt-ar button:active{background:var(--sea);color:#fff}
 .mt-n{display:inline-block;min-width:2ch;padding:4px 8px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font:700 18px var(--f-display);text-align:center;cursor:ns-resize;touch-action:none;user-select:none}.mt-n:focus-visible{outline:2px solid var(--sea)}.mt-ts.off{opacity:.45;pointer-events:none}
 .mt-c{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .mt-dots{display:flex;gap:6px}.mt-dots i{width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}.mt-dots i.on{background:var(--sea);border-color:var(--sea)}.mt-dots i.on.acc{background:var(--coral);border-color:var(--coral)}
@@ -421,7 +422,7 @@ header.top .logo{flex:none}
     <div class="mt-row" id="mtRow" hidden>
       <div class="mt-bpm" id="mtBpmBox" title="ホイール・上下ドラッグでも変えられます"><button class="btn round" type="button" id="mtDown" aria-label="BPMを1下げる">−</button><span class="mt-v"><output id="mtBpm" class="num">100</output><small>BPM</small></span><button class="btn round" type="button" id="mtUp" aria-label="BPMを1上げる">＋</button></div>
       <button class="btn mt-tap" type="button" id="mtTap" title="曲に合わせて何回かタップすると、そのテンポになります">タップ</button>
-      <span class="mt-c mt-ts" id="mtTs" role="group" aria-label="拍子(上下ドラッグ・ホイール・矢印キーで変更)">拍子 <b class="mt-n" id="mtN" tabindex="0" role="spinbutton" aria-label="拍の数" aria-valuemin="1" aria-valuemax="16">4</b><span>/</span><b class="mt-n" id="mtD" tabindex="0" role="spinbutton" aria-label="1拍の長さ(分母)" aria-valuemin="2" aria-valuemax="16">4</b></span>
+      <span class="mt-c mt-ts" id="mtTs" role="group" aria-label="拍子(▲▼ボタン・上下ドラッグ・ホイール・矢印キーで変更)">拍子 <b class="mt-n" id="mtN" tabindex="0" role="spinbutton" aria-label="拍の数" aria-valuemin="1" aria-valuemax="16">4</b><span>/</span><b class="mt-n" id="mtD" tabindex="0" role="spinbutton" aria-label="1拍の長さ(分母)" aria-valuemin="2" aria-valuemax="16">4</b></span>
       <label class="mt-c">ドラム <select id="mtDr" class="sel" aria-label="ドラムのリズム(ジャムモードと共通)"></select></label>
       <label class="mt-c" id="mtDrVolL" hidden>音量 <input type="range" id="mtDrVol" min="0" max="100" value="80" aria-label="ドラムの音量"></label>
       <label class="mt-c"><input type="checkbox" id="mtRec"> 録音とMIDIにクリック・ドラムも入れる</label>
@@ -1120,7 +1121,10 @@ bpmTyping(document.querySelector("#mtBpmBox .mt-v"),$("mtBpm"),()=>mtBpm,mtSetBp
 const MT_DENS=[2,4,8,16],mtBL=()=>60/mtBpm*4/mtDen;
 function mtTsView(){$("mtN").textContent=mtBeats;$("mtD").textContent=mtDen;$("mtN").setAttribute("aria-valuenow",mtBeats);$("mtD").setAttribute("aria-valuenow",mtDen);}
 function mtTsSet(n,d){mtBeats=Math.max(1,Math.min(16,n));mtDen=d;store.set("pianoMtBeats",mtBeats);store.set("pianoMtDen",mtDen);mtBeat=0;mtTsView();mtDotsView();}
-function spin(el,get,set){let y0=null,v0=0;el.addEventListener("pointerdown",e=>{y0=e.clientY;v0=get();el.setPointerCapture(e.pointerId);});
+function spin(el,get,set){let y0=null,v0=0;
+  const w=document.createElement("span"),ar=document.createElement("span");w.className="mt-sp";ar.className="mt-ar";ar.innerHTML='<button type="button" aria-label="増やす" tabindex="-1">\u25b2</button><button type="button" aria-label="減らす" tabindex="-1">\u25bc</button>';
+  el.parentNode.insertBefore(w,el);w.appendChild(el);w.appendChild(ar);ar.children[0].onclick=()=>set(get()+1);ar.children[1].onclick=()=>set(get()-1);
+el.addEventListener("pointerdown",e=>{y0=e.clientY;v0=get();el.setPointerCapture(e.pointerId);});
   el.addEventListener("pointermove",e=>{if(y0!=null){const d=Math.round((y0-e.clientY)/14);if(d)set(v0+d,true);}});
   el.addEventListener("pointerup",()=>{y0=null;});el.addEventListener("pointercancel",()=>{y0=null;});
   el.addEventListener("wheel",e=>{e.preventDefault();set(get()+(e.deltaY<0?1:-1));},{passive:false});

@@ -89,7 +89,8 @@ details.opts[open] summary{margin-bottom:8px}
 .opts .row{margin-top:10px}
 
 /* チューナー */
-.mt-ts{display:inline-flex;align-items:center;gap:6px}.mt-n{display:inline-block;min-width:2ch;padding:4px 8px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font:700 18px var(--f-display);text-align:center;cursor:ns-resize;touch-action:none;user-select:none}.mt-n:focus-visible{outline:2px solid var(--sea)}
+.mt-ts{display:inline-flex;align-items:center;gap:6px}.mt-sp{display:inline-flex;align-items:center;gap:3px}.mt-ar{display:flex;flex-direction:column;gap:2px}.mt-ar button{width:30px;height:20px;padding:0;border:1px solid var(--line);border-radius:6px;background:var(--chip);color:var(--ink-soft);font-size:10px;line-height:1;cursor:pointer;touch-action:manipulation}.mt-ar button:active{background:var(--sea);color:#fff}
+.mt-n{display:inline-block;min-width:2ch;padding:4px 8px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font:700 18px var(--f-display);text-align:center;cursor:ns-resize;touch-action:none;user-select:none}.mt-n:focus-visible{outline:2px solid var(--sea)}
 .meter{position:relative;max-width:420px;margin:0 auto}
 .meter svg{display:block;width:100%;height:auto;overflow:visible}
 .meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
@@ -380,7 +381,7 @@ header.top .logo{flex:none}
       <div class="steps" id="steps" role="group" aria-label="ステップ"></div>
       <div class="lanes" id="lanes" aria-hidden="true"></div>
       <div class="row seq-opts">
-        <div class="ctl" id="meterBox" role="group" aria-label="拍子(上下ドラッグ・ホイール・矢印キーで変更)">拍子
+        <div class="ctl" id="meterBox" role="group" aria-label="拍子(▲▼ボタン・上下ドラッグ・ホイール・矢印キーで変更)">拍子
           <span class="mt-ts"><b class="mt-n" id="mtN" tabindex="0" role="spinbutton" aria-label="拍の数" aria-valuemin="1">4</b><span>/</span><b class="mt-n" id="mtD" tabindex="0" role="spinbutton" aria-label="1拍の長さ(分母)" aria-valuemin="2" aria-valuemax="16">4</b></span>
         </div>
         <div class="ctl">パターン
@@ -724,7 +725,10 @@ function buildSteps(){stepsEl.innerHTML="";lanesEl.innerHTML="";const G=METERS[m
 buildSteps();
 function meterView(){const [n,d]=parseMeter(meter);$("mtN").textContent=n;$("mtD").textContent=d;$("mtN").setAttribute("aria-valuenow",n);$("mtD").setAttribute("aria-valuenow",d);$("mtN").setAttribute("aria-valuemax",meterMax(d));}
 function setMeter(m){meter=meterKey(m);N=METERS[meter].steps;store.set("drMeter",meter);meterView();if(step>=N)step=0;buildSteps();renderSteps();}
-function spin(el,get,set){let y0=null,v0=0;el.addEventListener("pointerdown",e=>{y0=e.clientY;v0=get();el.setPointerCapture(e.pointerId);});
+function spin(el,get,set){let y0=null,v0=0;
+  const w=document.createElement("span"),ar=document.createElement("span");w.className="mt-sp";ar.className="mt-ar";ar.innerHTML='<button type="button" aria-label="増やす" tabindex="-1">\u25b2</button><button type="button" aria-label="減らす" tabindex="-1">\u25bc</button>';
+  el.parentNode.insertBefore(w,el);w.appendChild(el);w.appendChild(ar);ar.children[0].onclick=()=>set(get()+1);ar.children[1].onclick=()=>set(get()-1);
+el.addEventListener("pointerdown",e=>{y0=e.clientY;v0=get();el.setPointerCapture(e.pointerId);});
   el.addEventListener("pointermove",e=>{if(y0!=null){const d=Math.round((y0-e.clientY)/14);if(d)set(v0+d);}});
   el.addEventListener("pointerup",()=>{y0=null;});el.addEventListener("pointercancel",()=>{y0=null;});
   el.addEventListener("wheel",e=>{e.preventDefault();set(get()+(e.deltaY<0?1:-1));},{passive:false});
