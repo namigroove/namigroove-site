@@ -6,6 +6,7 @@
 - `works.html` Works(代表作・Discography・年表・お取引先・出演・ボカコレ)※namigroove.com/works/ で表示
 - `profile.html` 旧ファイル名。works.html へ転送するだけ
 - `tools.html` チューナー&メトロノーム(マイク・Web Audio。サーバー不要)※namigroove.com/tools/ で表示予定
+- `about.html` 「#namigroovetools を作った理由」※namigroove.com/tools/about/ で表示
 - `bpmms.html` BPMmsCalculator(元は namigroove/BPMmsCalculator)※namigroove.com/tools/bpmms/ で表示
 - `brass.html` / `brass-fingering.js` 金管楽器運指表(トランペット・ホルン・トロンボーン・ユーフォニアム・チューバ)※namigroove.com/tools/brass/
 - `gacha.html` / `gacha-words.js` お題ガチャ(言葉のリストは gacha-words.js。すべてオリジナル)※namigroove.com/tools/gacha/
