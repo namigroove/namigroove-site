@@ -75,6 +75,7 @@
     a.textContent = "EN"; a.lang = "en"; a.href = "?lang=en"; /* 方式(辞書/Google翻訳)は nami-i18n.js がページに応じて切り替える */
     a.style.cssText = "border:1px solid rgba(255,255,255,.6)!important;border-radius:999px!important;padding:0 8px!important;font-size:11px!important;line-height:1.6";
     li.appendChild(a); ul.appendChild(li);
+    document.querySelectorAll("#header-nav a").forEach(function (x) { if (/^(Works|Tools|Links?)$/.test(x.textContent.trim())) x.setAttribute("translate", "no"); });
     if (!window.NamiI18n && !document.getElementById("nami-i18n-js")) {
       var s = document.createElement("script"); s.id = "nami-i18n-js";
       s.src = "https://namigroove.github.io/namigroove-site/nami-i18n.js?v=4"; document.body.appendChild(s);
@@ -89,7 +90,7 @@
     for (var i = 0; i < links.length; i++) { if (/^\s*works\s*$/i.test(links[i].textContent)) { after = links[i].parentElement; break; } }
     var li = after ? after.cloneNode(false) : document.createElement("li"), a = document.createElement("a");
     li.removeAttribute("id"); li.classList.remove("current-menu-item", "current_page_item");
-    a.id = "ngTools"; a.href = "/tools/"; a.textContent = "Tools";
+    a.id = "ngTools"; a.setAttribute("translate", "no"); a.href = "/tools/"; a.textContent = "Tools";
     li.appendChild(a);
     if (after) after.after(li); else ul.insertBefore(li, ul.firstChild);
     for (var j = 0; j < links.length; j++) { if (/^\s*リンク\s*$/.test(links[j].textContent)) links[j].parentElement.classList.add("ng-opt"); }
