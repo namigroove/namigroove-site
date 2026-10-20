@@ -66,33 +66,20 @@
     }
   }
 
-  // ヘッダーメニューの最後に「EN」(Google翻訳で英語表示)を追加
+  // ヘッダーメニューの最後に「EN」(自前辞書で英語表示。nami-i18n.js)
   function addEN() {
     var ul = document.querySelector("#header-nav ul");
     if (!ul || document.getElementById("toEN")) return;
-    var tr = /\.translate\.goog$/.test(location.hostname);
     var li = document.createElement("li"), a = document.createElement("a");
-    a.id = "toEN"; a.setAttribute("translate", "no");
-    if (tr) {
-      // 英語表示中:JPで日本語の元ページへ戻る
-      var host = location.hostname.replace(/\.translate\.goog$/, "").replace(/--/g, "\u0000").replace(/-/g, ".").replace(/\u0000/g, "-");
-      var q = new URLSearchParams(location.search);
-      Array.from(q.keys()).filter(function (k) { return k.indexOf("_x_tr_") === 0; }).forEach(function (k) { q.delete(k); });
-      a.textContent = "JP"; a.lang = "ja"; a.title = "日本語に戻す";
-      a.href = "https://" + host + location.pathname + (q.toString() ? "?" + q : "") + location.hash;
-    } else {
-      a.textContent = "EN"; a.lang = "en"; a.title = "Translate this page into English (Google Translate)";
-      a.href = "https://translate.google.com/translate?sl=ja&tl=en&u=" + encodeURIComponent(location.href.split("#")[0]);
-    }
+    a.id = "toEN"; a.setAttribute("translate", "no"); a.setAttribute("data-lang", "");
+    a.textContent = "EN"; a.lang = "en"; a.href = "?lang=en";
     a.style.cssText = "border:1px solid rgba(255,255,255,.6)!important;border-radius:999px!important;padding:0 8px!important;font-size:11px!important;line-height:1.6";
     li.appendChild(a); ul.appendChild(li);
+    if (!window.NamiI18n && !document.getElementById("nami-i18n-js")) {
+      var s = document.createElement("script"); s.id = "nami-i18n-js";
+      s.src = "https://namigroove.github.io/namigroove-site/nami-i18n.js?v=1"; document.body.appendChild(s);
+    }
   }
-  // Google翻訳(英語)で見ているときは「₺ƾらせ」を mochinfo と表示
-  function mochinfo() {
-    if (!/translate\.goog$/.test(location.hostname)) return;
-    document.querySelectorAll("#header-nav a").forEach(function (a) { if (/₺ƾらせ/.test(a.textContent)) { a.textContent = "mochinfo"; a.setAttribute("translate", "no"); } });
-  }
-  var _run0 = run; run = function () { _run0(); mochinfo(); };
   var _run = run; run = function () { _run(); addEN(); addTools(); };
   // ヘッダーメニューの「Works」の後ろに「Tools」を追加
   function addTools() {

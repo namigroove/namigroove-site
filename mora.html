@@ -267,21 +267,7 @@ header.top .logo{flex:none}
       <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
       <a href="index.html#links" class="opt">リンク</a>
       <a href="index.html#contact">依頼</a>
-      <a href="#" class="lang" id="toEN" lang="en" translate="no" title="Translate this page into English (Google Translate)">EN</a><script>
-/* EN⇔JP:Google翻訳(英語)との切り替え */
-(()=>{const a=document.getElementById("toEN"); if(!a) return;
- const tr=/\.translate\.goog$/.test(location.hostname);
- if(tr){
-  const host=location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");
-  const q=new URLSearchParams(location.search); [...q.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>q.delete(k));
-  a.textContent="JP"; a.lang="ja"; a.title="日本語に戻す"; a.setAttribute("translate","no");
-  a.href="https://"+host+location.pathname+(q.toString()?"?"+q:"")+location.hash;
-  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove"));
- } else {
-  a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);
- }
-})();
-</script>
+      <a href="?lang=en" class="lang" id="toEN" data-lang translate="no">EN</a>
     </nav>
   </div>
 </header>
@@ -403,5 +389,6 @@ document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.targ
 if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
+<script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=1"></script>
 </body>
 </html>
