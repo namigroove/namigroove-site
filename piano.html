@@ -240,6 +240,7 @@ footer a{color:var(--sea)}
 .mt-v .bpm-in{font-size:24px}
 .mt-bpm{display:flex;align-items:center;gap:8px;touch-action:none;user-select:none}
 .mt-v{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:ns-resize}.mt-v output{font-family:var(--f-display);font-size:26px;min-width:2.6ch;text-align:center;color:var(--ink)}.mt-v small{font-size:10px}
+.mt-n{display:inline-block;min-width:2ch;padding:4px 8px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font:700 18px var(--f-display);text-align:center;cursor:ns-resize;touch-action:none;user-select:none}.mt-n:focus-visible{outline:2px solid var(--sea)}.mt-ts.off{opacity:.45;pointer-events:none}
 .mt-c{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .mt-dots{display:flex;gap:6px}.mt-dots i{width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}.mt-dots i.on{background:var(--sea);border-color:var(--sea)}.mt-dots i.on.acc{background:var(--coral);border-color:var(--coral)}
 .mp{margin:12px auto 0;max-width:640px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
@@ -420,7 +421,7 @@ header.top .logo{flex:none}
     <div class="mt-row" id="mtRow" hidden>
       <div class="mt-bpm" id="mtBpmBox" title="ホイール・上下ドラッグでも変えられます"><button class="btn round" type="button" id="mtDown" aria-label="BPMを1下げる">−</button><span class="mt-v"><output id="mtBpm" class="num">100</output><small>BPM</small></span><button class="btn round" type="button" id="mtUp" aria-label="BPMを1上げる">＋</button></div>
       <button class="btn mt-tap" type="button" id="mtTap" title="曲に合わせて何回かタップすると、そのテンポになります">タップ</button>
-      <label class="mt-c">拍子 <select id="mtBeats" class="sel"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/8</option></select></label>
+      <span class="mt-c mt-ts" id="mtTs" role="group" aria-label="拍子(上下ドラッグ・ホイール・矢印キーで変更)">拍子 <b class="mt-n" id="mtN" tabindex="0" role="spinbutton" aria-label="拍の数" aria-valuemin="1" aria-valuemax="16">4</b><span>/</span><b class="mt-n" id="mtD" tabindex="0" role="spinbutton" aria-label="1拍の長さ(分母)" aria-valuemin="2" aria-valuemax="16">4</b></span>
       <label class="mt-c">ドラム <select id="mtDr" class="sel" aria-label="ドラムのリズム(ジャムモードと共通)"></select></label>
       <label class="mt-c" id="mtDrVolL" hidden>音量 <input type="range" id="mtDrVol" min="0" max="100" value="80" aria-label="ドラムの音量"></label>
       <label class="mt-c"><input type="checkbox" id="mtRec"> 録音とMIDIにクリック・ドラムも入れる</label>
@@ -1071,8 +1072,8 @@ let chipWave=store.get("pianoChipWave","sq25");if(!["sq50","sq25","sq12","tri","
 segInit($("chipSeg"),"w",chipWave,v=>{chipWave=v;store.set("pianoChipWave",v);});$("chipRow").hidden=inst!=="chip";
 
 /* ===== メトロノーム(録音にクリックを入れるかは選べる。録音中に鳴っていれば、MIDIはそのテンポの拍に合わせて保存) ===== */
-let mtOn=false,mtBpm=+store.get("pianoMtBpm",100)||100,mtBeats=+store.get("pianoMtBeats",4)||4,mtRec=!!store.get("pianoMtRec",false),mtNext=0,mtBeat=0,mtTimer=0,mtQ=[],mtLog=[],mtDr=store.get("pianoMtDr","")||"",mtStep=0,drGain=null,drV=null;
-$("mtBeats").value=String(mtBeats);$("mtRec").checked=mtRec;
+let mtOn=false,mtBpm=+store.get("pianoMtBpm",100)||100,mtBeats=+store.get("pianoMtBeats",4)||4,mtDen=+store.get("pianoMtDen",+store.get("pianoMtBeats",4)===6?8:4)||4,mtRec=!!store.get("pianoMtRec",false),mtNext=0,mtBeat=0,mtTimer=0,mtQ=[],mtLog=[],mtDr=store.get("pianoMtDr","")||"",mtStep=0,drGain=null,drV=null;
+$("mtRec").checked=mtRec;
 /* タップでBPM:2秒あいたら数え直し、最後の8回の平均 */
 let mtTaps=[];$("mtTap").addEventListener("pointerdown",e=>{e.preventDefault();const t=performance.now();if(mtTaps.length&&t-mtTaps[mtTaps.length-1]>2000)mtTaps=[];mtTaps.push(t);if(mtTaps.length>8)mtTaps.shift();
   if(mtTaps.length>=2)mtSetBpm(60000/((mtTaps[mtTaps.length-1]-mtTaps[0])/(mtTaps.length-1)));const b=$("mtTap");b.classList.remove("hit");void b.offsetWidth;b.classList.add("hit");});
@@ -1082,7 +1083,7 @@ function mtSetBpm(v){mtBpm=Math.max(30,Math.min(300,Math.round(v)));$("mtBpm").t
 const mtDS=()=>window.NamiDrums&&mtDr&&NamiDrums.ST[mtDr]||null,mtGrp=S=>S.grp||Array.from({length:(S.steps||16)/4},(_,i)=>i*4);
 {const sel=$("mtDr");if(window.NamiDrums){sel.innerHTML='<option value="">なし(クリックだけ)</option>'+NamiDrums.GN.map(([g,n])=>'<optgroup label="'+n+'">'+Object.keys(NamiDrums.ST).filter(k=>NamiDrums.ST[k].g===g).map(k=>'<option value="'+k+'">'+NamiDrums.ST[k].n+'</option>').join("")+'</optgroup>').join("");}else sel.parentNode.hidden=true;
   if(!mtDS())mtDr="";sel.value=mtDr;}
-function mtDrView(){const S=mtDS();$("mtBeats").disabled=!!S;$("mtDrVolL").hidden=!S;}
+function mtDrView(){const S=mtDS();$("mtTs").classList.toggle("off",!!S);$("mtDrVolL").hidden=!S;}
 function mtDrOut(){if(!drGain)return;try{drGain.disconnect();}catch(e){}drGain.connect(mtRec?master:ac.destination);}
 function mtDrInit(){if(drV)return;drGain=ac.createGain();drGain.gain.value=+$("mtDrVol").value/100*1.4;drV=NamiDrums.simple(ac,drGain);mtDrOut();}
 function mtDotsView(){const S=mtDS();$("mtDots").innerHTML=Array.from({length:S?mtGrp(S).length:mtBeats},(_,i)=>`<i class="${i?"":"acc"}"></i>`).join("");}mtDotsView();
@@ -1097,7 +1098,7 @@ function mtSched(){const a=ac,S=mtDS();
       mtNext+=sd;mtStep++;}
     return;}
   while(mtNext<a.currentTime+0.12){const acc=mtBeat===0;mtClick(mtNext,acc);mtQ.push({t:mtNext,b:mtBeat});if(recOn)mtLog.push([mtNext-recStart,mtBeat]);
-  mtNext+=mtBeats===6?60/mtBpm/2:60/mtBpm;mtBeat=(mtBeat+1)%mtBeats;}}
+  mtNext+=mtBL();mtBeat=(mtBeat+1)%mtBeats;}}
 function mtDraw(){if(!mtOn)return;const now=ac.currentTime;let cur=null;while(mtQ.length&&mtQ[0].t<=now)cur=mtQ.shift();if(cur)[...$("mtDots").children].forEach((x,i)=>x.classList.toggle("on",i===cur.b));requestAnimationFrame(mtDraw);}
 function mtStart(){const a=audio();mtOn=true;mtBeat=0;mtStep=0;mtDotsView();mtQ=[];mtNext=a.currentTime+0.08;mtSched();mtTimer=setInterval(mtSched,25);requestAnimationFrame(mtDraw);$("mtBtn").setAttribute("aria-pressed","true");$("mtRow").hidden=false;}
 function mtStop(){mtOn=false;clearInterval(mtTimer);$("mtBtn").setAttribute("aria-pressed","false");[...$("mtDots").children].forEach(x=>x.classList.remove("on"));}
@@ -1115,7 +1116,18 @@ function bpmTyping(v,out,get,set){let y0=null,moved=false;v.tabIndex=0;v.setAttr
     i.addEventListener("blur",()=>fin(true));["pointerdown","pointermove","pointerup","wheel"].forEach(t=>i.addEventListener(t,e=>e.stopPropagation()));}}
 {const v=document.querySelector("#mtBpmBox .mt-v");let y0=null,b0=0;v.addEventListener("pointerdown",e=>{y0=e.clientY;b0=mtBpm;v.setPointerCapture(e.pointerId);});v.addEventListener("pointermove",e=>{if(y0!=null)mtSetBpm(b0+(y0-e.clientY)/4);});["pointerup","pointercancel"].forEach(t=>v.addEventListener(t,()=>{y0=null;}));}
 bpmTyping(document.querySelector("#mtBpmBox .mt-v"),$("mtBpm"),()=>mtBpm,mtSetBpm);
-$("mtBeats").addEventListener("change",()=>{mtBeats=+$("mtBeats").value;store.set("pianoMtBeats",mtBeats);mtBeat=0;mtDotsView();});
+/* 拍子(n/d):数字を上下ドラッグ・ホイール・矢印キーで変える。最初は4/4 */
+const MT_DENS=[2,4,8,16],mtBL=()=>60/mtBpm*4/mtDen;
+function mtTsView(){$("mtN").textContent=mtBeats;$("mtD").textContent=mtDen;$("mtN").setAttribute("aria-valuenow",mtBeats);$("mtD").setAttribute("aria-valuenow",mtDen);}
+function mtTsSet(n,d){mtBeats=Math.max(1,Math.min(16,n));mtDen=d;store.set("pianoMtBeats",mtBeats);store.set("pianoMtDen",mtDen);mtBeat=0;mtTsView();mtDotsView();}
+function spin(el,get,set){let y0=null,v0=0;el.addEventListener("pointerdown",e=>{y0=e.clientY;v0=get();el.setPointerCapture(e.pointerId);});
+  el.addEventListener("pointermove",e=>{if(y0!=null){const d=Math.round((y0-e.clientY)/14);if(d)set(v0+d,true);}});
+  el.addEventListener("pointerup",()=>{y0=null;});el.addEventListener("pointercancel",()=>{y0=null;});
+  el.addEventListener("wheel",e=>{e.preventDefault();set(get()+(e.deltaY<0?1:-1));},{passive:false});
+  el.addEventListener("keydown",e=>{if(e.key==="ArrowUp"||e.key==="ArrowRight"){e.preventDefault();e.stopPropagation();set(get()+1);}else if(e.key==="ArrowDown"||e.key==="ArrowLeft"){e.preventDefault();e.stopPropagation();set(get()-1);}});}
+spin($("mtN"),()=>mtBeats,v=>mtTsSet(v,mtDen));
+spin($("mtD"),()=>MT_DENS.indexOf(mtDen),(v)=>mtTsSet(mtBeats,MT_DENS[Math.max(0,Math.min(3,v))]));
+mtTsView();
 $("mtRec").addEventListener("change",()=>{mtRec=$("mtRec").checked;store.set("pianoMtRec",mtRec);mtDrOut();});
 $("mtDr").addEventListener("change",()=>{mtDr=$("mtDr").value;store.set("pianoMtDr",mtDr);mtStep=0;mtBeat=0;mtDrView();mtDotsView();if(mtOn){mtNext=Math.max(mtNext,ac.currentTime+0.05);mtQ=[];}});
 $("mtDrVol").addEventListener("input",()=>{if(drGain)drGain.gain.value=+$("mtDrVol").value/100*1.4;});
@@ -1159,8 +1171,8 @@ function recStop(){
   take={L:L.slice(s,e),R:R.slice(s,e),sr};
   const ml=mtLog;mtLog=[];const fn=(mev.find(x=>(x[1][0]&0xf0)===0x90)||[0])[0];
   if(ml.length){ /* メトロノームが鳴っていた:最初の音の直前の小節頭を0にして、メトロノームのテンポで保存 */
-    const dS=mtDS(),bi=dS?(dS.steps||16)/mtGrp(dS).length*60/mtBpm/4:mtBeats===6?60/mtBpm/2:60/mtBpm,down=ml.filter(x=>x[1]===0&&x[0]<=fn+0.05),t0=down.length?down[down.length-1][0]:ml[0][0]-ml[0][1]*bi;
-    take.midi=mev.filter(x=>x[0]>=t0-0.05).map(([t,by])=>[Math.max(0,t-t0),by]);take.mt={bpm:mtBpm,beats:dS?mtGrp(dS).length:mtBeats,clicks:mtRec&&!dS?ml.filter(x=>x[0]>=t0-0.001).map(([t,b])=>[t-t0,b]):[]};}
+    const dS=mtDS(),bi=dS?(dS.steps||16)/mtGrp(dS).length*60/mtBpm/4:mtBL(),down=ml.filter(x=>x[1]===0&&x[0]<=fn+0.05),t0=down.length?down[down.length-1][0]:ml[0][0]-ml[0][1]*bi;
+    take.midi=mev.filter(x=>x[0]>=t0-0.05).map(([t,by])=>[Math.max(0,t-t0),by]);take.mt={bpm:mtBpm,beats:dS?mtGrp(dS).length:mtBeats,den:dS?4:mtDen,clicks:mtRec&&!dS?ml.filter(x=>x[0]>=t0-0.001).map(([t,b])=>[t-t0,b]):[]};}
   else{take.midi=mev.map(([t,by])=>[Math.max(0,t-fn),by]);take.mt=null;}$("saveMid").hidden=!take.midi.some(x=>(x[1][0]&0xf0)===0x90);
   if(takeURL)URL.revokeObjectURL(takeURL); takeURL=URL.createObjectURL(wavBlob(take));
   $("takeAudio").src=takeURL; $("take").hidden=false;
@@ -1212,7 +1224,7 @@ if(window.NamiVidRec){let vLo=null,vPrev=new Set();const vFade=new Map(),OCT=2,B
 $("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
 $("saveMid").onclick=()=>{if(!take||!take.midi)return;const M=take.mt,bpmM=M?M.bpm:120,k=bpmM/60*480,tr=[{name:"Piano",ev:take.midi.map(([t,by])=>[t*k,by])}];
   if(M&&M.clicks.length){const ev=[];M.clicks.forEach(([t,b])=>{const n=b===0?76:77;ev.push([t*k,[0x99,n,b===0?110:80]]);ev.push([t*k+60,[0x89,n,0]]);});tr.push({name:"Click",ev});}
-  download(smfBlob(tr,bpmM,M?(M.beats===6?[6,8]:[M.beats,4]):[4,4]),fname("mid"));if(window.ngTrack)ngTrack("midi_export",{tool:"piano_take"});};
+  download(smfBlob(tr,bpmM,M?[M.beats,M.den||(M.beats===6?8:4)]:[4,4]),fname("mid"));if(window.ngTrack)ngTrack("midi_export",{tool:"piano_take"});};
 $("saveMp3").onclick=async()=>{if(!take)return;const b=$("saveMp3"),t0=b.textContent;b.disabled=true;b.textContent="変換中…";
   try{download(await mp3Blob(take),fname("mp3"));}catch(e){toast("MP3に変換できませんでした。WAVで保存してね");}
   b.disabled=false;b.textContent=t0;};
