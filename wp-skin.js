@@ -72,12 +72,12 @@
     if (!ul || document.getElementById("toEN")) return;
     var li = document.createElement("li"), a = document.createElement("a");
     a.id = "toEN"; a.setAttribute("translate", "no"); a.setAttribute("data-lang", "");
-    a.textContent = "EN"; a.lang = "en"; a.href = "?lang=en";
+    a.textContent = "EN"; a.lang = "en"; a.href = "?lang=en"; /* 方式(辞書/Google翻訳)は nami-i18n.js がページに応じて切り替える */
     a.style.cssText = "border:1px solid rgba(255,255,255,.6)!important;border-radius:999px!important;padding:0 8px!important;font-size:11px!important;line-height:1.6";
     li.appendChild(a); ul.appendChild(li);
     if (!window.NamiI18n && !document.getElementById("nami-i18n-js")) {
       var s = document.createElement("script"); s.id = "nami-i18n-js";
-      s.src = "https://namigroove.github.io/namigroove-site/nami-i18n.js?v=1"; document.body.appendChild(s);
+      s.src = "https://namigroove.github.io/namigroove-site/nami-i18n.js?v=2"; document.body.appendChild(s);
     }
   }
   var _run = run; run = function () { _run(); addEN(); addTools(); };

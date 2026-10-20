@@ -1,0 +1,26 @@
+/* i18n: mora */
+NamiI18n.add({
+"歌詞の1行ごとの音数(モーラ)を数えます。「きゃ」は1音、「っ」「ん」「ー」も1音。ボカロの打ち込みやメロディへの歌詞のはめ込みにどうぞ。": "Counts the number of sounds (morae) in each line of lyrics. \"きゃ\" counts as one, and so do \"っ\", \"ん\" and \"ー\". Useful for Vocaloid programming and fitting lyrics to a melody.",
+"「っ」を1音": "Count \"っ\" as 1",
+"「ん」を1音": "Count \"ん\" as 1",
+"「ー」を1音": "Count \"ー\" as 1",
+"「ぁぃぅぇぉ」は前とまとめる": "Merge small ぁぃぅぇぉ with the previous sound",
+"目標": "Target",
+"音": "morae",
+"入力した歌詞はこの端末の中だけで数えます。どこにも送信されません(下書きはこのブラウザに保存されます)。": "Lyrics are counted on this device only. Nothing is uploaded (your draft is saved in this browser).",
+"行数": "Lines",
+"合計": "Total",
+"結果をコピー": "Copy result",
+"クリア": "Clear",
+"1行ごとに音数(モーラ)を数えて、音の区切りも表示します。区切りをタップすると、その行の分け方を確認できます。": "Counts the morae line by line and shows where the sounds split. Tap a split to check how that line is divided.",
+"「きゃ・しゅ・ちょ」などの拗音は1音、「っ」「ん」「ー」も1音で数えます(ボカロの打ち込みと同じ数え方)。チェックを外すと数えない設定にできます。": "Small-kana combinations like きゃ, しゅ and ちょ count as one, and っ, ん and ー each count as one (the same way Vocaloid programming counts). Uncheck an option to stop counting it.",
+"漢字や数字は読みがわからないので、": "Kanji and digits have no known reading, so write the reading like ",
+"漢字《かんじ》": "漢字《かんじ》",
+"漢字(かんじ)": "漢字(かんじ)",
+"のように読みを書いてください。読みがない漢字はオレンジで知らせます。": ". Kanji without a reading are highlighted in orange.",
+"英語は母音のまとまりから音節数を目安で数えます(カタカナで書くといちばん正確です)。": "English is counted roughly by syllables from vowel groups (writing it in katakana is the most accurate).",
+"「目標」に音数を入れると、多い行・少ない行に色がつきます。メロディの音符の数に合わせるときに便利です。": "Enter a number in \"Target\" and lines with too many or too few morae get colored. Handy for matching the number of notes in the melody.",
+"歌詞を入力": "Enter lyrics",
+"ここに歌詞を入力(1行ずつ数えます)\n漢字は 漢字《かんじ》 や 漢字(かんじ) のように読みを書くと正確に数えられます": "Enter lyrics here (counted line by line)\nWrite readings for kanji like 漢字《かんじ》 or 漢字(かんじ) for an accurate count",
+"1行あたりの目標の音数": "Target morae per line"
+});

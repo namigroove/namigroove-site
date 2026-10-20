@@ -46,12 +46,22 @@ const EN={
   "トランペット":"Trumpet","ホルン":"Horn","トロンボーン":"Trombone",
   "DAWで使うスクリプト":"DAW scripts","曲づくりやライブの準備に使っているスクリプトを配布しています。":"Scripts I use for songwriting and live prep, free to download.",
   "REAPER 選択アイテムの長さ表示":"REAPER: selected item lengths","REAPERで選んだアイテムの長さを一覧で表示し、合計時間も出すLuaスクリプト。ライブの尺確認などに。":"A Lua script that lists the lengths of the items you select in REAPER and shows the total. Useful for checking set length.",
+  "使い方のメモ":"Notes","← ツール一覧":"← All tools","ツール一覧へ":"Back to all tools","ドレミ":"Solfège","♪ 音を聴く":"♪ Listen","音を聴く":"Listen",
+  "リセット":"Reset","メジャー":"Major","設定":"Settings","表記":"Notation","スタート":"Start","タップ":"Tap","拍子":"Time signature","音色":"Sound","音量":"Volume",
+  "スウィング":"Swing","16分":"16th","もどうぞ。":".","へ。":".","基本の運指":"Basic fingering","半音ずつ移動":"Move by semitone","運指表":"Fingering chart","楽器の種類":"Instrument type",
+  "スタート/ストップ":"Start / Stop","チューナー&メトロノーム":"Tuner & Metronome","日本語に戻す":"Back to Japanese",
+  "コード表":"Chord chart","すべて":"All","新曲":"New release","や":" or ",
   "更新履歴":"Changelog","#namigroovetools を作った理由":"Why I made #namigroovetools",
   "無料の音楽ツール集(チューナー・ピアノ・コード表ほか) – なみぐる！":"Free Music Tools (Tuner, Piano, Chord Chart & more) – namigroove!",
   "閉じる":"Close","もっと見る":"Show more"
 };
 /* 正規表現ルール(数字や固有名が入る文) */
 const RX=[
+  [/^記譜 (.+)$/,m=>"Written "+m[1]],
+  [/^(.+)の運指$/,m=>"Fingering for "+m[1]],
+  [/^(\d+)を削除$/,m=>"Delete "+m[1]],
+  [/^実音 (.+)$/,m=>"Sounding "+m[1]],
+  [/^(\d+)番目$/,m=>"No. "+m[1]],
   [/^(.+)をお気に入りに追加$/,m=>"Add "+tr(m[1])+" to favorites"],
   [/^(.+)をお気に入りから外す$/,m=>"Remove "+tr(m[1])+" from favorites"],
   [/^もっと見る\(ほか(\d+)件\)$/,m=>"Show more ("+m[1]+" more)"]
@@ -59,10 +69,17 @@ const RX=[
 function look(t){ if(EN[t])return EN[t]; for(const[r,f]of RX){const m=t.match(r);if(m)return f(m);} return null; }
 const SKIP=/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE|KBD|TEXTAREA|SVG|CANVAS)$/;
 const ATTR=["title","placeholder","aria-label","alt"];
+/* ページごとの方式: 辞書(安定したページ) / Google翻訳(更新の多いページ・WP記事) */
+const TRANS=/\.translate\.goog$/.test(location.hostname);
+const DICT_PAGES=["index","tools","about","analyze","bpmms","brass","ear","fingering","mora","tuner"];
+const PAGE=(()=>{const seg=location.pathname.replace(/\.html$/,"").split("/").filter(Boolean);const last=seg[seg.length-1]||"";
+  if(!last||last==="namigroove-site")return "index"; return last;})();
+const IS_GH=/github\.io$/.test(location.hostname);
+const MODE=(!TRANS&&DICT_PAGES.includes(PAGE)&&(IS_GH||/^\/(tools\/.*)?$/.test(location.pathname)||location.pathname==="/"))?"dict":"google";
 const q=new URLSearchParams(location.search);
 let LANG=q.get("lang")||"";
 if(LANG!=="en"&&LANG!=="ja"){try{LANG=localStorage.getItem("nami-lang")||"ja"}catch(e){LANG="ja"}}
-if(LANG!=="en")LANG="ja";
+if(LANG!=="en"||MODE!=="dict")LANG="ja";
 
 const tr=s=>LANG==="en"?(look(s)||s):s;
 
@@ -113,28 +130,45 @@ function links(){
     if(a.getAttribute("href")!==u.href)a.setAttribute("href",u.href);
   });
 }
+let loaded=false;
+function loadDict(cb){
+  if(loaded||MODE!=="dict"){cb();return;} loaded=true;
+  const el=document.createElement("script");
+  el.src=(IS_GH?location.origin+location.pathname.replace(/[^\/]*$/,""):"https://namigroove.github.io/namigroove-site/")+"i18n/"+PAGE+".js?v=1";
+  el.onload=el.onerror=()=>cb();document.head.appendChild(el);
+}
 function set(l,push){
-  if(l===LANG)return;LANG=l;
+  if(MODE!=="dict"||l===LANG)return;LANG=l;
   try{localStorage.setItem("nami-lang",l)}catch(e){}
   const u=new URL(location.href);l==="en"?u.searchParams.set("lang","en"):u.searchParams.delete("lang");
   history.replaceState(null,"",u);
-  apply();sync();
+  loadDict(()=>{apply();});sync();
 }
 /* 切替ボタン: <a data-lang href="?lang=en">EN</a> 。JS無効でもリンクとして動く */
+function gHost(){return location.hostname.replace(/\.translate\.goog$/,"").replace(/--/g,"\u0000").replace(/-/g,".").replace(/\u0000/g,"-");}
 function sync(){
   document.querySelectorAll("a[data-lang]").forEach(a=>{
+    if(MODE==="google"){
+      a.removeAttribute("data-to");
+      if(TRANS){const qq=new URLSearchParams(location.search);[...qq.keys()].filter(k=>k.startsWith("_x_tr_")).forEach(k=>qq.delete(k));
+        a.href="https://"+gHost()+location.pathname+(qq.toString()?"?"+qq:"")+location.hash;a.textContent="JP";a.lang="ja";a.title="日本語に戻す";}
+      else{a.href="https://translate.google.com/translate?sl=ja&tl=en&u="+encodeURIComponent(location.href.split("#")[0]);a.textContent="EN";a.lang="en";a.title="Translate this page into English (Google Translate)";}
+      return;
+    }
     const to=LANG==="en"?"ja":"en",u=new URL(location.href);
     to==="en"?u.searchParams.set("lang","en"):u.searchParams.delete("lang");
     a.href=u.search||u.pathname;a.textContent=to==="en"?"EN":"JP";a.lang=to;
-    a.title=to==="en"?"Switch to English":"日本語に切り替え";
+    a.title=to==="en"?"Switch to English":"Back to Japanese";
     a.dataset.to=to;
   });
 }
 document.addEventListener("click",e=>{
   const a=e.target.closest&&e.target.closest("a[data-lang]");
-  if(a){e.preventDefault();set(a.dataset.to||"en");}
+  if(a&&MODE==="dict"){e.preventDefault();set(a.dataset.to||"en");}
 });
 window.tr=tr;
 window.NamiI18n={tr,apply,add:d=>Object.assign(EN,d),get lang(){return LANG},set};
-window.addEventListener("DOMContentLoaded",()=>{sync();if(LANG==="en")apply();});
+window.addEventListener("DOMContentLoaded",()=>{sync();if(LANG==="en")loadDict(()=>apply());
+  if(TRANS)document.querySelectorAll(".ngname").forEach(e=>e.textContent="namigroove");
+  if(TRANS)document.querySelectorAll("#header-nav a,.mochi").forEach(a=>{if(/₺ƾらせ/.test(a.textContent)){a.textContent="mochinfo";a.setAttribute("translate","no");}});});
 })();
