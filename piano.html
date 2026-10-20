@@ -1216,7 +1216,7 @@ if(window.NamiVidRec){let vLo=null,vPrev=new Set();const vFade=new Map(),OCT=2,B
       if(vLo==null)vLo=12*(startOct+1);
       if(ms.length){const lo=Math.min(...ms),hi=Math.max(...ms);if(lo<vLo)vLo=12*Math.floor(lo/12);else if(hi>vLo+12*OCT)vLo=Math.min(12*Math.floor(lo/12),12*Math.ceil(hi/12)-12*OCT);}
       const ch=$("chord"),txt=ch.querySelector(".dim")?"":ch.textContent.replace(/\s+/g," ").trim(),pn=$("pnotes").textContent.trim(),alive=ms.length>0;
-      const kbH=Math.min(b.h*0.45,b.w*(I.sq?0.36:0.5)),kbY=b.y+b.h-kbH,topH=kbY-b.y,cy=b.y+topH*(I.sq?0.42:0.45);
+      const kbH=Math.min(b.h*0.45,b.w*(I.sq?0.36:0.5)),kbY=b.y+b.h-kbH,kw2=b.w/52,miH=Math.min(kw2*5.2,b.h*0.16),miY=kbY-miH-(I.sq?16:22),topH=miY-b.y,cy=b.y+topH*(I.sq?0.42:0.45);
       g.globalAlpha=alive?1:0.45;I.fit(g,txt||"♪",b.x+b.w/2,cy,b.w,I.sq?92:130,400,C.ink);g.globalAlpha=1;
       if(pn&&alive)I.fit(g,pn,b.x+b.w/2,cy+(I.sq?66:96),b.w,I.sq?22:30,400,C.soft);
       const whites=[];for(let m=vLo;m<=vLo+12*OCT;m++)if(!BK.includes(pc(m)))whites.push(m);
@@ -1224,6 +1224,12 @@ if(window.NamiVidRec){let vLo=null,vPrev=new Set();const vFade=new Map(),OCT=2,B
       whites.forEach((m,i)=>{const x=b.x+i*kw,l=lv(m);I.rrect(g,x+1.5,kbY,kw-3,kbH,8);g.fillStyle="#f4f7ff";g.fill();if(l){g.globalAlpha=l;g.fillStyle=C.coral;g.fill();g.globalAlpha=1;}
         if(pc(m)===0)I.fit(g,"C"+(m/12-1),x+kw/2,kbY+kbH-18,kw-6,I.sq?13:16,400,l>0.5?"#fff":"#8a96b8");});
       for(let m=vLo;m<=vLo+12*OCT;m++)if(BK.includes(pc(m))){const i=whites.indexOf(m-1);if(i<0)continue;const x=b.x+(i+1)*kw-kw*0.32,l=lv(m);I.rrect(g,x,kbY,kw*0.64,kbH*0.6,6);g.fillStyle="#1b2440";g.fill();if(l){g.globalAlpha=l;g.fillStyle=C.coral;g.fill();g.globalAlpha=1;}}
+      /* 全景(88鍵)の小さなピアノ:弾いた鍵が光り、大きな鍵盤が映している範囲に枠をつける */
+      {const wi={};let n=0;for(let m=21;m<=108;m++)if(!BK.includes(pc(m)))wi[m]=n++;
+        for(let m=21;m<=108;m++)if(!BK.includes(pc(m))){const x=b.x+wi[m]*kw2,l=lv(m);I.rrect(g,x+0.6,miY,kw2-1.2,miH,2);g.fillStyle="#f4f7ff";g.fill();if(l){g.globalAlpha=l;g.fillStyle=C.coral;g.fill();g.globalAlpha=1;}}
+        for(let m=22;m<=107;m++)if(BK.includes(pc(m))){const x=b.x+(wi[m-1]+1)*kw2-kw2*0.3,l=lv(m);I.rrect(g,x,miY,kw2*0.6,miH*0.6,1.5);g.fillStyle="#1b2440";g.fill();if(l){g.globalAlpha=l;g.fillStyle=C.coral;g.fill();g.globalAlpha=1;}}
+        const w0=wi[vLo]!=null?wi[vLo]:(wi[vLo+1]!=null?wi[vLo+1]:0),lastW=Math.min(51,(wi[vLo+12*OCT]!=null?wi[vLo+12*OCT]:wi[vLo+12*OCT-1]));
+        g.save();g.strokeStyle=C.sea;g.lineWidth=I.sq?3:4;I.rrect(g,b.x+w0*kw2-1.5,miY-3,(lastW-w0+1)*kw2+3,miH+6,5);g.stroke();g.restore();}
     }});}
 $("saveWav").onclick=()=>{if(take)download(wavBlob(take),fname("wav"));};
 $("saveMid").onclick=()=>{if(!take||!take.midi)return;const M=take.mt,bpmM=M?M.bpm:120,k=bpmM/60*480,tr=[{name:"Piano",ev:take.midi.map(([t,by])=>[t*k,by])}];
