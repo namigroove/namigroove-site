@@ -89,6 +89,7 @@ details.opts[open] summary{margin-bottom:8px}
 .opts .row{margin-top:10px}
 
 /* チューナー */
+.mt-ts{display:inline-flex;align-items:center;gap:6px}.mt-n{display:inline-block;min-width:2ch;padding:4px 8px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font:700 18px var(--f-display);text-align:center;cursor:ns-resize;touch-action:none;user-select:none}.mt-n:focus-visible{outline:2px solid var(--sea)}
 .meter{position:relative;max-width:420px;margin:0 auto}
 .meter svg{display:block;width:100%;height:auto;overflow:visible}
 .meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
@@ -379,8 +380,8 @@ header.top .logo{flex:none}
       <div class="steps" id="steps" role="group" aria-label="ステップ"></div>
       <div class="lanes" id="lanes" aria-hidden="true"></div>
       <div class="row seq-opts">
-        <div class="ctl">拍子
-          <select id="meterSel" aria-label="拍子"><option value="44">4/4</option><option value="34">3/4</option><option value="68">6/8</option><option value="54">5/4</option><option value="78">7/8</option></select>
+        <div class="ctl" id="meterBox" role="group" aria-label="拍子(上下ドラッグ・ホイール・矢印キーで変更)">拍子
+          <span class="mt-ts"><b class="mt-n" id="mtN" tabindex="0" role="spinbutton" aria-label="拍の数" aria-valuemin="1">4</b><span>/</span><b class="mt-n" id="mtD" tabindex="0" role="spinbutton" aria-label="1拍の長さ(分母)" aria-valuemin="2" aria-valuemax="16">4</b></span>
         </div>
         <div class="ctl">パターン
           <select id="preset" aria-label="パターンを読み込む">
@@ -702,8 +703,16 @@ padsEl.addEventListener("contextmenu",e=>e.preventDefault());
 
 /* ===== シーケンサー ===== */
 /* 拍子:1小節のステップ数(16分音符)と、拍の区切り */
-const NMAX=20,METERS={"44":{steps:16,g:[0,4,8,12],ts:[4,4]},"34":{steps:12,g:[0,4,8],ts:[3,4]},"68":{steps:12,g:[0,6],ts:[6,8]},"54":{steps:20,g:[0,4,8,12,16],ts:[5,4]},"78":{steps:14,g:[0,4,8],ts:[7,8]}};
-let meter=store.get("drMeter","44");if(!METERS[meter])meter="44";let N=METERS[meter].steps;
+const NMAX=20,MDEN=[2,4,8,16];
+/* 拍子 n/d:1小節のステップ数(16分音符)は n×16÷d(20まで)。拍の区切りは分母から決める */
+function parseMeter(k){k=String(k);let n,d;if(k.includes("/")){[n,d]=k.split("/").map(Number);}else{n=+k[0];d=+k[1];}
+  if(!MDEN.includes(d)||!(n>=1))return null;const st=n*16/d;if(st>NMAX||st<2)return null;return [n,d];}
+const meterKey=k=>{const m=parseMeter(k);return m?m[0]+"/"+m[1]:"4/4";};
+const meterMax=d=>Math.floor(NMAX*d/16);
+const METERS=new Proxy({},{get(_,k){const m=parseMeter(k);if(!m)return null;const [n,d]=m,steps=n*16/d,g=[];
+  const unit=d===8&&n%3===0&&n>=3?6:d===2?8:4,last=(d===8&&n%2&&n%3)?steps-6:steps-1;
+  for(let i=0;i<=last&&i<steps;i+=unit)g.push(i);return {steps,g:g.length?g:[0],ts:[n,d]};}});
+let meter=meterKey(store.get("drMeter","44"));let N=METERS[meter].steps;
 let pat=store.get("drPat",null), bpm=store.get("drBpm",100), swing=store.get("drSwing",0), playing=false, rec=false;
 if(!pat||typeof pat!=="object") pat={};
 PADS.forEach(p=>{const o=Array.isArray(pat[p.id])?pat[p.id]:[];pat[p.id]=Array.from({length:NMAX},(_,i)=>o[i]?1:0);});
@@ -711,10 +720,18 @@ const save=()=>store.set("drPat",pat);
 const stepsEl=$("steps"), lanesEl=$("lanes");
 function buildSteps(){stepsEl.innerHTML="";lanesEl.innerHTML="";const G=METERS[meter].g;
   for(let i=0;i<N;i++){const b=document.createElement("button");b.type="button";b.dataset.i=i;b.setAttribute("aria-label",(i+1)+"番目");if(G.includes(i))b.classList.add("gs");stepsEl.appendChild(b);lanesEl.appendChild(document.createElement("i"));}
-  [stepsEl,lanesEl].forEach(el=>{el.style.setProperty("--cols",N);el.style.setProperty("--mcols",N>=14?N/2:N);});}
-buildSteps();$("meterSel").value=meter;
-function setMeter(m){meter=m;N=METERS[m].steps;store.set("drMeter",m);$("meterSel").value=m;if(step>=N)step=0;buildSteps();renderSteps();}
-$("meterSel").addEventListener("change",()=>setMeter($("meterSel").value));
+  [stepsEl,lanesEl].forEach(el=>{el.style.setProperty("--cols",N);el.style.setProperty("--mcols",N>=14?Math.ceil(N/2):N);});}
+buildSteps();
+function meterView(){const [n,d]=parseMeter(meter);$("mtN").textContent=n;$("mtD").textContent=d;$("mtN").setAttribute("aria-valuenow",n);$("mtD").setAttribute("aria-valuenow",d);$("mtN").setAttribute("aria-valuemax",meterMax(d));}
+function setMeter(m){meter=meterKey(m);N=METERS[meter].steps;store.set("drMeter",meter);meterView();if(step>=N)step=0;buildSteps();renderSteps();}
+function spin(el,get,set){let y0=null,v0=0;el.addEventListener("pointerdown",e=>{y0=e.clientY;v0=get();el.setPointerCapture(e.pointerId);});
+  el.addEventListener("pointermove",e=>{if(y0!=null){const d=Math.round((y0-e.clientY)/14);if(d)set(v0+d);}});
+  el.addEventListener("pointerup",()=>{y0=null;});el.addEventListener("pointercancel",()=>{y0=null;});
+  el.addEventListener("wheel",e=>{e.preventDefault();set(get()+(e.deltaY<0?1:-1));},{passive:false});
+  el.addEventListener("keydown",e=>{if(e.key==="ArrowUp"||e.key==="ArrowRight"){e.preventDefault();e.stopPropagation();set(get()+1);}else if(e.key==="ArrowDown"||e.key==="ArrowLeft"){e.preventDefault();e.stopPropagation();set(get()-1);}});}
+spin($("mtN"),()=>parseMeter(meter)[0],v=>{const [n,d]=parseMeter(meter),nn=Math.max(1,Math.min(meterMax(d),v));if(nn!==n)setMeter(nn+"/"+d);});
+spin($("mtD"),()=>MDEN.indexOf(parseMeter(meter)[1]),v=>{const [n,d]=parseMeter(meter),nd=MDEN[Math.max(0,Math.min(3,v))];if(nd!==d)setMeter(Math.max(1,Math.min(meterMax(nd),n))+"/"+nd);});
+meterView();
 function renderSteps(){
   [...stepsEl.children].forEach((b,i)=>{b.setAttribute("aria-pressed",!!pat[sel][i]);b.classList.toggle("ghost",!!(prevSel&&prevSel!==sel&&pat[prevSel]&&pat[prevSel][i]));});
   [...lanesEl.children].forEach((x,i)=>x.classList.toggle("on",PADS.some(p=>pat[p.id][i])));
@@ -1017,7 +1034,7 @@ $("patMid").onclick=()=>{const L=[];for(let st=0;st<N;st++){const tk=st*120+(st%
   if(!L.length){toast("パターンが空っぽです。ステップを打ち込んでね");return;}download(smfBlob([{name:"Drums",ev:drumEv(L)}],bpm,METERS[meter].ts),fname("mid").replace("drums-","drums-pattern-"));if(window.ngTrack)ngTrack("midi_export",{tool:"drums_pattern"});};
 /* MIDIファイル → シーケンサー(1小節ずつ) */
 let midIn=null;
-function midTsKey(ts){const k=ts[0]+""+ts[1];return {"44":"44","34":"34","68":"68","54":"54","78":"78"}[k]||"44";}
+function midTsKey(ts){return parseMeter(ts[0]+"/"+ts[1])?ts[0]+"/"+ts[1]:"4/4";}
 function midLoadBar(b){if(!midIn)return;const {r,notes,m}=midIn,spt=r.ppq/4,bt=METERS[m].steps*spt,t0=b*bt;
   setMeter(m);let n=0,skip=0;PADS.forEach(p=>pat[p.id].fill(0));
   notes.forEach(x=>{if(x.tick<t0-spt/2||x.tick>=t0+bt-spt/2)return;const st=Math.round((x.tick-t0)/spt);if(st<0||st>=N)return;const id=GM[x.n];if(!id){skip++;return;}if(!pat[id][st]){pat[id][st]=1;n++;}});
@@ -1029,7 +1046,7 @@ $("patMidIn").onclick=()=>NamiMidiRead.pick((r,name)=>{
   midIn={r,notes,m};const sel=$("midBar");sel.innerHTML="";
   for(let i=0;i<Math.min(bars,999);i++){const c=notes.filter(x=>x.tick>=i*bt&&x.tick<(i+1)*bt).length;const o=document.createElement("option");o.value=i;o.textContent=(i+1)+"小節目"+(c?"("+c+"音)":"(空)");sel.appendChild(o);}
   const first=Math.floor(notes[0].tick/bt);sel.value=first;$("midBarRow").hidden=bars<2;midLoadBar(first);
-  if(m==="44"&&(r.ts[0]+"/"+r.ts[1])!=="4/4")toast(r.ts[0]+"/"+r.ts[1]+"拍子は未対応なので4/4で読み込みました");
+  if(m==="4/4"&&(r.ts[0]+"/"+r.ts[1])!=="4/4")toast(r.ts[0]+"/"+r.ts[1]+"拍子は1小節が20マスを超えるので4/4で読み込みました");
   if(window.ngTrack)ngTrack("midi_import",{tool:"drums"});
 },()=>toast("このファイルは読み込めませんでした"));
 $("midBarGo").onclick=()=>midLoadBar(+$("midBar").value);
