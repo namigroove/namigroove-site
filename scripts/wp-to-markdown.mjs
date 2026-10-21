@@ -91,7 +91,7 @@ const q = (s) => JSON.stringify(String(s ?? ""));
 async function convert(type, p) {
   const slug = p.slug, title = decode(p.title?.rendered);
   const url = new URL(p.link).pathname;
-  const cleaned = cleanHtml(p.content?.rendered ?? "");
+  const cleaned = cleanHtml(p.content?.rendered ?? "").replace(/<iframe[^>]*class="[^"]*lozad[^"]*"[^>]*>\s*<\/iframe>\s*/gi, "");
   // ショートコードの検出(手直し対象として記録)
   for (const m of cleaned.matchAll(/\[(\/?[a-z][\w-]*)(?:\s[^\]]*)?\]/gi)) report.shortcodes.push(`${type}/${slug}: ${m[0]}`);
   for (const m of cleaned.matchAll(/<([a-z][a-z0-9-]*)/gi)) report.tags[m[1].toLowerCase()] = (report.tags[m[1].toLowerCase()] || 0) + 1;
