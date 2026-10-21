@@ -239,6 +239,10 @@ footer a{color:var(--sea)}
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style>.ea-hist{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:10px;min-height:14px}
+.ea-hist i{width:12px;height:12px;border-radius:50%;background:#2c8f5a}.ea-hist i.x{background:#d6455d;border-radius:3px}
+.ea-shr{display:flex;justify-content:center;margin-top:12px}
+</style>
 <style id="hdr-fit">
 /* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
 header.top .logo{flex:none}
@@ -291,6 +295,8 @@ header.top .logo{flex:none}
     </div>
     <div class="ea-opts" id="opts" role="group" aria-label="答え"></div>
     <div class="ea-score" id="score"></div>
+    <div class="ea-hist" id="hist" aria-label="直近の記録"></div>
+    <div class="ea-shr"><button class="btn" type="button" id="resShare" disabled>結果を画像でシェア</button></div>
   </section>
 
   <section class="how">
@@ -299,6 +305,7 @@ header.top .logo{flex:none}
       <li>「出題」で音が鳴ります。答えを選ぶと正解がわかって、正解と選んだ答えを続けて鳴らして聞き比べできます。</li>
       <li>コード当ての「基本」はメジャー・マイナー・セブンス系、「おしゃれ」はテンションコードの聞き分けです。ルートは毎回変わります。</li>
       <li>音程当ては、上がる・下がる・同時の3つから選べます。</li>
+      <li>「結果を画像でシェア」で、正答率と直近20問の○×を画像にしてXなどに投稿できます(スマホは共有画面、PCは画像を保存して投稿画面を開きます)。</li>
       <li>コードの押さえ方は <a href="chords.html">コード表</a>、鍵盤で確かめるなら <a href="piano.html">ピアノ</a> もどうぞ。</li>
     </ul>
   </section>
@@ -326,7 +333,7 @@ const CH={
 };
 const IVN=["完全1度","短2度","長2度","短3度","長3度","完全4度","増4度(減5度)","完全5度","短6度","長6度","短7度","長7度","オクターブ"];
 const IVH=["同じ音","とても濁る","ド→レ","切ない(ド→ミ♭)","明るい(ド→ミ)","ド→ファ","不安定(ド→ファ♯)","力強い(ド→ソ)","ド→ラ♭","ド→ラ","ド→シ♭","ド→シ","ド→高いド"];
-let mode=store.get("earMode","chord"), lv=store.get("earLv",{chord:"basic",int:"up"}), q=null, answered=false, stat=store.get("earStat",{});
+let mode=store.get("earMode","chord"), lv=store.get("earLv",{chord:"basic",int:"up"}), q=null, answered=false, stat=store.get("earStat",{}), hist=store.get("earHist",{});
 const key=()=>mode+":"+lv[mode];
 /* ---------- 音(やわらかいエレピ風) ---------- */
 let ac=null,bus=null;
@@ -351,6 +358,7 @@ function play(arp){if(!q)return;const ms=notesOf(q.ans,q.root);playNotes(ms,arp|
 function answer(id){
   if(!q||answered)return;answered=true;const ok=id===q.ans,s=stat[key()]||{n:0,ok:0,streak:0,best:0};
   s.n++;if(ok){s.ok++;s.streak++;s.best=Math.max(s.best,s.streak);}else s.streak=0;stat[key()]=s;store.set("earStat",stat);
+  const h=hist[key()]||(hist[key()]=[]);h.push(ok?1:0);if(h.length>40)h.shift();store.set("earHist",hist);
   [...$("opts").children].forEach(b=>{b.disabled=true;if(b.dataset.id===q.ans)b.classList.add("ok");else if(b.dataset.id===id)b.classList.add("ng");});
   const name=mode==="chord"?ROOTS[q.root%12]+(q.ans===""?"":q.ans):IVN[+q.ans];
   const hint=mode==="chord"?(CH[lv.chord].find(x=>x[0]===q.ans)[2]):IVH[+q.ans];
@@ -360,7 +368,9 @@ function answer(id){
 }
 function renderOpts(){$("opts").innerHTML=opts().map(o=>`<button type="button" data-id="${o.id}">${o.label}${o.sub?`<small>${o.sub}</small>`:""}</button>`).join("");}
 function score(){const s=stat[key()]||{n:0,ok:0,streak:0,best:0};$("score").innerHTML=`<span>正解<b>${s.ok}</b>/${s.n}</span><span>正答率<b>${s.n?Math.round(s.ok/s.n*100):0}</b>%</span><span>連続<b>${s.streak}</b></span><span>ベスト<b>${s.best}</b></span><button class="btn" type="button" id="resetBtn" style="font-size:12px;padding:2px 10px">リセット</button>`;
-  $("resetBtn").onclick=()=>{stat[key()]={n:0,ok:0,streak:0,best:0};store.set("earStat",stat);score();};}
+  $("resetBtn").onclick=()=>{stat[key()]={n:0,ok:0,streak:0,best:0};hist[key()]=[];store.set("earStat",stat);store.set("earHist",hist);score();};
+  const h=(hist[key()]||[]).slice(-20);$("hist").innerHTML=h.map(v=>v?"<i></i>":'<i class="x"></i>').join("");$("hist").title=h.length?"直近"+h.length+"問(丸=正解 / 四角=不正解)":"";
+  $("resShare").disabled=!s.n;}
 function renderMode(){
   [...$("modeTabs").children].forEach(b=>b.setAttribute("aria-selected",b.dataset.m===mode));
   const L=mode==="chord"?[["basic","基本"],["oshare","おしゃれ"]]:[["up","上がる"],["down","下がる"],["same","同時"]];
@@ -376,6 +386,44 @@ $("opts").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&
 renderMode();
 
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
+
+/* ---------- 結果を画像でシェア ---------- */
+function resultCanvas(){
+  const s=stat[key()]||{n:0,ok:0,streak:0,best:0},h=(hist[key()]||[]).slice(-20),W=1200,H=630,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  const F='"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP","Noto Sans CJK JP",sans-serif';
+  x.fillStyle="#f5f8fe";x.fillRect(0,0,W,H);
+  x.fillStyle="#e3ebfb";x.beginPath();x.arc(60,40,330,0,7);x.fill();
+  x.fillStyle="#396cdf";x.fillRect(0,0,W,96);x.fillStyle="#fff";x.font="900 44px "+F;x.textBaseline="middle";x.fillText("なみぐる！",44,50);
+  x.textAlign="right";x.font="700 30px "+F;x.fillText("#namigroovetools",W-44,50);x.textAlign="left";
+  const lvName=mode==="chord"?(lv.chord==="basic"?"基本":"おしゃれ"):({up:"上がる",down:"下がる",same:"同時"})[lv.int];
+  x.fillStyle="#101f45";x.font="900 64px "+F;x.fillText("耳トレ",56,166);const tw=x.measureText("耳トレ").width;
+  x.fillStyle="#2c5ccc";x.font="700 36px "+F;x.fillText((mode==="chord"?"コード当て":"音程当て")+" ・ "+lvName,56+tw+28,170);
+  const pct=s.n?Math.round(s.ok/s.n*100):0;
+  x.fillStyle="#101f45";x.font="900 190px "+F;x.textBaseline="alphabetic";x.fillText(String(pct),56,372);
+  const w=x.measureText(String(pct)).width;x.font="900 70px "+F;x.fillText("%",56+w+10,372);
+  x.fillStyle="#4a5a80";x.font="700 40px "+F;x.fillText("正答率",60,424);
+  x.font="700 44px "+F;x.fillStyle="#101f45";
+  x.fillText(s.n+"問中 "+s.ok+"問 正解",600,222);
+  x.fillStyle="#2c5ccc";x.fillText("連続 "+s.streak+" ／ ベスト "+s.best,600,290);
+  x.fillStyle="#4a5a80";x.font="700 28px "+F;x.fillText("直近"+h.length+"問の記録",600,350);
+  h.forEach((v,i)=>{const cx=612+(i%10)*54,cy=398+Math.floor(i/10)*54;x.fillStyle=v?"#2c8f5a":"#d6455d";x.beginPath();
+    if(v)x.arc(cx+14,cy,19,0,7);else{if(x.roundRect)x.roundRect(cx-5,cy-19,38,38,8);else x.rect(cx-5,cy-19,38,38);}x.fill();});
+  x.fillStyle="#396cdf";x.fillRect(0,H-70,W,70);x.fillStyle="#fff";x.textBaseline="middle";x.font="700 34px "+F;x.fillText("あなたの耳は何問当てられる？",44,H-35);
+  x.textAlign="right";x.fillText("namigroove.com/tools/ear/",W-44,H-35);
+  return c;
+}
+$("resShare").addEventListener("click",async()=>{
+  const s=stat[key()]||{n:0,ok:0},pct=s.n?Math.round(s.ok/s.n*100):0,url="https://www.namigroove.com/tools/ear/";
+  const text="耳トレ("+(mode==="chord"?"コード当て":"音程当て")+") 正答率"+pct+"% "+s.n+"問中"+s.ok+"問正解! #namigroovetools";
+  const c=resultCanvas();
+  const blob=await new Promise(r=>c.toBlob(r,"image/png"));if(!blob)return;
+  const file=new File([blob],"namigroove-ear-result.png",{type:"image/png"});
+  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:text,url:url});if(window.ngTrack)ngTrack("ear_result_share",{via:"native"});return;}}catch(e){if(e&&e.name==="AbortError")return;}
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=file.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+  toast("画像を保存しました。投稿画面に貼ってね");
+  window.open("https://x.com/intent/post?text="+encodeURIComponent(text)+"&url="+encodeURIComponent(url),"_blank","noopener");
+  if(window.ngTrack)ngTrack("ear_result_share",{via:"download"});
+});
 const sb=$("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{
   const data={title:document.title,text:document.title+" #namigroovetools",url:"https://www.namigroove.com/tools/ear/"};

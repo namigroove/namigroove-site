@@ -1,5 +1,8 @@
 /* i18n: ear */
 NamiI18n.add({
+"結果を画像でシェア":"Share result as image",
+"「結果を画像でシェア」で、正答率と直近20問の○×を画像にしてXなどに投稿できます(スマホは共有画面、PCは画像を保存して投稿画面を開きます)。":"\"Share result as image\" turns your accuracy and your last 20 answers into an image you can post on X and elsewhere (on a phone it opens the share sheet; on a PC it saves the image and opens the post screen).",
+"直近の記録":"Recent record",
 "鳴った和音や音程を当てるトレーニング。M9・m11・13 などのおしゃれコードの聞き分けにも挑戦できます。": "Training to identify the chord or interval you hear. You can even try telling stylish chords like M9, m11 and 13 apart.",
 "音程当て": "Intervals",
 "基本": "Basic",
