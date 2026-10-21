@@ -25,9 +25,12 @@ async function fetchAll(type) {
   let out = [];
   for (let page = 1; page < 20; page++) {
     const url = `${SITE}/wp-json/wp/v2/${type}?per_page=100&page=${page}&_embed=wp:featuredmedia,wp:term`;
-    const res = await fetch(url, { headers: UA });
-    if (!res.ok) { if (page === 1) throw new Error(`${type} を取得できませんでした (${res.status})`); break; }
-    const items = await res.json();
+    let res, items;
+    for (let t = 0; t < 6; t++) {
+      try { res = await fetch(url, { headers: UA }); if (res.ok) { items = await res.json(); break; } if (res.status === 400) break; } catch (e) { console.error(type, "retry", t, e.message); }
+      await sleep(1500 * (t + 1));
+    }
+    if (!items) { if (page === 1) throw new Error(`${type} を取得できませんでした (${res && res.status})`); break; }
     out = out.concat(items);
     if (items.length < 100) break;
   }
