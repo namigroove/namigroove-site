@@ -2,14 +2,14 @@
    - ツール一覧とすべてのツール(チューナー&メトロノーム・ピアノ・ドラム・コード表など)は、最初に開いたときにまとめて保存する
    - ほかのツールも、一度開いたページは電波がなくても開ける
    - ページは「ネット優先(つながらなければ保存した版)」、画像・フォント・スクリプトは「保存した版を先に使って裏で更新」 */
-const VER = "ng-tools-v3";
+const VER = "ng-tools-v4";
 const ASSET_HOSTS = ["namigroove.github.io", "fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"];
 const SKIP = /googletagmanager|google-analytics|gtag|recaptcha|doubleclick/;
 
 const scopeUrl = new URL(self.registration.scope);
 const onWP = scopeUrl.pathname.endsWith("/tools/"); /* namigroove.com の /tools/ 以下か、GitHub Pages か */
 /* 先に保存しておくページ */
-const TOOLS = ["tuner", "piano", "drums", "chords", "scales", "jam", "analyze", "ear", "mora", "gacha", "bpmms", "fingering", "brass"];
+const TOOLS = ["tuner", "piano", "drums", "chords", "scales", "jam", "analyze", "ear", "rhythm", "mora", "gacha", "bpmms", "fingering", "brass"];
 const PRE_PAGES = onWP ? ["", ...TOOLS.map(t => t + "/")] : ["tools.html", ...TOOLS.map(t => t + ".html")];
 
 async function cacheAssetsOf(cache, html, base) {

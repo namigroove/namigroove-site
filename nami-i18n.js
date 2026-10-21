@@ -71,7 +71,7 @@ const SKIP=/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE|KBD|TEXTAREA|SVG|CANVAS)$/;
 const ATTR=["title","placeholder","aria-label","alt"];
 /* ページごとの方式: 辞書(安定したページ) / Google翻訳(更新の多いページ・WP記事) */
 const TRANS=/\.translate\.goog$/.test(location.hostname);
-const DICT_PAGES=["tools","about","analyze","bpmms","brass","ear","fingering","mora","tuner"];
+const DICT_PAGES=["tools","about","analyze","bpmms","brass","ear","fingering","rhythm","mora","tuner"];
 const PAGE=(()=>{const seg=location.pathname.replace(/\.html$/,"").split("/").filter(Boolean);const last=seg[seg.length-1]||"";
   if(!last||last==="namigroove-site")return "index"; return last;})();
 const IS_GH=/github\.io$/.test(location.hostname);
