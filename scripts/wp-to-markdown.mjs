@@ -49,22 +49,39 @@ function cleanHtml(html) {
 }
 
 const report = { types: {}, shortcodes: [], images: { ok: 0, fail: [], bytes: 0 }, tags: {}, warnings: [] };
-const imgSeen = new Map();
+const imgDone = new Map();   // 元のパス → 実際に保存したパス(null=取得失敗)
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function imgPath(u) {
   try { const x = new URL(u, SITE); if (!/(^|\.)namigroove\.com$/.test(x.hostname) || !x.pathname.startsWith("/wp-content/uploads/")) return null; return x.pathname; } catch { return null; }
 }
+// WordPress が自動で作る縮小版(-300x200 など)は元画像に寄せて、保存する枚数を減らす
+const original = (p) => p.replace(/-\d+x\d+(\.[a-z0-9]+)$/i, "$1");
+async function download(pathname) {
+  for (let t = 0; t < 4; t++) {
+    try {
+      const res = await fetch(SITE + pathname, { headers: UA });
+      if (res.status === 404) return { ok: false, status: 404 };
+      if (!res.ok) throw new Error(res.status);
+      return { ok: true, buf: Buffer.from(await res.arrayBuffer()) };
+    } catch (e) { await sleep(800 * (t + 1)); }
+  }
+  return { ok: false, status: "failed" };
+}
 async function saveImage(pathname) {
-  if (imgSeen.has(pathname)) return;
-  imgSeen.set(pathname, true);
-  if (NO_IMG || FROM) return;
-  try {
-    const res = await fetch(SITE + pathname, { headers: UA });
-    if (!res.ok) throw new Error(res.status);
-    const buf = Buffer.from(await res.arrayBuffer());
-    const f = join(OUT, "static", pathname); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, buf);
-    report.images.ok++; report.images.bytes += buf.length;
-  } catch (e) { report.images.fail.push(pathname + " (" + e.message + ")"); }
+  if (imgDone.has(pathname)) return imgDone.get(pathname);
+  if (NO_IMG || FROM) { imgDone.set(pathname, pathname); return pathname; }
+  const candidates = [...new Set([original(pathname), pathname])];
+  for (const c of candidates) {
+    if (imgDone.has("saved:" + c)) { imgDone.set(pathname, c); return c; }
+    const r = await download(c);
+    await sleep(120);
+    if (r.ok) {
+      const f = join(OUT, "static", c); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, r.buf);
+      report.images.ok++; report.images.bytes += r.buf.length; imgDone.set("saved:" + c, true); imgDone.set(pathname, c); return c;
+    }
+  }
+  report.images.fail.push(pathname); imgDone.set(pathname, null); return null;
 }
 
 const q = (s) => JSON.stringify(String(s ?? ""));
@@ -79,16 +96,18 @@ async function convert(type, p) {
   const used = new Set();
   for (const m of cleaned.matchAll(/(?:src|href|srcset)="([^"]+)"/gi)) for (const u of m[1].split(",")) { const pa = imgPath(u.trim().split(" ")[0]); if (pa && /\.(png|jpe?g|gif|webp|svg|mp4)$/i.test(pa)) used.add(pa); }
   const fm = p._embedded?.["wp:featuredmedia"]?.[0];
-  const thumb = fm?.source_url ? imgPath(fm.source_url) : null;
-  if (thumb) used.add(thumb);
-  for (const pa of used) await saveImage(pa);
-  let html = cleaned.replace(/(src|href)="(https?:\/\/(?:www\.)?namigroove\.com)(\/wp-content\/uploads\/[^"]+)"/gi, '$1="$3"');
+  const thumbRaw = fm?.source_url ? imgPath(fm.source_url) : null;
+  if (thumbRaw) used.add(thumbRaw);
+  const mapped = new Map();
+  for (const pa of used) mapped.set(pa, await saveImage(pa));
+  let html = cleaned.replace(/(src|href)="(https?:\/\/(?:www\.)?namigroove\.com)(\/wp-content\/uploads\/[^"]+)"/gi, (_, a, _h, pa) => `${a}="${mapped.get(pa) ?? pa}"`);
   html = html.replace(/\ssrcset="[^"]*"/gi, "").replace(/\ssizes="[^"]*"/gi, "");
   let md = td.turndown(html).replace(/\n{3,}/g, "\n\n").trim();
   const cats = (p._embedded?.["wp:term"] ?? []).flat().filter((t) => t.taxonomy === "category").map((t) => decode(t.name));
   const front = ["---", `title: ${q(title)}`, `date: ${q(p.date)}`, `lastmod: ${q(p.modified ?? p.date)}`, `slug: ${q(slug)}`, `url: ${q(url)}`, `type: ${q(type)}`,
     `wp_id: ${p.id}`, `draft: ${p.status && p.status !== "publish" ? "true" : "false"}`];
   if (cats.length) front.push(`categories: [${cats.map(q).join(", ")}]`);
+  const thumb = thumbRaw ? (mapped.get(thumbRaw) ?? thumbRaw) : null;
   if (thumb) front.push(`image: ${q(thumb)}`);
   front.push("---", "");
   const file = join(OUT, "content", type, `${slug}.md`);
