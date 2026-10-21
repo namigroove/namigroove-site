@@ -9,6 +9,9 @@ on:
       types:
         description: "変換する種類(music,movie,posts)"
         default: "music,movie,posts"
+      images:
+        description: "画像も取得する(true/false)"
+        default: "false"
 
 permissions:
   contents: write
@@ -26,7 +29,7 @@ jobs:
       - name: Markdown に変換
         run: |
           mkdir -p migrate-out
-          node scripts/wp-to-markdown.mjs --out migrate-out --types "${{ github.event.inputs.types }}" 2>&1 | tee migrate-out/RUNLOG.txt
+          node scripts/wp-to-markdown.mjs --out migrate-out --types "${{ github.event.inputs.types }}" $([ "${{ github.event.inputs.images }}" = "true" ] || echo --no-images) 2>&1 | tee migrate-out/RUNLOG.txt
       - name: 別ブランチ(migrate-preview)に保存
         if: always()
         run: |
