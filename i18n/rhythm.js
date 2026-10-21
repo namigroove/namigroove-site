@@ -1,5 +1,15 @@
 /* i18n: rhythm */
 NamiI18n.add({
+"7拍子":"7 beats/bar",
+"6拍子":"6 beats/bar",
+"5拍子":"5 beats/bar",
+"4拍子":"4 beats/bar",
+"3拍子":"3 beats/bar",
+"2拍子":"2 beats/bar",
+"カウントイン":"Count-in","よーい…":"Ready…",
+"「スタート」で1小節カウントイン(高い音の「ピッ」で1・2・3・4…)。そのあと4小節ぶん、クリックに合わせてタップ(スペースキーも使えます)":"Press Start for a one-bar count-in (the big number and a different click sound). Then tap along with the click for four bars (the space bar works too).",
+"1小節ぶんのカウントイン(数字が大きく出て、音もちがいます)のあと、4小節ぶんをクリックに合わせてタップします。拍子は2〜7拍子から選べます(4拍子なら16回)。ボタンでも、スペースキーでもOK。":"After a one-bar count-in (big numbers and a different sound), tap along with the click for four bars. Choose 2 to 7 beats per bar (16 taps in 4/4). Use the button or the space bar.",
+"メトロノームに合わせてタップして、自分のノリのズレを測ります。走りがちか、モタりがちか、散布図でひと目でわかります。":"Tap along to the metronome and measure how far off your timing is. A scatter plot shows at a glance whether you rush or drag.",
 "リズムトレ":"Rhythm Trainer",
 "リズムトレ(タップでノリの精度チェック) – なみぐる！":"Rhythm Trainer (tap-timing check) – namigroove!",
 "メトロノームに合わせて16回タップして、自分のノリのズレを測ります。走りがちか、モタりがちか、散布図でひと目でわかります。":"Tap along to the metronome 16 times and measure how far off your timing is. A scatter plot shows at a glance whether you rush or drag.",

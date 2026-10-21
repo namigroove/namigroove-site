@@ -254,12 +254,13 @@ footer a{color:var(--sea)}
 .rt-stage{margin:16px 0 8px;text-align:center}
 .rt-dots{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:12px}
 .rt-dots i{width:14px;height:14px;border-radius:50%;background:var(--line);display:inline-block}
-.rt-dots i.cnt{background:#cfd9f2}.rt-dots i.now{outline:3px solid var(--sea);outline-offset:1px}
+.rt-dots i{font:700 10px/14px var(--f-body);color:#fff;text-align:center}.rt-dots i.cnt{background:#f0a23a;width:18px;height:18px;line-height:18px;font-size:12px;margin-right:2px}.rt-dots i.cnt+i:not(.cnt){margin-left:8px}.rt-fb.cnt{color:#e0802a;font-size:56px;line-height:40px;height:56px;margin-top:6px}.rt-fb.cnt small{display:block;margin:6px 0 0;font-size:13px}.rt-fb.go{color:#2c8f5a;font-size:44px}.rt-dots i.now{outline:3px solid var(--sea);outline-offset:1px}
 .rt-dots i.p{background:#2c8f5a}.rt-dots i.g{background:#2c5ccc}.rt-dots i.o{background:#e0a020}.rt-dots i.m{background:#d6455d}
+.rt-pre .btn[aria-pressed="true"]{background:var(--sea);color:#fff;border-color:var(--sea)}
 .rt-pad{width:100%;max-width:420px;height:150px;border:0;border-radius:24px;background:var(--head);color:#fff;font:900 34px var(--f-body);letter-spacing:.06em;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;box-shadow:0 6px 0 rgba(16,31,69,.25)}
 .rt-pad:active,.rt-pad.hit{transform:translateY(3px);box-shadow:0 3px 0 rgba(16,31,69,.25)}
 .rt-pad[disabled]{background:#9fb0d6;cursor:default}
-.rt-fb{height:40px;margin-top:12px;font:900 28px var(--f-body);letter-spacing:.04em}
+.rt-fb{min-height:40px;height:64px;margin-top:12px;font:900 28px var(--f-body);letter-spacing:.04em}
 .rt-fb small{font:700 14px var(--f-body);margin-left:8px;color:var(--ink-soft)}
 .rt-fb.p{color:#2c8f5a}.rt-fb.g{color:#2c5ccc}.rt-fb.o{color:#c98a12}.rt-fb.m{color:#d6455d}
 .rt-res{margin-top:22px;border-top:1px dashed var(--line);padding-top:20px}
@@ -303,12 +304,13 @@ header.top .logo{flex:none}
   <div class="intro">
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>リズムトレ</h1>
-    <p class="lead">メトロノームに合わせて16回タップして、自分のノリのズレを測ります。走りがちか、モタりがちか、散布図でひと目でわかります。</p>
+    <p class="lead">メトロノームに合わせてタップして、自分のノリのズレを測ります。走りがちか、モタりがちか、散布図でひと目でわかります。</p>
   </div>
 
   <section class="panel" aria-label="リズムトレ">
     <div class="rt-top">
       <span class="rt-bpm"><button class="btn" type="button" id="bpmDn" aria-label="BPMを下げる">−</button><input id="bpm" type="number" inputmode="numeric" min="50" max="220" value="120" aria-label="BPM"><button class="btn" type="button" id="bpmUp" aria-label="BPMを上げる">＋</button><span style="font-size:12px;color:var(--ink-soft)">BPM</span></span>
+      <span class="rt-pre" id="barSel" role="group" aria-label="拍子"></span>
       <span class="rt-pre" id="bpmPre" role="group" aria-label="よく使うBPM"></span>
     </div>
     <div class="rt-cal">
@@ -322,7 +324,7 @@ header.top .logo{flex:none}
       <button class="rt-pad" type="button" id="pad" disabled>TAP</button>
       <div class="rt-fb" id="fb" aria-live="polite"></div>
       <button class="go" type="button" id="startBtn" style="margin-top:6px">▶ スタート</button>
-      <p class="ea-msg" id="msg" aria-live="polite" style="margin-top:10px">「スタート」で1小節カウントイン。そのあと16拍、クリックに合わせてタップ(スペースキーも使えます)</p>
+      <p class="ea-msg" id="msg" aria-live="polite" style="margin-top:10px">「スタート」で1小節カウントイン(高い音の「ピッ」で1・2・3・4…)。そのあと4小節ぶん、クリックに合わせてタップ(スペースキーも使えます)</p>
     </div>
     <div class="rt-res" id="res" hidden>
       <div class="rt-score"><span class="n"><span id="rScore">0</span><small>点</small></span></div>
@@ -337,9 +339,9 @@ header.top .logo{flex:none}
   <section class="how">
     <h2>使い方のメモ</h2>
     <ul>
-      <li>BPMを選んで「スタート」。1小節(4拍)のカウントインのあと、16拍ぶんをクリックに合わせてタップします。画面の大きなボタンでも、スペースキーでもOK。</li>
+      <li>BPMを選んで「スタート」。1小節ぶんのカウントイン(数字が大きく出て、音もちがいます)のあと、4小節ぶんをクリックに合わせてタップします。拍子は2〜7拍子から選べます(4拍子なら16回)。ボタンでも、スペースキーでもOK。</li>
       <li>1打ごとに PERFECT(±15ms以内)・GREAT(±40ms以内)・GOOD(±80ms以内)・MISS で判定。GREAT・GOOD・MISS には EARLY(早い)/LATE(遅い)も出ます。</li>
-      <li>結果は、平均ズレ(ズレの大きさの平均)と、早め・遅めの偏り(クセ)、16打の散布図、100点満点のスコアと称号で出ます。散布図は左が早い・右が遅いです。</li>
+      <li>結果は、平均ズレ(ズレの大きさの平均)と、早め・遅めの偏り(クセ)、全タップの散布図、100点満点のスコアと称号で出ます。散布図は左が早い・右が遅いです。</li>
       <li>Bluetoothイヤホンなどは音が遅れて届くので、「自動で測る」で端末の遅れを補正できます(クリックに合わせて8回タップ)。補正値はこの端末に保存されます。</li>
       <li>リズムの練習は <a href="tuner.html">メトロノーム</a>、ドラムで合わせるなら <a href="drums.html">ドラムパッド</a> もどうぞ。</li>
     </ul>
@@ -361,13 +363,13 @@ header.top .logo{flex:none}
 const $=id=>document.getElementById(id);
 const T=s=>window.tr?window.tr(s):s;
 const store={get(k,d){try{const v=localStorage.getItem("ngTools."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ngTools."+k,JSON.stringify(v))}catch(e){}}};
-const N=16,CNT=4,CALN=8,PRE=[80,100,120,140,160,180];
+let BAR=store.get("rtBar",4),CNT=BAR,N=BAR*4;const CALN=8,PRE=[80,100,120,140,160,180];
 /* 判定の幅(ms)。ここを変えると難しさが変わります */
 const W_PERFECT=15,W_GREAT=40,W_GOOD=80;
 let bpm=store.get("rtBpm",120),comp=store.get("rtComp",0),best=store.get("rtBest",0);
-let ac=null,bus=null,phase="idle",t0=0,spb=0,total=0,taps=[],tapSet=[],raf=0,fin=0,calMode=false,lastRes=null,mapTs=null;
+let cntShown=-3,ac=null,bus=null,phase="idle",t0=0,spb=0,total=0,taps=[],tapSet=[],raf=0,fin=0,calMode=false,lastRes=null,mapTs=null;
 function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();bus=ac.createGain();bus.gain.value=0.9;bus.connect(ac.destination);}if(ac.state!=="running")ac.resume();return ac;}
-function click(t,accent){const a=ac,o=a.createOscillator(),g=a.createGain();o.type="sine";o.frequency.value=accent?1500:1000;g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(accent?0.6:0.42,t+0.002);g.gain.exponentialRampToValueAtTime(0.0001,t+0.06);o.connect(g);g.connect(bus);o.start(t);o.stop(t+0.08);}
+function click(t,accent,cnt){const a=ac,o=a.createOscillator(),g=a.createGain();o.type=cnt?"square":"sine";o.frequency.value=cnt?(accent?1320:880):(accent?1500:1000);const pk=cnt?0.5:(accent?0.6:0.42),dur=cnt?0.11:0.06;g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(pk,t+0.002);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(bus);o.start(t);o.stop(t+0.14);}
 /* タップ音: 短い「カツッ」(ノイズ+低めの音)。すぐ鳴らして打鍵感を出す */
 function tapSound(){const a=audio(),t=a.currentTime,len=Math.floor(a.sampleRate*0.03),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
   const s=a.createBufferSource();s.buffer=buf;const f=a.createBiquadFilter();f.type="bandpass";f.frequency.value=2400;f.Q.value=0.8;const g=a.createGain();g.gain.value=0.9;s.connect(f);f.connect(g);g.connect(bus);s.start(t);
@@ -377,9 +379,10 @@ function audioTimeOf(e){
   try{if(ac.getOutputTimestamp){const ts=ac.getOutputTimestamp();if(ts&&ts.performanceTime>0&&e.timeStamp)return ts.contextTime+(e.timeStamp-ts.performanceTime)/1000;}}catch(_){}
   const lag=(performance.now()-(e.timeStamp||performance.now()))/1000;return ac.currentTime-lag-(ac.baseLatency||0)-(ac.outputLatency||0);
 }
+function setBar(v){BAR=Math.max(2,Math.min(7,+v||4));CNT=BAR;N=BAR*4;store.set("rtBar",BAR);[...$("barSel").children].forEach(b=>b.setAttribute("aria-pressed",+b.dataset.b===BAR));if(phase==="idle"||phase==="done")renderDots(N);}
 function setBpm(v){bpm=Math.max(50,Math.min(220,Math.round(+v)||120));$("bpm").value=bpm;store.set("rtBpm",bpm);[...$("bpmPre").children].forEach(b=>b.setAttribute("aria-pressed",+b.dataset.b===bpm));}
 function setComp(v){comp=Math.max(-300,Math.min(300,Math.round(v)));$("compV").textContent=(comp>0?"+":"")+comp;store.set("rtComp",comp);}
-function renderDots(n){$("dots").innerHTML=Array.from({length:CNT+n},(_,i)=>`<i class="${i<CNT?"cnt":""}"></i>`).join("");}
+function renderDots(n){$("dots").innerHTML=Array.from({length:CNT+n},(_,i)=>`<i class="${i<CNT?"cnt":""}">${i<CNT?i+1:""}</i>`).join("");}
 function setFb(cls,html){const f=$("fb");f.className="rt-fb "+cls;f.innerHTML=html;}
 function judge(err){const a=Math.abs(err),side=err<0?"EARLY":"LATE";
   if(a<=W_PERFECT)return{c:"p",k:"p",t:"PERFECT",s:""};
@@ -390,13 +393,14 @@ function start(cal){
   if(phase==="count"||phase==="play")return;
   audio();calMode=!!cal;const n=cal?CALN:N;
   spb=60/bpm;t0=ac.currentTime+0.5;total=CNT+n;taps=[];tapSet=Array(n).fill(null);
-  for(let i=0;i<total;i++)click(t0+i*spb,i%4===0);
-  phase="count";renderDots(n);$("res").hidden=true;$("pad").disabled=false;$("startBtn").disabled=$("calBtn").disabled=true;
-  $("msg").textContent=cal?"補正を測ります。クリックに合わせて8回タップ!":"カウントイン…(4拍)";setFb("","");
+  for(let i=0;i<total;i++)click(t0+i*spb,i%BAR===0,i<CNT);
+  phase="count";cntShown=-3;renderDots(n);$("res").hidden=true;$("pad").disabled=false;$("startBtn").disabled=$("calBtn").disabled=true;
+  $("msg").textContent=cal?"補正を測ります。クリックに合わせて8回タップ!":"カウントイン… "+CNT+"つ数えたらタップ開始!";
   if(window.ngTrack)ngTrack(cal?"rhythm_calibrate":"rhythm_start",{bpm});
   cancelAnimationFrame(raf);const tick=()=>{const now=ac.currentTime,pos=(now-t0)/spb;const idx=Math.floor(pos+0.5);
     [...$("dots").children].forEach((d,i)=>d.classList.toggle("now",i===Math.min(total-1,Math.max(0,Math.floor(pos+0.02)))&&pos>-0.5&&pos<total));
-    if(phase==="count"&&pos>=CNT-0.5){phase="play";$("msg").textContent=cal?"タップ!":"タップ! (16拍)";}
+    if(phase==="count"){const b=Math.floor(pos+0.03);if(pos>=-0.03&&b<CNT){if(b!==cntShown){cntShown=b;const f=$("fb");f.className="rt-fb cnt";f.innerHTML=(b+1)+"<small>"+T("カウントイン")+"</small>";}}else if(pos<-0.03&&cntShown!==-2){cntShown=-2;const f=$("fb");f.className="rt-fb cnt";f.innerHTML="<small>"+T("よーい…")+"</small>";}}
+    if(phase==="count"&&pos>=CNT-0.5){phase="play";$("msg").textContent=cal?"タップ!":"タップ! ("+N+"拍)";const f=$("fb");f.className="rt-fb go";f.innerHTML="GO!";}
     if(pos>total-0.5+0.6){finish();return;}raf=requestAnimationFrame(tick);};raf=requestAnimationFrame(tick);
 }
 function onTap(e){
@@ -424,7 +428,7 @@ function finish(){
   const score=Math.round(100*Math.exp(-meanAbs/60)),jc={p:0,g:0,o:0,m:0};errs.forEach(v=>{jc[v==null?"m":judge(v).k]++;});
   const rank=score>=95?"クォンタイズ人間":score>=85?"ジャストの達人":score>=70?"グルーヴィー":score>=50?"もうひと息":"修行中";
   const hab=!hits.length?"タップが取れませんでした":bias<=-20?"かなり突っ込み型(走りがち)":bias<=-8?"やや突っ込み気味(走りがち)":bias>=20?"どっしりレイドバック型(モタりがち)":bias>=8?"やや後ノリ気味(モタりがち)":"ジャスト寄り(クセ少なめ)";
-  lastRes={bpm,score,rank,hab,meanAbs,bias,sd,errs:errs.slice(),jc,comp};
+  lastRes={bar:BAR,bpm,score,rank,hab,meanAbs,bias,sd,errs:errs.slice(),jc,comp};
   if(score>best){best=score;store.set("rtBest",best);}
   $("rScore").textContent=score;$("rTitle").textContent=T(rank);$("rHab").textContent=T(hab);
   $("rStats").innerHTML=[["平均ズレ","±"+meanAbs.toFixed(1)+"ms"],["早め・遅めの偏り",(bias>0?"+":"")+bias.toFixed(1)+"ms"],["ばらつき",sd.toFixed(1)+"ms"],["PERFECT / GREAT",jc.p+" / "+jc.g],["GOOD / MISS",jc.o+" / "+jc.m],["ベスト",best+"点"]]
@@ -459,7 +463,7 @@ function shareCanvas(){
   x.fillStyle="#101f45";x.font="700 30px "+F;x.fillText(R.hab,50,450);
   x.fillStyle="#4a5a80";x.font="700 30px "+F;x.fillText("平均ズレ ±"+R.meanAbs.toFixed(1)+"ms",50,500);x.fillText("偏り "+(R.bias>0?"+":"")+R.bias.toFixed(1)+"ms",50,544);
   const p=document.createElement("canvas");p.width=640;p.height=420;plot(p,R,true);x.save();x.beginPath();if(x.roundRect)x.roundRect(520,118,640,420,18);else x.rect(520,118,640,420);x.clip();x.drawImage(p,520,118);x.restore();
-  x.fillStyle="#396cdf";x.fillRect(0,560,1200,70);x.fillStyle="#fff";x.textBaseline="middle";x.font="700 32px "+F;x.fillText("あなたのノリは? 16拍タップで診断",44,596);x.textAlign="right";x.fillText("namigroove.com/tools/rhythm/",1156,596);
+  x.fillStyle="#396cdf";x.fillRect(0,560,1200,70);x.fillStyle="#fff";x.textBaseline="middle";x.font="700 32px "+F;x.fillText("あなたのノリは? タップで診断",44,596);x.textAlign="right";x.fillText("namigroove.com/tools/rhythm/",1156,596);
   return c;
 }
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
@@ -476,6 +480,8 @@ $("resShare").addEventListener("click",async()=>{
 /* 入力 */
 $("bpmPre").innerHTML=PRE.map(b=>`<button class="btn" type="button" data-b="${b}" aria-pressed="false">${b}</button>`).join("");
 $("bpmPre").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&phase!=="count"&&phase!=="play")setBpm(b.dataset.b);});
+$("barSel").innerHTML=[2,3,4,5,6,7].map(b=>`<button class="btn" type="button" data-b="${b}" aria-pressed="false">${b}拍子</button>`).join("");
+$("barSel").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&phase!=="count"&&phase!=="play")setBar(b.dataset.b);});
 $("bpm").addEventListener("change",e=>setBpm(e.target.value));
 $("bpmDn").onclick=()=>setBpm(bpm-1);$("bpmUp").onclick=()=>setBpm(bpm+1);
 $("compDn").onclick=()=>setComp(comp-5);$("compUp").onclick=()=>setComp(comp+5);
@@ -483,7 +489,7 @@ $("startBtn").onclick=()=>{$("startBtn").blur();start(false);};$("againBtn").onc
 $("calBtn").onclick=()=>{$("calBtn").blur();start(true);};
 $("pad").addEventListener("pointerdown",onTap);
 document.addEventListener("keydown",e=>{if((e.code==="Space"||e.key===" ")&&!e.repeat&&(phase==="count"||phase==="play")){onTap(e);}else if((e.code==="Space")&&(phase==="count"||phase==="play"))e.preventDefault();});
-setBpm(bpm);setComp(comp);renderDots(N);
+setBpm(bpm);setComp(comp);setBar(BAR);renderDots(N);
 const sb=$("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{
   const data={title:document.title,text:document.title+" #namigroovetools",url:"https://www.namigroove.com/tools/rhythm/"};
