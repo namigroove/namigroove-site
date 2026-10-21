@@ -1,0 +1,37 @@
+name: WordPress → Markdown 変換の試作(手動実行のみ)
+
+# WordPress には何も書き込みません(公開APIを読むだけ)。
+# 結果は公開サイトには出ない別ブランチ(migrate-preview)に保存します。
+
+on:
+  workflow_dispatch:
+    inputs:
+      types:
+        description: "変換する種類(music,movie,posts)"
+        default: "music,movie,posts"
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 変換ツールを入れる
+        run: npm install --no-save --no-package-lock turndown
+      - name: Markdown に変換
+        run: node scripts/wp-to-markdown.mjs --out migrate-out --types "${{ github.event.inputs.types }}"
+      - name: 別ブランチ(migrate-preview)に保存
+        run: |
+          cd migrate-out
+          git init -q -b migrate-preview
+          git config user.name "namigroove-bot"
+          git config user.email "namigroove-bot@users.noreply.github.com"
+          git add -A
+          git commit -q -m "WordPress から Markdown へ変換(試作)"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin migrate-preview
