@@ -80,52 +80,8 @@ footer{padding-block:24px 40px;font-size:12px;color:var(--ink-soft)}
   </header>
 
   <section id="form" style="padding-top:20px">
-    <form id="contactForm" novalidate>
-      <fieldset>
-        <span class="legend">ご依頼内容<span class="req">必須</span></span>
-        <div class="chips">
-          <label><input type="checkbox" name="kind" value="original">オリジナル楽曲</label>
-          <label><input type="checkbox" name="kind" value="remix">リミックス・編曲</label>
-          <label><input type="checkbox" name="kind" value="cover">カバー</label>
-          <label><input type="checkbox" name="kind" value="bgm">BGM・CM</label>
-          <label><input type="checkbox" name="kind" value="movie">映像製作</label>
-          <label><input type="checkbox" name="kind" value="rec">楽器録音</label>
-          <label><input type="checkbox" name="kind" value="event">イベント出演</label>
-          <label><input type="checkbox" name="kind" value="other">その他</label>
-        </div>
-      </fieldset>
-
-      <div class="row">
-        <div class="f"><label for="name">お名前・会社名<span class="req">必須</span></label><input type="text" id="name" name="name" autocomplete="organization" placeholder="例:株式会社〇〇 山田"></div>
-        <div class="f"><label for="email">メールアドレス<span class="req">必須</span></label><input type="email" id="email" name="email" autocomplete="email" placeholder="example@mail.com"></div>
-      </div>
-
-      <div class="row">
-        <div class="f"><label for="due">ご希望納期<span class="req">必須</span></label><input type="text" id="due" name="due" placeholder="例:2027年2月末 公開予定"></div>
-        <div class="f"><label for="budget">ご予算<span class="req">必須</span></label>
-          <select id="budget" name="budget">
-            <option value="">選択してください</option>
-            <option>〜10万円</option><option>10〜30万円</option><option>30〜50万円</option><option>50万円〜</option><option>相談して決めたい</option>
-          </select>
-        </div>
-      </div>
-
-      <fieldset>
-        <span class="legend">用途</span>
-        <div class="chips">
-          <label><input type="radio" name="use" value="commercial">商用(企業・販売・広告)</label>
-          <label><input type="radio" name="use" value="personal">個人・同人</label>
-          <label><input type="radio" name="use" value="unknown">未定</label>
-        </div>
-      </fieldset>
-
-      <div class="f"><label for="body">内容<span class="req">必須</span></label><textarea id="body" name="body" placeholder="作品の概要、使用先、参考曲などをお書きください"></textarea></div>
-      <div class="f"><label for="ref">参考URL</label><input type="url" id="ref" name="ref" placeholder="https://"><span class="hint">参考曲や企画書の共有リンクがあれば。ファイルは返信後にお送りください。</span></div>
-
-      <label class="agree"><input type="checkbox" id="agree" name="agree"><span><a href="https://www.namigroove.com/privacy-policy/">プライバシーポリシー</a>に同意して送信します</span></label>
-      <button class="send" type="submit">内容を送信する</button>
-      <p class="msg" id="msg" role="status" hidden></p>
-    </form>
+    <iframe data-tally-src="https://tally.so/embed/dbW2vr?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0" title="製作依頼フォーム"></iframe>
+    <noscript><p class="note"><a href="https://tally.so/r/dbW2vr">フォームを開く</a></p></noscript>
   </section>
 
   <section>
@@ -147,21 +103,5 @@ footer{padding-block:24px 40px;font-size:12px;color:var(--ink-soft)}
 </div>
 <footer><div class="wrap">© namigroove</div></footer>
 
-<script>
-const form=document.getElementById("contactForm"), msg=document.getElementById("msg");
-const f=form.elements;
-form.addEventListener("submit",e=>{
-  e.preventDefault();
-  const miss=[];
-  if(!form.querySelector('input[name=kind]:checked')) miss.push("ご依頼内容");
-  if(!f.name.value.trim()) miss.push("お名前・会社名");
-  if(!/^\S+@\S+\.\S+$/.test(f.email.value)) miss.push("メールアドレス");
-  if(!f.due.value.trim()) miss.push("ご希望納期");
-  if(!f.budget.value) miss.push("ご予算");
-  if(!f.body.value.trim()) miss.push("内容");
-  if(!f.agree.checked) miss.push("プライバシーポリシーへの同意");
-  msg.hidden=false;
-  if(miss.length){ msg.className="msg err"; msg.textContent="未入力の項目があります:"+miss.join("、"); return; }
-  msg.className="msg"; msg.textContent="試作のため送信はされません。本番ではこの内容がメールで届きます。";
-});
-</script>
+<script async src="https://tally.so/widgets/embed.js" onload="Tally.loadEmbeds()"></script>
+<script>if(typeof Tally!=="undefined"){Tally.loadEmbeds()}else{document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function(e){e.src=e.dataset.tallySrc})}</script>
