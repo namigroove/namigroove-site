@@ -305,6 +305,7 @@ header.top .logo{flex:none}
     <div class="acts">
       <label class="btn fbtn" id="camPhoto" tabindex="0" role="button">カメラで撮る<input id="camP" type="file" accept="image/*" capture="environment" hidden></label>
       <label class="btn fbtn" id="camVideo" tabindex="0" role="button">動画を撮る<input id="camV" type="file" accept="video/*" capture="environment" hidden></label>
+      <button class="btn" type="button" id="liveBtn">ライブカメラ</button>
     </div>
     <p class="note-s" id="srcNote">最初はサンプル画像が入っています。</p>
   </section>
@@ -314,6 +315,12 @@ header.top .logo{flex:none}
     <p class="note-s fxdesc" id="fxDesc"></p>
     <div class="fxp" id="fxParams"></div>
     <div class="stage"><canvas id="cv" aria-label="できあがりのプレビュー"></canvas><div class="busy" id="busy" hidden>作っています…</div></div>
+    <div class="acts" id="liveBar" hidden>
+      <button class="btn go" type="button" id="shootBtn">撮影</button>
+      <button class="btn" type="button" id="recBtn">録画</button>
+      <button class="btn" type="button" id="flipBtn">前・後ろの切り替え</button>
+      <button class="btn" type="button" id="endBtn">終わる</button>
+    </div>
     <div class="acts">
       <button class="btn" type="button" id="cmpBtn">押している間、元の画像</button>
       <button class="btn" type="button" id="seedBtn">別のパターン</button>
@@ -353,6 +360,7 @@ header.top .logo{flex:none}
       <li>VHSの「ダビング」は、画像を何度か圧縮し直して、テープをコピーしたような劣化を作ります。</li>
       <li>透明な部分は白で塗ります。HEIC・PSD・PDFなどは、先に<a href="imgconv.html">画像コンバーター</a>でPNGにしてから選んでください。</li>
       <li>「カメラで撮る」「動画を撮る」は、スマホではカメラが開きます(パソコンでは、ファイルを選ぶ画面になります)。</li>
+      <li>「ライブカメラ」は、カメラの映像にエフェクトをかけながら映します。「撮影」で写真に、「録画」でエフェクトつきの動画になります。カメラの映像は端末の外に出ません。</li>
       <li>動画を選ぶと、開始位置の1コマにエフェクトがかかります。保存の形式を GIF・APNG・動画 にすると、動画の全体(最大8秒)にエフェクトをかけて書き出せます。音は入りません。</li>
       <li>写真でも、VHS・グリッチ・ドリームコア・バックルームは、ノイズやずれが毎コマ変わるので、GIF・APNG・動画にするとゆらゆら動きます。</li>
       <li>「動画」は、お使いのブラウザが対応していれば、WebM(Safariなどでは MP4)で保存します。SNSに上げるときは、GIFやAPNGのほうが通りやすいことがあります。</li>
@@ -936,7 +944,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const LONG=560;
 async function loop(my){
   let i=0,v=vid&&vid.video;
-  if(v){try{v.loop=false;v.currentTime=Math.min(+$("astart").value||0,Math.max(0,vid.dur-0.1));await v.play()}catch(e){}}
+  if(v&&!vid.live){try{v.loop=false;v.currentTime=Math.min(+$("astart").value||0,Math.max(0,vid.dur-0.1));await v.play()}catch(e){}}
   while(my===playTok){
     if(paused||document.hidden){await sleep(200);continue}
     const t0=performance.now();
@@ -944,8 +952,8 @@ async function loop(my){
       let src;
       if(v){
         const st=+$("astart").value||0,len=+$("alen").value||3;
-        if(v.ended||v.currentTime>=Math.min(st+len,vid.dur-0.05)||v.currentTime<st-0.2){v.currentTime=Math.min(st,Math.max(0,vid.dur-0.1));if(v.paused)try{await v.play()}catch(e){}}
-        const k=Math.min(1,LONG/Math.max(v.videoWidth,v.videoHeight));src=mk(v.videoWidth*k,v.videoHeight*k);const x=src.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,src.width,src.height);x.imageSmoothingQuality="high";x.drawImage(v,0,0,src.width,src.height);
+        if(!vid.live&&(v.ended||v.currentTime>=Math.min(st+len,vid.dur-0.05)||v.currentTime<st-0.2)){v.currentTime=Math.min(st,Math.max(0,vid.dur-0.1));if(v.paused)try{await v.play()}catch(e){}}
+        const k=Math.min(1,LONG/Math.max(v.videoWidth,v.videoHeight));src=mk(v.videoWidth*k,v.videoHeight*k);const x=src.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,src.width,src.height);x.imageSmoothingQuality="high";if(vid.mirror){x.translate(src.width,0);x.scale(-1,1)}x.drawImage(v,0,0,src.width,src.height);
       }else src=fitCanvas(orig,LONG);
       const R=rng(seed*7919+cur.length*31+(FX[cur].anim?(i+1)*977:0));
       const c=await FX[cur].run(src,params(),R,src.width/800);
@@ -955,9 +963,11 @@ async function loop(my){
     i++;await sleep(Math.max(0,95-(performance.now()-t0)));
   }
 }
-function stopPlay(){playTok++;if(vid&&vid.video)try{vid.video.pause()}catch(e){}}
+const pauseVid=()=>{if(vid&&vid.video&&!vid.live)try{vid.video.pause()}catch(e){}};
+function stopPlay(){playTok++;pauseVid()}
 async function render(){
-  if(!orig)return;const my=++token;playTok++;if(vid&&vid.video)try{vid.video.pause()}catch(e){}
+  if(!orig)return;const my=++token;playTok++;pauseVid();
+  if(vid&&vid.live){$("pauseBtn").hidden=false;loop(++playTok);return}
   $("busy").hidden=false;
   try{
     const c=await make(prevSize());
@@ -1028,7 +1038,8 @@ async function encVideo(out,fps){
   return {blob:new Blob(chunks,{type:mt.split(";")[0]}),ext:/mp4/.test(mt)?".mp4":".webm"};
 }
 $("saveBtn").addEventListener("click",async()=>{
-  if(!orig)return;const b=$("saveBtn");b.disabled=true;$("saveMsg").textContent="作っています…";
+  if(!orig)return;if(vid&&vid.live){$("saveMsg").textContent="ライブカメラの間は保存できません。「撮影」か「録画」を使ってください。";return}
+  const b=$("saveBtn");b.disabled=true;$("saveMsg").textContent="作っています…";
   try{
     const f=$("ofmt").value;let blob,ext,dim;
     if(f==="png"||f==="jpg"){
@@ -1051,7 +1062,7 @@ $("saveBtn").addEventListener("click",async()=>{
   if(vid||FX[cur].anim)render();
 });
 async function setImage(blob,nm,sample,full){
-  fname=full||nm;if(vid){URL.revokeObjectURL(vid.url);vid=null}
+  fname=full||nm;if(vid){if(vid.url)URL.revokeObjectURL(vid.url);vid=null}
   const bm=await createImageBitmap(blob);orig=bm;name=nm;
   $("srcNote").textContent=sample?"最初はサンプル画像が入っています。自分の画像を選ぶと入れ替わります。":nm+"("+bm.width+"×"+bm.height+"px)";
   syncFmt();render();
@@ -1061,7 +1072,7 @@ async function setVideo(f){
   const url=URL.createObjectURL(f),v=document.createElement("video");v.muted=true;v.playsInline=true;v.preload="auto";v.src=url;
   try{await new Promise((res,rej)=>{v.onloadeddata=res;v.onerror=()=>rej(new Error("video"));setTimeout(()=>rej(new Error("timeout")),15000)})}
   catch(e){URL.revokeObjectURL(url);throw e}
-  if(vid)URL.revokeObjectURL(vid.url);
+  stopLive();if(vid&&vid.url)URL.revokeObjectURL(vid.url);
   vid={url,video:v,dur:isFinite(v.duration)?v.duration:5};name=base(f.name);
   $("astart").value=0;$("astart").max=Math.max(0,Math.floor(vid.dur-0.5));
   $("srcNote").textContent=f.name+"(動画・"+v.videoWidth+"×"+v.videoHeight+"px・"+vid.dur.toFixed(1)+"秒)";
@@ -1072,6 +1083,58 @@ async function loadAny(f){
   try{if(isVideo(f))await setVideo(f);else await setImage(f,base(f.name),false,f.name)}
   catch(e){console.error(e);$("srcNote").textContent=isVideo(f)?"この動画は読み込めませんでした。MP4・WebMなど、ブラウザで再生できる形式を選んでください。":"この画像は読み込めませんでした。PNG・JPG・WebPなどを選んでください。"}
 }
+/* ---------- ライブカメラ ---------- */
+let stream=null,rec=null,facing="environment",prevOrig=null;
+async function startLive(){
+  const keep=(vid&&vid.live)?prevOrig:orig;stopLive();prevOrig=keep;
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$("srcNote").textContent="このブラウザは、カメラを使えません。";return}
+  try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing},width:{ideal:1280}},audio:false})}
+  catch(e){$("srcNote").textContent="カメラを使えませんでした。ブラウザのカメラの許可を確認してください。";return}
+  const v=document.createElement("video");v.muted=true;v.playsInline=true;v.srcObject=stream;
+  try{await v.play()}catch(e){}
+  if(vid&&vid.url)URL.revokeObjectURL(vid.url);
+  const tr=stream.getVideoTracks()[0],fm=tr&&tr.getSettings?tr.getSettings().facingMode:"";
+  vid={url:null,video:v,dur:Infinity,live:true,mirror:fm?fm==="user":facing==="user"};
+  orig=mk(16,9);$("liveBar").hidden=false;$("srcNote").textContent="ライブカメラ中です。撮影・録画ができます。";
+  syncFmt();render();
+}
+function stopLive(){
+  playTok++;
+  if(rec&&rec.state==="recording")try{rec.stop()}catch(e){}
+  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
+  if(vid&&vid.live)vid=null;
+  $("liveBar").hidden=true;
+}
+function shoot(){
+  const v=vid&&vid.video;if(!v||!v.videoWidth)return;
+  const c=mk(v.videoWidth,v.videoHeight),x=c.getContext("2d");
+  if(vid.mirror){x.translate(c.width,0);x.scale(-1,1)}
+  x.drawImage(v,0,0);stopLive();orig=c;name="camera";fname="camera.png";
+  $("srcNote").textContent="撮影しました("+c.width+"×"+c.height+"px)。このまま保存できます。";
+  syncFmt();render();
+}
+function toggleRec(){
+  if(rec&&rec.state==="recording"){rec.stop();return}
+  if(!window.MediaRecorder){$("saveMsg").textContent="このブラウザは、録画に対応していません。";return}
+  const mt=["video/webm;codecs=vp9","video/webm;codecs=vp8","video/webm","video/mp4;codecs=avc1","video/mp4"].find(m=>MediaRecorder.isTypeSupported(m));
+  if(!mt){$("saveMsg").textContent="このブラウザは、録画に対応していません。";return}
+  const chunks=[];rec=new MediaRecorder(cv.captureStream(10),{mimeType:mt,videoBitsPerSecond:3000000});
+  rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+  rec.onstop=()=>{
+    $("recBtn").textContent="録画";
+    if(!chunks.length)return;
+    const blob=new Blob(chunks,{type:mt.split(";")[0]}),a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);a.download="camera_"+cur+(/mp4/.test(mt)?".mp4":".webm");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    $("saveMsg").textContent=a.download+"("+Math.max(1,Math.round(blob.size/1024))+" KB)を保存しました";
+  };
+  rec.start();$("recBtn").textContent="録画を止めて保存";
+}
+if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)$("liveBtn").hidden=true;
+$("liveBtn").addEventListener("click",startLive);
+$("shootBtn").addEventListener("click",shoot);
+$("recBtn").addEventListener("click",toggleRec);
+$("flipBtn").addEventListener("click",()=>{facing=facing==="user"?"environment":"user";startLive()});
+$("endBtn").addEventListener("click",()=>{stopLive();if(prevOrig)orig=prevOrig;$("srcNote").textContent="ライブカメラを終えました。";render()});
 const drop=$("drop"),file=$("file");
 drop.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();file.click()}});
 ["file","camP","camV"].forEach(id=>$(id).addEventListener("change",()=>{const e=$(id),f=e.files[0];e.value="";if(f)loadAny(f)}));
@@ -1080,7 +1143,7 @@ drop.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDe
 ["dragleave","drop"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove("on")}));
 drop.addEventListener("drop",e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)loadAny(f)});
 $("ofmt").addEventListener("change",syncFmt);
-$("astart").addEventListener("change",()=>{if(vid)seekDraw(+$("astart").value||0)});
+$("astart").addEventListener("change",()=>{if(vid&&!vid.live)seekDraw(+$("astart").value||0)});
 choose("pixel");
 fetch("img/namigroove-3d.webp").then(r=>r.blob()).then(b=>{if(!orig)return setImage(b,"sample",true,"namigroove-3d.webp")}).catch(()=>{});
 const sb=$("shareBtn");
