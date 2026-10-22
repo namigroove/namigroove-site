@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>画像コンバーター(PNG・JPG・WebP・PSD・AI・PDF・動画GIF対応) – なみぐる！</title>
-<meta name="description" content="PNG・JPG・WebPの相互変換、PSD・AI・PDF・SVGのPNG化、短い動画のGIF化ができる無料ツール。ブラウザの中だけで変換するので、ファイルはどこにも送信されません。">
+<title>画像コンバーター(PSD・AI・HEIC・ICO・動画GIF対応・ブラウザだけで変換・無料) – なみぐる！</title>
+<meta name="description" content="PNG・JPG・WebPの相互変換、PSD・AI・PDF・HEIC・TIFFの書き出し、ICO・ファビコン作成、回転や切り抜き、短い動画のGIF・APNG化ができる無料ツール。ブラウザの中だけで変換するので、ファイルはどこにも送信されません。">
 <meta property="og:title" content="画像コンバーター – なみぐる！">
-<meta property="og:description" content="PNG・JPG・WebPの相互変換、PSD・AI・PDF・SVGのPNG化、短い動画のGIF化ができる無料ツール。ブラウザの中だけで変換するので、ファイルはどこにも送信されません。">
+<meta property="og:description" content="PNG・JPG・WebPの相互変換、PSD・AI・PDF・HEIC・TIFFの書き出し、ICO・ファビコン作成、回転や切り抜き、短い動画のGIF・APNG化ができる無料ツール。ブラウザの中だけで変換するので、ファイルはどこにも送信されません。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.namigroove.com/tools/imgconv/">
 <meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg">
@@ -271,7 +271,7 @@ header.top .logo{flex:none}
 @media (max-width:374px){header.top nav.main .opt{display:none}}
 @media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"画像コンバーター","url":"https://www.namigroove.com/tools/imgconv/","description":"PNG・JPG・WebPの相互変換、PSD・AI・PDF・SVGのPNG化、短い動画のGIF化ができる無料ツール。ブラウザの中だけで変換するので、ファイルはどこにも送信されません。","applicationCategory":"MultimediaApplication","operatingSystem":"Any","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"author":{"@type":"Person","name":"なみぐる","url":"https://www.namigroove.com/"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"画像コンバーター","url":"https://www.namigroove.com/tools/imgconv/","description":"PNG・JPG・WebPの相互変換、PSD・AI・PDF・HEIC・TIFFの書き出し、ICO・ファビコン作成、回転や切り抜き、短い動画のGIF・APNG化ができる無料ツール。ブラウザの中だけで変換するので、ファイルはどこにも送信されません。","applicationCategory":"MultimediaApplication","operatingSystem":"Any","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"author":{"@type":"Person","name":"なみぐる","url":"https://www.namigroove.com/"}}]}</script>
 </head>
 <body>
 
@@ -293,7 +293,7 @@ header.top .logo{flex:none}
   <div class="intro">
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>画像コンバーター</h1>
-    <p class="lead">PNG・JPG・WebP を相互に変換します。PSD・AI・PDF・SVG はPNGなどに書き出せて、短い動画はGIFにできます。ブラウザの中だけで変換するので、ファイルは送信されません。</p>
+    <p class="lead">PNG・JPG・WebP を相互に変換します。PSD・AI・PDF・HEIC・TIFF も開いて、PNGなどに書き出せます。ICO・ファビコン作成、回転・切り抜き・背景透過、短い動画のGIF・APNG化にも使えます。ブラウザの中だけで変換するので、ファイルは送信されません。</p>
   </div>
 
   <section class="panel" aria-label="ファイルを選ぶ">
@@ -389,7 +389,7 @@ header.top .logo{flex:none}
       <div class="ctl">開始 <input id="gst" class="sel" type="number" min="0" step="0.5" value="0" style="width:4.5em" aria-label="開始の秒数"> 秒</div>
       <div class="ctl">長さ <input id="glen" class="sel" type="number" min="0.5" max="10" step="0.5" value="5" style="width:4.5em" aria-label="長さの秒数"> 秒(最大10)</div>
     </div>
-    <p class="note-s">変換はこの端末の中で行います。ファイルは送信・保存されません。PSDは、「互換性を最大化」をオフで保存したものもレイヤーから合成して開けます(調整レイヤー・マスク・効果は反映されません)。AIはPDF互換で保存したものに対応します。</p>
+    <p class="note-s">変換はこの端末の中で行います。ファイルは送信・保存されません。AIはPDF互換で保存したものだけ開けます。</p>
   </section>
 
   <section class="panel" id="listPanel" aria-live="polite" hidden>
