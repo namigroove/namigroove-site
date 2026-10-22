@@ -132,11 +132,11 @@ BメロだけFender PBのプレベでメロディアスなペンタフレーズ�
 
 ▼#AiSuuベースチャレンジ サンプル
 
-{{% audio src="/wp-content/uploads/2024/12/Sample_AiSuuBassChallenge.wav" %}}
+{{% audio src="/wp-content/uploads/2024/12/Sample_AiSuuBassChallenge.mp3" %}}
 
 ▼#AiSuuベースチャレンジ 練習&収録用
 
-{{% audio src="/wp-content/uploads/2024/12/AiSuuBassChallenge.wav" %}}
+{{% audio src="/wp-content/uploads/2024/12/AiSuuBassChallenge.mp3" %}}
 
 [ピアプロ](https://piapro.jp/t/q9TA)にベースマイナスワン音源のフルもあるよ
 
