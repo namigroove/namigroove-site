@@ -836,9 +836,9 @@ backrooms:{anim:1,name:"バックルーム",desc:"終わりのない部屋の画
   }
   return o;
  }},
-webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ風。216色のウェブセーフカラー、ウィンドウ枠、背景、訪問者カウンターと工事中テープ。「NEW!」(更新したてのマーク)も選べます。",
+webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ風。216色のウェブセーフカラー、ウィンドウ枠、背景、訪問者カウンターと工事中テープ。",
  params:[{k:"red",l:"荒さ",min:1,max:8,def:2},{k:"dither",l:"ディザ",type:"select",opts:[["on","あり"],["off","なし"]],def:"on"},{k:"frame",l:"枠",type:"select",opts:[["win","ウィンドウ枠"],["none","なし"]],def:"win"},
-  {k:"bg",l:"背景",type:"select",opts:[["star","星空"],["tile","ハートと星"],["desk","水色のデスクトップ"],["none","なし"]],def:"star"},{k:"deco",l:"飾り",type:"select",opts:[["on","カウンターと工事中テープ"],["new","さらに「NEW!」(更新したてのマーク)"],["off","なし"]],def:"on"}],
+  {k:"bg",l:"背景",type:"select",opts:[["star","星空"],["tile","ハートと星"],["desk","水色のデスクトップ"],["none","なし"]],def:"star"},{k:"deco",l:"飾り",type:"select",opts:[["on","カウンターと工事中テープ"],["off","なし"]],def:"on"}],
  run(src,p,R,u){
   const W=src.width,H=src.height,bs=Math.max(1,p.red*u),sw=Math.max(1,Math.round(W/bs)),sh=Math.max(1,Math.round(H/bs));
   const s=mk(sw,sh),sx=cx(s);sx.imageSmoothingQuality="high";sx.drawImage(src,0,0,sw,sh);
@@ -871,7 +871,7 @@ webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ
     for(let yy=0,r=0;yy<Hf+t;yy+=t,r++)for(let xx=0,c=0;xx<Wf+t;xx+=t,c++){x.fillStyle=(r+c)%2?"#ff7eb8":"#ffe36e";x.fillText((r+c)%2?"♥":"★",xx+(r%2?t/2:0),yy)}
   }
   const wx=mg,wy=mg;x.drawImage(win,wx,wy);
-  if(p.deco!=="off"){
+  if(p.deco==="on"){
     const y0=wy+win.height+Math.round(14*u),dg=Math.round(26*u);
     x.textBaseline="middle";x.textAlign="left";x.font="bold "+Math.round(18*u)+"px \"MaruMinyaM\",sans-serif";x.fillStyle=p.bg==="tile"?"#a0005a":"#ffff66";
     x.fillText("あなたは",wx,y0+dg/2);
@@ -880,10 +880,6 @@ webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ
     x.font="bold "+Math.round(18*u)+"px \"MaruMinyaM\",sans-serif";x.fillStyle=p.bg==="tile"?"#a0005a":"#ffff66";x.fillText("人目のお客様です",bx+6*(dg*0.8+2*u)+8*u,y0+dg/2);
     /* 工事中テープ */
     const ty=Hf-Math.round(20*u);x.save();x.beginPath();x.rect(0,ty,Wf,Math.round(20*u));x.clip();x.fillStyle="#ffd800";x.fillRect(0,ty,Wf,Math.round(20*u));x.fillStyle="#111";for(let xx=-40*u;xx<Wf+40*u;xx+=36*u){x.beginPath();x.moveTo(xx,ty+20*u);x.lineTo(xx+18*u,ty+20*u);x.lineTo(xx+38*u,ty);x.lineTo(xx+20*u,ty);x.fill()}x.restore();
-    /* NEW! */
-    if(p.deco==="new"){const nx=wx+win.width-Math.round(30*u),ny=wy+Math.round(40*u),nr=Math.round(34*u);
-    x.save();x.translate(nx,ny);x.rotate(0.3);x.fillStyle="#e00";x.beginPath();for(let i=0;i<20;i++){const rr=i%2?nr*0.78:nr,an=Math.PI/10*i;x.lineTo(Math.cos(an)*rr,Math.sin(an)*rr)}x.closePath();x.fill();
-    x.fillStyle="#ffee00";x.textAlign="center";x.textBaseline="middle";x.font="bold "+Math.round(20*u)+"px Arial,sans-serif";x.fillText("NEW!",0,0);x.restore()}
   }
   return f2;
  }},
