@@ -315,7 +315,7 @@ header.top .logo{flex:none}
       <label class="chk"><input type="checkbox" id="cKanji" checked> 漢字をひらがなに</label>
       <label class="chk"><input type="checkbox" id="cHa" checked> 助詞の「は」を「わ」に</label>
       <label class="chk"><input type="checkbox" id="cHe"> 助詞の「へ」を「え」に</label>
-      <div class="ctl">「う」の直し方 <select id="cUmode" class="sel" aria-label="「う」の直し方"><option value="bar" selected>「ー」にする(おもー)</option><option value="o">「お」にする(おもお)</option><option value="none">直さない</option></select></div>
+      <div class="ctl">「う」の直し方 <select id="cUmode" class="sel" aria-label="「う」の直し方"><option value="o" selected>「お」にする(おもお)</option><option value="none">直さない</option></select></div>
     </div>
     <div class="row" style="margin-top:12px"><button class="btn" type="button" id="convBtn">入力欄の歌詞を直す</button><button class="btn" type="button" id="undoBtn" disabled>元に戻す</button></div>
     <p class="note-s" id="convMsg">漢字の読みと「は」の判定には辞書(約17MB)を使います。使うのは初回だけで、この端末の中で動きます。直したあとは、読みを一度確認してください。</p>
@@ -367,7 +367,7 @@ header.top .logo{flex:none}
       <li>「きゃ・しゅ・ちょ」などの拗音は1音、「っ」「ん」「ー」も1音で数えます「数え方」で、使うソフトに合わせた設定を選べます(VOCALOIDは「っ」「ー」にノートを置かないことが多いため)。チェックを外すと、数えない設定にもできます。</li>
       <li>漢字や数字は読みがわからないので、<b>漢字《かんじ》</b> や <b>漢字(かんじ)</b> のように読みを書いてください。読みがない漢字はオレンジで知らせます。</li>
       <li>英語は母音のまとまりから音節数を目安で数えます(カタカナで書くといちばん正確です)。</li>
-      <li>「歌詞を打ち込み用に直す」では、漢字をひらがなにして、助詞の「は」を「わ」に、長く伸ばす「う」を「ー」(「おもう」→「おもー」)か「お」(「おもう」→「おもお」)にします。VOCALOIDでは「ー」を入力できないので「お」を選んでください。「《よみ》」を書いた漢字は、書いた読みを使います。同じ読みの別の語(「橋」と「箸」など)や、歌い方で読みが変わる語は直らないことがあるので、直したあとに確認してください。</li>
+      <li>「歌詞を打ち込み用に直す」では、漢字をひらがなにして、助詞の「は」を「わ」に、長く伸ばす「う」を「お」(「おもう」→「おもお」)にします。「《よみ》」を書いた漢字は、書いた読みを使います。同じ読みの別の語(「橋」と「箸」など)や、歌い方で読みが変わる語は直らないことがあるので、直したあとに確認してください。</li>
       <li>MusicXML・MIDI・VOCALOID(VSQX・VPR)・Synthesizer V(SVP)・OpenUtau(USTX・UST)・CeVIO(CCS)のファイルを選ぶと、歌詞を取り出して行ごとに入力欄へ入れます。歌詞が入ったパートと歌詞の番号(1番・2番)を選べます。休符で行を分けるので、「改行」で分け方を変えられます。音符の数も数えるので、音数とくらべられます。</li>
       <li>「歌詞を書き出す」では、入力欄の歌詞を1音ずつに分けて、テキスト・MusicXML・MIDI・UST・USTX・SVP・VSQX・VPR・CCSで書き出します。MIDIとUSTの歌詞はShift_JISで入れるので、ひらがな・カタカナ・英数字以外は「?」になります。音程と長さは仮のものです。</li>
       <li>「目標」に音数を入れると、多い行・少ない行に色がつきます。メロディの音符の数に合わせるときに便利です。</li>
@@ -427,9 +427,9 @@ function render(){
 const sv=store.get("moraOpts",null);if(sv){$("oSokuon").checked=sv.sokuon;$("oN").checked=sv.n;$("oBar").checked=sv.bar;$("oSmall").checked=sv.small;}
 $("lyr").value=store.get("moraDraft","");$("target").value=store.get("moraTarget","");
 ["lyr","target"].forEach(id=>$(id).addEventListener("input",render));
-const PRE={mora:[1,1,1,1,"bar"],voc:[0,1,0,1,"o"],cev:[1,1,1,1,"bar"]};
+const PRE={mora:[1,1,1,1,"o"],voc:[0,1,0,1,"o"],cev:[1,1,1,1,"o"]};
 function applyPreset(v){const p=PRE[v];if(!p)return;["oSokuon","oN","oBar","oSmall"].forEach((id,i)=>$(id).checked=!!p[i]);$("cUmode").value=p[4]}
-{const pv=store.get("moraPreset",null),um=store.get("moraU",null);if(pv)$("preset").value=pv;if(um)$("cUmode").value=um;}
+{const pv=store.get("moraPreset",null),um=store.get("moraU",null);if(pv)$("preset").value=pv;if(um==="o"||um==="none")$("cUmode").value=um;}
 $("preset").addEventListener("change",()=>{applyPreset($("preset").value);store.set("moraPreset",$("preset").value);store.set("moraU",$("cUmode").value);render()});
 $("cUmode").addEventListener("change",()=>store.set("moraU",$("cUmode").value));
 ["oSokuon","oN","oBar","oSmall"].forEach(id=>$(id).addEventListener("change",()=>{$("preset").value="custom";store.set("moraPreset","custom");render()}));
