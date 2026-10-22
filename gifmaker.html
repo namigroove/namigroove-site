@@ -412,6 +412,7 @@ async function load(f){
 }
 async function add(files){
   files=[...files].sort(natural);const bad=[];
+  if(files.length&&fr.some(f=>f.sample))fr=fr.filter(f=>!f.sample);
   for(const f of files){
     if(fr.length>=MAX){bad.push("200枚を超える分は追加しませんでした");break}
     try{fr.push(await load(f))}catch(e){bad.push(f.name+" は読み込めませんでした")}
@@ -524,6 +525,23 @@ $("shareBtn").addEventListener("click",()=>{
   if(navigator.clipboard)navigator.clipboard.writeText(u).then(()=>alert("リンクをコピーしました"),()=>prompt("このURLをコピーしてね",u));else prompt("このURLをコピーしてね",u);
 });
 render();
+/* 最初から入っているサンプル: なみぐるをぷにぷに */
+(async()=>{
+  try{
+    const im=new Image();im.src="img/namigroove-3d.webp";await im.decode();
+    if(fr.length)return;
+    const W=800,H=720,iw=im.naturalWidth,ih=im.naturalHeight,ox=W/2,oy=H-30-ih*.08;
+    const steps=[[1,1,.6],[1.18,.78,.07],[.88,1.14,.07],[1.07,.93,.07],[.97,1.04,.07],[1.015,.985,.07],[1,1,.07]];
+    steps.forEach((st,i)=>{
+      const c=mk(W,H),x=c.getContext("2d");
+      x.translate(ox,oy);x.scale(st[0],st[1]);x.translate(-ox,-oy);
+      x.drawImage(im,(W-iw)/2,H-30-ih,iw,ih);
+      const t=mk(128,115);t.getContext("2d").drawImage(c,0,0,128,115);
+      fr.push({name:"ぷにぷに_なみぐる_"+String(i+1).padStart(2,"0"),src:c,w:W,h:H,thumb:t.toDataURL(),delay:st[2],sample:true});
+    });
+    if(fr.length){$("tr").checked=true;sync();render();$("make").click()}
+  }catch(e){console.error(e)}
+})();
 })();
 </script>
 
