@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>画像エフェクト(ドット絵・ローポリ・ヴェーパーウェイブ・VHS・ドリームコア風・無料) – なみぐる！</title>
+<meta name="description" content="画像をドット絵・ローポリ・ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコア・バックルーム・ウェブコアなどの質感に変える無料ツール。ブラウザの中だけで加工するので、画像はどこにも送信されません。">
+<meta property="og:title" content="画像エフェクト – なみぐる！">
+<meta property="og:description" content="画像をドット絵・ローポリ・ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコア・バックルーム・ウェブコアなどの質感に変える無料ツール。ブラウザの中だけで加工するので、画像はどこにも送信されません。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/imgfx/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg">
+<link rel="canonical" href="https://www.namigroove.com/tools/imgfx/">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+/* コード表 */
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+.tabs.fam{margin-bottom:16px}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 2px}}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.ch-pick{display:flex;flex-direction:column;gap:8px;margin:14px 0 6px;align-items:center}
+.ch-pick .seg{justify-content:center}
+.ch-pick .roots button{min-width:44px}
+.ch-head{display:flex;flex-direction:column;align-items:center;gap:4px;margin:12px 0 6px;text-align:center}
+.ch-name{font-family:var(--f-display);font-size:clamp(40px,10vw,60px);line-height:1.1;min-height:1.1em}
+.ch-name .dim{font-size:15px;color:var(--ink-soft);font-family:var(--f-body)}
+.ch-sub{font-size:13px;color:var(--ink-soft);min-height:1.5em}
+.ch-sub b{color:var(--sea)}
+.seg.types button.fancy{border-color:var(--coral);color:var(--coral)}
+.seg.types button.fancy[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:#fff}
+.ch-desc{font-size:13px;color:var(--coral);min-height:1.4em;margin:0}
+.pg-wrap{margin-top:26px;border-top:1px dashed var(--line);padding-top:16px}
+.pg-wrap h2{font-size:16px;margin:0 0 4px;font-family:var(--f-display);font-weight:400}
+.pg-wrap .row{margin-bottom:10px}
+.pg-cat{margin:0 0 12px;display:flex;flex-wrap:wrap;gap:4px}
+.pg-list{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.pg{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
+.pg h3{margin:0 0 2px;font-size:15px}
+.pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
+.pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.pg .pg-btns .btn{font-size:12px;padding:3px 10px}
+.pg-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.pg-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer;font:500 14px var(--f-body)}
+.pg-c .cd{width:76px;height:auto}
+.pg-c small{font-size:11px;color:var(--ink-soft)}
+.pg-c.now{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral) inset}
+.pg-c.now b{color:var(--coral)}
+.vo{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.vo-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
+.vo-c:hover{border-color:var(--sea)}
+.vo-c.main{border:2px solid var(--sea)}
+.vo-c small i.lib{font-style:normal;font-size:10px;color:#fff;background:var(--coral);border-radius:999px;padding:0 6px;margin-right:4px}
+.vo-c small{font-size:11px;color:var(--ink-soft)}
+.cd{width:120px;height:auto;display:block}
+.cd .st{stroke:var(--ink-soft);stroke-width:1}
+.cd .fr{stroke:var(--line);stroke-width:1.2}
+.cd .nut{stroke:var(--ink);stroke-width:4}
+.cd .dot{fill:var(--sea)}
+.cd .dot.r{fill:var(--coral)}
+.cd .bar{fill:var(--sea);opacity:.9}
+.cd .mk{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.cd .pos{font:10px var(--f-mono);fill:var(--ink-soft)}
+.fb-wrap{overflow-x:auto;margin-top:10px}
+.fb{min-width:640px}
+.fb svg{display:block;width:100%;height:auto}
+.fb .str{stroke:var(--ink-soft)}
+.fb .fw{stroke:var(--line);stroke-width:1.5}
+.fb .nutl{stroke:var(--ink);stroke-width:4}
+.fb .inl{fill:var(--wash)}
+.fb .nd{stroke:var(--panel);stroke-width:1.5}
+.fb .nt{font:10px var(--f-mono);fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.fb .fn{font:10px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.fb-leg{font-size:12px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
+.fb-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
+.rev-grid{display:flex;justify-content:center;margin:14px 0 4px}
+.rev-grid svg{width:min(100%,300px);max-height:none;height:auto;touch-action:manipulation;user-select:none}
+.rev-grid .cell{fill:transparent;cursor:pointer}
+.rev-grid .cell:hover{fill:var(--wash)}
+.rev-grid .om{font:16px var(--f-mono);fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;cursor:pointer}
+.rev-grid .omh{fill:transparent;cursor:pointer}
+/* 音数カウンター */
+.lyr{width:100%;box-sizing:border-box;font:16px/1.9 var(--f-body);padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--chip);color:var(--ink);resize:vertical}
+.lyr:focus{outline:2px solid var(--sea);outline-offset:1px}
+.mo-opts{justify-content:flex-start;margin-top:10px;gap:8px 16px}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
+.mo-sum{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:13px;color:var(--ink-soft);margin-bottom:10px}
+.mo-sum b{font:500 20px var(--f-mono);color:var(--ink);margin:0 2px}
+.mo-lines{list-style:none;margin:0 0 14px;padding:0;counter-reset:ln}
+.mo-lines li{display:grid;grid-template-columns:2.2em 3.4em 1fr;gap:8px;align-items:start;padding:8px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.mo-lines li:nth-child(even){background:var(--wash)}
+.mo-lines li .ln{font:12px var(--f-mono);color:var(--ink-soft);padding-top:4px}
+.mo-lines li .ct{font:500 20px var(--f-mono);text-align:right}
+.mo-lines li.over .ct{color:var(--warn)}.mo-lines li.under .ct{color:var(--sea)}.mo-lines li.just .ct{color:var(--ok)}
+.mo-lines li .tx{font-size:15px;word-break:break-all}
+.mo-lines li .mo{display:none;flex-wrap:wrap;gap:3px;margin-top:6px}
+.mo-lines li.open .mo{display:flex}
+.mo-lines li .mo span{font-size:13px;min-width:1.6em;text-align:center;padding:1px 4px;border-radius:6px;background:var(--panel);border:1px solid var(--line)}
+.mo-lines li .mo span.en{border-color:var(--sea)}
+.mo-lines li .warn{display:block;font-size:12px;color:var(--coral);margin-top:2px}
+.mo-lines li.empty{display:none}
+
+/* WAV→MP3 */
+.dz{display:flex;flex-direction:column;align-items:center;gap:6px;padding:28px 16px;border:2px dashed var(--line);border-radius:16px;background:var(--chip);text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.dz:hover,.dz.on{border-color:var(--sea);background:var(--wash)}
+.dz b{font-size:16px}.dz small{color:var(--ink-soft);font-size:12px}
+.dz:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.opts{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:center;margin:14px 0 0}
+.fl{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.fl li{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--chip)}
+.fl .nm{font-size:14px;word-break:break-all}
+.fl .st{font:12px var(--f-mono);color:var(--ink-soft)}
+.fl .bar{grid-column:1/-1;height:4px;border-radius:2px;background:var(--wash);overflow:hidden}
+.fl .bar i{display:block;height:100%;width:0;background:var(--sea);transition:width .1s}
+.fl li.done .st{color:var(--ok)}.fl li.err .st{color:var(--warn)}
+.fl a.btn{text-decoration:none;display:inline-block}
+.opts label.rg{display:flex;align-items:center;gap:8px}
+.opts input[type=range]{width:120px}
+.sub{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:center;margin:10px 0 0;font-size:13px;color:var(--ink-soft)}
+.fl .th{width:56px;height:56px;object-fit:contain;border-radius:8px;background:#8883}
+.acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"画像エフェクト","url":"https://www.namigroove.com/tools/imgfx/","description":"画像をドット絵・ローポリ・ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコア・バックルーム・ウェブコアなどの質感に変える無料ツール。ブラウザの中だけで加工するので、画像はどこにも送信されません。","applicationCategory":"MultimediaApplication","operatingSystem":"Any","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"author":{"@type":"Person","name":"なみぐる","url":"https://www.namigroove.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"画像エフェクト","item":"https://www.namigroove.com/tools/imgfx/"}]}]}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html" translate="no">Works</a>
+      <a href="tools.html" translate="no">Tools</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links" class="opt">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="?lang=en" class="lang" id="toEN" data-lang translate="no">EN</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>画像エフェクト</h1>
+    <p class="lead">画像を、ドット絵・ローポリ・ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコアなど、ネットで話題の質感に変えます。ブラウザの中だけで作るので、画像は送信されません。</p>
+  </div>
+
+  <section class="panel" aria-label="画像を選ぶ">
+    <label class="dz dz-s" id="drop" tabindex="0" role="button" aria-label="画像を選ぶ、またはここにドロップ">
+      <b>画像を選ぶ</b>
+      <small>ここにドロップ、またはタップして選択(PNG・JPG・WebP・GIF・BMPなど)</small>
+      <input id="file" type="file" accept="image/*" hidden>
+    </label>
+    <p class="note-s" id="srcNote">最初はサンプル画像が入っています。</p>
+  </section>
+
+  <section class="panel" aria-label="エフェクト">
+    <div class="fxs" id="fxList" role="radiogroup" aria-label="エフェクトの種類"></div>
+    <p class="note-s fxdesc" id="fxDesc"></p>
+    <div class="fxp" id="fxParams"></div>
+    <div class="stage"><canvas id="cv" aria-label="できあがりのプレビュー"></canvas><div class="busy" id="busy" hidden>作っています…</div></div>
+    <div class="acts">
+      <button class="btn" type="button" id="cmpBtn">押している間、元の画像</button>
+      <button class="btn" type="button" id="seedBtn">別のパターン</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="保存">
+    <div class="opts">
+      <div class="ctl">大きさ
+        <select id="osize" class="sel" aria-label="保存する大きさ">
+          <option value="2048" selected>大きめ(最大2048px)</option><option value="1024">1024px</option><option value="512">512px</option>
+        </select>
+      </div>
+      <div class="ctl">形式
+        <select id="ofmt" class="sel" aria-label="保存する形式"><option value="png" selected>PNG</option><option value="jpg">JPG</option></select>
+      </div>
+    </div>
+    <div class="acts"><button class="btn go" type="button" id="saveBtn">保存</button></div>
+    <p class="note-s" id="saveMsg"></p>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>エフェクトを選んで、スライダーで強さを調整します。「別のパターン」で、ランダムな部分(ローポリの点の位置、グリッチのずれ方など)が変わります。</li>
+      <li>ドット絵: ドットの大きさと色数を選べます。ファミコン風・ゲームボーイ風・PICO-8風・白黒のパレットにも切り替えられ、ディザ(網点でなめらかに見せる処理)も使えます。</li>
+      <li>ローポリ: 画像の輪郭に点を集めて三角形に分け、三角形ごとに色を塗ります。細かさと、輪郭に寄せる強さを選べます。</li>
+      <li>ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコア・バックルーム・ウェブコアは、色・ぼかし・ノイズ・走査線などを重ねて、それらしい質感に寄せたものです。各ジャンルの公式な定義ではなく、イメージに合わせたアレンジです。</li>
+      <li>VHSの「ダビング」は、画像を何度か圧縮し直して、テープをコピーしたような劣化を作ります。</li>
+      <li>透明な部分は白で塗ります。HEIC・PSD・PDFなどは、先に<a href="imgconv.html">画像コンバーター</a>でPNGにしてから選んでください。</li>
+      <li>保存するときは、選んだ大きさで作り直します。プレビューと同じ見た目になります。</li>
+    </ul>
+  </section>
+</main>
+
+
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E7%94%BB%E5%83%8F%E3%82%A8%E3%83%95%E3%82%A7%E3%82%AF%E3%83%88%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fimgfx%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fimgfx%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script src="https://namigroove.github.io/namigroove-site/vendor/gifenc.min.js"></script>
+<script src="https://namigroove.github.io/namigroove-site/vendor/delaunator.min.js"></script>
+<style>
+.dz-s{padding:18px 16px}
+.fxs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.fxs button{font:500 13px var(--f-body);padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.fxs button[aria-checked=true]{background:var(--sea);border-color:var(--sea);color:#fff}
+.fxs button:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.fxdesc{margin:10px 0 0}
+.fxp{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center;margin:14px 0}
+.fxp .ctl input[type=range]{width:130px}
+.fxp .ctl input[type=text]{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);width:9em}
+.fxp output{min-width:2.6em;color:var(--ink);font-variant-numeric:tabular-nums}
+.stage{position:relative;display:flex;justify-content:center;background:repeating-conic-gradient(#8882 0 25%,#8881 0 50%) 50%/16px 16px;border-radius:12px;overflow:hidden;min-height:120px}
+.stage canvas{display:block;max-width:100%;height:auto}
+.busy{position:absolute;inset:auto 8px 8px auto;background:#000a;color:#fff;font-size:12px;padding:4px 10px;border-radius:999px}
+#cmpBtn{touch-action:none;user-select:none;-webkit-user-select:none}
+</style>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const mk=(w,h)=>{const c=document.createElement("canvas");c.width=Math.max(1,Math.round(w));c.height=Math.max(1,Math.round(h));return c};
+const cx=c=>c.getContext("2d",{willReadFrequently:true});
+const getD=c=>cx(c).getImageData(0,0,c.width,c.height);
+const clamp=v=>v<0?0:v>255?255:v;
+const lum=(r,g,b)=>0.299*r+0.587*g+0.114*b;
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+function rng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function clone(c){const o=mk(c.width,c.height);o.getContext("2d").drawImage(c,0,0);return o}
+const FILTER=(()=>{try{return "filter" in mk(1,1).getContext("2d")}catch(e){return false}})();
+function blurC(c,r){
+  if(r<0.6)return clone(c);
+  const w=c.width,h=c.height,o=mk(w,h),x=o.getContext("2d");
+  if(FILTER){x.filter="blur("+r+"px)";x.drawImage(c,0,0);x.filter="none";return o}
+  const k=Math.max(1,Math.floor(r)),s=mk(w/k,h/k),sx=s.getContext("2d");
+  sx.imageSmoothingQuality="high";sx.drawImage(c,0,0,s.width,s.height);x.imageSmoothingQuality="high";x.drawImage(s,0,0,w,h);return o;
+}
+function lowres(c,k){ /* 解像度を 1/k にして戻す(やわらかくする) */
+  if(k<=1.01)return clone(c);
+  const s=mk(c.width/k,c.height/k),sx=s.getContext("2d");sx.imageSmoothingQuality="high";sx.drawImage(c,0,0,s.width,s.height);
+  const o=mk(c.width,c.height),x=o.getContext("2d");x.imageSmoothingQuality="high";x.drawImage(s,0,0,o.width,o.height);return o;
+}
+function lut(stops){
+  const L=new Array(256);
+  const st=stops.map(s=>[s[0],hex(s[1])]);
+  for(let i=0;i<256;i++){
+    const t=i/255;let a=st[0],b=st[st.length-1];
+    for(let j=0;j<st.length-1;j++)if(t>=st[j][0]&&t<=st[j+1][0]){a=st[j];b=st[j+1];break}
+    const f=b[0]===a[0]?0:(t-a[0])/(b[0]-a[0]);
+    L[i]=[a[1][0]+(b[1][0]-a[1][0])*f,a[1][1]+(b[1][1]-a[1][1])*f,a[1][2]+(b[1][2]-a[1][2])*f];
+  }
+  return L;
+}
+function gradMap(c,L,amt){
+  const id=getD(c),d=id.data;
+  for(let i=0;i<d.length;i+=4){
+    const l=lum(d[i],d[i+1],d[i+2])|0,m=L[l];
+    d[i]+=(m[0]-d[i])*amt;d[i+1]+=(m[1]-d[i+1])*amt;d[i+2]+=(m[2]-d[i+2])*amt;
+  }
+  cx(c).putImageData(id,0,0);return c;
+}
+function tone(c,fn){const id=getD(c),d=id.data;for(let i=0;i<d.length;i+=4){fn(d,i)}cx(c).putImageData(id,0,0);return c}
+function noise(c,amt,R){
+  const id=getD(c),d=id.data;
+  for(let i=0;i<d.length;i+=4){const n=(R()-0.5)*amt;d[i]+=n;d[i+1]+=n;d[i+2]+=n}
+  cx(c).putImageData(id,0,0);return c;
+}
+function shiftRB(c,sr,sb){ /* R を右へ sr、B を左へ sb ずらす */
+  const w=c.width,h=c.height,id=getD(c),d=id.data,o=new Uint8ClampedArray(d);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    const i=(y*w+x)*4,xr=Math.min(w-1,Math.max(0,x-sr)),xb=Math.min(w-1,Math.max(0,x+sb));
+    d[i]=o[(y*w+xr)*4];d[i+2]=o[(y*w+xb)*4+2];
+  }
+  cx(c).putImageData(id,0,0);return c;
+}
+function screen(dst,src,alpha){const x=dst.getContext("2d");x.save();x.globalCompositeOperation="screen";x.globalAlpha=alpha;x.drawImage(src,0,0);x.restore()}
+function vignette(c,col,a,inner){
+  const w=c.width,h=c.height,x=c.getContext("2d"),g=x.createRadialGradient(w/2,h/2,Math.min(w,h)*inner,w/2,h/2,Math.hypot(w,h)/2);
+  g.addColorStop(0,"rgba("+col+",0)");g.addColorStop(1,"rgba("+col+","+a+")");x.fillStyle=g;x.fillRect(0,0,w,h);
+}
+function scan(c,step,a){const x=c.getContext("2d");x.fillStyle="rgba(0,0,0,"+a+")";for(let y=0;y<c.height;y+=step*2)x.fillRect(0,y,c.width,step)}
+
+/* ---------- パレット ---------- */
+const hx=s=>s.split(",").map(h=>hex("#"+h));
+const PALS={
+  nes:hx("7C7C7C,0000FC,0000BC,4428BC,940084,A80020,A81000,881400,503000,007800,006800,005800,004058,000000,BCBCBC,0078F8,0058F8,6844FC,D800CC,E40058,F83800,E45C10,AC7C00,00B800,00A800,00A844,008888,F8F8F8,3CBCFC,6888FC,9878F8,F878F8,F85898,F87858,FCA044,F8B800,B8F818,58D854,58F898,00E8D8,787878,FCFCFC,A4E4FC,B8B8F8,D8B8F8,F8B8F8,F8A4C0,F0D0B0,FCE0A8,F8D878,D8F878,B8F8B8,B8F8D8,00FCFC,F8D8F8"),
+  gb:hx("0f380f,306230,8bac0f,9bbc0f"),
+  pico:hx("000000,1D2B53,7E2553,008751,AB5236,5F574F,C2C3C7,FFF1E8,FF004D,FFA300,FFEC27,00E436,29ADFF,83769C,FF77A8,FFCCAA"),
+  bw:hx("000000,ffffff")
+};
+const BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+function nearest(pal,r,g,b){let bi=0,bd=1e9;for(let i=0;i<pal.length;i++){const p=pal[i],dr=p[0]-r,dg=p[1]-g,db=p[2]-b,dd=dr*dr*0.9+dg*dg*1.2+db*db*0.8;if(dd<bd){bd=dd;bi=i}}return pal[bi]}
+
+/* ---------- エフェクト ---------- */
+async function dubC(c,n){
+  let cur=c;
+  for(let i=0;i<n;i++){
+    const s=mk(c.width*0.7,c.height*0.7);s.getContext("2d").drawImage(cur,0,0,s.width,s.height);
+    const b=await new Promise(r=>s.toBlob(r,"image/jpeg",0.3));const bm=await createImageBitmap(b);
+    const o=mk(c.width,c.height),x=o.getContext("2d");x.imageSmoothingQuality="high";x.drawImage(bm,0,0,o.width,o.height);cur=o;
+  }
+  return cur;
+}
+const FX={
+pixel:{name:"ドット絵",desc:"小さく縮めて、色を絞って、ぼかさずに拡大します。",
+ params:[{k:"size",l:"ドットの大きさ",min:2,max:40,def:8},{k:"colors",l:"色数(自動のとき)",min:2,max:64,def:16},
+  {k:"pal",l:"パレット",type:"select",opts:[["auto","自動(画像から)"],["nes","ファミコン風"],["gb","ゲームボーイ風"],["pico","PICO-8風"],["bw","白黒"]],def:"auto"},
+  {k:"dither",l:"ディザ",type:"select",opts:[["off","なし"],["on","あり"]],def:"off"}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height,bs=Math.max(1,p.size*u),sw=Math.max(1,Math.round(W/bs)),sh=Math.max(1,Math.round(H/bs));
+  const s=mk(sw,sh),sx=cx(s);sx.imageSmoothingQuality="high";sx.drawImage(src,0,0,sw,sh);
+  const id=sx.getImageData(0,0,sw,sh),d=id.data;
+  const pal=p.pal==="auto"?gifenc.quantize(d,+p.colors):PALS[p.pal];
+  const sp=p.dither==="on"?255/Math.cbrt(pal.length)*0.55:0;
+  for(let y=0;y<sh;y++)for(let x=0;x<sw;x++){
+    const i=(y*sw+x)*4,t=sp?(BAYER[(y&3)*4+(x&3)]/16-0.5)*sp:0,c=nearest(pal,d[i]+t,d[i+1]+t,d[i+2]+t);
+    d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2];d[i+3]=255;
+  }
+  sx.putImageData(id,0,0);
+  const o=mk(W,H),ox=o.getContext("2d");ox.imageSmoothingEnabled=false;ox.drawImage(s,0,0,W,H);return o;
+ }},
+lowpoly:{name:"ローポリ",desc:"輪郭に点を集めて三角形に分け、三角形ごとに色を塗ります。",
+ params:[{k:"detail",l:"細かさ",min:1,max:100,def:60},{k:"edge",l:"輪郭に寄せる",min:0,max:100,def:60},
+  {k:"wire",l:"線",type:"select",opts:[["off","なし"],["on","白い線を入れる"]],def:"off"}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height,sc=Math.min(1,320/Math.max(W,H)),sw=Math.max(8,Math.round(W*sc)),sh=Math.max(8,Math.round(H*sc));
+  const s=mk(sw,sh);s.getContext("2d").drawImage(src,0,0,sw,sh);
+  const sd=getD(s).data,g=new Float32Array(sw*sh);
+  for(let i=0;i<g.length;i++)g[i]=lum(sd[i*4],sd[i*4+1],sd[i*4+2]);
+  const m=new Float32Array(sw*sh);let mx=1e-6;
+  for(let y=1;y<sh-1;y++)for(let x=1;x<sw-1;x++){const i=y*sw+x,v=Math.hypot(g[i+1]-g[i-1],g[i+sw]-g[i-sw]);m[i]=v;if(v>mx)mx=v}
+  const n=Math.round(40+Math.pow(p.detail/100,1.6)*2600),pts=[],nb=Math.round(4+p.detail/100*14);
+  for(let t=0;t<=nb;t++){const x=W*t/nb,y=H*t/nb;pts.push([x,0],[x,H]);if(t>0&&t<nb)pts.push([0,y],[W,y])}
+  const bias=p.edge/100;let tries=0,cnt=0;
+  while(cnt<n&&tries<n*80){
+    tries++;const x=R()*W,y=R()*H,mm=m[Math.min(sh-1,(y*sc)|0)*sw+Math.min(sw-1,(x*sc)|0)]/mx;
+    if(R()<(1-bias)+bias*(0.06+0.94*Math.min(1,mm*3))){pts.push([x,y]);cnt++}
+  }
+  const bl=blurC(src,Math.max(1,1.5*u)),bd=getD(bl).data;
+  const flat=new Float64Array(pts.length*2);pts.forEach((q,i)=>{flat[i*2]=q[0];flat[i*2+1]=q[1]});
+  const tri=new Delaunator(flat).triangles,o=mk(W,H),x=o.getContext("2d");
+  x.lineJoin="round";x.lineWidth=1;
+  for(let i=0;i<tri.length;i+=3){
+    const a=tri[i],b=tri[i+1],c=tri[i+2],px=(flat[a*2]+flat[b*2]+flat[c*2])/3,py=(flat[a*2+1]+flat[b*2+1]+flat[c*2+1])/3;
+    const j=((Math.min(H-1,py|0))*W+Math.min(W-1,px|0))*4,col="rgb("+bd[j]+","+bd[j+1]+","+bd[j+2]+")";
+    x.fillStyle=col;x.strokeStyle=col;x.beginPath();x.moveTo(flat[a*2],flat[a*2+1]);x.lineTo(flat[b*2],flat[b*2+1]);x.lineTo(flat[c*2],flat[c*2+1]);x.closePath();x.fill();x.stroke();
+  }
+  if(p.wire==="on"){
+    x.strokeStyle="rgba(255,255,255,.4)";x.lineWidth=Math.max(1,0.8*u);
+    for(let i=0;i<tri.length;i+=3){const a=tri[i],b=tri[i+1],c=tri[i+2];x.beginPath();x.moveTo(flat[a*2],flat[a*2+1]);x.lineTo(flat[b*2],flat[b*2+1]);x.lineTo(flat[c*2],flat[c*2+1]);x.closePath();x.stroke()}
+  }
+  return o;
+ }},
+vapor:{name:"ヴェーパーウェイブ",desc:"ピンク・紫・水色のグラデーションに、色ずれ・にじみ・走査線を重ねます。",
+ params:[{k:"st",l:"色の強さ",min:0,max:100,def:80},{k:"shift",l:"色ずれ",min:0,max:20,def:6},{k:"glow",l:"にじみ",min:0,max:100,def:45},{k:"scan",l:"走査線",min:0,max:100,def:30}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height;let o=clone(src);
+  tone(o,(d,i)=>{for(let k=0;k<3;k++)d[i+k]=clamp((d[i+k]-128)*1.2+120)});
+  gradMap(o,lut([[0,"#14083e"],[0.35,"#7a3cff"],[0.6,"#ff4fc3"],[0.8,"#ff7fdc"],[1,"#74f0ff"]]),p.st/100*0.9);
+  {const x=o.getContext("2d"),g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"rgba(0,235,255,"+0.5*p.st/100+")");g.addColorStop(0.55,"rgba(160,90,255,"+0.12*p.st/100+")");g.addColorStop(1,"rgba(255,40,190,"+0.5*p.st/100+")");
+   x.save();x.globalCompositeOperation="soft-light";x.fillStyle=g;x.fillRect(0,0,W,H);x.globalCompositeOperation="screen";x.globalAlpha=0.5;x.fillStyle=g;x.fillRect(0,0,W,H);x.restore()}
+  if(p.shift>0)shiftRB(o,Math.round(p.shift*u),Math.round(p.shift*u));
+  if(p.glow>0)screen(o,blurC(o,7*u),p.glow/100*0.85);
+  if(p.scan>0)scan(o,Math.max(1,Math.round(1.5*u)),p.scan/100*0.45);
+  return o;
+ }},
+vhs:{name:"VHS",desc:"解像度の低いテープ映像風。色のにじみ、横ゆれ、ノイズ、再生中の文字を入れます。",
+ params:[{k:"st",l:"劣化の強さ",min:0,max:100,def:65},{k:"jit",l:"横ゆれ",min:0,max:100,def:40},{k:"ghost",l:"残像",min:0,max:100,def:25},{k:"dub",l:"ダビング",min:0,max:4,def:0},
+  {k:"osd",l:"文字",type:"select",opts:[["none","なし"],["play","PLAY ▶"],["rec","● REC"],["pause","PAUSE ❚❚"]],def:"play"},{k:"date",l:"日付",type:"select",opts:[["off","なし"],["on","入れる"]],def:"on"}],
+ async run(src,p,R,u){
+  const W=src.width,H=src.height,s=p.st/100;
+  let o=lowres(src,1+1.8*s);
+  const b=Math.max(1,Math.round((1.5+5*s)*u));shiftRB(o,b,b);
+  tone(o,(d,i)=>{const g=lum(d[i],d[i+1],d[i+2]);d[i]=clamp((g+(d[i]-g)*0.85-128)*1.08+128+10);d[i+1]=clamp((g+(d[i+1]-g)*0.85-128)*1.08+128+2);d[i+2]=clamp((g+(d[i+2]-g)*0.85-128)*1.08+128-8)});
+  if(p.ghost>0){const x=o.getContext("2d");x.save();x.globalAlpha=p.ghost/100*0.35;x.drawImage(o,Math.round(10*u),0);x.restore()}
+  /* 横ゆれ + 下のノイズ帯 */
+  const j=p.jit/100,w2=mk(W,H),wx=w2.getContext("2d");
+  let y=0;
+  while(y<H){
+    const hh=Math.max(1,Math.round((2+R()*10)*u)),near=y>H*0.92;
+    let dx=R()<j*0.5?(R()-0.5)*2*14*u*j:0;if(near)dx+=(R()-0.3)*36*u*(0.4+j);
+    wx.drawImage(o,0,y,W,hh,Math.round(dx),y,W,hh);y+=hh;
+  }
+  o=w2;
+  if(p.dub>0)o=await dubC(o,+p.dub);
+  noise(o,60*s+10,R);
+  scan(o,Math.max(1,Math.round(u)),0.12);
+  vignette(o,"0,0,0",0.45,0.5);
+  const x=o.getContext("2d"),fs=Math.round(30*u);
+  x.font="bold "+fs+"px \"MaruMinyaM\",monospace";x.textBaseline="top";
+  const txt=(t,tx,ty,al)=>{x.textAlign=al;x.fillStyle="rgba(0,0,0,.6)";x.fillText(t,tx+2*u,ty+2*u);x.fillStyle="#fff";x.fillText(t,tx,ty)};
+  const mg=Math.round(28*u);
+  if(p.osd!=="none")txt({play:"▶ PLAY",rec:"● REC",pause:"❚❚ PAUSE"}[p.osd],mg,mg,"left");
+  if(p.osd!=="none")txt("SP 0:"+String(12+((R()*40)|0)).padStart(2,"0")+":"+String((R()*60)|0).padStart(2,"0"),W-mg,mg,"right");
+  if(p.date==="on"){const t=new Date(),M=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][t.getMonth()];txt(M+". "+String(t.getDate()).padStart(2,"0")+" "+t.getFullYear(),mg,H-mg-fs,"left")}
+  return o;
+ }},
+aero:{name:"フルティガーエアロ",desc:"2000年代の、つやつやで青空みたいな明るさ。シャボン玉と光を重ねます。",
+ params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"bub",l:"シャボン玉",min:0,max:30,def:10},{k:"gloss",l:"つや",min:0,max:100,def:60}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height,s=p.st/100;let o=clone(src);
+  tone(o,(d,i)=>{const g=lum(d[i],d[i+1],d[i+2]),k=1+0.55*s;d[i]=clamp((g+(d[i]-g)*k)*0.96+10*s);d[i+1]=clamp((g+(d[i+1]-g)*k)*1.01+12*s);d[i+2]=clamp((g+(d[i+2]-g)*k)*1.05+14*s)});
+  screen(o,blurC(o,9*u),0.55*s);
+  const x=o.getContext("2d");
+  let g=x.createLinearGradient(0,0,0,H*0.6);g.addColorStop(0,"rgba(110,215,255,"+0.5*s+")");g.addColorStop(1,"rgba(110,215,255,0)");x.fillStyle=g;x.fillRect(0,0,W,H);
+  g=x.createLinearGradient(0,H,0,H*0.55);g.addColorStop(0,"rgba(120,235,150,"+0.3*s+")");g.addColorStop(1,"rgba(120,235,150,0)");x.fillStyle=g;x.fillRect(0,0,W,H);
+  if(p.gloss>0){
+    const a=p.gloss/100;g=x.createLinearGradient(0,0,0,H*0.5);g.addColorStop(0,"rgba(255,255,255,"+0.5*a+")");g.addColorStop(1,"rgba(255,255,255,0)");
+    x.fillStyle=g;x.beginPath();x.ellipse(W/2,-H*0.18,W*0.85,H*0.62,0,0,Math.PI);x.fill();
+  }
+  for(let i=0;i<p.bub;i++){
+    const r=(10+R()*R()*70)*u,bx=R()*W,by=R()*H;
+    const rg=x.createRadialGradient(bx,by,r*0.2,bx,by,r);rg.addColorStop(0,"rgba(180,240,255,0.05)");rg.addColorStop(0.8,"rgba(150,230,255,0.18)");rg.addColorStop(1,"rgba(255,255,255,0.55)");
+    x.fillStyle=rg;x.beginPath();x.arc(bx,by,r,0,Math.PI*2);x.fill();
+    x.strokeStyle="rgba(255,255,255,.8)";x.lineWidth=Math.max(1,1.4*u);x.stroke();
+    x.fillStyle="rgba(255,255,255,.85)";x.beginPath();x.ellipse(bx-r*0.38,by-r*0.42,r*0.22,r*0.12,-0.6,0,Math.PI*2);x.fill();
+    x.fillStyle="rgba(255,255,255,.4)";x.beginPath();x.ellipse(bx+r*0.3,by+r*0.45,r*0.18,r*0.06,-0.6,0,Math.PI*2);x.fill();
+  }
+  return o;
+ }},
+dream:{name:"ドリームコア",desc:"黒を持ち上げて、やわらかく、どこか懐かしい光に包みます。",
+ params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"soft",l:"ぼんやり",min:0,max:100,def:55},{k:"grain",l:"粒",min:0,max:100,def:35}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height,s=p.st/100;
+  let o=lowres(src,1+p.soft/100*1.4);
+  tone(o,(d,i)=>{d[i]=clamp(d[i]*(1-0.2*s)+34*s+16*s);d[i+1]=clamp(d[i+1]*(1-0.2*s)+30*s+8*s);d[i+2]=clamp(d[i+2]*(1-0.2*s)+36*s+4*s)});
+  screen(o,blurC(o,(5+p.soft/100*14)*u),0.35+0.5*p.soft/100);
+  const x=o.getContext("2d");
+  x.save();x.globalCompositeOperation="screen";x.fillStyle="rgba(255,205,225,"+0.16*s+")";x.fillRect(0,0,W,H);x.restore();
+  vignette(o,"255,238,246",0.6*s,0.35);
+  if(p.grain>0)noise(o,p.grain/100*70,R);
+  return o;
+ }},
+backrooms:{name:"バックルーム",desc:"黄ばんだ壁紙とカーペット、蛍光灯の、終わりのない部屋の画質です。",
+ params:[{k:"st",l:"強さ",min:0,max:100,def:80},{k:"noise",l:"ノイズ",min:0,max:100,def:45},{k:"dark",l:"四隅の暗さ",min:0,max:100,def:60}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height;
+  let o=lowres(src,1.5);
+  gradMap(o,lut([[0,"#2b2410"],[0.5,"#a89a3a"],[1,"#ece08b"]]),p.st/100*0.85);
+  const x=o.getContext("2d");
+  x.save();x.globalCompositeOperation="screen";x.fillStyle="rgba(255,248,170,0.06)";
+  for(let y=-20*u;y<H;y+=100*u)x.fillRect(0,y,W,40*u);x.restore();
+  screen(o,blurC(o,10*u),0.25);
+  if(p.noise>0)noise(o,p.noise/100*65,R);
+  scan(o,Math.max(1,Math.round(u)),0.08);
+  vignette(o,"20,16,0",p.dark/100*0.85,0.3);
+  return o;
+ }},
+webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ風。216色のウェブセーフカラーと、ウィンドウ枠です。",
+ params:[{k:"red",l:"荒さ",min:1,max:8,def:2},{k:"dither",l:"ディザ",type:"select",opts:[["on","あり"],["off","なし"]],def:"on"},{k:"frame",l:"枠",type:"select",opts:[["win","ウィンドウ枠"],["none","なし"]],def:"win"}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height,bs=Math.max(1,p.red*u),sw=Math.max(1,Math.round(W/bs)),sh=Math.max(1,Math.round(H/bs));
+  const s=mk(sw,sh),sx=cx(s);sx.imageSmoothingQuality="high";sx.drawImage(src,0,0,sw,sh);
+  const id=sx.getImageData(0,0,sw,sh),d=id.data,sp=p.dither==="on"?51:0;
+  for(let y=0;y<sh;y++)for(let x=0;x<sw;x++){const i=(y*sw+x)*4,t=sp?(BAYER[(y&3)*4+(x&3)]/16-0.5)*sp:0;for(let k=0;k<3;k++)d[i+k]=Math.round(clamp(d[i+k]+t)/51)*51;d[i+3]=255}
+  sx.putImageData(id,0,0);
+  const o=mk(W,H),ox=o.getContext("2d");ox.imageSmoothingEnabled=false;ox.drawImage(s,0,0,W,H);
+  if(p.frame!=="win")return o;
+  const b=Math.max(2,Math.round(3*u)),th=Math.round(26*u),Wo=W+b*4,Ho=H+th+b*5,f=mk(Wo,Ho),x=f.getContext("2d");
+  x.fillStyle="#c0c0c0";x.fillRect(0,0,Wo,Ho);
+  x.fillStyle="#fff";x.fillRect(0,0,Wo,b);x.fillRect(0,0,b,Ho);x.fillStyle="#404040";x.fillRect(0,Ho-b,Wo,b);x.fillRect(Wo-b,0,b,Ho);
+  const g=x.createLinearGradient(b*2,0,Wo-b*2,0);g.addColorStop(0,"#000080");g.addColorStop(1,"#1084d0");x.fillStyle=g;x.fillRect(b*2,b*2,Wo-b*4,th);
+  x.fillStyle="#fff";x.font="bold "+Math.round(16*u)+"px Arial,sans-serif";x.textBaseline="middle";x.fillText("image.gif - Paint",b*3+4*u,b*2+th/2);
+  const bw=th-4*u;for(let k=0;k<3;k++){const bx=Wo-b*2-(k+1)*(bw+2*u)-2*u,by=b*2+2*u;x.fillStyle="#c0c0c0";x.fillRect(bx,by,bw,bw);x.fillStyle="#fff";x.fillRect(bx,by,bw,2);x.fillRect(bx,by,2,bw);x.fillStyle="#404040";x.fillRect(bx,by+bw-2,bw,2);x.fillRect(bx+bw-2,by,2,bw);x.fillStyle="#000";x.font="bold "+Math.round(14*u)+"px Arial";x.textAlign="center";x.fillText(["×","□","_"][k],bx+bw/2,by+bw/2);x.textAlign="left"}
+  const ix=b*2,iy=b*3+th;x.fillStyle="#404040";x.fillRect(ix-2,iy-2,W+4,H+4);x.fillStyle="#fff";x.fillRect(ix,iy+H,W+2,2);x.fillRect(ix+W,iy,2,H+2);x.drawImage(o,ix,iy);return f;
+ }},
+glitch:{name:"グリッチ",desc:"横にずれたブロックと、赤青の色ずれ。デジタルの壊れた感じです。",
+ params:[{k:"st",l:"強さ",min:0,max:100,def:60},{k:"sl",l:"ずれの数",min:0,max:40,def:14},{k:"split",l:"色ずれ",min:0,max:30,def:8}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height,s=p.st/100,o=clone(src),x=o.getContext("2d");
+  for(let i=0;i<p.sl;i++){const y=R()*H,h=(R()*0.07+0.004)*H,dx=(R()-0.5)*2*s*0.3*W;x.drawImage(src,0,y,W,h,dx,y,W,h)}
+  for(let i=0;i<Math.round(p.sl/3);i++){const w=(0.05+R()*0.2)*W,h=(0.02+R()*0.08)*H,sx2=R()*(W-w),sy=R()*(H-h);x.drawImage(src,sx2,sy,w,h,R()*(W-w),R()*(H-h),w,h)}
+  if(p.split>0)shiftRB(o,Math.round(p.split*u*(0.4+s)),Math.round(p.split*u*(0.4+s)));
+  x.fillStyle="rgba(255,255,255,.35)";for(let i=0;i<p.sl;i++){x.fillRect(R()*W,R()*H,(R()*0.3)*W,Math.max(1,u))}
+  return o;
+ }},
+halftone:{name:"ハーフトーン",desc:"新聞やポップアートのような、網点の絵にします。",
+ params:[{k:"size",l:"ドットの間隔",min:4,max:30,def:10},{k:"mode",l:"色",type:"select",opts:[["bw","白地に黒"],["col","元の色(黒地)"]],def:"bw"}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height,cell=Math.max(3,p.size*u),ang=Math.PI/4,ca=Math.cos(ang),sa=Math.sin(ang);
+  const sm=mk(Math.max(1,Math.round(W/cell*1.5)),Math.max(1,Math.round(H/cell*1.5))),smx=cx(sm);smx.imageSmoothingQuality="high";smx.drawImage(src,0,0,sm.width,sm.height);
+  const sd=smx.getImageData(0,0,sm.width,sm.height).data,o=mk(W,H),x=o.getContext("2d"),bw=p.mode==="bw";
+  x.fillStyle=bw?"#fff":"#000";x.fillRect(0,0,W,H);
+  const R2=Math.hypot(W,H)/2,n=Math.ceil(R2/cell)+1;
+  for(let gy=-n;gy<=n;gy++)for(let gx=-n;gx<=n;gx++){
+    const lx=gx*cell,ly=gy*cell,X=W/2+lx*ca-ly*sa,Y=H/2+lx*sa+ly*ca;
+    if(X<-cell||Y<-cell||X>W+cell||Y>H+cell)continue;
+    const sx2=Math.min(sm.width-1,Math.max(0,(X/W*sm.width)|0)),sy=Math.min(sm.height-1,Math.max(0,(Y/H*sm.height)|0)),i=(sy*sm.width+sx2)*4;
+    const l=lum(sd[i],sd[i+1],sd[i+2])/255,k=bw?1-l:l,r=cell*0.72*Math.sqrt(k);
+    if(r<0.3)continue;
+    x.fillStyle=bw?"#111":"rgb("+sd[i]+","+sd[i+1]+","+sd[i+2]+")";x.beginPath();x.arc(X,Y,r,0,Math.PI*2);x.fill();
+  }
+  return o;
+ }},
+mirror:{name:"対称(ミラー)",desc:"半分を鏡のように写して、左右対称や万華鏡風にします。",
+ params:[{k:"mode",l:"向き",type:"select",opts:[["lr","左を右に写す"],["rl","右を左に写す"],["tb","上を下に写す"],["quad","4方向(左上を写す)"]],def:"lr"}],
+ run(src,p,R,u){
+  const W=src.width,H=src.height,o=clone(src),x=o.getContext("2d"),hw=W/2,hh=H/2;
+  const flip=(sx2,sy,sw,sh,dx,dy,fx,fy)=>{x.save();x.translate(dx+(fx?sw:0),dy+(fy?sh:0));x.scale(fx?-1:1,fy?-1:1);x.drawImage(src,sx2,sy,sw,sh,0,0,sw,sh);x.restore()};
+  if(p.mode==="lr")flip(0,0,hw,H,hw,0,true,false);
+  else if(p.mode==="rl")flip(hw,0,hw,H,0,0,true,false);
+  else if(p.mode==="tb")flip(0,0,W,hh,0,hh,false,true);
+  else{flip(0,0,hw,hh,hw,0,true,false);flip(0,0,hw,hh,0,hh,false,true);flip(0,0,hw,hh,hw,hh,true,true)}
+  return o;
+ }}
+};
+const ORDER=["pixel","lowpoly","vapor","vhs","aero","dream","backrooms","webcore","glitch","halftone","mirror"];
+
+/* ---------- 画面 ---------- */
+let orig=null,cur="pixel",seed=1,token=0,timer=0,last=null,showOrig=false,name="sample";
+const vals={};
+const cv=$("cv");
+function prevSize(){return 800}
+function fitCanvas(img,long){
+  const k=Math.min(1,long/Math.max(img.width,img.height)),c=mk(img.width*k,img.height*k),x=c.getContext("2d");
+  x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.imageSmoothingQuality="high";x.drawImage(img,0,0,c.width,c.height);return c;
+}
+function params(){const p={};FX[cur].params.forEach(d=>{const e=$("p_"+d.k);p[d.k]=e?(d.type==="select"||d.type==="text"?e.value:+e.value):d.def});return p}
+async function make(long){
+  const src=fitCanvas(orig,long),u=src.width/800,R=rng(seed*7919+cur.length*31);
+  try{await document.fonts.load('20px "MaruMinyaM"')}catch(e){}
+  return await FX[cur].run(src,params(),R,u);
+}
+function show(c){cv.width=c.width;cv.height=c.height;cv.getContext("2d").drawImage(c,0,0)}
+async function render(){
+  if(!orig)return;const my=++token;$("busy").hidden=false;
+  try{
+    const c=await make(prevSize());
+    if(my!==token)return;last=c;if(!showOrig)show(c);
+  }catch(e){console.error(e);if(my===token)$("saveMsg").textContent="うまく作れませんでした。別の設定を試してください。"}
+  if(my===token)$("busy").hidden=true;
+}
+function later(){clearTimeout(timer);timer=setTimeout(render,100)}
+function buildParams(){
+  const box=$("fxParams");box.innerHTML="";
+  FX[cur].params.forEach(d=>{
+    const l=document.createElement("label");l.className="ctl";l.append(d.l+" ");
+    let e;
+    if(d.type==="select"){e=document.createElement("select");e.className="sel";d.opts.forEach(o=>{const op=document.createElement("option");op.value=o[0];op.textContent=o[1];e.appendChild(op)});e.value=(vals[cur+d.k]!=null?vals[cur+d.k]:d.def)}
+    else{e=document.createElement("input");e.type="range";e.min=d.min;e.max=d.max;e.step=1;e.value=(vals[cur+d.k]!=null?vals[cur+d.k]:d.def)}
+    e.id="p_"+d.k;e.setAttribute("aria-label",d.l);l.appendChild(e);
+    if(e.type==="range"){const o=document.createElement("output");o.textContent=e.value;l.appendChild(o);e.addEventListener("input",()=>{o.textContent=e.value})}
+    e.addEventListener("input",()=>{vals[cur+d.k]=e.value;later()});e.addEventListener("change",()=>{vals[cur+d.k]=e.value;later()});
+    box.appendChild(l);
+  });
+}
+function choose(id){
+  cur=id;
+  document.querySelectorAll("#fxList button").forEach(b=>b.setAttribute("aria-checked",b.dataset.id===id?"true":"false"));
+  $("fxDesc").textContent=FX[id].desc;buildParams();render();
+  if(window.ngTrack)ngTrack("effect_select",{effect:id});
+}
+ORDER.forEach(id=>{const b=document.createElement("button");b.type="button";b.dataset.id=id;b.setAttribute("role","radio");b.textContent=FX[id].name;b.addEventListener("click",()=>choose(id));$("fxList").appendChild(b)});
+$("seedBtn").addEventListener("click",()=>{seed++;render()});
+const cmp=$("cmpBtn");
+const showO=()=>{if(!orig)return;showOrig=true;show(fitCanvas(orig,prevSize()))},showR=()=>{showOrig=false;if(last)show(last)};
+cmp.addEventListener("pointerdown",e=>{e.preventDefault();showO()});
+["pointerup","pointerleave","pointercancel"].forEach(t=>cmp.addEventListener(t,showR));
+cmp.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();showO()}});cmp.addEventListener("keyup",showR);
+$("saveBtn").addEventListener("click",async()=>{
+  if(!orig)return;const b=$("saveBtn");b.disabled=true;$("saveMsg").textContent="作っています…";
+  try{
+    const png=$("ofmt").value==="png",c=await make(+$("osize").value);
+    let out=c;if(!png){out=mk(c.width,c.height);const x=out.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(c,0,0)}
+    const blob=await new Promise(r=>out.toBlob(r,png?"image/png":"image/jpeg",0.92)),a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);a.download=name+"_"+cur+(png?".png":".jpg");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    $("saveMsg").textContent=a.download+"("+c.width+"×"+c.height+"px・"+(blob.size>=1048576?(blob.size/1048576).toFixed(1)+" MB":Math.max(1,Math.round(blob.size/1024))+" KB")+")を保存しました";
+  }catch(e){console.error(e);$("saveMsg").textContent="保存できませんでした"}
+  b.disabled=false;
+});
+async function setImage(blob,nm,sample){
+  const bm=await createImageBitmap(blob);orig=bm;name=nm;
+  $("srcNote").textContent=sample?"最初はサンプル画像が入っています。自分の画像を選ぶと入れ替わります。":nm+"("+bm.width+"×"+bm.height+"px)";
+  render();
+}
+const drop=$("drop"),file=$("file");
+drop.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();file.click()}});
+file.addEventListener("change",async()=>{const f=file.files[0];file.value="";if(f)try{await setImage(f,f.name.replace(/\.[A-Za-z0-9]{1,5}$/,"")||"image",false)}catch(e){$("srcNote").textContent="この画像は読み込めませんでした。PNG・JPG・WebPなどを選んでください。"}});
+["dragenter","dragover"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add("on")}));
+["dragleave","drop"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove("on")}));
+drop.addEventListener("drop",async e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)try{await setImage(f,f.name.replace(/\.[A-Za-z0-9]{1,5}$/,"")||"image",false)}catch(err){$("srcNote").textContent="この画像は読み込めませんでした。"}});
+choose("pixel");
+fetch("img/works/hotduck.webp").then(r=>r.blob()).then(b=>{if(!orig)return setImage(b,"sample",true)}).catch(()=>{});
+const sb=$("shareBtn");
+if(sb) sb.addEventListener("click",async()=>{
+  const data={title:document.title,text:document.title+" #namigroovetools",url:"https://www.namigroove.com/tools/imgfx/"};
+  try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(data.url);}catch(e){}
+});
+})();
+</script>
+
+<script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
+(()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
+const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
+ ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
+ [".cp,.ro","copy_ms"],["#scSeg button","scale_select"],["#typeSeg button,#clType button","chord_select"],["#pgCat button,#clCat button","genre_select"],["#drop","file_pick"]];
+document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.target.closest(sel);if(!el)continue;
+  const h=el.closest(".pg,.cl-pg");const label=((h&&h.querySelector("h3")&&h.querySelector("h3").textContent)||el.dataset.g||el.textContent||"").trim().slice(0,60);
+  ngTrack(name,{label});break;}},true);})();
+</script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
+<script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
+<script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
+</body>
+</html>

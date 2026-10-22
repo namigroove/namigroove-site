@@ -45,6 +45,7 @@ const EN={
   "金管楽器運指表":"Brass fingering chart","トランペット・ホルン・トロンボーン・ユーフォニアム・チューバの運指を図で確認。替え指・音程の注意つき。":"Fingering diagrams for trumpet, horn, trombone, euphonium and tuba. Includes alternate fingerings and intonation notes.",
   "トランペット":"Trumpet","ホルン":"Horn","トロンボーン":"Trombone",
   "DAWで使うスクリプト":"DAW scripts","曲づくりやライブの準備に使っているスクリプトを配布しています。":"Scripts I use for songwriting and live prep, free to download.",
+  "画像エフェクト":"Image effects","画像をドット絵・ローポリ・ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコアなどの質感に変えます。11種類のエフェクトを、スライダーで調整できます。":"Turn an image into pixel art, low-poly, vaporwave, VHS, Frutiger Aero, dreamcore and more. 11 effects, adjustable with sliders.",
   "REAPER アイテムのピッチ毎に色変換":"REAPER: color items by pitch","REAPERのアイテムのピッチ(半音)を読み取って、上げは暖色・下げは寒色に色を変えるLuaスクリプト。常駐して、ピッチを変えるとリアルタイムで色が変わります。":"A Lua script for REAPER that reads each item's pitch (semitones) and recolors it: warm tones for pitched up, cool tones for pitched down. It keeps running and updates live as you change the pitch.",
   "REAPER 選択アイテムの長さ表示":"REAPER: selected item lengths","REAPERで選んだアイテムの長さを一覧で表示し、合計時間も出すLuaスクリプト。ライブの尺確認などに。":"A Lua script that lists the lengths of the items you select in REAPER and shows the total. Useful for checking set length.",
   "使い方のメモ":"Notes","← ツール一覧":"← All tools","ツール一覧へ":"Back to all tools","ドレミ":"Solfège","♪ 音を聴く":"♪ Listen","音を聴く":"Listen",
