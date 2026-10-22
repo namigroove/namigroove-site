@@ -35,7 +35,7 @@ const EN={
   "キー":"Key","カメロット":"Camelot",
   "BPMから1拍・半拍などのミリ秒を計算。ディレイやリバーブの設定に。":"Converts BPM into milliseconds per beat, half beat and so on. For setting delay and reverb times.",
   "付点":"Dotted","3連":"Triplet",
-  "楽器のしらべもの":"Instrument references","練習の合間にさっと確認できる資料です。":"Quick references to check between practice sessions.",
+  "練習・演奏":"Practice & play","曲づくり・作詞":"Songwriting & lyrics","ファイル変換":"File conversion","音を出したり、耳や手を鍛えたりするツールです。":"Tools for making sound and training your ears and hands.","お題づくりから歌詞の音数、テンポの計算まで、曲づくりを手伝います。":"Helpers for songwriting, from prompts and lyric morae to tempo math.","音声・画像・動画を、ブラウザの中だけで変換します。ファイルは送信されません。":"Convert audio, images and video right in your browser. Files are never uploaded.","カテゴリ":"Categories","楽器のしらべもの":"Instrument references","練習の合間にさっと確認できる資料です。":"Quick references to check between practice sessions.",
   "スケール表":"Scale chart","ペンタ・ブルース・モード・オルタードまで。鍵盤・ギター・ベース・サックスの運指で確認できます。":"From pentatonic and blues to modes and altered. Check them on keys, guitar, bass and sax fingerings.",
   "アドリブ":"Improvisation","モード":"Modes","サックス運指":"Sax fingerings",
   "ギター・ベース コード表":"Guitar & bass chord chart","コード名から押さえ方、押さえた形からコード名。カポとベースの構成音にも対応。":"From chord name to fingering, and from fingering back to chord name. Supports capo and bass chord tones.",
