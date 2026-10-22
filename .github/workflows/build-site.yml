@@ -34,14 +34,17 @@ jobs:
       - name: 組み立て(既存の静的ページ + 記事)
         run: |
           mkdir _site
-          rsync -a --exclude '.git' --exclude '.github' --exclude 'scripts' --exclude 'node_modules' site/ _site/
+          # 静的ページを、WordPressが出していたURL(/tools/ear/ など)に並べる
+          python3 site/scripts/build_pages.py site _site
           # 記事側は、既存のファイルを上書きしない
           rsync -a --ignore-existing hugo-out/ _site/
           touch _site/.nojekyll
       - name: 確認
         run: |
           test -f _site/index.html
-          test -f _site/works.html
+          test -f _site/works/index.html
+          test -f _site/tools/index.html
+          test -f _site/tools/rhythm/index.html
           test -f _site/music/music-10078/index.html
           test -f _site/movie/movie-9826/index.html
           test -f _site/music/works/index.html
