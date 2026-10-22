@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>歌詞の音数カウンター(モーラ数・ボカロ作詞用) – なみぐる！</title>
-<meta name="description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、音の区切りも表示。漢字は《よみ》で指定でき、目標の音数との比較も。ボカロの作詞・打ち込みに。">
+<meta name="description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、目標の音数との比較も。漢字をひらがなに直す、「は」を「わ」に直す、MusicXMLの楽譜から歌詞と音符数を読み込む機能つき。ボカロの作詞・打ち込みに。">
 <meta property="og:title" content="歌詞の音数カウンター – なみぐる！">
-<meta property="og:description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、音の区切りも表示。漢字は《よみ》で指定でき、目標の音数との比較も。ボカロの作詞・打ち込みに。">
+<meta property="og:description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、目標の音数との比較も。漢字をひらがなに直す、「は」を「わ」に直す、MusicXMLの楽譜から歌詞と音符数を読み込む機能つき。ボカロの作詞・打ち込みに。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.namigroove.com/tools/mora/">
 <meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg">
@@ -241,6 +241,10 @@ footer a{color:var(--sea)}
 .mo-lines li .mo span.en{border-color:var(--sea)}
 .mo-lines li .warn{display:block;font-size:12px;color:var(--coral);margin-top:2px}
 .mo-lines li.empty{display:none}
+.ph{font:500 15px var(--f-body);margin:0 0 6px}
+.mo-lines li .nt{display:block;font:11px var(--f-mono);color:var(--ink-soft);text-align:right}
+.mo-lines li.nover .ct{color:var(--warn)}.mo-lines li.nunder .ct{color:var(--sea)}.mo-lines li.njust .ct{color:var(--ok)}
+.fbtn{cursor:pointer}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
@@ -254,7 +258,7 @@ header.top .logo{flex:none}
 @media (max-width:374px){header.top nav.main .opt{display:none}}
 @media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"歌詞の音数カウンター","url":"https://www.namigroove.com/tools/mora/","description":"歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、音の区切りも表示。漢字は《よみ》で指定でき、目標の音数との比較も。ボカロの作詞・打ち込みに。","applicationCategory":"MultimediaApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["1行ごとのモーラ数","音の区切り表示","漢字の読み指定","目標音数との比較","英語の音節数のめやす"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"歌詞の音数カウンター","item":"https://www.namigroove.com/tools/mora/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"歌詞の音数カウンター","url":"https://www.namigroove.com/tools/mora/","description":"歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、目標の音数との比較も。漢字をひらがなに直す、「は」を「わ」に直す、MusicXMLの楽譜から歌詞と音符数を読み込む機能つき。ボカロの作詞・打ち込みに。","applicationCategory":"MultimediaApplication","applicationSubCategory":"音楽ツール","operatingSystem":"Windows, macOS, iOS, Android(Webブラウザ)","browserRequirements":"JavaScriptが有効なブラウザ","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["1行ごとのモーラ数","音の区切り表示","漢字の読み指定","目標音数との比較","英語の音節数のめやす"],"author":{"@type":"Person","name":"なみぐる","alternateName":"namigroove","url":"https://www.namigroove.com/"},"image":"https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"歌詞の音数カウンター","item":"https://www.namigroove.com/tools/mora/"}]}]}</script>
 </head>
 <body>
 
@@ -291,6 +295,34 @@ header.top .logo{flex:none}
     <p class="note-s">入力した歌詞はこの端末の中だけで数えます。どこにも送信されません(下書きはこのブラウザに保存されます)。</p>
   </section>
 
+  <section class="panel" aria-label="歌詞を直す">
+    <h2 class="ph">歌詞を打ち込み用に直す</h2>
+    <div class="row mo-opts">
+      <label class="chk"><input type="checkbox" id="cKanji" checked> 漢字をひらがなに</label>
+      <label class="chk"><input type="checkbox" id="cHa" checked> 助詞の「は」を「わ」に</label>
+      <label class="chk"><input type="checkbox" id="cHe"> 助詞の「へ」を「え」に</label>
+      <label class="chk"><input type="checkbox" id="cU" checked> 「ー」と読む「う」を「ー」に</label>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" type="button" id="convBtn">入力欄の歌詞を直す</button><button class="btn" type="button" id="undoBtn" disabled>元に戻す</button></div>
+    <p class="note-s" id="convMsg">漢字の読みと「は」の判定には辞書(約17MB)を使います。使うのは初回だけで、この端末の中で動きます。直したあとは、読みを一度確認してください。</p>
+  </section>
+
+  <section class="panel" aria-label="楽譜から歌詞を読み込む">
+    <h2 class="ph">楽譜(MusicXML)から歌詞を読み込む</h2>
+    <div class="row mo-opts">
+      <label class="btn fbtn" id="xmlPick" tabindex="0" role="button">MusicXMLを選ぶ<input type="file" id="xmlFile" accept=".musicxml,.xml,.mxl" hidden></label>
+      <span class="note-s" id="xmlName" style="margin:0">.musicxml・.xml・.mxl に対応しています</span>
+    </div>
+    <div class="row mo-opts" id="xmlOpts" hidden>
+      <div class="ctl">パート <select id="xmlPart" class="sel" aria-label="パート"></select></div>
+      <div class="ctl">歌詞の番号 <select id="xmlVerse" class="sel" aria-label="歌詞の番号"></select></div>
+      <div class="ctl">改行 <select id="xmlBreak" class="sel" aria-label="改行の位置">
+        <option value="r1" selected>休符(1拍以上)で</option><option value="r2">休符(2拍以上)で</option><option value="m">小節ごとに</option>
+      </select></div>
+    </div>
+    <p class="note-s" id="xmlMsg">歌詞が入っている楽譜から、歌詞を行ごとに取り出して入力欄に入れます。音符の数も数えて、音数の横に表示します(音数と音符が合うと緑、多いと赤、少ないと青)。</p>
+  </section>
+
   <section class="panel" aria-live="polite">
     <div class="mo-sum" id="sum"></div>
     <ol class="mo-lines" id="lines"></ol>
@@ -304,6 +336,8 @@ header.top .logo{flex:none}
       <li>「きゃ・しゅ・ちょ」などの拗音は1音、「っ」「ん」「ー」も1音で数えます(ボカロの打ち込みと同じ数え方)。チェックを外すと数えない設定にできます。</li>
       <li>漢字や数字は読みがわからないので、<b>漢字《かんじ》</b> や <b>漢字(かんじ)</b> のように読みを書いてください。読みがない漢字はオレンジで知らせます。</li>
       <li>英語は母音のまとまりから音節数を目安で数えます(カタカナで書くといちばん正確です)。</li>
+      <li>「歌詞を打ち込み用に直す」では、漢字をひらがなにして、助詞の「は」を「わ」に、「ー」と読む「う」(「おもう」→「おもー」、「ありがとう」→「ありがとー」)を「ー」にします。「《よみ》」を書いた漢字は、書いた読みを使います。同じ読みの別の語(「橋」と「箸」など)や、歌い方で読みが変わる語は直らないことがあるので、直したあとに確認してください。</li>
+      <li>MusicXML(.musicxml・.xml・.mxl)を選ぶと、歌詞を取り出して行ごとに入力欄へ入れます。歌詞が入ったパートと歌詞の番号(1番・2番)を選べます。休符で行を分けるので、「改行」で分け方を変えられます。音符の数も数えるので、音数とくらべられます。</li>
       <li>「目標」に音数を入れると、多い行・少ない行に色がつきます。メロディの音符の数に合わせるときに便利です。</li>
     </ul>
   </section>
@@ -345,15 +379,16 @@ function count(line,o){
   return {n:tk.reduce((a,b)=>a+b.n,0),tk,unknown};
 }
 const opts=()=>({sokuon:$("oSokuon").checked,n:$("oN").checked,bar:$("oBar").checked,small:$("oSmall").checked});
-let open=new Set(),last=[];
+let open=new Set(),last=[],ncounts=null;
 function render(){
   const o=opts(),lines=$("lyr").value.split(/\r?\n/),tgt=parseInt($("target").value,10);
   last=lines.map(l=>({l,...count(l,o)}));
   let total=0,cnt=0,warn=0;
   $("lines").innerHTML=last.map((r,i)=>{const empty=!r.l.trim();if(!empty){total+=r.n;cnt++;if(r.unknown.length)warn++;}
-    const cls=[empty?"empty":"",open.has(i)?"open":"",!empty&&tgt>0?(r.n>tgt?"over":r.n<tgt?"under":"just"):""].join(" ");
+    const nc=ncounts&&ncounts.length===lines.length?ncounts[i]:null;
+    const cls=[empty?"empty":"",open.has(i)?"open":"",!empty&&tgt>0?(r.n>tgt?"over":r.n<tgt?"under":"just"):"",!empty&&!(tgt>0)&&nc!=null?(r.n>nc?"nover":r.n<nc?"nunder":"njust"):""].join(" ");
     const esc=t=>t.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
-    return `<li class="${cls}" data-i="${i}"><span class="ln">${i+1}</span><span class="ct">${r.n}</span><span class="tx">${esc(r.l)}${r.unknown.length?`<span class="warn">読みがわからない字:${esc([...new Set(r.unknown)].join(""))}(《よみ》をつけると数えられます)</span>`:""}<span class="mo">${r.tk.map(x=>`<span class="${x.en?"en":""}">${esc(x.t)}${x.en?`<small>${x.n}</small>`:""}</span>`).join("")}</span></span></li>`;}).join("");
+    return `<li class="${cls}" data-i="${i}"><span class="ln">${i+1}</span><span class="ct">${r.n}${nc!=null?`<span class="nt">♪${nc}</span>`:""}</span><span class="tx">${esc(r.l)}${r.unknown.length?`<span class="warn">読みがわからない字:${esc([...new Set(r.unknown)].join(""))}(《よみ》をつけると数えられます)</span>`:""}<span class="mo">${r.tk.map(x=>`<span class="${x.en?"en":""}">${esc(x.t)}${x.en?`<small>${x.n}</small>`:""}</span>`).join("")}</span></span></li>`;}).join("");
   $("sum").innerHTML=`<span>行数<b>${cnt}</b></span><span>合計<b>${total}</b>音</span>${cnt?`<span>1行平均<b>${(total/cnt).toFixed(1)}</b>音</span>`:""}${warn?`<span style="color:var(--coral)">読みの確認が必要な行:${warn}</span>`:""}`;
   store.set("moraDraft",$("lyr").value);store.set("moraOpts",o);store.set("moraTarget",$("target").value);
 }
@@ -364,9 +399,164 @@ $("lyr").value=store.get("moraDraft","");$("target").value=store.get("moraTarget
 $("lines").addEventListener("click",e=>{const li=e.target.closest("li");if(!li)return;const i=+li.dataset.i;open.has(i)?open.delete(i):open.add(i);li.classList.toggle("open");});
 function toast(msg){const d=document.createElement("div");d.className="ng-toast";d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},2000);}
 $("copyBtn").onclick=()=>{const txt=last.filter(r=>r.l.trim()).map(r=>`${r.n}音\t${r.l}`).join("\n");(navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast("結果をコピーしました")).catch(()=>{});if(window.ngTrack)ngTrack("mora_copy",{lines:last.length});};
-$("clearBtn").onclick=()=>{$("lyr").value="";open.clear();render();$("lyr").focus();};
+$("clearBtn").onclick=()=>{ncounts=null;$("lyr").value="";open.clear();render();$("lyr").focus();};
 render();
 window.__mora=(t,o)=>count(t,Object.assign({sokuon:true,n:true,bar:true,small:true},o||{}));
+
+/* ---------- 歌詞を直す ---------- */
+const GH="https://namigroove.github.io/namigroove-site/";
+const loadScript=(()=>{const m={};return src=>m[src]||(m[src]=new Promise((res,rej)=>{const e=document.createElement("script");e.src=src;e.onload=res;e.onerror=()=>rej(new Error("load"));document.head.appendChild(e)}))})();
+let tokenizer=null,tkLoading=null;
+function getTokenizer(){
+  if(tokenizer)return Promise.resolve(tokenizer);
+  if(tkLoading)return tkLoading;
+  tkLoading=loadScript(GH+"vendor/kuromoji/kuromoji.js").then(()=>new Promise((res,rej)=>kuromoji.builder({dicPath:GH+"vendor/kuromoji/dict/"}).build((e,t)=>e?rej(e):res(t)))).then(t=>(tokenizer=t),e=>{tkLoading=null;throw e});
+  return tkLoading;
+}
+const KANJI=/[㐀-鿿豈-﫿々〆ヶ0-9]/;
+const NOTATION=/([㐀-鿿豈-﫿々〆ヶ0-9A-Za-z]+)[《(（]([^》)）]+)[》)）]/g;
+function fixLine(line,t,c,miss){
+  let s=line.replace(NOTATION,(_,b,r)=>toHira(r));
+  if(t&&(c.kanji||c.ha||c.he)){
+    let out="";
+    for(const k of t.tokenize(s)){
+      const w=k.surface_form;
+      if(k.pos==="助詞"&&c.ha&&w==="は"){out+="わ";continue}
+      if(k.pos==="助詞"&&c.he&&w==="へ"){out+="え";continue}
+      if(c.ha&&(w==="こんにちは"||w==="こんばんは")){out+=w.slice(0,-1)+"わ";continue}
+      if(c.kanji&&KANJI.test(w)){
+        const r=k.reading&&k.reading!=="*"?toHira(k.reading):null;
+        if(r&&!/[㐀-鿿豈-﫿]/.test(r))out+=r;else{out+=w;for(const ch of w)if(KANJI.test(ch)&&!/[0-9]/.test(ch))miss.add(ch)}
+        continue;
+      }
+      out+=w;
+    }
+    s=out;
+  }
+  if(c.u)s=s.replace(/([おこそとのほもよろをごぞどぼぽうくすつぬふむゆるぐずづぶぷゔょゅ])う/g,"$1ー");
+  return s;
+}
+let undoText=null;
+function setLyrics(text,keepUndo){
+  if(keepUndo!==false){undoText=$("lyr").value;$("undoBtn").disabled=false}
+  $("lyr").value=text;open.clear();render();
+}
+$("convBtn").onclick=async()=>{
+  const c={kanji:$("cKanji").checked,ha:$("cHa").checked,he:$("cHe").checked,u:$("cU").checked};
+  const src=$("lyr").value;if(!src.trim()){$("convMsg").textContent="入力欄に歌詞を入れてから押してください";return}
+  const btn=$("convBtn"),msg=$("convMsg");
+  btn.disabled=true;
+  try{
+    let t=null;
+    if((c.kanji||c.ha||c.he)&&/[^\x00-\x7f]/.test(src)){
+      if(!tokenizer)msg.textContent="辞書を読み込んでいます…(初回のみ約17MB。しばらくお待ちください)";
+      t=await getTokenizer();
+    }
+    const miss=new Set();
+    const out=src.split(/\r?\n/).map(l=>fixLine(l,t,c,miss)).join("\n");
+    setLyrics(out);
+    msg.textContent=out===src?"変わるところはありませんでした。":("直しました。"+(miss.size?"読みを付けられなかった字: "+[...miss].join("")+"(《よみ》を書くと直せます)。":"")+"読みに間違いがないか確認してください。「元に戻す」で戻せます。");
+  }catch(e){console.error(e);msg.textContent="辞書を読み込めませんでした。通信を確認して、もう一度押してください。(「う」を「ー」にするだけなら、辞書なしで直せます)"}
+  btn.disabled=false;
+};
+$("undoBtn").onclick=()=>{if(undoText==null)return;const cur=$("lyr").value;$("lyr").value=undoText;undoText=cur;open.clear();render();$("convMsg").textContent="元に戻しました。(もう一度押すと、直した状態に戻ります)"};
+/* ---------- MusicXML ---------- */
+let xdoc=null;
+function decodeXml(buf){
+  const u=new Uint8Array(buf);
+  if(u[0]===0xFF&&u[1]===0xFE)return new TextDecoder("utf-16le").decode(u);
+  if(u[0]===0xFE&&u[1]===0xFF)return new TextDecoder("utf-16be").decode(u);
+  const head=new TextDecoder("utf-8").decode(u.subarray(0,200)),m=head.match(/encoding=["']([^"']+)["']/i);
+  try{return new TextDecoder(m?m[1]:"utf-8").decode(u)}catch(e){return new TextDecoder("utf-8").decode(u)}
+}
+async function readXmlFile(f){
+  let text;
+  if(/\.mxl$/i.test(f.name)){
+    await loadScript(GH+"vendor/fflate.min.js");
+    const z=fflate.unzipSync(new Uint8Array(await f.arrayBuffer()));
+    let path=null;const cont=z["META-INF/container.xml"];
+    if(cont){const m=new TextDecoder().decode(cont).match(/full-path="([^"]+)"/);if(m)path=m[1]}
+    if(!path||!z[path])path=Object.keys(z).find(k=>!k.startsWith("META-INF")&&/\.(xml|musicxml)$/i.test(k));
+    if(!path)throw new Error("mxl");
+    text=decodeXml(z[path].buffer.slice(z[path].byteOffset,z[path].byteOffset+z[path].byteLength));
+  }else text=decodeXml(await f.arrayBuffer());
+  const d=new DOMParser().parseFromString(text,"application/xml");
+  if(d.querySelector("parsererror"))throw new Error("parse");
+  if(d.documentElement.nodeName!=="score-partwise")throw new Error("timewise");
+  return d;
+}
+const kids=(e,n)=>[...e.children].filter(x=>x.nodeName===n);
+const kid=(e,n)=>kids(e,n)[0]||null;
+function partInfo(d){
+  const names={};d.querySelectorAll("part-list > score-part").forEach(p=>{const n=kid(p,"part-name");names[p.getAttribute("id")]=n?n.textContent.trim():p.getAttribute("id")});
+  return [...d.documentElement.children].filter(x=>x.nodeName==="part").map(p=>{
+    const verses=new Set();p.querySelectorAll("note > lyric").forEach(l=>verses.add(l.getAttribute("number")||"1"));
+    return {el:p,id:p.getAttribute("id"),name:names[p.getAttribute("id")]||p.getAttribute("id"),verses:[...verses].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}))};
+  });
+}
+function extract(part,verse,brk){
+  const lines=[],counts=[];
+  let div=1,buf="",nn=0;
+  // 歌詞が付いている声部だけを数える
+  const vo=new Set();part.el.querySelectorAll("note").forEach(n=>{if(kids(n,"lyric").some(l=>(l.getAttribute("number")||"1")===verse)){const v=kid(n,"voice");vo.add(v?v.textContent.trim():"1")}});
+  const flush=()=>{const t=buf.trim();if(t){lines.push(t);counts.push(nn)}buf="";nn=0};
+  for(const m of kids(part.el,"measure")){
+    for(const e of m.children){
+      if(e.nodeName==="attributes"){const dv=kid(e,"divisions");if(dv)div=parseFloat(dv.textContent)||div;continue}
+      if(e.nodeName!=="note")continue;
+      const v=kid(e,"voice"),vid=v?v.textContent.trim():"1";
+      if(vo.size&&!vo.has(vid))continue;
+      if(kid(e,"chord")||kid(e,"grace"))continue;
+      if(kid(e,"rest")){
+        const du=kid(e,"duration"),beats=du?parseFloat(du.textContent)/div:99,isM=kid(e,"rest").getAttribute("measure")==="yes";
+        if(brk==="r1"&&(beats>=1||isM))flush();else if(brk==="r2"&&(beats>=2||isM))flush();
+        continue;
+      }
+      if(kids(e,"tie").some(x=>x.getAttribute("type")==="stop"))continue;
+      nn++;
+      const ly=kids(e,"lyric").find(l=>(l.getAttribute("number")||"1")===verse);
+      if(ly){
+        let t="";for(const x of ly.children){if(x.nodeName==="text")t+=x.textContent;else if(x.nodeName==="elision"&&x.textContent.trim())t+=x.textContent}
+        const sy=kid(ly,"syllabic"),sv=sy?sy.textContent.trim():"single";
+        buf+=t;if((sv==="single"||sv==="end")&&/[A-Za-z'’]$/.test(t))buf+=" ";
+      }
+    }
+    if(brk==="m")flush();
+  }
+  flush();
+  return {lines,counts};
+}
+let xparts=[];
+function fillXml(initial){
+  const p=xparts[+$("xmlPart").value];
+  if(initial){
+    $("xmlVerse").innerHTML=p.verses.map(v=>`<option value="${v}">${v}番</option>`).join("");
+  }
+  const r=extract(p,$("xmlVerse").value||"1",$("xmlBreak").value);
+  if(!r.lines.length){$("xmlMsg").textContent="このパートには歌詞が見つかりませんでした。";return}
+  ncounts=r.counts;
+  setLyrics(r.lines.join("\n"));
+  $("xmlMsg").textContent=r.lines.length+"行の歌詞を入れました。音数の下の「♪」は音符の数です。「元に戻す」で、入力欄を前の状態に戻せます。";
+}
+$("xmlFile").addEventListener("change",async()=>{
+  const f=$("xmlFile").files[0];$("xmlFile").value="";if(!f)return;
+  try{
+    xdoc=await readXmlFile(f);
+    xparts=partInfo(xdoc).filter(p=>p.verses.length);
+    if(!xparts.length){$("xmlOpts").hidden=true;$("xmlMsg").textContent="歌詞が入ったパートが見つかりませんでした。歌詞付きでMusicXMLを書き出してください。";return}
+    $("xmlName").textContent=f.name;
+    $("xmlPart").innerHTML=xparts.map((p,i)=>`<option value="${i}">${p.name.replace(/[&<>]/g,"")}</option>`).join("");
+    $("xmlOpts").hidden=false;
+    fillXml(true);
+  }catch(e){
+    console.error(e);
+    $("xmlOpts").hidden=true;
+    $("xmlMsg").textContent=e.message==="timewise"?"この形式(score-timewise)には対応していません。":"楽譜を読み込めませんでした。MusicXML(.musicxml・.xml・.mxl)を選んでください。";
+  }
+});
+$("xmlPart").addEventListener("change",()=>fillXml(true));
+["xmlVerse","xmlBreak"].forEach(i=>$(i).addEventListener("change",()=>fillXml(false)));
+$("xmlPick").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("xmlFile").click()}});
 
 const sb=$("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{
