@@ -47,5 +47,5 @@ draft: false
 <pre class="wp-block-code"><code>&lt;a href="https://www.namigroove.com/" target="_blank" rel="noopener"&gt;&lt;img src="https://www.namigroove.com/wp-content/uploads/2025/06/big_namigroove_square_banner.png" alt="なみぐるオフィシャルWEB バナー"&gt;&lt;/a&gt;</code></pre>
 
 <h3>スクエアGIFバナー</h3>
-<p><a href="https://www.namigroove.com/"><img src="https://www.namigroove.com/wp-content/uploads/2025/06/big_namigroove_square_banner.gif" alt="なみぐるオフィシャルWEB バナー" loading="lazy" decoding="async" style="max-width:100%;height:auto"></a></p>
-<pre class="wp-block-code"><code>&lt;a href="https://www.namigroove.com/" target="_blank" rel="noopener"&gt;&lt;img src="https://www.namigroove.com/wp-content/uploads/2025/06/big_namigroove_square_banner.gif" alt="なみぐるオフィシャルWEB バナー"&gt;&lt;/a&gt;</code></pre>
+<p><a href="https://www.namigroove.com/"><img src="https://www.namigroove.com/wp-content/uploads/2025/06/big_namigroove_square_banner_gif.gif" alt="なみぐるオフィシャルWEB バナー" loading="lazy" decoding="async" style="max-width:100%;height:auto"></a></p>
+<pre class="wp-block-code"><code>&lt;a href="https://www.namigroove.com/" target="_blank" rel="noopener"&gt;&lt;img src="https://www.namigroove.com/wp-content/uploads/2025/06/big_namigroove_square_banner_gif.gif" alt="なみぐるオフィシャルWEB バナー"&gt;&lt;/a&gt;</code></pre>
