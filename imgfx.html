@@ -293,15 +293,19 @@ header.top .logo{flex:none}
   <div class="intro">
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>画像エフェクト</h1>
-    <p class="lead">画像を、ドット絵・ローポリ・ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコアなど、ネットで話題の質感に変えます。ブラウザの中だけで作るので、画像は送信されません。</p>
+    <p class="lead">画像を、ドット絵・ローポリ・ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコアなど、ネットで話題の質感に変えます。写真は、その場でカメラで撮ることも、短い動画を読み込むこともできて、GIF・APNG・動画でも保存できます。ブラウザの中だけで作るので、画像や動画は送信されません。</p>
   </div>
 
   <section class="panel" aria-label="画像を選ぶ">
     <label class="dz dz-s" id="drop" tabindex="0" role="button" aria-label="画像を選ぶ、またはここにドロップ">
-      <b>画像を選ぶ</b>
-      <small>ここにドロップ、またはタップして選択(PNG・JPG・WebP・GIF・BMPなど)</small>
-      <input id="file" type="file" accept="image/*" hidden>
+      <b>画像・動画を選ぶ</b>
+      <small>ここにドロップ、またはタップして選択(PNG・JPG・WebP・GIF・BMP・MP4・MOV・WebM)</small>
+      <input id="file" type="file" accept="image/*,video/*,.mp4,.mov,.webm,.m4v" hidden>
     </label>
+    <div class="acts">
+      <label class="btn fbtn" id="camPhoto" tabindex="0" role="button">カメラで撮る<input id="camP" type="file" accept="image/*" capture="environment" hidden></label>
+      <label class="btn fbtn" id="camVideo" tabindex="0" role="button">動画を撮る<input id="camV" type="file" accept="video/*" capture="environment" hidden></label>
+    </div>
     <p class="note-s" id="srcNote">最初はサンプル画像が入っています。</p>
   </section>
 
@@ -324,8 +328,14 @@ header.top .logo{flex:none}
         </select>
       </div>
       <div class="ctl">形式
-        <select id="ofmt" class="sel" aria-label="保存する形式"><option value="png" selected>PNG</option><option value="jpg">JPG</option></select>
+        <select id="ofmt" class="sel" aria-label="保存する形式"><option value="png" selected>PNG(1枚)</option><option value="jpg">JPG(1枚)</option><option value="gif">GIF(動く)</option><option value="apng">APNG(動く・高画質)</option><option value="video">動画</option></select>
       </div>
+    </div>
+    <div class="opts" id="animOpts" hidden>
+      <div class="ctl" id="stWrap">開始 <input id="astart" class="sel" type="number" min="0" step="0.5" value="0" style="width:4.5em" aria-label="動画の開始位置(秒)"> 秒から</div>
+      <div class="ctl">長さ <select id="alen" class="sel" aria-label="長さ"><option value="1">1秒</option><option value="2">2秒</option><option value="3" selected>3秒</option><option value="5">5秒</option><option value="8">8秒</option></select></div>
+      <div class="ctl">コマ数 <select id="afps" class="sel" aria-label="1秒あたりのコマ数"><option value="8">8</option><option value="10" selected>10</option><option value="12">12</option><option value="15">15</option></select> /秒</div>
+      <div class="ctl">幅 <select id="aw" class="sel" aria-label="動くものの幅"><option value="320">320px</option><option value="480" selected>480px</option><option value="640">640px</option></select></div>
     </div>
     <div class="acts"><button class="btn go" type="button" id="saveBtn">保存</button></div>
     <p class="note-s" id="saveMsg"></p>
@@ -340,6 +350,10 @@ header.top .logo{flex:none}
       <li>ヴェーパーウェイブ・VHS・フルティガーエアロ・ドリームコア・バックルーム・ウェブコアは、色・ぼかし・ノイズ・走査線などを重ねて、それらしい質感に寄せたものです。各ジャンルの公式な定義ではなく、イメージに合わせたアレンジです。</li>
       <li>VHSの「ダビング」は、画像を何度か圧縮し直して、テープをコピーしたような劣化を作ります。</li>
       <li>透明な部分は白で塗ります。HEIC・PSD・PDFなどは、先に<a href="imgconv.html">画像コンバーター</a>でPNGにしてから選んでください。</li>
+      <li>「カメラで撮る」「動画を撮る」は、スマホではカメラが開きます(パソコンでは、ファイルを選ぶ画面になります)。</li>
+      <li>動画を選ぶと、開始位置の1コマにエフェクトがかかります。保存の形式を GIF・APNG・動画 にすると、動画の全体(最大8秒)にエフェクトをかけて書き出せます。音は入りません。</li>
+      <li>写真でも、VHS・グリッチ・ドリームコア・バックルームは、ノイズやずれが毎コマ変わるので、GIF・APNG・動画にするとゆらゆら動きます。</li>
+      <li>「動画」は、お使いのブラウザが対応していれば、WebM(Safariなどでは MP4)で保存します。SNSに上げるときは、GIFやAPNGのほうが通りやすいことがあります。</li>
       <li>保存するときは、選んだ大きさで作り直します。プレビューと同じ見た目になります。</li>
     </ul>
   </section>
@@ -522,7 +536,7 @@ vapor:{name:"ヴェーパーウェイブ",desc:"ピンク・紫・水色のグ�
   if(p.scan>0)scan(o,Math.max(1,Math.round(1.5*u)),p.scan/100*0.45);
   return o;
  }},
-vhs:{name:"VHS",desc:"解像度の低いテープ映像風。色のにじみ、横ゆれ、ノイズ、再生中の文字を入れます。",
+vhs:{anim:1,name:"VHS",desc:"解像度の低いテープ映像風。色のにじみ、横ゆれ、ノイズ、再生中の文字を入れます。",
  params:[{k:"st",l:"劣化の強さ",min:0,max:100,def:65},{k:"jit",l:"横ゆれ",min:0,max:100,def:40},{k:"ghost",l:"残像",min:0,max:100,def:25},{k:"dub",l:"ダビング",min:0,max:4,def:0},
   {k:"osd",l:"文字",type:"select",opts:[["none","なし"],["play","PLAY ▶"],["rec","● REC"],["pause","PAUSE ❚❚"]],def:"play"},{k:"date",l:"日付",type:"select",opts:[["off","なし"],["on","入れる"]],def:"on"}],
  async run(src,p,R,u){
@@ -576,7 +590,7 @@ aero:{name:"フルティガーエアロ",desc:"2000年代の、つやつやで�
   }
   return o;
  }},
-dream:{name:"ドリームコア",desc:"黒を持ち上げて、やわらかく、どこか懐かしい光に包みます。",
+dream:{anim:1,name:"ドリームコア",desc:"黒を持ち上げて、やわらかく、どこか懐かしい光に包みます。",
  params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"soft",l:"ぼんやり",min:0,max:100,def:55},{k:"grain",l:"粒",min:0,max:100,def:35}],
  run(src,p,R,u){
   const W=src.width,H=src.height,s=p.st/100;
@@ -589,7 +603,7 @@ dream:{name:"ドリームコア",desc:"黒を持ち上げて、やわらかく�
   if(p.grain>0)noise(o,p.grain/100*70,R);
   return o;
  }},
-backrooms:{name:"バックルーム",desc:"黄ばんだ壁紙とカーペット、蛍光灯の、終わりのない部屋の画質です。",
+backrooms:{anim:1,name:"バックルーム",desc:"黄ばんだ壁紙とカーペット、蛍光灯の、終わりのない部屋の画質です。",
  params:[{k:"st",l:"強さ",min:0,max:100,def:80},{k:"noise",l:"ノイズ",min:0,max:100,def:45},{k:"dark",l:"四隅の暗さ",min:0,max:100,def:60}],
  run(src,p,R,u){
   const W=src.width,H=src.height;
@@ -622,7 +636,7 @@ webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ
   const bw=th-4*u;for(let k=0;k<3;k++){const bx=Wo-b*2-(k+1)*(bw+2*u)-2*u,by=b*2+2*u;x.fillStyle="#c0c0c0";x.fillRect(bx,by,bw,bw);x.fillStyle="#fff";x.fillRect(bx,by,bw,2);x.fillRect(bx,by,2,bw);x.fillStyle="#404040";x.fillRect(bx,by+bw-2,bw,2);x.fillRect(bx+bw-2,by,2,bw);x.fillStyle="#000";x.font="bold "+Math.round(14*u)+"px Arial";x.textAlign="center";x.fillText(["×","□","_"][k],bx+bw/2,by+bw/2);x.textAlign="left"}
   const ix=b*2,iy=b*3+th;x.fillStyle="#404040";x.fillRect(ix-2,iy-2,W+4,H+4);x.fillStyle="#fff";x.fillRect(ix,iy+H,W+2,2);x.fillRect(ix+W,iy,2,H+2);x.drawImage(o,ix,iy);return f;
  }},
-glitch:{name:"グリッチ",desc:"横にずれたブロックと、赤青の色ずれ。デジタルの壊れた感じです。",
+glitch:{anim:1,name:"グリッチ",desc:"横にずれたブロックと、赤青の色ずれ。デジタルの壊れた感じです。",
  params:[{k:"st",l:"強さ",min:0,max:100,def:60},{k:"sl",l:"ずれの数",min:0,max:40,def:14},{k:"split",l:"色ずれ",min:0,max:30,def:8}],
  run(src,p,R,u){
   const W=src.width,H=src.height,s=p.st/100,o=clone(src),x=o.getContext("2d");
@@ -664,8 +678,33 @@ mirror:{name:"対称(ミラー)",desc:"半分を鏡のように写して、左�
 };
 const ORDER=["pixel","lowpoly","vapor","vhs","aero","dream","backrooms","webcore","glitch","halftone","mirror"];
 
+/* ---------- APNG ---------- */
+const CRCT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRCT[(c^u[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0};
+function chunk(type,data){const o=new Uint8Array(12+data.length),dv=new DataView(o.buffer);dv.setUint32(0,data.length);for(let i=0;i<4;i++)o[4+i]=type.charCodeAt(i);o.set(data,8);dv.setUint32(8+data.length,crc32(o.subarray(4,8+data.length)));return o}
+function parsePng(u){const dv=new DataView(u.buffer,u.byteOffset,u.byteLength);let p=8,ihdr=null;const idat=[];
+  while(p<u.length){const len=dv.getUint32(p),t=String.fromCharCode(u[p+4],u[p+5],u[p+6],u[p+7]),d=u.subarray(p+8,p+8+len);if(t==="IHDR")ihdr=d;else if(t==="IDAT")idat.push(d);p+=12+len}
+  let n=0;idat.forEach(d=>n+=d.length);const all=new Uint8Array(n);let q=0;idat.forEach(d=>{all.set(d,q);q+=d.length});return{ihdr,idat:all}}
+const toPng=c=>new Promise((res,rej)=>c.toBlob(b=>b?b.arrayBuffer().then(a=>res(new Uint8Array(a))):rej(new Error("png")),"image/png"));
+async function buildApng(canvases,delays,w,h,plays){
+  const parts=[new Uint8Array([137,80,78,71,13,10,26,10])],ps=[];
+  for(let i=0;i<canvases.length;i++){ps.push(parsePng(await toPng(canvases[i])))}
+  parts.push(chunk("IHDR",ps[0].ihdr));
+  const ac=new Uint8Array(8),av=new DataView(ac.buffer);av.setUint32(0,canvases.length);av.setUint32(4,plays);parts.push(chunk("acTL",ac));
+  let seq=0;
+  ps.forEach((pf,i)=>{
+    const fc=new Uint8Array(26),fv=new DataView(fc.buffer);
+    fv.setUint32(0,seq++);fv.setUint32(4,w);fv.setUint32(8,h);fv.setUint16(20,Math.max(1,Math.round(delays[i]*1000)));fv.setUint16(22,1000);
+    parts.push(chunk("fcTL",fc));
+    if(i===0)parts.push(chunk("IDAT",pf.idat));
+    else{const fd=new Uint8Array(4+pf.idat.length);new DataView(fd.buffer).setUint32(0,seq++);fd.set(pf.idat,4);parts.push(chunk("fdAT",fd))}
+  });
+  parts.push(chunk("IEND",new Uint8Array(0)));
+  return new Blob(parts,{type:"image/png"});
+}
+
 /* ---------- 画面 ---------- */
-let orig=null,cur="pixel",seed=1,token=0,timer=0,last=null,showOrig=false,name="sample";
+let orig=null,vid=null,cur="pixel",seed=1,token=0,timer=0,last=null,showOrig=false,name="sample";
 const vals={};
 const cv=$("cv");
 function prevSize(){return 800}
@@ -673,8 +712,22 @@ function fitCanvas(img,long){
   const k=Math.min(1,long/Math.max(img.width,img.height)),c=mk(img.width*k,img.height*k),x=c.getContext("2d");
   x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.imageSmoothingQuality="high";x.drawImage(img,0,0,c.width,c.height);return c;
 }
+const base=n=>n.replace(/\.[A-Za-z0-9]{1,5}$/,"")||"media";
+const isVideo=f=>/^video\//.test(f.type)||/\.(mp4|mov|webm|m4v|mkv)$/i.test(f.name);
+const seekTo=(v,t)=>new Promise(res=>{const to=setTimeout(res,3000);v.onseeked=()=>{clearTimeout(to);res()};v.currentTime=t});
+function syncFmt(){
+  const ok=!!vid||!!FX[cur].anim,s=$("ofmt");
+  [...s.options].forEach(o=>{if(["gif","apng","video"].includes(o.value))o.disabled=!ok});
+  if(s.selectedOptions[0].disabled)s.value="png";
+  const an=["gif","apng","video"].includes(s.value);
+  $("animOpts").hidden=!an;$("stWrap").hidden=!vid;
+}
+async function seekDraw(t){
+  const v=vid.video;await seekTo(v,Math.min(Math.max(0,t),Math.max(0,vid.dur-0.05)));
+  const c=mk(v.videoWidth,v.videoHeight);c.getContext("2d").drawImage(v,0,0);orig=c;render();
+}
 function params(){const p={};FX[cur].params.forEach(d=>{const e=$("p_"+d.k);p[d.k]=e?(d.type==="select"||d.type==="text"?e.value:+e.value):d.def});return p}
-async function make(long){
+async function make(long,i){
   const src=fitCanvas(orig,long),u=src.width/800,R=rng(seed*7919+cur.length*31);
   try{await document.fonts.load('20px "MaruMinyaM"')}catch(e){}
   return await FX[cur].run(src,params(),R,u);
@@ -705,7 +758,7 @@ function buildParams(){
 function choose(id){
   cur=id;
   document.querySelectorAll("#fxList button").forEach(b=>b.setAttribute("aria-checked",b.dataset.id===id?"true":"false"));
-  $("fxDesc").textContent=FX[id].desc;buildParams();render();
+  $("fxDesc").textContent=FX[id].desc;buildParams();syncFmt();render();
   if(window.ngTrack)ngTrack("effect_select",{effect:id});
 }
 ORDER.forEach(id=>{const b=document.createElement("button");b.type="button";b.dataset.id=id;b.setAttribute("role","radio");b.textContent=FX[id].name;b.addEventListener("click",()=>choose(id));$("fxList").appendChild(b)});
@@ -715,28 +768,90 @@ const showO=()=>{if(!orig)return;showOrig=true;show(fitCanvas(orig,prevSize()))}
 cmp.addEventListener("pointerdown",e=>{e.preventDefault();showO()});
 ["pointerup","pointerleave","pointercancel"].forEach(t=>cmp.addEventListener(t,showR));
 cmp.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();showO()}});cmp.addEventListener("keyup",showR);
+async function frames(onp){
+  const secs=+$("alen").value,fps=+$("afps").value,W=+$("aw").value,n=Math.max(2,Math.min(120,Math.round(secs*fps))),out=[],t0=vid?(+$("astart").value||0):0;
+  try{await document.fonts.load('20px "MaruMinyaM"')}catch(e){}
+  for(let i=0;i<n;i++){
+    let src;
+    if(vid){
+      const v=vid.video;await seekTo(v,Math.min(t0+i/fps,Math.max(0,vid.dur-0.05)));
+      src=mk(W,v.videoHeight*W/v.videoWidth);const x=src.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,src.width,src.height);x.imageSmoothingQuality="high";x.drawImage(v,0,0,src.width,src.height);
+    }else src=fitCanvas(orig,W);
+    const R=rng(seed*7919+cur.length*31+(FX[cur].anim?(i+1)*977:0));
+    out.push(await FX[cur].run(src,params(),R,src.width/800));
+    onp(i+1,n);await new Promise(r=>setTimeout(r,0));
+  }
+  return {out,fps};
+}
+async function encGif(out,fps){
+  const enc=gifenc.GIFEncoder(),w=out[0].width,h=out[0].height;
+  for(const c of out){const k=c.width===w&&c.height===h?c:(()=>{const t=mk(w,h);t.getContext("2d").drawImage(c,0,0,w,h);return t})(),d=getD(k).data,pal=gifenc.quantize(d,256);enc.writeFrame(gifenc.applyPalette(d,pal),w,h,{palette:pal,delay:Math.round(1000/fps),repeat:0})}
+  enc.finish();return new Blob([enc.bytes()],{type:"image/gif"});
+}
+async function encVideo(out,fps){
+  if(!window.MediaRecorder)throw new Error("norec");
+  const mt=["video/webm;codecs=vp9","video/webm;codecs=vp8","video/webm","video/mp4;codecs=avc1","video/mp4"].find(m=>MediaRecorder.isTypeSupported(m));
+  if(!mt)throw new Error("norec");
+  const w=out[0].width&~1,h=out[0].height&~1,cvs=mk(w,h),x=cvs.getContext("2d"),st=cvs.captureStream(fps),rec=new MediaRecorder(st,{mimeType:mt,videoBitsPerSecond:4000000}),chunks=[];
+  rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+  const done=new Promise(r=>{rec.onstop=r});
+  x.drawImage(out[0],0,0,w,h);rec.start();
+  for(const c of out){x.drawImage(c,0,0,w,h);await new Promise(r=>setTimeout(r,1000/fps))}
+  await new Promise(r=>setTimeout(r,1000/fps));rec.stop();await done;
+  return {blob:new Blob(chunks,{type:mt.split(";")[0]}),ext:/mp4/.test(mt)?".mp4":".webm"};
+}
 $("saveBtn").addEventListener("click",async()=>{
   if(!orig)return;const b=$("saveBtn");b.disabled=true;$("saveMsg").textContent="作っています…";
   try{
-    const png=$("ofmt").value==="png",c=await make(+$("osize").value);
-    let out=c;if(!png){out=mk(c.width,c.height);const x=out.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(c,0,0)}
-    const blob=await new Promise(r=>out.toBlob(r,png?"image/png":"image/jpeg",0.92)),a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);a.download=name+"_"+cur+(png?".png":".jpg");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
-    $("saveMsg").textContent=a.download+"("+c.width+"×"+c.height+"px・"+(blob.size>=1048576?(blob.size/1048576).toFixed(1)+" MB":Math.max(1,Math.round(blob.size/1024))+" KB")+")を保存しました";
-  }catch(e){console.error(e);$("saveMsg").textContent="保存できませんでした"}
+    const f=$("ofmt").value;let blob,ext,dim;
+    if(f==="png"||f==="jpg"){
+      const png=f==="png",c=await make(+$("osize").value);
+      let out=c;if(!png){out=mk(c.width,c.height);const x=out.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(c,0,0)}
+      blob=await new Promise(r=>out.toBlob(r,png?"image/png":"image/jpeg",0.92));ext=png?".png":".jpg";dim=c.width+"×"+c.height;
+    }else{
+      const {out,fps}=await frames((i,n)=>{$("saveMsg").textContent="作っています… "+i+" / "+n+" コマ"});
+      $("saveMsg").textContent="まとめています…";
+      dim=out[0].width+"×"+out[0].height;
+      if(f==="gif"){blob=await encGif(out,fps);ext=".gif"}
+      else if(f==="apng"){blob=await buildApng(out,out.map(()=>1/fps),out[0].width,out[0].height,0);ext=".png"}
+      else{const r=await encVideo(out,fps);blob=r.blob;ext=r.ext}
+    }
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);a.download=name+"_"+cur+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    $("saveMsg").textContent=a.download+"("+dim+"px・"+(blob.size>=1048576?(blob.size/1048576).toFixed(1)+" MB":Math.max(1,Math.round(blob.size/1024))+" KB")+")を保存しました";
+  }catch(e){console.error(e);$("saveMsg").textContent=e.message==="norec"?"このブラウザは、動画の書き出しに対応していません。GIFかAPNGで保存してください。":"保存できませんでした"}
   b.disabled=false;
 });
 async function setImage(blob,nm,sample){
+  if(vid){URL.revokeObjectURL(vid.url);vid=null}
   const bm=await createImageBitmap(blob);orig=bm;name=nm;
   $("srcNote").textContent=sample?"最初はサンプル画像が入っています。自分の画像を選ぶと入れ替わります。":nm+"("+bm.width+"×"+bm.height+"px)";
-  render();
+  syncFmt();render();
+}
+async function setVideo(f){
+  const url=URL.createObjectURL(f),v=document.createElement("video");v.muted=true;v.playsInline=true;v.preload="auto";v.src=url;
+  try{await new Promise((res,rej)=>{v.onloadeddata=res;v.onerror=()=>rej(new Error("video"));setTimeout(()=>rej(new Error("timeout")),15000)})}
+  catch(e){URL.revokeObjectURL(url);throw e}
+  if(vid)URL.revokeObjectURL(vid.url);
+  vid={url,video:v,dur:isFinite(v.duration)?v.duration:5};name=base(f.name);
+  $("astart").value=0;$("astart").max=Math.max(0,Math.floor(vid.dur-0.5));
+  $("srcNote").textContent=f.name+"(動画・"+v.videoWidth+"×"+v.videoHeight+"px・"+vid.dur.toFixed(1)+"秒)";
+  if(["png","jpg"].includes($("ofmt").value))$("ofmt").value="gif";
+  syncFmt();await seekDraw(0);
+}
+async function loadAny(f){
+  try{if(isVideo(f))await setVideo(f);else await setImage(f,base(f.name),false)}
+  catch(e){console.error(e);$("srcNote").textContent=isVideo(f)?"この動画は読み込めませんでした。MP4・WebMなど、ブラウザで再生できる形式を選んでください。":"この画像は読み込めませんでした。PNG・JPG・WebPなどを選んでください。"}
 }
 const drop=$("drop"),file=$("file");
 drop.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();file.click()}});
-file.addEventListener("change",async()=>{const f=file.files[0];file.value="";if(f)try{await setImage(f,f.name.replace(/\.[A-Za-z0-9]{1,5}$/,"")||"image",false)}catch(e){$("srcNote").textContent="この画像は読み込めませんでした。PNG・JPG・WebPなどを選んでください。"}});
+["file","camP","camV"].forEach(id=>$(id).addEventListener("change",()=>{const e=$(id),f=e.files[0];e.value="";if(f)loadAny(f)}));
+["camPhoto","camVideo"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$(id).querySelector("input").click()}}));
 ["dragenter","dragover"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add("on")}));
 ["dragleave","drop"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove("on")}));
-drop.addEventListener("drop",async e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)try{await setImage(f,f.name.replace(/\.[A-Za-z0-9]{1,5}$/,"")||"image",false)}catch(err){$("srcNote").textContent="この画像は読み込めませんでした。"}});
+drop.addEventListener("drop",e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)loadAny(f)});
+$("ofmt").addEventListener("change",syncFmt);
+$("astart").addEventListener("change",()=>{if(vid)seekDraw(+$("astart").value||0)});
 choose("pixel");
 fetch("img/works/hotduck.webp").then(r=>r.blob()).then(b=>{if(!orig)return setImage(b,"sample",true)}).catch(()=>{});
 const sb=$("shareBtn");
