@@ -16,7 +16,7 @@ draft: false
 
 <p><a href="http://hozumi.site/" target="_blank" rel="noopener"><img src="https://www.namigroove.com/wp-content/uploads/2025/11/76159488b6f6936c.png" alt="hozumi.site のサイト" loading="lazy" decoding="async" style="width:100%;height:auto"></a></p>
 
-<p><a href="https://ideoaves.github.io" target="_blank" rel="noopener"><img src="https://ideoaves.github.io/banner.png" alt="ideoaves のサイト" loading="lazy" decoding="async" style="width:100%;height:auto"></a></p>
+<p><a href="https://ideoaves.github.io" target="_blank" rel="noopener"><img src="https://ideoaves.github.io/img/banner.png" alt="ideoaves のサイト" loading="lazy" decoding="async" style="width:100%;height:auto"></a></p>
 
 <p><a href="https://blmsh.com" target="_blank" rel="noopener"><img src="https://blmsh.com/site_banner.png" alt="blmsh.com" loading="lazy" decoding="async" style="width:100%;height:auto"></a></p>
 
