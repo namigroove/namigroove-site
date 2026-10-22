@@ -13,7 +13,8 @@ content:
     format: yaml-frontmatter
     view:
       primary: title
-      fields: [date, categories]
+      fields: [title, date, categories]
+      search: [title]
       sort: [date]
       default:
         sort: date
@@ -43,7 +44,8 @@ content:
     format: yaml-frontmatter
     view:
       primary: title
-      fields: [date, categories]
+      fields: [title, date, categories]
+      search: [title]
       sort: [date]
       default:
         sort: date
@@ -58,7 +60,8 @@ content:
     format: yaml-frontmatter
     view:
       primary: title
-      fields: [date, categories]
+      fields: [title, date, categories]
+      search: [title]
       sort: [date]
       default:
         sort: date
