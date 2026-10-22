@@ -308,9 +308,15 @@ header.top .logo{flex:none}
           <option value="png" selected>PNG</option>
           <option value="jpg">JPG</option>
           <option value="webp">WebP</option>
+          <option value="ico">ICO(アイコン)</option>
+          <option value="fav">ファビコン一式(ICO+PNG)</option>
         </select>
       </div>
       <label class="ctl rg" id="qWrap">画質 <input id="q" type="range" min="50" max="100" value="90" aria-label="画質"><output id="qv">90</output></label>
+      <label class="ctl rg" id="bgWrap">背景色 <input id="bg" type="color" value="#ffffff" aria-label="背景色(JPGと透明部分用)"></label>
+    </div>
+    <div class="sub">
+      <span>加工:</span>
       <div class="ctl">サイズ
         <select id="maxw" class="sel" aria-label="サイズ">
           <option value="0" selected>元のまま</option>
@@ -320,8 +326,34 @@ header.top .logo{flex:none}
           <option value="1280">最大幅 1280px</option>
           <option value="1024">最大幅 1024px</option>
           <option value="512">最大幅 512px</option>
+          <option value="256">最大幅 256px</option>
         </select>
       </div>
+      <div class="ctl">回転
+        <select id="rot" class="sel" aria-label="回転">
+          <option value="0" selected>なし</option><option value="90">右に90°</option><option value="180">180°</option><option value="270">左に90°</option>
+        </select>
+      </div>
+      <div class="ctl">反転
+        <select id="flip" class="sel" aria-label="反転">
+          <option value="" selected>なし</option><option value="h">左右</option><option value="v">上下</option>
+        </select>
+      </div>
+      <div class="ctl">比率
+        <select id="ratio" class="sel" aria-label="比率">
+          <option value="" selected>そのまま</option>
+          <option value="1:1:c">1:1に切り抜き</option>
+          <option value="1:1:p">1:1に余白を足す</option>
+          <option value="16:9:c">16:9に切り抜き</option>
+          <option value="4:3:c">4:3に切り抜き</option>
+        </select>
+      </div>
+    </div>
+    <div class="sub">
+      <label class="ctl"><input id="trim" type="checkbox"> 余白を自動でカット</label>
+      <label class="ctl"><input id="gray" type="checkbox"> 白黒にする</label>
+      <label class="ctl"><input id="cut" type="checkbox"> 背景を透明にする(左上の色)</label>
+      <label class="ctl rg" id="tolWrap">ゆるさ <input id="tol" type="range" min="1" max="100" value="20" aria-label="背景を消すゆるさ"></label>
     </div>
     <div class="sub">
       <div class="ctl">PDF・AIのページ
@@ -330,11 +362,22 @@ header.top .logo{flex:none}
           <option value="all">すべてのページ(最大50)</option>
         </select>
       </div>
+      <div class="ctl">PSDの読み込み
+        <select id="psdmode" class="sel" aria-label="PSDの読み込み方">
+          <option value="auto" selected>自動</option>
+          <option value="layers">レイヤーを合成</option>
+        </select>
+      </div>
     </div>
     <div class="sub">
-      <span>動画→GIF:</span>
+      <span>動画:</span>
+      <div class="ctl">出力
+        <select id="vfmt" class="sel" aria-label="動画の出力形式">
+          <option value="gif" selected>GIF</option><option value="apng">APNG(高画質)</option>
+        </select>
+      </div>
       <div class="ctl">幅
-        <select id="gw" class="sel" aria-label="GIFの幅">
+        <select id="gw" class="sel" aria-label="アニメの幅">
           <option value="240">240px</option><option value="320">320px</option><option value="480" selected>480px</option><option value="640">640px</option>
         </select>
       </div>
@@ -346,22 +389,25 @@ header.top .logo{flex:none}
       <div class="ctl">開始 <input id="gst" class="sel" type="number" min="0" step="0.5" value="0" style="width:4.5em" aria-label="開始の秒数"> 秒</div>
       <div class="ctl">長さ <input id="glen" class="sel" type="number" min="0.5" max="10" step="0.5" value="5" style="width:4.5em" aria-label="長さの秒数"> 秒(最大10)</div>
     </div>
-    <p class="note-s">変換はこの端末の中で行います。ファイルは送信・保存されません。PSDは「互換性を最大化」で保存したものだけ変換できます。AIはPDF互換で保存したものに対応します。</p>
+    <p class="note-s">変換はこの端末の中で行います。ファイルは送信・保存されません。PSDは、「互換性を最大化」をオフで保存したものもレイヤーから合成して開けます(調整レイヤー・マスク・効果は反映されません)。AIはPDF互換で保存したものに対応します。</p>
   </section>
 
   <section class="panel" id="listPanel" aria-live="polite" hidden>
     <ul class="fl" id="list"></ul>
-    <div class="acts"><button class="btn" type="button" id="allBtn" hidden>できたものをすべて保存</button><button class="btn" type="button" id="clearBtn">リストをクリア</button></div>
+    <div class="acts"><button class="btn" type="button" id="allBtn" hidden>できたものをすべて保存</button><button class="btn" type="button" id="redoBtn">この設定でやり直す</button><button class="btn" type="button" id="clearBtn">リストをクリア</button></div>
   </section>
 
   <section class="how">
     <h2>使い方のメモ</h2>
     <ul>
-      <li>ファイルを選ぶかドロップすると変換が始まります。形式やサイズを変えたいときは、設定を変えてからファイルを選び直してください。</li>
-      <li>PNG・JPG・WebP・GIF・BMP・SVGなどの画像は、PNG・JPG・WebPに変換できます。JPGに変換するとき、透明な部分は白になります。</li>
-      <li>PSD は、重ねたレイヤーを1枚にした画像で書き出します。PDF と AI は、ページを画像にします(AI は PDF 互換で保存したものだけ)。</li>
-      <li>動画(MP4・MOV・WebM)を選ぶと、GIFのアニメーションになります。幅・コマ数・開始位置・長さを選べます。重くなるので、長さは10秒までです。</li>
-      <li>開けないファイルは、元のソフトで PNG に書き出すのがいちばん確実です。</li>
+      <li>ファイルを選ぶかドロップすると変換が始まります。設定を変えたら「この設定でやり直す」で、同じファイルを変換し直せます。</li>
+      <li>読める画像: PNG・JPG・WebP・GIF・BMP・SVG・AVIF・ICO、iPhoneの写真(HEIC)、TIFF。書き出しは PNG・JPG・WebP・ICO です。写真に入っている撮影場所などの情報(EXIF)は、書き出すと消えます。</li>
+      <li>JPGにするとき、透明な部分は「背景色」で塗ります。</li>
+      <li>ICO は 16〜256px を1つにまとめます。ファビコン一式は、favicon.ico(16・32・48px)と apple-touch-icon(180px)、192px・512pxのPNGを作ります。正方形でない画像は、余白を足して正方形にします。</li>
+      <li>加工は、回転・反転 → 背景を透明に → 余白カット → 比率 → 白黒 → サイズ、の順に行います。「背景を透明にする」は、画像の外側につながっている左上と同じ色を消します。</li>
+      <li>PSD は、重ねたレイヤーを1枚にして書き出します。「互換性を最大化」をオフにして保存したものは、レイヤーを重ね直して作ります。ブレンドモードと不透明度は反映しますが、調整レイヤー・レイヤーマスク・レイヤー効果・文字の見た目の一部は反映されないので、見た目が違うときは元のソフトでPNGに書き出してください。</li>
+      <li>PDF と AI は、ページを画像にします。AI は PDF 互換データが入っているものだけ開けます。Illustrator で保存するときに「PDF互換ファイルを作成」をオンにすると開けます。</li>
+      <li>動画(MP4・MOV・WebM)は、GIF または APNG のアニメーションにします。APNGは色がきれいですが、GIFより容量が大きく、古いソフトでは動かないことがあります。重くなるので、長さは10秒までです。</li>
     </ul>
   </section>
 </main>
@@ -384,15 +430,31 @@ header.top .logo{flex:none}
 const GH="https://namigroove.github.io/namigroove-site/";
 const $=id=>document.getElementById(id);
 const drop=$("drop"),file=$("file"),list=$("list"),panel=$("listPanel"),allBtn=$("allBtn");
-const jobs=[];let running=false;
+const jobs=[],srcs=[];let running=false;
 const fmtSize=n=>n>=1048576?(n/1048576).toFixed(1)+" MB":Math.max(1,Math.round(n/1024))+" KB";
 const baseName=n=>n.replace(/\.[A-Za-z0-9]{1,5}$/,"")||"image";
 const ext=n=>(n.match(/\.([A-Za-z0-9]{1,5})$/)||["",""])[1].toLowerCase();
-const kindOf=f=>{const e=ext(f.name),t=f.type||"";if(e==="psd"||e==="psb")return"psd";if(e==="pdf"||e==="ai"||t==="application/pdf")return"pdf";if(/^video\//.test(t)||["mp4","mov","webm","m4v"].includes(e))return"video";if(e==="svg"||t==="image/svg+xml")return"svg";return"image"};
+const kindOf=f=>{const e=ext(f.name),t=f.type||"";
+  if(e==="psd"||e==="psb")return"psd";
+  if(e==="pdf"||e==="ai"||e==="eps"||t==="application/pdf")return"pdf";
+  if(/^video\//.test(t)||["mp4","mov","webm","m4v","mkv"].includes(e))return"video";
+  if(e==="svg"||t==="image/svg+xml")return"svg";
+  if(["heic","heif"].includes(e)||/heic|heif/.test(t))return"heic";
+  if(["tif","tiff"].includes(e)||t==="image/tiff")return"tiff";
+  return"image"};
 const MIME={png:"image/png",jpg:"image/jpeg",webp:"image/webp"};
+const userErr=m=>{const e=new Error(m);e.userMsg=m;return e};
+const loadScript=(()=>{const m={};return src=>m[src]||(m[src]=new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=()=>rej(new Error("load "+src));document.head.appendChild(s)}))})();
+
 $("q").addEventListener("input",()=>{$("qv").textContent=$("q").value});
-function sync(){$("qWrap").style.display=$("fmt").value==="png"?"none":""}
-$("fmt").addEventListener("change",sync);sync();
+function sync(){
+  const f=$("fmt").value;
+  $("qWrap").style.display=(f==="jpg"||f==="webp")?"":"none";
+  $("bgWrap").style.display=(f==="jpg"||f==="fav")?"":"none";
+  $("tolWrap").style.display=$("cut").checked?"":"none";
+}
+["fmt","cut"].forEach(i=>$(i).addEventListener("change",sync));sync();
+
 function makeRow(label,size){
   const li=document.createElement("li");
   li.innerHTML='<span class="nm"></span><span class="st">待機中</span><div class="bar"><i></i></div>';
@@ -400,61 +462,211 @@ function makeRow(label,size){
   list.appendChild(li);
   return {li,st:li.querySelector(".st"),bar:li.querySelector(".bar i"),done:false};
 }
-function finish(r,blob,name){
+function finish(r,blob,name,note){
   r.blob=blob;r.name=name;r.done=true;r.url=URL.createObjectURL(blob);
   r.bar.style.width="100%";r.li.classList.add("done");
-  r.st.textContent="完了 "+fmtSize(blob.size);
+  r.st.textContent="完了 "+name+" "+fmtSize(blob.size)+(note?" ※"+note:"");
   const im=document.createElement("img");im.className="th";im.alt="";im.src=r.url;r.li.insertBefore(im,r.li.firstChild);
   const a=document.createElement("a");a.className="btn";a.textContent="保存";a.href=r.url;a.download=name;
   r.li.appendChild(a);
   allBtn.hidden=jobs.filter(x=>x.done).length<2;
 }
-function add(files){
-  const opt={fmt:$("fmt").value,q:+$("q").value/100,maxw:+$("maxw").value,pages:$("pages").value,gw:+$("gw").value,gfps:+$("gfps").value,gst:Math.max(0,+$("gst").value||0),glen:Math.min(10,Math.max(0.5,+$("glen").value||5))};
-  for(const f of files){const r=makeRow(f.name,f.size);jobs.push(r);r.f=f;r.kind=kindOf(f);r.opt=opt}
+function readOpt(){
+  return {fmt:$("fmt").value,q:+$("q").value/100,bg:$("bg").value,maxw:+$("maxw").value,rot:+$("rot").value,flip:$("flip").value,ratio:$("ratio").value,
+    trim:$("trim").checked,gray:$("gray").checked,cut:$("cut").checked,tol:+$("tol").value,pages:$("pages").value,psdmode:$("psdmode").value,
+    vfmt:$("vfmt").value,gw:+$("gw").value,gfps:+$("gfps").value,gst:Math.max(0,+$("gst").value||0),glen:Math.min(10,Math.max(0.5,+$("glen").value||5))};
+}
+function add(files,keep){
+  const opt=readOpt();
+  for(const f of files){if(!keep)srcs.push(f);const r=makeRow(f.name,f.size);jobs.push(r);r.f=f;r.kind=kindOf(f);r.opt=opt}
   panel.hidden=jobs.length===0;
   run();
 }
 async function run(){
   if(running)return;running=true;
-  for(const r of jobs.slice()){if(r.started)continue;r.started=true;
+  while(true){
+    const r=jobs.find(j=>!j.started);if(!r)break;
+    r.started=true;
     try{await convert(r)}catch(e){console.error(e);r.li.classList.add("err");r.st.textContent=(e&&e.userMsg)||"変換できませんでした(この形式は読み込めません)"}
     await new Promise(x=>setTimeout(x,0));
   }
   running=false;
-  if(jobs.some(j=>!j.started))run();
 }
-const userErr=m=>{const e=new Error(m);e.userMsg=m;return e};
-function toBlob(canvas,opt){
-  let c=canvas;
-  if(opt.maxw&&canvas.width>opt.maxw){const h=Math.round(canvas.height*opt.maxw/canvas.width);c=document.createElement("canvas");c.width=opt.maxw;c.height=h;const x=c.getContext("2d");x.imageSmoothingQuality="high";x.drawImage(canvas,0,0,c.width,h)}
-  if(opt.fmt==="jpg"){const w=document.createElement("canvas");w.width=c.width;w.height=c.height;const x=w.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w.width,w.height);x.drawImage(c,0,0);c=w}
-  return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error("toBlob")),MIME[opt.fmt],opt.fmt==="png"?undefined:opt.q));
+/* ---------- 加工 ---------- */
+function mk(w,h){const c=document.createElement("canvas");c.width=Math.max(1,Math.round(w));c.height=Math.max(1,Math.round(h));return c}
+function rotFlip(c,rot,flip){
+  if(!rot&&!flip)return c;
+  const sw=rot%180?c.height:c.width,sh=rot%180?c.width:c.height;
+  const o=mk(sw,sh),x=o.getContext("2d");
+  x.translate(sw/2,sh/2);x.rotate(rot*Math.PI/180);
+  if(flip==="h")x.scale(-1,1);if(flip==="v")x.scale(1,-1);
+  x.drawImage(c,-c.width/2,-c.height/2);
+  return o;
 }
-const outName=(f,suffix,opt)=>baseName(f.name)+(suffix||"")+"."+opt.fmt;
-function drawToCanvas(src,w,h){const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(src,0,0,w,h);return c}
+function removeBg(c,tol){
+  const w=c.width,h=c.height,x=c.getContext("2d",{willReadFrequently:true}),id=x.getImageData(0,0,w,h),d=id.data;
+  const kr=d[0],kg=d[1],kb=d[2],ka=d[3];
+  const th=tol*tol*3*2.5; // ゆるさ(1-100)を距離の2乗に
+  const near=i=>{const dr=d[i]-kr,dg=d[i+1]-kg,db=d[i+2]-kb;return ka<8?d[i+3]<8:(d[i+3]>=8&&dr*dr+dg*dg+db*db<=th)};
+  const seen=new Uint8Array(w*h),st=[];
+  const push=(px,py)=>{const p=py*w+px;if(!seen[p]&&near(p*4)){seen[p]=1;st.push(p)}};
+  for(let i=0;i<w;i++){push(i,0);push(i,h-1)}
+  for(let j=0;j<h;j++){push(0,j);push(w-1,j)}
+  while(st.length){
+    const p=st.pop(),px=p%w,py=(p/w)|0;
+    d[p*4+3]=0;
+    if(px>0)push(px-1,py);if(px<w-1)push(px+1,py);if(py>0)push(px,py-1);if(py<h-1)push(px,py+1);
+  }
+  x.putImageData(id,0,0);return c;
+}
+function trimC(c){
+  const w=c.width,h=c.height,x=c.getContext("2d",{willReadFrequently:true}),d=x.getImageData(0,0,w,h).data;
+  const kr=d[0],kg=d[1],kb=d[2],ka=d[3];
+  const isBg=i=>ka<8?d[i+3]<8:(d[i+3]<8||(Math.abs(d[i]-kr)+Math.abs(d[i+1]-kg)+Math.abs(d[i+2]-kb)<24&&d[i+3]>=ka-8));
+  let x0=w,y0=h,x1=-1,y1=-1;
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++){if(!isBg((j*w+i)*4)){if(i<x0)x0=i;if(i>x1)x1=i;if(j<y0)y0=j;if(j>y1)y1=j}}
+  if(x1<0||(x0===0&&y0===0&&x1===w-1&&y1===h-1))return c;
+  const o=mk(x1-x0+1,y1-y0+1);o.getContext("2d").drawImage(c,x0,y0,o.width,o.height,0,0,o.width,o.height);return o;
+}
+function ratioC(c,spec){
+  const [a,b,m]=spec.split(":"),r=a/b,w=c.width,h=c.height;
+  if(m==="c"){
+    let cw=w,ch=h;if(w/h>r)cw=Math.round(h*r);else ch=Math.round(w/r);
+    const o=mk(cw,ch);o.getContext("2d").drawImage(c,(w-cw)/2,(h-ch)/2,cw,ch,0,0,cw,ch);return o;
+  }
+  let cw=w,ch=h;if(w/h<r)cw=Math.round(h*r);else ch=Math.round(w/r);
+  if(cw===w&&ch===h)return c;
+  const o=mk(cw,ch);o.getContext("2d").drawImage(c,(cw-w)/2,(ch-h)/2);return o;
+}
+function grayC(c){
+  const x=c.getContext("2d",{willReadFrequently:true}),id=x.getImageData(0,0,c.width,c.height),d=id.data;
+  for(let i=0;i<d.length;i+=4){const g=(d[i]*0.299+d[i+1]*0.587+d[i+2]*0.114)|0;d[i]=d[i+1]=d[i+2]=g}
+  x.putImageData(id,0,0);return c;
+}
+function scaleTo(c,w,h){const o=mk(w,h),x=o.getContext("2d");x.imageSmoothingQuality="high";x.drawImage(c,0,0,o.width,o.height);return o}
+function adjust(c,o){
+  c=rotFlip(c,o.rot,o.flip);
+  if(o.cut)c=removeBg(c,o.tol);
+  if(o.trim)c=trimC(c);
+  if(o.ratio)c=ratioC(c,o.ratio);
+  if(o.gray)c=grayC(c);
+  if(o.maxw&&c.width>o.maxw)c=scaleTo(c,o.maxw,c.height*o.maxw/c.width);
+  return c;
+}
+/* ---------- 書き出し ---------- */
+const cToBlob=(c,type,q)=>new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error("toBlob")),type,q));
+function flat(c,bg){const w=mk(c.width,c.height),x=w.getContext("2d");x.fillStyle=bg;x.fillRect(0,0,w.width,w.height);x.drawImage(c,0,0);return w}
+function fit(c,s,bg){ // 正方形に収める
+  const o=mk(s,s),x=o.getContext("2d");x.imageSmoothingQuality="high";
+  if(bg){x.fillStyle=bg;x.fillRect(0,0,s,s)}
+  const k=Math.min(s/c.width,s/c.height),w=c.width*k,h=c.height*k;
+  x.drawImage(c,(s-w)/2,(s-h)/2,w,h);return o;
+}
+async function makeIco(c,sizes){
+  const pngs=[];
+  for(const s of sizes)pngs.push(new Uint8Array(await (await cToBlob(fit(c,s),"image/png")).arrayBuffer()));
+  const n=pngs.length,head=6+16*n;let total=head;pngs.forEach(p=>total+=p.length);
+  const buf=new ArrayBuffer(total),dv=new DataView(buf),u8=new Uint8Array(buf);
+  dv.setUint16(2,1,true);dv.setUint16(4,n,true);
+  let off=head;
+  pngs.forEach((p,i)=>{const e=6+16*i,s=sizes[i];
+    u8[e]=s>=256?0:s;u8[e+1]=s>=256?0:s;dv.setUint16(e+4,1,true);dv.setUint16(e+6,32,true);dv.setUint32(e+8,p.length,true);dv.setUint32(e+12,off,true);
+    u8.set(p,off);off+=p.length});
+  return new Blob([buf],{type:"image/x-icon"});
+}
+async function output(r,canvas,base,o,note){
+  const c=adjust(canvas,o);
+  const outs=[];
+  if(o.fmt==="png")outs.push([await cToBlob(c,"image/png"),base+".png"]);
+  else if(o.fmt==="jpg")outs.push([await cToBlob(flat(c,o.bg),"image/jpeg",o.q),base+".jpg"]);
+  else if(o.fmt==="webp")outs.push([await cToBlob(c,"image/webp",o.q),base+".webp"]);
+  else if(o.fmt==="ico")outs.push([await makeIco(c,[16,32,48,64,128,256]),base+".ico"]);
+  else if(o.fmt==="fav"){
+    outs.push([await makeIco(c,[16,32,48]),"favicon.ico"]);
+    outs.push([await cToBlob(fit(c,180,o.bg),"image/png"),"apple-touch-icon.png"]);
+    outs.push([await cToBlob(fit(c,192),"image/png"),"icon-192.png"]);
+    outs.push([await cToBlob(fit(c,512),"image/png"),"icon-512.png"]);
+  }
+  outs.forEach(([b,n],i)=>{
+    let row=r;
+    if(i>0){row=makeRow(n);row.started=true;jobs.push(row)}
+    finish(row,b,n,note);
+  });
+}
+/* ---------- 読み込み ---------- */
+async function toCanvasFromBlob(blob){
+  let bmp;
+  try{bmp=await createImageBitmap(blob)}
+  catch(e){
+    const url=URL.createObjectURL(blob),img=new Image();img.src=url;
+    try{await img.decode()}catch(_){URL.revokeObjectURL(url);throw userErr("この画像は、お使いのブラウザでは読み込めませんでした")}
+    const c=mk(img.naturalWidth,img.naturalHeight);c.getContext("2d").drawImage(img,0,0);URL.revokeObjectURL(url);return c;
+  }
+  const c=mk(bmp.width,bmp.height);c.getContext("2d").drawImage(bmp,0,0);return c;
+}
+const BM={"multiply":"multiply","screen":"screen","overlay":"overlay","darken":"darken","lighten":"lighten","color dodge":"color-dodge","color burn":"color-burn","hard light":"hard-light","soft light":"soft-light","difference":"difference","exclusion":"exclusion","hue":"hue","saturation":"saturation","color":"color","luminosity":"luminosity"};
+function compLayers(list,w,h,ox,oy){
+  const c=mk(w,h),x=c.getContext("2d");
+  for(const L of list||[]){
+    if(L.hidden)continue;
+    let src=L.canvas,l=(L.left||0)-ox,t=(L.top||0)-oy;
+    if(L.children&&L.children.length){
+      const g=compLayers(L.children,w,h,0,0);src=g;l=0;t=0;
+    }
+    if(!src)continue;
+    x.globalAlpha=L.opacity==null?1:L.opacity;
+    x.globalCompositeOperation=BM[L.blendMode]||"source-over";
+    x.drawImage(src,l,t);
+  }
+  x.globalAlpha=1;x.globalCompositeOperation="source-over";
+  return c;
+}
+function isBlank(c){
+  const x=c.getContext("2d",{willReadFrequently:true}),w=c.width,h=c.height;
+  const d=x.getImageData(0,0,w,h).data,r=d[0],g=d[1],b=d[2],a=d[3];
+  const step=Math.max(1,Math.floor(w*h/40000));
+  for(let p=0;p<w*h;p+=step){const i=p*4;if(Math.abs(d[i]-r)+Math.abs(d[i+1]-g)+Math.abs(d[i+2]-b)+Math.abs(d[i+3]-a)>6)return false}
+  return true;
+}
 async function convert(r){
-  const {f,kind,opt}=r;
+  const {f,kind,opt}=r,base=baseName(f.name);
   r.st.textContent="読み込み中…";
   if(kind==="image"){
-    const bmp=await createImageBitmap(f);
-    finish(r,await toBlob(drawToCanvas(bmp,bmp.width,bmp.height),opt),outName(f,"",opt));
+    await output(r,await toCanvasFromBlob(f),base,opt);
   }else if(kind==="svg"){
-    const url=URL.createObjectURL(f);
-    const img=new Image();img.src=url;
+    const url=URL.createObjectURL(f),img=new Image();img.src=url;
     try{await img.decode()}catch(e){throw userErr("SVGを読み込めませんでした")}
     let w=img.naturalWidth||1024,h=img.naturalHeight||1024;if(w<1024&&h<1024){const k=1024/Math.max(w,h);w=Math.round(w*k);h=Math.round(h*k)}
-    const c=drawToCanvas(img,w,h);URL.revokeObjectURL(url);
-    finish(r,await toBlob(c,opt),outName(f,"",opt));
+    const c=mk(w,h);c.getContext("2d").drawImage(img,0,0,w,h);URL.revokeObjectURL(url);
+    await output(r,c,base,opt);
+  }else if(kind==="heic"){
+    try{await loadScript(GH+"vendor/heic2any.min.js")}catch(e){throw userErr("HEIC用の部品を取得できませんでした")}
+    let out;try{out=await heic2any({blob:f,toType:"image/png"})}catch(e){throw userErr("HEICを読み込めませんでした")}
+    await output(r,await toCanvasFromBlob(Array.isArray(out)?out[0]:out),base,opt);
+  }else if(kind==="tiff"){
+    try{await loadScript(GH+"vendor/utif.min.js")}catch(e){throw userErr("TIFF用の部品を取得できませんでした")}
+    let c;try{
+      const buf=await f.arrayBuffer(),ifds=UTIF.decode(buf);UTIF.decodeImage(buf,ifds[0]);
+      const rgba=UTIF.toRGBA8(ifds[0]);c=mk(ifds[0].width,ifds[0].height);
+      c.getContext("2d").putImageData(new ImageData(new Uint8ClampedArray(rgba.buffer,rgba.byteOffset,rgba.length),c.width,c.height),0,0);
+    }catch(e){console.error(e);throw userErr("TIFFを読み込めませんでした(圧縮方式が未対応かもしれません)")}
+    await output(r,c,base,opt);
   }else if(kind==="psd"){
     const buf=await f.arrayBuffer();
-    let psd;try{psd=agPsd.readPsd(buf,{skipLayerImageData:true,skipThumbnail:true})}catch(e){throw userErr("PSDを読み込めませんでした")}
-    if(!psd.canvas)throw userErr("合成画像がありません(Photoshopで「互換性を最大化」をオンにして保存してください)");
-    finish(r,await toBlob(psd.canvas,opt),outName(f,"",opt));
+    let psd,note="";
+    try{psd=agPsd.readPsd(buf,{skipThumbnail:true,useImageData:false})}catch(e){console.error(e);throw userErr("PSDを読み込めませんでした")}
+    let c=psd.canvas;
+    const useLayers=opt.psdmode==="layers"||!c||isBlank(c);
+    if(useLayers){
+      if(!psd.children||!psd.children.length)throw userErr("読み込める画像データがありません")
+      c=compLayers(psd.children,psd.width,psd.height,0,0);
+      note="レイヤーから合成しました。見た目が違う場合は元のソフトでPNG書き出しを";
+    }
+    await output(r,c,base,opt,note);
   }else if(kind==="pdf"){
     await doPdf(r);
   }else if(kind==="video"){
-    await doGif(r);
+    await doAnim(r);
   }
 }
 let pdfjs=null;
@@ -467,8 +679,14 @@ async function loadPdf(){
 async function doPdf(r){
   const {f,opt}=r;
   let lib;try{lib=await loadPdf()}catch(e){throw userErr("PDFを読み込む部品を取得できませんでした")}
-  let doc;try{doc=await lib.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise}catch(e){throw userErr("ファイルを開けませんでした(AIはPDF互換で保存したものだけ対応です)")}
-  const total=doc.numPages,n=opt.pages==="all"?Math.min(total,50):1;
+  let u8=new Uint8Array(await f.arrayBuffer());
+  // 先頭にPDF以外のデータが付いているファイルは、PDFの始まりから読む
+  const sig=[37,80,68,70,45];let at=-1;
+  for(let i=0;i<Math.min(u8.length-5,4*1048576);i++){if(u8[i]===sig[0]&&u8[i+1]===sig[1]&&u8[i+2]===sig[2]&&u8[i+3]===sig[3]&&u8[i+4]===sig[4]){at=i;break}}
+  if(at<0)throw userErr("PDFのデータが入っていません。Illustratorで「PDF互換ファイルを作成」をオンにして保存し直すか、PNGで書き出してください");
+  if(at>0)u8=u8.subarray(at);
+  let doc;try{doc=await lib.getDocument({data:u8}).promise}catch(e){throw userErr("ファイルを開けませんでした。Illustratorで「PDF互換ファイルを作成」をオンにして保存し直してください")}
+  const total=doc.numPages,n=opt.pages==="all"?Math.min(total,50):1,base=baseName(f.name);
   r.li.remove();jobs.splice(jobs.indexOf(r),1);
   for(let p=1;p<=n;p++){
     const row=makeRow(f.name+(total>1?" "+p+"/"+total+"ページ":""));row.started=true;jobs.push(row);row.st.textContent="変換中…";
@@ -476,45 +694,83 @@ async function doPdf(r){
       const page=await doc.getPage(p);
       let vp=page.getViewport({scale:2});
       const cap=4096/Math.max(vp.width,vp.height);if(cap<1)vp=page.getViewport({scale:2*cap});
-      const c=document.createElement("canvas");c.width=Math.round(vp.width);c.height=Math.round(vp.height);
-      const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);
+      const c=mk(vp.width,vp.height),x=c.getContext("2d");
+      x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);
       await page.render({canvasContext:x,viewport:vp}).promise;
-      finish(row,await toBlob(c,opt),outName(f,total>1?"_p"+p:"",opt));
+      await output(row,c,base+(total>1?"_p"+p:""),opt);
     }catch(e){console.error(e);row.li.classList.add("err");row.st.textContent="このページは変換できませんでした"}
   }
 }
-async function doGif(r){
+/* ---------- APNG ---------- */
+const CRCT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRCT[(c^u[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0};
+function chunk(type,data){
+  const o=new Uint8Array(12+data.length),dv=new DataView(o.buffer);
+  dv.setUint32(0,data.length);for(let i=0;i<4;i++)o[4+i]=type.charCodeAt(i);o.set(data,8);
+  dv.setUint32(8+data.length,crc32(o.subarray(4,8+data.length)));return o;
+}
+function parsePng(u){
+  const dv=new DataView(u.buffer,u.byteOffset,u.byteLength);let p=8,ihdr=null;const idat=[];
+  while(p<u.length){const len=dv.getUint32(p),t=String.fromCharCode(u[p+4],u[p+5],u[p+6],u[p+7]),d=u.subarray(p+8,p+8+len);
+    if(t==="IHDR")ihdr=d;else if(t==="IDAT")idat.push(d);p+=12+len}
+  let n=0;idat.forEach(d=>n+=d.length);const all=new Uint8Array(n);let q=0;idat.forEach(d=>{all.set(d,q);q+=d.length});
+  return {ihdr,idat:all};
+}
+async function buildApng(frames,w,h,fps){
+  const parts=[new Uint8Array([137,80,78,71,13,10,26,10])];
+  const parsed=[];for(const c of frames)parsed.push(parsePng(new Uint8Array(await (await cToBlob(c,"image/png")).arrayBuffer())));
+  parts.push(chunk("IHDR",parsed[0].ihdr));
+  const ac=new Uint8Array(8),acv=new DataView(ac.buffer);acv.setUint32(0,frames.length);acv.setUint32(4,0);parts.push(chunk("acTL",ac));
+  let seq=0;
+  parsed.forEach((pf,i)=>{
+    const fc=new Uint8Array(26),fv=new DataView(fc.buffer);
+    fv.setUint32(0,seq++);fv.setUint32(4,w);fv.setUint32(8,h);fv.setUint32(12,0);fv.setUint32(16,0);fv.setUint16(20,1);fv.setUint16(22,fps);fc[24]=0;fc[25]=0;
+    parts.push(chunk("fcTL",fc));
+    if(i===0)parts.push(chunk("IDAT",pf.idat));
+    else{const fd=new Uint8Array(4+pf.idat.length);new DataView(fd.buffer).setUint32(0,seq++);fd.set(pf.idat,4);parts.push(chunk("fdAT",fd))}
+  });
+  parts.push(chunk("IEND",new Uint8Array(0)));
+  return new Blob(parts,{type:"image/png"});
+}
+async function doAnim(r){
   const {f,opt}=r;
   const url=URL.createObjectURL(f);
   const v=document.createElement("video");v.muted=true;v.playsInline=true;v.preload="auto";v.src=url;
-  await new Promise((res,rej)=>{v.onloadedmetadata=res;v.onerror=()=>rej(userErr("動画を読み込めませんでした"))});
+  await new Promise((res,rej)=>{v.onloadedmetadata=res;v.onerror=()=>rej(userErr("動画を読み込めませんでした(このブラウザで再生できない形式かもしれません)"))});
   if(!v.videoWidth)throw userErr("動画を読み込めませんでした");
   const dur=isFinite(v.duration)?v.duration:opt.gst+opt.glen;
   const start=Math.min(opt.gst,Math.max(0,dur-0.1));
   const len=Math.min(opt.glen,Math.max(0.1,dur-start));
   const fps=opt.gfps,frames=Math.max(1,Math.round(len*fps));
   const w=Math.min(opt.gw,v.videoWidth),h=Math.round(v.videoHeight*w/v.videoWidth);
-  const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d",{willReadFrequently:true});
-  const enc=gifenc.GIFEncoder();
+  const c=mk(w,h),x=c.getContext("2d",{willReadFrequently:true});
+  const apng=opt.vfmt==="apng",enc=apng?null:gifenc.GIFEncoder(),fr=[];
   for(let i=0;i<frames;i++){
     await new Promise(res=>{const t=setTimeout(res,3000);v.onseeked=()=>{clearTimeout(t);res()};v.currentTime=start+i/fps});
     x.drawImage(v,0,0,w,h);
-    const d=x.getImageData(0,0,w,h).data;
-    const pal=gifenc.quantize(d,256);
-    enc.writeFrame(gifenc.applyPalette(d,pal),w,h,{palette:pal,delay:Math.round(1000/fps),repeat:0});
+    if(apng){const k=mk(w,h);k.getContext("2d").drawImage(c,0,0);fr.push(k)}
+    else{
+      const d=x.getImageData(0,0,w,h).data,pal=gifenc.quantize(d,256);
+      enc.writeFrame(gifenc.applyPalette(d,pal),w,h,{palette:pal,delay:Math.round(1000/fps),repeat:0});
+    }
     const p=Math.round((i+1)/frames*100);r.bar.style.width=p+"%";r.st.textContent="変換中… "+p+"%";
     await new Promise(res=>setTimeout(res,0));
   }
-  enc.finish();URL.revokeObjectURL(url);
-  finish(r,new Blob([enc.bytes()],{type:"image/gif"}),baseName(f.name)+".gif");
+  URL.revokeObjectURL(url);
+  const base=baseName(f.name);
+  if(apng){r.st.textContent="まとめています…";finish(r,await buildApng(fr,w,h,fps),base+".png","APNG(動くPNG)")}
+  else{enc.finish();finish(r,new Blob([enc.bytes()],{type:"image/gif"}),base+".gif")}
 }
+/* ---------- UI ---------- */
 drop.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();file.click()}});
 file.addEventListener("change",()=>{add([...file.files]);file.value=""});
 ["dragenter","dragover"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add("on")}));
 ["dragleave","drop"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove("on")}));
 drop.addEventListener("drop",e=>{add([...(e.dataTransfer&&e.dataTransfer.files||[])])});
 allBtn.addEventListener("click",async()=>{for(const j of jobs){if(!j.done)continue;const a=document.createElement("a");a.href=j.url;a.download=j.name;document.body.appendChild(a);a.click();a.remove();await new Promise(r=>setTimeout(r,300))}});
-$("clearBtn").addEventListener("click",()=>{jobs.forEach(j=>j.url&&URL.revokeObjectURL(j.url));jobs.length=0;list.innerHTML="";panel.hidden=true;allBtn.hidden=true});
+function clearAll(){jobs.forEach(j=>j.url&&URL.revokeObjectURL(j.url));jobs.length=0;list.innerHTML="";allBtn.hidden=true}
+$("clearBtn").addEventListener("click",()=>{clearAll();srcs.length=0;panel.hidden=true});
+$("redoBtn").addEventListener("click",()=>{if(running||!srcs.length)return;clearAll();add(srcs.slice(),true)});
 $("shareBtn").addEventListener("click",()=>{
   const url="https://www.namigroove.com/tools/imgconv/";
   if(navigator.share){navigator.share({title:document.title,url}).catch(()=>{});return}
