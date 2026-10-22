@@ -48,6 +48,10 @@ jobs:
           test -f _site/music/music-10078/index.html
           test -f _site/movie/movie-9826/index.html
           test -f _site/music/works/index.html
+          test -f _site/privacy-policy/index.html
+          test -f _site/links/index.html
+          test -f _site/contact/index.html
+          test -f _site/wp-content/uploads/2025/06/big_namigroove_square_banner_gif.gif
           n=$(find _site -name index.html | wc -l); echo "index.html: $n"
           du -sm _site
           [ "$(du -sm _site | cut -f1)" -lt 900 ]
