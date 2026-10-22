@@ -632,7 +632,7 @@ webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ
   x.fillStyle="#c0c0c0";x.fillRect(0,0,Wo,Ho);
   x.fillStyle="#fff";x.fillRect(0,0,Wo,b);x.fillRect(0,0,b,Ho);x.fillStyle="#404040";x.fillRect(0,Ho-b,Wo,b);x.fillRect(Wo-b,0,b,Ho);
   const g=x.createLinearGradient(b*2,0,Wo-b*2,0);g.addColorStop(0,"#000080");g.addColorStop(1,"#1084d0");x.fillStyle=g;x.fillRect(b*2,b*2,Wo-b*4,th);
-  x.fillStyle="#fff";x.font="bold "+Math.round(16*u)+"px Arial,sans-serif";x.textBaseline="middle";x.fillText("image.gif - Paint",b*3+4*u,b*2+th/2);
+  x.fillStyle="#fff";x.font="bold "+Math.round(16*u)+"px Arial,sans-serif";x.textBaseline="middle";{let t=fname+" - Paint";const mw=Wo-b*4-th*3.2-8*u;while(t.length>6&&x.measureText(t).width>mw)t=t.slice(0,-4)+"…";x.fillText(t,b*3+4*u,b*2+th/2)}
   const bw=th-4*u;for(let k=0;k<3;k++){const bx=Wo-b*2-(k+1)*(bw+2*u)-2*u,by=b*2+2*u;x.fillStyle="#c0c0c0";x.fillRect(bx,by,bw,bw);x.fillStyle="#fff";x.fillRect(bx,by,bw,2);x.fillRect(bx,by,2,bw);x.fillStyle="#404040";x.fillRect(bx,by+bw-2,bw,2);x.fillRect(bx+bw-2,by,2,bw);x.fillStyle="#000";x.font="bold "+Math.round(14*u)+"px Arial";x.textAlign="center";x.fillText(["×","□","_"][k],bx+bw/2,by+bw/2);x.textAlign="left"}
   const ix=b*2,iy=b*3+th;x.fillStyle="#404040";x.fillRect(ix-2,iy-2,W+4,H+4);x.fillStyle="#fff";x.fillRect(ix,iy+H,W+2,2);x.fillRect(ix+W,iy,2,H+2);x.drawImage(o,ix,iy);return f;
  }},
@@ -704,7 +704,7 @@ async function buildApng(canvases,delays,w,h,plays){
 }
 
 /* ---------- 画面 ---------- */
-let orig=null,vid=null,cur="pixel",seed=1,token=0,timer=0,last=null,showOrig=false,name="sample";
+let fname="image.png",orig=null,vid=null,cur="pixel",seed=1,token=0,timer=0,last=null,showOrig=false,name="sample";
 const vals={};
 const cv=$("cv");
 function prevSize(){return 800}
@@ -822,13 +822,14 @@ $("saveBtn").addEventListener("click",async()=>{
   }catch(e){console.error(e);$("saveMsg").textContent=e.message==="norec"?"このブラウザは、動画の書き出しに対応していません。GIFかAPNGで保存してください。":"保存できませんでした"}
   b.disabled=false;
 });
-async function setImage(blob,nm,sample){
-  if(vid){URL.revokeObjectURL(vid.url);vid=null}
+async function setImage(blob,nm,sample,full){
+  fname=full||nm;if(vid){URL.revokeObjectURL(vid.url);vid=null}
   const bm=await createImageBitmap(blob);orig=bm;name=nm;
   $("srcNote").textContent=sample?"最初はサンプル画像が入っています。自分の画像を選ぶと入れ替わります。":nm+"("+bm.width+"×"+bm.height+"px)";
   syncFmt();render();
 }
 async function setVideo(f){
+  const prevName=fname;fname=f.name;
   const url=URL.createObjectURL(f),v=document.createElement("video");v.muted=true;v.playsInline=true;v.preload="auto";v.src=url;
   try{await new Promise((res,rej)=>{v.onloadeddata=res;v.onerror=()=>rej(new Error("video"));setTimeout(()=>rej(new Error("timeout")),15000)})}
   catch(e){URL.revokeObjectURL(url);throw e}
@@ -840,7 +841,7 @@ async function setVideo(f){
   syncFmt();await seekDraw(0);
 }
 async function loadAny(f){
-  try{if(isVideo(f))await setVideo(f);else await setImage(f,base(f.name),false)}
+  try{if(isVideo(f))await setVideo(f);else await setImage(f,base(f.name),false,f.name)}
   catch(e){console.error(e);$("srcNote").textContent=isVideo(f)?"この動画は読み込めませんでした。MP4・WebMなど、ブラウザで再生できる形式を選んでください。":"この画像は読み込めませんでした。PNG・JPG・WebPなどを選んでください。"}
 }
 const drop=$("drop"),file=$("file");
@@ -853,7 +854,7 @@ drop.addEventListener("drop",e=>{const f=e.dataTransfer&&e.dataTransfer.files[0]
 $("ofmt").addEventListener("change",syncFmt);
 $("astart").addEventListener("change",()=>{if(vid)seekDraw(+$("astart").value||0)});
 choose("pixel");
-fetch("img/works/hotduck.webp").then(r=>r.blob()).then(b=>{if(!orig)return setImage(b,"sample",true)}).catch(()=>{});
+fetch("img/namigroove-3d.webp").then(r=>r.blob()).then(b=>{if(!orig)return setImage(b,"sample",true,"namigroove-3d.webp")}).catch(()=>{});
 const sb=$("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{
   const data={title:document.title,text:document.title+" #namigroovetools",url:"https://www.namigroove.com/tools/imgfx/"};
