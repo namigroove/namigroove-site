@@ -84,6 +84,31 @@ for dp, _, fns in os.walk(out):
             if GH in t:
                 open(f, "w", encoding="utf8").write(t.replace(GH, "/"))
 
+# 4) sitemap-pages.xml と robots.txt(静的ページ用。記事のsitemap.xmlは Hugo が出す)
+import subprocess
+from xml.sax.saxutils import escape
+SITE = "https://" + HOST
+urls = []
+for fn, p in sorted(pages.items(), key=lambda kv: kv[1]):
+    t = open(os.path.join(src, fn), encoding="utf8").read()
+    if re.search(r'<meta name="robots" content="[^"]*noindex', t):
+        continue
+    canon = re.search(r'<link rel="canonical" href="([^"]+)"', t).group(1)
+    try:
+        d = subprocess.run(["git", "-C", src, "log", "-1", "--format=%cs", "--", fn], capture_output=True, text=True, timeout=20).stdout.strip()
+    except Exception:
+        d = ""
+    urls.append((canon, d))
+sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+for loc, d in urls:
+    sm += "  <url><loc>%s</loc>%s</url>\n" % (escape(loc), "<lastmod>%s</lastmod>" % d if d else "")
+sm += "</urlset>\n"
+open(os.path.join(out, "sitemap-pages.xml"), "w", encoding="utf8").write(sm)
+if not os.path.exists(os.path.join(out, "robots.txt")):
+    open(os.path.join(out, "robots.txt"), "w", encoding="utf8").write(
+        "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\nSitemap: %s/sitemap-pages.xml\n" % (SITE, SITE))
+print("sitemap-pages:", len(urls))
+
 print("pages:", len(pages))
 for fn, p in pages.items():
     print(f"  {fn:16s} -> {p}")
