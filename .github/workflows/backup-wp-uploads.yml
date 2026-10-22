@@ -1,0 +1,65 @@
+name: WordPressのアップロード画像・ファイルを丸ごとバックアップ(手動実行)
+
+# WordPress の「メディア」にある全ファイル(原寸の画像・音声・動画・PDFなど)を
+# moo.jp から取得して zip にまとめ、Actions の成果物(artifact)として保存します。
+# 成果物は実行画面の下の「Artifacts」から手元にダウンロードできます(30日間)。
+# サイトの公開には何も影響しません。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: メディア一覧を取得してダウンロード
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.parse, sys
+          HOST = "https://namigroove.moo.jp"
+          UA = {"User-Agent": "namigroove-backup"}
+          def get(url):
+              return urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120)
+          items = []
+          page = 1
+          while True:
+              try:
+                  r = get(f"{HOST}/wp-json/wp/v2/media?per_page=100&page={page}&_fields=id,source_url,mime_type")
+              except Exception as e:
+                  break
+              data = json.load(r)
+              items += data
+              if len(data) < 100: break
+              page += 1
+          print("media items:", len(items))
+          ok = fail = 0
+          failed = []
+          for it in items:
+              u = urllib.parse.urlparse(it["source_url"])
+              rel = u.path.lstrip("/")
+              dest = os.path.join("backup", rel)
+              os.makedirs(os.path.dirname(dest), exist_ok=True)
+              if os.path.exists(dest): ok += 1; continue
+              try:
+                  with get(HOST + u.path) as r, open(dest, "wb") as f:
+                      while True:
+                          b = r.read(1 << 20)
+                          if not b: break
+                          f.write(b)
+                  ok += 1
+              except Exception as e:
+                  fail += 1; failed.append(it["source_url"])
+          open("backup/_media-list.json", "w").write(json.dumps(items, ensure_ascii=False, indent=1))
+          open("backup/_failed.txt", "w").write("\n".join(failed))
+          print("downloaded:", ok, "failed:", fail)
+          PY
+          du -sh backup
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wp-uploads-backup
+          path: backup
+          retention-days: 30
+          compression-level: 0
