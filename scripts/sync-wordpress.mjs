@@ -1,7 +1,7 @@
-// WordPress(namigroove.com)の「ミュージック」「ムービー」を data/works.json に取り込むスクリプト
-// 使い方: node scripts/sync-wordpress.mjs              (WordPressから取得)
-//         node scripts/sync-wordpress.mjs music.json movie.json (保存済みデータで試す)
-import { readFileSync, writeFileSync } from "node:fs";
+// 記事(blog/content の music・movie)を data/works.json に取り込むスクリプト
+// (以前は WordPress から取得していましたが、記事は Pages CMS で書くようになったので、Markdown を読みます)
+// 使い方: node scripts/sync-wordpress.mjs
+import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 
 const SITE = "https://www.namigroove.com";
 const WORKS_PATH = new URL("../data/works.json", import.meta.url);
@@ -9,25 +9,39 @@ const WORKS_PATH = new URL("../data/works.json", import.meta.url);
 // 作品一覧に入れないタイトル(まとめページなど)
 const SKIP_TITLES = ["なみぐる_Works", "なみぐる – ずんだバンド2025"];
 
-async function fetchAll(type) {
-  let out = [];
-  for (let page = 1; page < 10; page++) {
-    const url = `${SITE}/wp-json/wp/v2/${type}?per_page=100&page=${page}&_embed=wp:featuredmedia`;
-    const res = await fetch(url, { headers: { "User-Agent": "namigroove-site-sync" } });
-    if (!res.ok) {
-      if (page === 1) throw new Error(`${type} を取得できませんでした (${res.status})`);
-      break;
+const CONTENT = new URL("../blog/content/", import.meta.url);
+const unq = (v) => { v = (v || "").trim(); if (v[0] === '"') { try { return JSON.parse(v); } catch { return v.slice(1, -1); } } return v; };
+
+function readPosts(type) {
+  const dir = new URL(`${type}/`, CONTENT);
+  const out = [];
+  for (const f of readdirSync(dir)) {
+    if (!f.endsWith(".md") || f.startsWith("_")) continue;
+    const txt = readFileSync(new URL(f, dir), "utf8");
+    const m = txt.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+    if (!m) continue;
+    const fm = {};
+    for (const line of m[1].split("\n")) {
+      const k = line.match(/^([A-Za-z_]+):\s*(.*)$/);
+      if (k) fm[k[1]] = unq(k[2]);
     }
-    const items = await res.json();
-    out = out.concat(items);
-    if (items.length < 100) break;
+    if (fm.draft === "true" || !fm.title) continue;
+    const slug = fm.slug || f.replace(/\.md$/, "");
+    const path = fm.url || `/${type}/${slug}/`;
+    const img = fm.image ? (fm.image.startsWith("http") ? fm.image : SITE + fm.image) : "";
+    out.push({
+      id: fm.wp_id ? Number(fm.wp_id) : slug,
+      title: { rendered: fm.title },
+      date: fm.date || "",
+      link: SITE + path,
+      _embedded: img ? { "wp:featuredmedia": [{ source_url: img }] } : {},
+      content: { rendered: m[2] },
+    });
   }
   return out;
 }
 
-const posts = process.argv[2]
-  ? [...JSON.parse(readFileSync(process.argv[2], "utf8")), ...JSON.parse(readFileSync(process.argv[3], "utf8"))]
-  : [...(await fetchAll("music")), ...(await fetchAll("movie"))];
+const posts = [...readPosts("music"), ...readPosts("movie")];
 
 const decode = (s) => s
   .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
@@ -133,7 +147,7 @@ const order = new Map(works.map((w, i) => [w, i]));
 works.sort((a, b) => (b.year - a.year) || (order.get(a) - order.get(b)));
 
 if (!added.length && !linked.length) {
-  console.log("WordPressからの新しい作品はありませんでした");
+  console.log("記事からの新しい作品はありませんでした");
   process.exit(0);
 }
 data.updated = new Date().toISOString().slice(0, 10);

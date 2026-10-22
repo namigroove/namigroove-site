@@ -1,12 +1,16 @@
-name: 作品一覧を自動更新(YouTube・WordPress)
+name: 作品一覧を自動更新(YouTube・記事)
 
 on:
+  push:
+    branches: [main]
+    paths: ["blog/content/music/**", "blog/content/movie/**"]
   schedule:
     - cron: "17 21 * * *"   # 毎日 朝6:17(日本時間)
   workflow_dispatch:         # GitHubの画面から手動でも実行できる
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   sync:
@@ -16,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: WordPressのミュージック・ムービーを取り込む
+      - name: 記事(ミュージック・ムービー)を作品一覧に取り込む
         continue-on-error: true
         run: node scripts/sync-wordpress.mjs
       - name: YouTubeの新着動画を取り込む
@@ -26,6 +30,8 @@ jobs:
         continue-on-error: true
         run: node scripts/build-works-seo.mjs
       - name: 変更があれば保存
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if git diff --quiet data/works.json works.html; then
             echo "変更なし"
@@ -35,4 +41,6 @@ jobs:
             git add data/works.json works.html
             git commit -m "作品一覧を自動更新"
             git push
+            # GITHUB_TOKEN での保存では自動公開が走らないので、公開を明示的に起動する
+            gh workflow run build-site.yml --ref main
           fi
