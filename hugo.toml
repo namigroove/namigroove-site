@@ -2,7 +2,7 @@ baseURL = "https://www.namigroove.com/"
 languageCode = "ja"
 defaultContentLanguage = "ja"
 title = "なみぐる！"
-disableKinds = ["taxonomy", "term", "RSS"]
+disableKinds = ["home", "taxonomy", "term", "RSS"]
 enableRobotsTXT = false
 [markup.goldmark.renderer]
   unsafe = true
