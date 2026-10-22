@@ -64,3 +64,12 @@ content:
         sort: date
         order: desc
     fields: *article_fields
+  - name: zztest
+    label: 試験(あとで消す)
+    type: collection
+    path: content/zztest
+    filename: "{primary}.md"
+    format: yaml-frontmatter
+    fields:
+      - { name: title, type: string }
+      - { name: body, type: rich-text, options: { format: markdown, switcher: true } }
