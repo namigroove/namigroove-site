@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>歌詞の音数カウンター(モーラ数・ボカロ作詞用) – なみぐる！</title>
-<meta name="description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、目標の音数との比較も。漢字をひらがなに直す、「は」を「わ」に直す、MusicXMLの楽譜から歌詞と音符数を読み込む機能つき。ボカロの作詞・打ち込みに。">
+<meta name="description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、目標の音数との比較も。漢字をひらがなに直す、「は」を「わ」に直す、MusicXMLやボカロ系ソフトのファイル(VSQX・VPR・SVP・USTXなど)から歌詞と音符数を読み込み、書き出す機能つき。ボカロの作詞・打ち込みに。">
 <meta property="og:title" content="歌詞の音数カウンター – なみぐる！">
 <meta property="og:description" content="歌詞の1行ごとの音数(モーラ)を数える無料ツール。拗音は1音、「っ」「ん」「ー」も1音で数え、目標の音数との比較も。漢字をひらがなに直す、「は」を「わ」に直す、MusicXMLの楽譜から歌詞と音符数を読み込む機能つき。ボカロの作詞・打ち込みに。">
 <meta property="og:type" content="website">
@@ -316,19 +316,19 @@ header.top .logo{flex:none}
   </section>
 
   <section class="panel" aria-label="楽譜から歌詞を読み込む">
-    <h2 class="ph">楽譜(MusicXML)から歌詞を読み込む</h2>
+    <h2 class="ph">楽譜・プロジェクトから歌詞を読み込む</h2>
     <div class="row mo-opts">
-      <label class="btn fbtn" id="xmlPick" tabindex="0" role="button">MusicXMLを選ぶ<input type="file" id="xmlFile" accept=".musicxml,.xml,.mxl" hidden></label>
-      <span class="note-s" id="xmlName" style="margin:0">.musicxml・.xml・.mxl に対応しています</span>
+      <label class="btn fbtn" id="xmlPick" tabindex="0" role="button">ファイルを選ぶ<input type="file" id="xmlFile" accept=".musicxml,.xml,.mxl,.mid,.midi,.vsqx,.vpr,.svp,.ustx,.ust,.ccs" hidden></label>
+      <span class="note-s" id="xmlName" style="margin:0">MusicXML(.musicxml .xml .mxl)・MIDI・VSQX・VPR・SVP・USTX・UST・CCS</span>
     </div>
     <div class="row mo-opts" id="xmlOpts" hidden>
       <div class="ctl">パート <select id="xmlPart" class="sel" aria-label="パート"></select></div>
-      <div class="ctl">歌詞の番号 <select id="xmlVerse" class="sel" aria-label="歌詞の番号"></select></div>
+      <div class="ctl" id="xmlVerseBox">歌詞の番号 <select id="xmlVerse" class="sel" aria-label="歌詞の番号"></select></div>
       <div class="ctl">改行 <select id="xmlBreak" class="sel" aria-label="改行の位置">
         <option value="r1" selected>休符(1拍以上)で</option><option value="r2">休符(2拍以上)で</option><option value="m">小節ごとに</option>
       </select></div>
     </div>
-    <p class="note-s" id="xmlMsg">歌詞が入っている楽譜から、歌詞を行ごとに取り出して入力欄に入れます。音符の数も数えて、音数の横に表示します(音数と音符が合うと緑、多いと赤、少ないと青)。</p>
+    <p class="note-s" id="xmlMsg">歌詞が入っている楽譜やプロジェクトファイルから、歌詞を行ごとに取り出して入力欄に入れます。VOCALOID・Synthesizer V・OpenUtau・UTAU・CeVIOのファイルに対応(旧形式のVSQ・S5P・DVは未対応です)。音符の数も数えて、音数の横に表示します(音数と音符が合うと緑、多いと赤、少ないと青)。</p>
   </section>
 
   <section class="panel" aria-label="歌詞を書き出す">
@@ -339,6 +339,11 @@ header.top .logo{flex:none}
         <option value="xml">MusicXML(歌詞つき)</option>
         <option value="mid">MIDI(歌詞つき)</option>
         <option value="ust">UST(UTAU・OpenUtau)</option>
+        <option value="ustx">USTX(OpenUtau)</option>
+        <option value="svp">SVP(Synthesizer V Studio)</option>
+        <option value="vsqx">VSQX(VOCALOID4・VOCALOID6)</option>
+        <option value="vpr">VPR(VOCALOID5・VOCALOID6)</option>
+        <option value="ccs">CCS(CeVIO AI・CeVIO Creative Studio)</option>
       </select></div>
       <span id="exMelody" class="mo-opts" style="display:contents" hidden>
         <div class="ctl">テンポ <input id="exBpm" class="sel num" type="number" min="30" max="300" value="120" style="width:4.5em" aria-label="テンポ"></div>
@@ -346,7 +351,7 @@ header.top .logo{flex:none}
       </span>
     </div>
     <div class="row" style="margin-top:12px"><button class="btn" type="button" id="exDl">書き出す</button><button class="btn" type="button" id="exCopy">コピー</button></div>
-    <p class="note-s" id="exMsg">入力欄の歌詞を、いまの数え方の設定で1音ずつに分けて書き出します。MusicXML・MIDI・USTの音程と長さは、歌詞を入れるための仮のもの(全部「ド」・同じ長さ)です。メロディは取り込み先で直してください。</p>
+    <p class="note-s" id="exMsg">入力欄の歌詞を、いまの数え方の設定で1音ずつに分けて書き出します。MusicXML・MIDI・UST・各ソフトのプロジェクトの音程と長さは、歌詞を入れるための仮のもの(全部「ド」・同じ長さ)です。メロディは取り込み先で直してください。VOCALOID用(VSQX・VPR)は「ー」を前の母音に直し、発音記号も入れます。歌手(音源)は取り込み先で入れ替えてください。各ソフトでの読み込みは実機で確認していません。</p>
   </section>
 
   <section class="panel" aria-live="polite">
@@ -363,8 +368,8 @@ header.top .logo{flex:none}
       <li>漢字や数字は読みがわからないので、<b>漢字《かんじ》</b> や <b>漢字(かんじ)</b> のように読みを書いてください。読みがない漢字はオレンジで知らせます。</li>
       <li>英語は母音のまとまりから音節数を目安で数えます(カタカナで書くといちばん正確です)。</li>
       <li>「歌詞を打ち込み用に直す」では、漢字をひらがなにして、助詞の「は」を「わ」に、長く伸ばす「う」を「ー」(「おもう」→「おもー」)か「お」(「おもう」→「おもお」)にします。VOCALOIDでは「ー」を入力できないので「お」を選んでください。「《よみ》」を書いた漢字は、書いた読みを使います。同じ読みの別の語(「橋」と「箸」など)や、歌い方で読みが変わる語は直らないことがあるので、直したあとに確認してください。</li>
-      <li>MusicXML(.musicxml・.xml・.mxl)を選ぶと、歌詞を取り出して行ごとに入力欄へ入れます。歌詞が入ったパートと歌詞の番号(1番・2番)を選べます。休符で行を分けるので、「改行」で分け方を変えられます。音符の数も数えるので、音数とくらべられます。</li>
-      <li>「歌詞を書き出す」では、入力欄の歌詞を1音ずつに分けて、テキスト・MusicXML・MIDI・USTで書き出します。MIDIとUSTの歌詞はShift_JISで入れるので、ひらがな・カタカナ・英数字以外は「?」になります。音程と長さは仮のものです。</li>
+      <li>MusicXML・MIDI・VOCALOID(VSQX・VPR)・Synthesizer V(SVP)・OpenUtau(USTX・UST)・CeVIO(CCS)のファイルを選ぶと、歌詞を取り出して行ごとに入力欄へ入れます。歌詞が入ったパートと歌詞の番号(1番・2番)を選べます。休符で行を分けるので、「改行」で分け方を変えられます。音符の数も数えるので、音数とくらべられます。</li>
+      <li>「歌詞を書き出す」では、入力欄の歌詞を1音ずつに分けて、テキスト・MusicXML・MIDI・UST・USTX・SVP・VSQX・VPR・CCSで書き出します。MIDIとUSTの歌詞はShift_JISで入れるので、ひらがな・カタカナ・英数字以外は「?」になります。音程と長さは仮のものです。</li>
       <li>「目標」に音数を入れると、多い行・少ない行に色がつきます。メロディの音符の数に合わせるときに便利です。</li>
     </ul>
   </section>
@@ -560,8 +565,21 @@ function extract(part,verse,brk){
   return {lines,counts};
 }
 let xparts=[];
+async function loadFmt(){
+  await Promise.all([loadScript(GH+"vendor/fflate.min.js"),loadScript(GH+"vendor/js-yaml.min.js")]);
+  await loadScript(GH+"moraformats.js");
+}
 function fillXml(initial){
   const p=xparts[+$("xmlPart").value];
+  if(p.gen){
+    $("xmlVerseBox").hidden=true;
+    const r=NgFormats.extractNotes(p.gen,p.ppq,p.beats,$("xmlBreak").value);
+    if(!r.lines.length){$("xmlMsg").textContent="このトラックには歌詞が見つかりませんでした。";return}
+    ncounts=r.counts;setLyrics(r.lines.join("\n"));
+    $("xmlMsg").textContent=r.lines.length+"行の歌詞を入れました。音数の下の「♪」は音符の数です。「元に戻す」で、入力欄を前の状態に戻せます。";
+    return;
+  }
+  $("xmlVerseBox").hidden=false;
   if(initial){
     $("xmlVerse").innerHTML=p.verses.map(v=>`<option value="${v}">${v}番</option>`).join("");
   }
@@ -574,9 +592,16 @@ function fillXml(initial){
 $("xmlFile").addEventListener("change",async()=>{
   const f=$("xmlFile").files[0];$("xmlFile").value="";if(!f)return;
   try{
-    xdoc=await readXmlFile(f);
-    xparts=partInfo(xdoc).filter(p=>p.verses.length);
-    if(!xparts.length){$("xmlOpts").hidden=true;$("xmlMsg").textContent="歌詞が入ったパートが見つかりませんでした。歌詞付きでMusicXMLを書き出してください。";return}
+    if(/\.(mid|midi|vsqx|vpr|svp|ustx|ust|ccs)$/i.test(f.name)){
+      $("xmlMsg").textContent="読み込み中です…";
+      await loadFmt();
+      const r=await NgFormats.parse(f);
+      xparts=r.parts.filter(q=>q.notes.some(n=>String(n.l).trim())).map(q=>({name:q.name,gen:q,ppq:r.ppq,beats:r.beats}));
+    }else{
+      xdoc=await readXmlFile(f);
+      xparts=partInfo(xdoc).filter(p=>p.verses.length);
+    }
+    if(!xparts.length){$("xmlOpts").hidden=true;$("xmlMsg").textContent="歌詞が入ったパートが見つかりませんでした。歌詞付きで書き出したファイルを選んでください。";return}
     $("xmlName").textContent=f.name;
     $("xmlPart").innerHTML=xparts.map((p,i)=>`<option value="${i}">${p.name.replace(/[&<>]/g,"")}</option>`).join("");
     $("xmlOpts").hidden=false;
@@ -584,7 +609,7 @@ $("xmlFile").addEventListener("change",async()=>{
   }catch(e){
     console.error(e);
     $("xmlOpts").hidden=true;
-    $("xmlMsg").textContent=e.message==="timewise"?"この形式(score-timewise)には対応していません。":"楽譜を読み込めませんでした。MusicXML(.musicxml・.xml・.mxl)を選んでください。";
+    $("xmlMsg").textContent=e.message==="timewise"?"この形式(score-timewise)には対応していません。":"ファイルを読み込めませんでした。対応している形式か確認してください。";
   }
 });
 $("xmlPart").addEventListener("change",()=>fillXml(true));
@@ -655,26 +680,28 @@ function makeUst(lines,bpm,tick){
   });
   return s+"[#TRACKEND]\n";
 }
-function buildExport(){
+async function buildExport(){
   const f=$("exFmt").value,lines=exLines();
   if(!lines.length)return null;
   const bpm=Math.min(300,Math.max(30,parseInt($("exBpm").value,10)||120)),tick=+$("exLen").value;
+  if(["ustx","svp","vsqx","vpr","ccs"].includes(f)){await loadFmt();return NgFormats.build(f,lines,bpm,tick)}
   if(f==="txt")return {text:lines.map(l=>l.join(" ")).join("\n")+"\n",name:"lyrics.txt",mime:"text/plain;charset=utf-8"};
   if(f==="xml")return {text:makeXml(lines,bpm,tick),name:"lyrics.musicxml",mime:"application/vnd.recordare.musicxml+xml"};
   if(f==="mid")return {bytes:makeMidi(lines,bpm,tick),name:"lyrics.mid",mime:"audio/midi"};
   if(f==="ust")return {bytes:new Uint8Array(sjis(makeUst(lines,bpm,tick))),text:makeUst(lines,bpm,tick),name:"lyrics.ust",mime:"text/plain"};
 }
-function exSync(){const f=$("exFmt").value;$("exMelody").hidden=f==="txt";$("exCopy").disabled=f==="mid"}
+function exSync(){const f=$("exFmt").value;$("exMelody").hidden=f==="txt";$("exCopy").disabled=f==="mid"||f==="vpr"}
 $("exFmt").addEventListener("change",exSync);exSync();
-$("exDl").onclick=()=>{
-  const r=buildExport();if(!r){$("exMsg").textContent="入力欄に歌詞を入れてから押してください";return}
+$("exDl").onclick=async()=>{
+  let r;try{r=await buildExport()}catch(e){console.error(e);$("exMsg").textContent="書き出せませんでした";return}if(!r){$("exMsg").textContent="入力欄に歌詞を入れてから押してください";return}
   const blob=new Blob([r.bytes||r.text],{type:r.mime}),a=document.createElement("a");
   a.href=URL.createObjectURL(blob);a.download=r.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
   const notes=exLines().reduce((s,l)=>s+l.length,0);
   $("exMsg").textContent=r.name+" を書き出しました("+notes+"音)。読みのない漢字は書き出されません。";
 };
-$("exCopy").onclick=()=>{
-  const r=buildExport();if(!r||r.text==null){$("exMsg").textContent="入力欄に歌詞を入れてから押してください";return}
+$("exCopy").onclick=async()=>{
+  let r;try{r=await buildExport()}catch(e){r=null}
+  if(!r||r.text==null){$("exMsg").textContent="入力欄に歌詞を入れてから押してください";return}
   (navigator.clipboard?navigator.clipboard.writeText(r.text):Promise.reject()).then(()=>toast("コピーしました"),()=>toast("コピーできませんでした"));
 };
 
