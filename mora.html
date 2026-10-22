@@ -226,7 +226,7 @@ footer a{color:var(--sea)}
 .lyr:focus{outline:2px solid var(--sea);outline-offset:1px}
 .mo-opts{justify-content:flex-start;margin-top:10px;gap:8px 16px}
 .chk{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
-.mo-sum{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:13px;color:var(--ink-soft);margin-bottom:10px}
+.mo-sum:empty{display:none}.mo-sum{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:13px;color:var(--ink-soft);margin-bottom:10px}
 .mo-sum b{font:500 20px var(--f-mono);color:var(--ink);margin:0 2px}
 .mo-lines{list-style:none;margin:0 0 14px;padding:0;counter-reset:ln}
 .mo-lines li{display:grid;grid-template-columns:2.2em 3.4em 1fr;gap:8px;align-items:start;padding:8px 4px;border-bottom:1px solid var(--line);cursor:pointer}
@@ -284,6 +284,7 @@ header.top .logo{flex:none}
   </div>
 
   <section class="panel" aria-label="歌詞を入力">
+    <div class="mo-sum" id="sum" aria-live="polite"></div>
     <textarea id="lyr" class="lyr" rows="9" placeholder="ここに歌詞を入力(1行ずつ数えます)&#10;漢字は 漢字《かんじ》 や 漢字(かんじ) のように読みを書くと正確に数えられます"></textarea>
     <div class="row mo-opts">
       <div class="ctl">数え方 <select id="preset" class="sel" aria-label="数え方のおすすめ設定">
@@ -303,7 +304,12 @@ header.top .logo{flex:none}
     <p class="note-s">入力した歌詞はこの端末の中だけで数えます。どこにも送信されません(下書きはこのブラウザに保存されます)。</p>
   </section>
 
-  <section class="panel" aria-label="歌詞を直す">
+    <section class="panel" aria-live="polite">
+    <ol class="mo-lines" id="lines"></ol>
+    <div class="row"><button class="btn" type="button" id="copyBtn">結果をコピー</button><button class="btn" type="button" id="clearBtn">クリア</button></div>
+  </section>
+
+<section class="panel" aria-label="歌詞を直す">
     <h2 class="ph">歌詞を打ち込み用に直す</h2>
     <div class="row mo-opts">
       <label class="chk"><input type="checkbox" id="cKanji" checked> 漢字をひらがなに</label>
@@ -352,12 +358,6 @@ header.top .logo{flex:none}
     </div>
     <div class="row" style="margin-top:12px"><button class="btn" type="button" id="exDl">書き出す</button><button class="btn" type="button" id="exCopy">コピー</button></div>
     <p class="note-s" id="exMsg">入力欄の歌詞を、いまの数え方の設定で1音ずつに分けて書き出します。MusicXML・MIDI・UST・各ソフトのプロジェクトの音程と長さは、歌詞を入れるための仮のもの(全部「ド」・同じ長さ)です。メロディは取り込み先で直してください。VOCALOID用(VSQX・VPR)は「ー」を前の母音に直し、発音記号も入れます。歌手(音源)は取り込み先で入れ替えてください。各ソフトでの読み込みは実機で確認していません。</p>
-  </section>
-
-  <section class="panel" aria-live="polite">
-    <div class="mo-sum" id="sum"></div>
-    <ol class="mo-lines" id="lines"></ol>
-    <div class="row"><button class="btn" type="button" id="copyBtn">結果をコピー</button><button class="btn" type="button" id="clearBtn">クリア</button></div>
   </section>
 
   <section class="how">
