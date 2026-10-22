@@ -943,13 +943,14 @@ let playTok=0,paused=false;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const LONG=560;
 async function loop(my){
-  let i=0,v=vid&&vid.video;
+  let i=0,v=vid&&vid.video,bad=0;
   if(v&&!vid.live){try{v.loop=false;v.currentTime=Math.min(+$("astart").value||0,Math.max(0,vid.dur-0.1));await v.play()}catch(e){}}
   while(my===playTok){
     if(paused||document.hidden){await sleep(200);continue}
     const t0=performance.now();
     try{
       let src;
+      if(v&&(!v.videoWidth||v.readyState<2)){await sleep(100);continue}
       if(v){
         const st=+$("astart").value||0,len=+$("alen").value||3;
         if(!vid.live&&(v.ended||v.currentTime>=Math.min(st+len,vid.dur-0.05)||v.currentTime<st-0.2)){v.currentTime=Math.min(st,Math.max(0,vid.dur-0.1));if(v.paused)try{await v.play()}catch(e){}}
@@ -959,7 +960,8 @@ async function loop(my){
       const c=await FX[cur].run(src,params(),R,src.width/800);
       if(my!==playTok)return;
       if(!showOrig)show(c);
-    }catch(e){console.error(e);return}
+      bad=0;
+    }catch(e){console.error(e);if(++bad>=30){if(my===playTok)$("saveMsg").textContent="プレビューを続けられませんでした。";return}await sleep(200);continue}
     i++;await sleep(Math.max(0,95-(performance.now()-t0)));
   }
 }
@@ -1089,9 +1091,15 @@ async function startLive(){
   const keep=(vid&&vid.live)?prevOrig:orig;stopLive();prevOrig=keep;
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$("srcNote").textContent="このブラウザは、カメラを使えません。";return}
   try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing},width:{ideal:1280}},audio:false})}
-  catch(e){$("srcNote").textContent="カメラを使えませんでした。ブラウザのカメラの許可を確認してください。";return}
-  const v=document.createElement("video");v.muted=true;v.playsInline=true;v.srcObject=stream;
+  catch(e){
+    const n=e&&e.name,m=n==="NotAllowedError"||n==="SecurityError"?"カメラの許可がありません。ブラウザのアドレスバー付近でカメラを許可してから、もう一度押してください。":n==="NotFoundError"||n==="OverconstrainedError"?"カメラが見つかりませんでした。":n==="NotReadableError"?"カメラがほかのアプリで使われています。閉じてからもう一度押してください。":"カメラを使えませんでした。("+(n||"error")+")";
+    $("srcNote").textContent=m;$("saveMsg").textContent=m;return}
+  const v=document.createElement("video");v.muted=true;v.setAttribute("muted","");v.setAttribute("playsinline","");v.playsInline=true;v.autoplay=true;
+  v.style.cssText="position:fixed;left:0;top:0;width:2px;height:2px;opacity:0;pointer-events:none";document.body.appendChild(v);
+  v.srcObject=stream;
   try{await v.play()}catch(e){}
+  for(let k=0;k<50&&!v.videoWidth;k++)await sleep(100);
+  if(!v.videoWidth){stopLive();v.remove();$("srcNote").textContent=$("saveMsg").textContent="カメラの映像が届きませんでした。ページを再読み込みして、もう一度試してください。";return}
   if(vid&&vid.url)URL.revokeObjectURL(vid.url);
   const tr=stream.getVideoTracks()[0],fm=tr&&tr.getSettings?tr.getSettings().facingMode:"";
   vid={url:null,video:v,dur:Infinity,live:true,mirror:fm?fm==="user":facing==="user"};
@@ -1102,7 +1110,7 @@ function stopLive(){
   playTok++;
   if(rec&&rec.state==="recording")try{rec.stop()}catch(e){}
   if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
-  if(vid&&vid.live)vid=null;
+  if(vid&&vid.live){try{vid.video.srcObject=null;vid.video.remove()}catch(e){}vid=null}
   $("liveBar").hidden=true;
 }
 function shoot(){
