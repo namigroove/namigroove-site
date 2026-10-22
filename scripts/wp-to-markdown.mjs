@@ -60,15 +60,21 @@ function imgPath(u) {
 }
 // WordPress が自動で作る縮小版(-300x200 など)は元画像に寄せて、保存する枚数を減らす
 const original = (p) => p.replace(/-\d+x\d+(\.[a-z0-9]+)$/i, "$1");
+let failStreak = 0, STOPPED = false;
+const THROTTLE = +(process.env.THROTTLE_MS || 1000);
 async function download(pathname) {
+  if (STOPPED) return { ok: false, status: "stopped" };
   for (let t = 0; t < 4; t++) {
     try {
       const res = await fetch(SITE + pathname, { headers: UA });
-      if (res.status === 404) return { ok: false, status: 404 };
+      if (res.status === 404) { failStreak = 0; return { ok: false, status: 404 }; }
       if (!res.ok) throw new Error(res.status);
+      failStreak = 0;
       return { ok: true, buf: Buffer.from(await res.arrayBuffer()) };
-    } catch (e) { await sleep(800 * (t + 1)); }
+    } catch (e) { await sleep(1500 * (t + 1)); }
   }
+  // サーバーが不調なら、これ以上アクセスしない(連続6回の失敗で中止)
+  if (++failStreak >= 6) { STOPPED = true; console.error("連続して失敗したため、画像の取得を中止しました"); }
   return { ok: false, status: "failed" };
 }
 async function saveImage(pathname) {
@@ -78,7 +84,7 @@ async function saveImage(pathname) {
   for (const c of candidates) {
     if (imgDone.has("saved:" + c)) { imgDone.set(pathname, c); return c; }
     const r = await download(c);
-    await sleep(120);
+    await sleep(THROTTLE);
     if (r.ok) {
       const f = join(OUT, "static", c); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, r.buf);
       report.images.ok++; report.images.bytes += r.buf.length; imgDone.set("saved:" + c, true); imgDone.set(pathname, c); return c;
