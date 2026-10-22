@@ -344,9 +344,33 @@ header.top .logo{flex:none}
           <option value="" selected>そのまま</option>
           <option value="1:1:c">1:1に切り抜き</option>
           <option value="1:1:p">1:1に余白を足す</option>
+          <option value="16:9:p">16:9に余白を足す</option>
+          <option value="4:3:p">4:3に余白を足す</option>
+          <option value="4:5:p">4:5(縦)に余白を足す</option>
+          <option value="9:16:p">9:16(縦)に余白を足す</option>
           <option value="16:9:c">16:9に切り抜き</option>
           <option value="4:3:c">4:3に切り抜き</option>
         </select>
+      </div>
+    </div>
+    <div class="sub" id="padRow">
+      <span>余白:</span>
+      <div class="ctl">まわりに足す
+        <input id="padpx" class="sel" type="number" min="0" max="2000" value="0" style="width:5em" aria-label="まわりに足す余白(px)"> px
+      </div>
+      <div class="ctl">埋め方
+        <select id="padfill" class="sel" aria-label="余白の埋め方">
+          <option value="none" selected>透明(JPGは背景色)</option>
+          <option value="solid">単色</option>
+          <option value="grad">グラデーション</option>
+          <option value="edge">端の色を引き伸ばす</option>
+          <option value="blur">画像を引き伸ばしてぼかす</option>
+        </select>
+      </div>
+      <span class="ctl rg" id="padC1">色 <input id="pc1" type="color" value="#ffffff" aria-label="余白の色"><button class="btn eyed" type="button" data-t="pc1" hidden>スポイト</button></span>
+      <span class="ctl rg" id="padC2">もう1色 <input id="pc2" type="color" value="#7fb5ff" aria-label="グラデーションのもう1色"><button class="btn eyed" type="button" data-t="pc2" hidden>スポイト</button></span>
+      <div class="ctl" id="padDir">向き
+        <select id="pdir" class="sel" aria-label="グラデーションの向き"><option value="v" selected>上→下</option><option value="h">左→右</option><option value="d">斜め</option></select>
       </div>
     </div>
     <div class="sub">
@@ -404,6 +428,7 @@ header.top .logo{flex:none}
       <li>ファイルを選ぶかドロップすると変換が始まります。設定を変えたら「この設定でやり直す」で、同じファイルを変換し直せます。</li>
       <li>読める画像: PNG・JPG・WebP・GIF・BMP・SVG・AVIF・ICO、iPhoneの写真(HEIC)、TIFF。書き出しは PNG・JPG・WebP・ICO です。写真に入っている撮影場所などの情報(EXIF)は、書き出すと消えます。</li>
       <li>JPGにするとき、透明な部分は「背景色」で塗ります。</li>
+      <li>余白は、「まわりに足す」でpx指定するか、「比率」の「〜に余白を足す」で足せます。埋め方は、透明・単色・グラデーション・端の色を引き伸ばす・画像を引き伸ばしてぼかす、から選べます。スポイトで画面の色を取れます(Chrome・Edgeのみ)。</li>
       <li>JPG・WebPの画質は0〜100%で選べます。100%に近いほどきれいで容量が大きく、0%に近いほどガビガビになって軽くなります。動画のGIF・APNGも、画質を下げると色数が減って軽くなります。</li>
       <li>ICO は 16〜256px を1つにまとめます。ファビコン一式は、favicon.ico(16・32・48px)と apple-touch-icon(180px)、192px・512pxのPNGを作ります。正方形でない画像は、余白を足して正方形にします。</li>
       <li>加工は、回転・反転 → 背景を透明に → 余白カット → 比率 → 白黒 → サイズ、の順に行います。「背景を透明にする」は、画像の外側につながっている左上と同じ色を消します。</li>
@@ -448,10 +473,16 @@ const MIME={png:"image/png",jpg:"image/jpeg",webp:"image/webp"};
 const userErr=m=>{const e=new Error(m);e.userMsg=m;return e};
 const loadScript=(()=>{const m={};return src=>m[src]||(m[src]=new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=()=>rej(new Error("load "+src));document.head.appendChild(s)}))})();
 
+$("padfill").addEventListener("change",sync);
+if(window.EyeDropper)document.querySelectorAll(".eyed").forEach(b=>{b.hidden=false;b.addEventListener("click",async()=>{try{const r=await new EyeDropper().open();$(b.dataset.t).value=r.sRGBHex}catch(e){}})});
 $("q").addEventListener("input",()=>{$("qv").textContent=$("q").value+"%"});
 $("vq").addEventListener("input",()=>{$("vqv").textContent=$("vq").value+"%"});
 function sync(){
   const f=$("fmt").value;
+  const pf=$("padfill").value;
+  $("padC1").style.display=(pf==="solid"||pf==="grad")?"":"none";
+  $("padC2").style.display=pf==="grad"?"":"none";
+  $("padDir").style.display=pf==="grad"?"":"none";
   $("qWrap").style.display=(f==="jpg"||f==="webp")?"":"none";
   $("bgWrap").style.display=(f==="jpg"||f==="fav")?"":"none";
   $("tolWrap").style.display=$("cut").checked?"":"none";
@@ -475,7 +506,7 @@ function finish(r,blob,name,note){
   allBtn.hidden=jobs.filter(x=>x.done).length<2;
 }
 function readOpt(){
-  return {fmt:$("fmt").value,q:+$("q").value/100,bg:$("bg").value,maxw:+$("maxw").value,rot:+$("rot").value,flip:$("flip").value,ratio:$("ratio").value,
+  return {fmt:$("fmt").value,q:+$("q").value/100,bg:$("bg").value,maxw:+$("maxw").value,rot:+$("rot").value,flip:$("flip").value,ratio:$("ratio").value,padpx:Math.min(2000,Math.max(0,parseInt($("padpx").value,10)||0)),padfill:$("padfill").value,pc1:$("pc1").value,pc2:$("pc2").value,pdir:$("pdir").value,
     trim:$("trim").checked,gray:$("gray").checked,cut:$("cut").checked,tol:+$("tol").value,pages:$("pages").value,psdmode:$("psdmode").value,
     vfmt:$("vfmt").value,vq:+$("vq").value,gw:+$("gw").value,gfps:+$("gfps").value,gst:Math.max(0,+$("gst").value||0),glen:Math.min(10,Math.max(0.5,+$("glen").value||5))};
 }
@@ -531,7 +562,28 @@ function trimC(c){
   if(x1<0||(x0===0&&y0===0&&x1===w-1&&y1===h-1))return c;
   const o=mk(x1-x0+1,y1-y0+1);o.getContext("2d").drawImage(c,x0,y0,o.width,o.height,0,0,o.width,o.height);return o;
 }
-function ratioC(c,spec){
+/* 余白つきで置く: 大きさ tw×th の中央に c を置き、まわりを埋める */
+function placeC(c,tw,th,o){
+  const w=c.width,h=c.height,dx=Math.round((tw-w)/2),dy=Math.round((th-h)/2),out=mk(tw,th),x=out.getContext("2d");
+  const m=o.padfill;
+  if(m==="solid"){x.fillStyle=o.pc1;x.fillRect(0,0,tw,th)}
+  else if(m==="grad"){
+    const g=o.pdir==="h"?x.createLinearGradient(0,0,tw,0):o.pdir==="d"?x.createLinearGradient(0,0,tw,th):x.createLinearGradient(0,0,0,th);
+    g.addColorStop(0,o.pc1);g.addColorStop(1,o.pc2);x.fillStyle=g;x.fillRect(0,0,tw,th);
+  }else if(m==="edge"){
+    x.imageSmoothingEnabled=false;
+    if(dx>0){x.drawImage(c,0,0,1,h,0,dy,dx,h);x.drawImage(c,w-1,0,1,h,dx+w,dy,tw-dx-w,h)}
+    if(dy>0){x.drawImage(c,0,0,w,1,dx,0,w,dy);x.drawImage(c,0,h-1,w,1,dx,dy+h,w,th-dy-h)}
+    if(dx>0&&dy>0){x.drawImage(c,0,0,1,1,0,0,dx,dy);x.drawImage(c,w-1,0,1,1,dx+w,0,tw-dx-w,dy);x.drawImage(c,0,h-1,1,1,0,dy+h,dx,th-dy-h);x.drawImage(c,w-1,h-1,1,1,dx+w,dy+h,tw-dx-w,th-dy-h)}
+    x.imageSmoothingEnabled=true;
+  }else if(m==="blur"){
+    const k=Math.max(tw/w,th/h),sw=w*k,sh=h*k,sm=mk(Math.max(2,Math.round(tw/28)),Math.max(2,Math.round(th/28))),sx=sm.getContext("2d");
+    sx.imageSmoothingQuality="high";sx.drawImage(c,(sm.width-sw*sm.width/tw)/2,(sm.height-sh*sm.height/th)/2,sw*sm.width/tw,sh*sm.height/th);
+    x.imageSmoothingQuality="high";x.drawImage(sm,0,0,tw,th);
+  }
+  x.drawImage(c,dx,dy);return out;
+}
+function ratioC(c,spec,o){
   const [a,b,m]=spec.split(":"),r=a/b,w=c.width,h=c.height;
   if(m==="c"){
     let cw=w,ch=h;if(w/h>r)cw=Math.round(h*r);else ch=Math.round(w/r);
@@ -539,7 +591,7 @@ function ratioC(c,spec){
   }
   let cw=w,ch=h;if(w/h<r)cw=Math.round(h*r);else ch=Math.round(w/r);
   if(cw===w&&ch===h)return c;
-  const o=mk(cw,ch);o.getContext("2d").drawImage(c,(cw-w)/2,(ch-h)/2);return o;
+  return placeC(c,cw,ch,o);
 }
 function grayC(c){
   const x=c.getContext("2d",{willReadFrequently:true}),id=x.getImageData(0,0,c.width,c.height),d=id.data;
@@ -551,7 +603,8 @@ function adjust(c,o){
   c=rotFlip(c,o.rot,o.flip);
   if(o.cut)c=removeBg(c,o.tol);
   if(o.trim)c=trimC(c);
-  if(o.ratio)c=ratioC(c,o.ratio);
+  if(o.padpx>0)c=placeC(c,c.width+o.padpx*2,c.height+o.padpx*2,o);
+  if(o.ratio)c=ratioC(c,o.ratio,o);
   if(o.gray)c=grayC(c);
   if(o.maxw&&c.width>o.maxw)c=scaleTo(c,o.maxw,c.height*o.maxw/c.width);
   return c;
