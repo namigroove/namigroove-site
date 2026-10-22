@@ -10,7 +10,7 @@ draft: false
 
 <p><a href="https://myriico.com/" target="_blank" rel="noopener"><img src="https://www.namigroove.com/wp-content/uploads/2023/07/msmylbanaa2.png" alt="Myriico のサイト" loading="lazy" decoding="async" style="width:100%;height:auto"></a></p>
 
-<p><a href="https://hayunyah.wixsite.com/hayutea" target="_blank" rel="noopener"><img src="https://www.namigroove.com/wp-content/uploads/2023/12/hayubanner.png" alt="はゆ茶のサイト" loading="lazy" decoding="async" style="width:100%;height:auto"></a></p>
+<p><a href="https://hayunyah.wixsite.com/hayutea" target="_blank" rel="noopener"><img src="https://www.namigroove.com/wp-content/uploads/2023/12/hayubanner.webp" alt="はゆ茶のサイト" loading="lazy" decoding="async" style="width:100%;height:auto"></a></p>
 
 <p><a href="https://www.suzumenome.com" target="_blank" rel="noopener"><img src="https://www.suzumenome.com/mutual-links/banners/szmnm-banner01.png" alt="すずめのめオフィシャルWEB バナー" loading="lazy" decoding="async" style="width:100%;height:auto"></a></p>
 
