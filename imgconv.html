@@ -312,7 +312,7 @@ header.top .logo{flex:none}
           <option value="fav">ファビコン一式(ICO+PNG)</option>
         </select>
       </div>
-      <label class="ctl rg" id="qWrap">画質 <input id="q" type="range" min="50" max="100" value="90" aria-label="画質"><output id="qv">90</output></label>
+      <label class="ctl rg" id="qWrap">画質 <input id="q" type="range" min="0" max="100" value="90" aria-label="画質(0%はガビガビ、100%は高画質)"><output id="qv">90%</output></label>
       <label class="ctl rg" id="bgWrap">背景色 <input id="bg" type="color" value="#ffffff" aria-label="背景色(JPGと透明部分用)"></label>
     </div>
     <div class="sub">
@@ -376,6 +376,7 @@ header.top .logo{flex:none}
           <option value="gif" selected>GIF</option><option value="apng">APNG(高画質)</option>
         </select>
       </div>
+      <label class="ctl rg">画質 <input id="vq" type="range" min="0" max="100" value="100" aria-label="動画の画質(0%はガビガビ、100%は高画質)"><output id="vqv">100%</output></label>
       <div class="ctl">幅
         <select id="gw" class="sel" aria-label="アニメの幅">
           <option value="240">240px</option><option value="320">320px</option><option value="480" selected>480px</option><option value="640">640px</option>
@@ -403,6 +404,7 @@ header.top .logo{flex:none}
       <li>ファイルを選ぶかドロップすると変換が始まります。設定を変えたら「この設定でやり直す」で、同じファイルを変換し直せます。</li>
       <li>読める画像: PNG・JPG・WebP・GIF・BMP・SVG・AVIF・ICO、iPhoneの写真(HEIC)、TIFF。書き出しは PNG・JPG・WebP・ICO です。写真に入っている撮影場所などの情報(EXIF)は、書き出すと消えます。</li>
       <li>JPGにするとき、透明な部分は「背景色」で塗ります。</li>
+      <li>JPG・WebPの画質は0〜100%で選べます。100%に近いほどきれいで容量が大きく、0%に近いほどガビガビになって軽くなります。動画のGIF・APNGも、画質を下げると色数が減って軽くなります。</li>
       <li>ICO は 16〜256px を1つにまとめます。ファビコン一式は、favicon.ico(16・32・48px)と apple-touch-icon(180px)、192px・512pxのPNGを作ります。正方形でない画像は、余白を足して正方形にします。</li>
       <li>加工は、回転・反転 → 背景を透明に → 余白カット → 比率 → 白黒 → サイズ、の順に行います。「背景を透明にする」は、画像の外側につながっている左上と同じ色を消します。</li>
       <li>PSD は、重ねたレイヤーを1枚にして書き出します。「互換性を最大化」をオフにして保存したものは、レイヤーを重ね直して作ります。ブレンドモードと不透明度は反映しますが、調整レイヤー・レイヤーマスク・レイヤー効果・文字の見た目の一部は反映されないので、見た目が違うときは元のソフトでPNGに書き出してください。</li>
@@ -446,7 +448,8 @@ const MIME={png:"image/png",jpg:"image/jpeg",webp:"image/webp"};
 const userErr=m=>{const e=new Error(m);e.userMsg=m;return e};
 const loadScript=(()=>{const m={};return src=>m[src]||(m[src]=new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=()=>rej(new Error("load "+src));document.head.appendChild(s)}))})();
 
-$("q").addEventListener("input",()=>{$("qv").textContent=$("q").value});
+$("q").addEventListener("input",()=>{$("qv").textContent=$("q").value+"%"});
+$("vq").addEventListener("input",()=>{$("vqv").textContent=$("vq").value+"%"});
 function sync(){
   const f=$("fmt").value;
   $("qWrap").style.display=(f==="jpg"||f==="webp")?"":"none";
@@ -474,7 +477,7 @@ function finish(r,blob,name,note){
 function readOpt(){
   return {fmt:$("fmt").value,q:+$("q").value/100,bg:$("bg").value,maxw:+$("maxw").value,rot:+$("rot").value,flip:$("flip").value,ratio:$("ratio").value,
     trim:$("trim").checked,gray:$("gray").checked,cut:$("cut").checked,tol:+$("tol").value,pages:$("pages").value,psdmode:$("psdmode").value,
-    vfmt:$("vfmt").value,gw:+$("gw").value,gfps:+$("gfps").value,gst:Math.max(0,+$("gst").value||0),glen:Math.min(10,Math.max(0.5,+$("glen").value||5))};
+    vfmt:$("vfmt").value,vq:+$("vq").value,gw:+$("gw").value,gfps:+$("gfps").value,gst:Math.max(0,+$("gst").value||0),glen:Math.min(10,Math.max(0.5,+$("glen").value||5))};
 }
 function add(files,keep){
   const opt=readOpt();
@@ -744,13 +747,16 @@ async function doAnim(r){
   const fps=opt.gfps,frames=Math.max(1,Math.round(len*fps));
   const w=Math.min(opt.gw,v.videoWidth),h=Math.round(v.videoHeight*w/v.videoWidth);
   const c=mk(w,h),x=c.getContext("2d",{willReadFrequently:true});
+  const lv=Math.min(256,Math.max(2,Math.round(2*Math.pow(128,(opt.vq==null?100:opt.vq)/100))));/* 画質0%→2段階(ガビガビ)、100%→256 */
   const apng=opt.vfmt==="apng",enc=apng?null:gifenc.GIFEncoder(),fr=[];
   for(let i=0;i<frames;i++){
     await new Promise(res=>{const t=setTimeout(res,3000);v.onseeked=()=>{clearTimeout(t);res()};v.currentTime=start+i/fps});
     x.drawImage(v,0,0,w,h);
-    if(apng){const k=mk(w,h);k.getContext("2d").drawImage(c,0,0);fr.push(k)}
+    if(apng){
+      if(lv<256){const im=x.getImageData(0,0,w,h),d=im.data;for(let j=0;j<d.length;j++)if((j&3)!==3)d[j]=Math.round(Math.round(d[j]/255*(lv-1))*255/(lv-1));x.putImageData(im,0,0)}
+      const k=mk(w,h);k.getContext("2d").drawImage(c,0,0);fr.push(k)}
     else{
-      const d=x.getImageData(0,0,w,h).data,pal=gifenc.quantize(d,256);
+      const d=x.getImageData(0,0,w,h).data,pal=gifenc.quantize(d,lv);
       enc.writeFrame(gifenc.applyPalette(d,pal),w,h,{palette:pal,delay:Math.round(1000/fps),repeat:0});
     }
     const p=Math.round((i+1)/frames*100);r.bar.style.width=p+"%";r.st.textContent="変換中… "+p+"%";
