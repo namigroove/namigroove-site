@@ -1,0 +1,155 @@
+---
+title: "ハリボテ / なみぐる feat.可不(KAFU)"
+date: "2022-02-21T01:35:02"
+lastmod: "2023-05-12T00:47:43"
+slug: "movie-545"
+url: "/movie/movie-545/"
+type: "movie"
+wp_id: 545
+draft: false
+image: "/wp-content/uploads/2022/02/maxresdefault.webp"
+---
+<iframe loading="lazy" title="ハリボテ / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/-x4BRRGXPeU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+## テーマ
+
+「個性を発揮すること」「周りに合わせること」両方が求められる世の中で、空虚な日々を冷笑的に過ごす現代人を描く。
+
+## 音楽
+
+既存界隈曲の概念を刷新した作品が作ってみたくて、自身の音楽性を含めて再構築。
+
+マイナーペンタでxx兄貴節を効かせつつ、生楽器主体でグルーヴィーに、展開多めに仕上げた。
+
+<iframe loading="lazy" title="ヤツメ穴" width="500" height="375" src="https://www.youtube.com/embed/C9PFVo1FEwU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+*リスペクト元*
+
+https://www.youtube.com/watch?v=IY3SIq4vw2A
+
+*リズム遊びはこれの影響が強い*
+
+## 構成
+
+**Aメロ**
+
+つかみ　Lofiピアノを刻む
+
+Interludeは倍テンポに落とす
+
+**Bメロ**
+
+スラップ　トライアングルで疾走感up
+
+ヤツメ風オブリガードin
+
+**サビ**
+
+メロディは白玉のマイナーペンタ、しゃくりも入れて和風っぽく
+
+アーメン× 4+3 ピアノでリズム隊はカッチリ
+
+**落ちサビ**
+
+1拍詰めて15/16に
+
+余白にドラムフィルを入れて緊張感と締まりを作る
+
+**Aメロ**
+
+**Bメロ**
+
+Lo-Fiワルツ リズムチェンジ
+
+ソプラノサックス(哀愁要因)
+
+**サビ**
+
+転調　荒ぶりオブリ
+
+**Aメロ**
+
+不安なコード(sus4)で〆
+
+**アウトロ**
+
+ワルツ再び　ピカルディ終止
+
+### **ボーカル**
+
+可不の低音を活かす×歌いやすくするため、難しいことはさせず。
+
+サビ以外:無機質なペンタフレーズで空虚感を。
+
+サビ:こぶしを効かせて聞き手に問いかける。
+
+### **管楽器**
+
+ソプラノサックス:哀愁要因
+
+### 竿物
+
+ベース:4弦ベースの1弦を緩めて無理やり5弦ベースフレーズを作った。
+
+テクスチュアルなドラムに対してスペーシーなスラップを合わせるとかっこよい。
+
+### **リズム**
+
+ほとんどspliceのサンプル。　SEは生活音サイト・slack通知音・MOTHER2から拾った。
+
+リズムチェンジを使い分けて曲の雰囲気を出した。
+
+**金物**
+
+Xpand2のカリンバ　鉄琴　木琴をEQでハイ抑えたもの。
+
+### ピ**アノ**
+
+Steinbergの無料音源　Lofi Piano
+
+https://www.steinberg.net/ja/vst-instruments/lofi-piano/
+
+イイ感じにコンプ・コーラスがかかった調理済み音がたくさん入っている。  
+これが使いたくて作ったまである。
+
+## 映像
+
+### azpainter2 / edge:描画用
+
+最初はedgeでドット絵作ってたけど、あずぺんのがアニメ作りやすかった。
+
+### アニメGIF変換
+
+書き出したレイヤをぶち込んでアニメGIF生成→Aviutlで動画として読み込み
+
+ブラウザアプリ万歳
+
+https://ezgif.com/maker
+
+### Aviutlで二アレストネイバー拡大(劣化なしでドット絵でかくする)
+
+これ知るまでドット絵を無理やりでかくして書き出す徒労をしていた。
+
+https://alpha-photo.net/archives/8242
+
+### AviutlでMIDI表示
+
+xx兄貴リスペクトを手打ちでやるのはしんどいので、これに助けられた。
+
+<iframe loading="lazy" title="【紹介】AviUtlでMIDIを表示できるスクリプト" width="500" height="281" src="https://www.youtube.com/embed/d5S402Jt9g4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+### Aviutlでオーディオ波形
+
+生楽器はMIDI使えない為、ベースとサックス波形はこれにドット化をかけたものを使用。
+
+https://www.nicovideo.jp/watch/sm36213377
+
+### WAVが鳴っているタイミングで可不がベースを弾く(音声同期)
+
+1.REAPERのダイナミックスプリットで音の鳴るタイミングでWAVファイルを切り抜き。
+
+http://positiveallergy.blog50.fc2.com/blog-entry-589.htm
+
+2.まいまいさんのスクリプトでアニメGIFを動かす。
+
+https://ytpmv.info/RPPtoEXO/

@@ -1,0 +1,168 @@
+---
+title: "ずんだエビフライ / なみぐる feat.ずんだもん・琴葉 茜"
+date: "2022-12-06T21:39:39"
+lastmod: "2026-10-16T12:04:48"
+slug: "movie-2064"
+url: "/movie/movie-2064/"
+type: "movie"
+wp_id: 2064
+draft: false
+image: "/wp-content/uploads/2022/12/maxresdefault.webp"
+---
+<iframe loading="lazy" title="ずんだエビフライ / なみぐる feat.ずんだもん・琴葉 茜" width="500" height="281" src="https://www.youtube.com/embed/hNw3QoC6ISI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+## テーマ
+
+Dub Reggae × Kawaii Future Bass
+
+セレンディピティ（偶然の出会い）の尊さ
+
+〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎
+
+◤2023/12/20追記
+
+EPの物理版がリリースされたのだ
+
+> [【1st Remix EP】🍤「ずんだエビフライ」メガ盛り弁当🍱](https://www.namigroove.com/music/zunda-ebihurai/)
+
+<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【1st Remix EP】🍤「ずんだエビフライ」メガ盛り弁当🍱” — なみぐる！" src="https://www.namigroove.com/music/zunda-ebihurai/embed/#?secret=h5svPpCXDc#?secret=WvRMPmMdrM" data-secret="WvRMPmMdrM" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+◤2023/9/1追記
+
+フルとEPのサブスク版が出たで〜
+
+<iframe loading="lazy" title="ずんだエビフライ (Full ver.)  / なみぐる feat.ずんだもん・琴葉 茜" width="500" height="281" src="https://www.youtube.com/embed/qWBGjWPV33M?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+> ◤₺ƾらせ  
+> 🍤✧🍤✧🍤✧🍤✧🍤✧🍤  
+> 「ずんだエビフライ」メガ盛り弁当  
+> サブスク配信開始[https://t.co/QUvKDM7HSI](https://t.co/QUvKDM7HSI)  
+>   
+> なみぐる & DIG8 Records  
+> たっぷり7曲！”全て”ずんだエビフライ🍤  
+> 敏腕シェフ6名が自由気ままにクッキング🍳  
+> 🍤✧🍤✧🍤✧🍤✧🍤✧🍤 [pic.twitter.com/Y8m93Tzp2r](https://t.co/Y8m93Tzp2r)
+> 
+> — なみぐる@ずんだもんがいっぱい 全国リリース (@namigroove) [September 1, 2023](https://twitter.com/namigroove/status/1697625364514697320?ref_src=twsrc%5Etfw)
+
+◤2023/1/29追記
+
+8小節アワード　buzzG賞頂きました🏆  
+お子さんにも人気みたいで嬉しいのだ～！  
+レゲエの玄人受けも凄いのだ！
+
+〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎〰︎
+
+## 製作意図
+
+8小節アワードという短い曲の投稿祭に参加してみたかったため。
+
+茜ちゃんの好きなエビフライとずんだもんのずんだもちをかけ合わせて謎の食べ物を錬成したら面白そうだと思い、脊髄反射的に「ずんだエビフライ」を作った。
+
+多くの人に見てもらう契機になればうれしい。
+
+> [結果発表](https://8bar-music.com/)
+
+<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“結果発表” — 第3回 8小節アワード" src="https://8bar-music.com/embed/#?secret=sGjEkKhPPb#?secret=rE4kLyT5TX" data-secret="rE4kLyT5TX" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+*8小節アワード*
+
+[https://www.nicovideo.jp/watch/sm41398602](https://www.nicovideo.jp/watch/sm41398602)
+
+30秒使い切りたいなと思っていたのでジャンルとしてはゆったりノれるDub Reggaeを選択
+
+それ単体だけではニッチすぎるので、ややレガシーながら大衆受けのよいKawaii Future Bassと組ませてみる。
+
+最近楽曲コライトの機会があったり、DJイベントに参加するなどしていく中で、
+
+自分一人では生み出せないアイデアや楽しみがあるなあと痛感しており、「サイアクそうでサイコーな偶然のめぐり合わせの素晴らしさ」みたいなテーマで一曲作りたかった。
+
+## サウンド
+
+ちゃんとFuture Bassやる為に音作り(初級)からベンツヨした。
+
+・ウネウネしたベースはグライドベースといい、前の音から次の音遷移幅をツマミで調整できるらしい。
+
+・ほわんとした音を作るためにはスパソにローパスフィルターかければ良いらしい。
+
+<iframe loading="lazy" title="【プリセット無料配布】Future Bassで使われる「ほわん」って感じの音の作り方【配布は概要欄です】" width="500" height="281" src="https://www.youtube.com/embed/4LOiJZMXseU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+*やさしそう　この人最近投稿が無いけど、元気かな*
+
+あとはヤマザキ春のサンプルパック祭り。
+
+ジャージークラブに加えて、カービィのボム音が鳴っており、バース裏で隠し味的にネオソウルリックを弾いてる。
+
+レゲエのリズムはギターをとりあえず裏で置いて3連を感じるドンクベース、ラテン系パーカスをチャカポコさせて再現。
+
+せわしいビートにゆったりしたメロディを乗せるのが好きなので、リムショット入りのレゲエなサンプルをトラッピーに分解・再構築。
+
+審査員コメントでhyperpopみを見出して頂き喜び。
+
+ブラスもhyperpopのそれを意識したけどアコースティックみが強い楽曲なのでキックをデカくしたらアンサンブルが崩壊しそうで控えてしまった(ᐡ\_ ̫ กᐡ)
+
+## 調声
+
+**ずんだもん**
+
+今回はVOICEVOXではなく、
+
+ドワンゴより先行配布頂いたSeirenVoiceを使い、自分の歌声をずんだもんに変換したものを使った。
+
+何回か歌ってみてニュアンスの良いものを選択後、オートチューンにかけてけろけろさせてみた。
+
+Little Alter BoyというZedd御用達のケロケロボイスメーカーを黒金で買ったので使ってみたけど、一定のピッチを離れると音痴になってしまうので、やむなく無償で愛用しているKeroveeと併用して調声した。
+
+追記:これ作った後に、Little Alter boyは飛び道具で一般的なピッチ修正に向かないということを知ったので、
+
+Twinfiledさんに[Waves Tune Real-Time](https://wavesjapan.jp/plugins/waves-tune-real-time) をおすすめしてもらい、即購入した。
+
+→次以降の作品はちょっと人力ボーカルの質が良くなるかも。
+
+無料だと、他に[M Auto Pitch](https://www.meldaproduction.com/MAutoPitch)なるものがあり、こちらもUI使いやすくていい感じ。
+
+### SeirenVoice使ってみた感想
+
+自分で歌った声がずんだもんになるのは不思議なのだ。
+
+🌊は滑舌あんまり良い方じゃなくて自分の声をコンプレックスに感じていたが、ずんだもんの声とは相性がいいみたいで、少し自己嫌悪がマシになった。₺ƾ₺ƾ発音も好評でうれしい。
+
+**琴葉茜**
+
+NEUTRINO
+
+最初は高音のハモリしかいれていなかったが、
+
+琴葉マスターのnekomoにデモを聴いてもらったら「高音すぎると茜ちゃんらしさ（独特のかすれ感）が強調されない」というアドバイスをもらったので、「サイアクの食べ合わせ～」等で低音ハモリも入れてみたところいい感じのニュアンスになった！
+
+## 映像
+
+またnekomoに声をかけてイラストと動画を一晩合作してもらった。
+
+[Tweets by yumenkmc](https://twitter.com/yumenkmc?ref_src=twsrc%5Etfw)
+
+今回画面右上の「ずんあか汎用ドット絵」もに描き下ろしてもらったので将来の創作の可能性が広がった。
+
+泡オブジェクトを浮かせて油の海にしているのもポイント。
+
+カウンタやプログレスバーはの演出は、るはしさんの映像をみていつかやりたいなあと思っていたもの。
+
+短い楽曲で試せてよかった。
+
+> Inte9ral [pic.twitter.com/MkLskmJ4P1](https://t.co/MkLskmJ4P1)
+> 
+> — るはし (@Ru84\_) [December 5, 2022](https://twitter.com/Ru84_/status/1599706842044977158?ref_src=twsrc%5Etfw)
+
+## 参考楽曲
+
+<iframe loading="lazy" title="ピーナッツくん 『 グミ超うめぇ 』Official Music Video / Album &quot;False Memory Syndrome&quot;" width="500" height="281" src="https://www.youtube.com/embed/9VhrJCbr58A?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+*神trap ブラスのフレーズを移調*
+
+<iframe loading="lazy" title="パソコン音楽クラブ  - KICK&amp;GO feat. 林青空" width="500" height="375" src="https://www.youtube.com/embed/ZAYXDRISnKE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+*調性感の参考 レミソミシララ いいフレーズ*
+
+<iframe loading="lazy" title="サカナクション / 夜の踊り子　-Music Video-" width="500" height="281" src="https://www.youtube.com/embed/2I25AFSBm2g?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+*あまり意識してなかったけどコメントで言及があり思い出した。しなしな　漬けキャベツみたいに♪*
