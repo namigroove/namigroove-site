@@ -289,14 +289,14 @@ header.top .logo{flex:none}
   <div class="intro">
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>音声→MP3コンバーター</h1>
-    <p class="lead">WAV・FLAC・M4A・OGGなどの音声ファイルをMP3に変換します。ブラウザの中だけで変換するので、音源はどこにも送信されません。何本でもまとめて変換できます。</p>
+    <p class="lead">WAV・FLAC・M4A・OGGなどの音声ファイルを、MP3に変換します。MP4などの動画からは、音声だけを取り出してMP3にできます。ブラウザの中だけで変換するので、音源はどこにも送信されません。何本でもまとめて変換できます。</p>
   </div>
 
   <section class="panel" aria-label="音声ファイルを選ぶ">
     <label class="dz" id="drop" tabindex="0" role="button" aria-label="音声ファイルを選ぶ、またはここにドロップ">
-      <b>音声ファイルを選ぶ</b>
+      <b>音声・動画ファイルを選ぶ</b>
       <small>ここにドロップ、またはタップして選択(複数OK)</small>
-      <input id="file" type="file" accept="audio/*,.wav,.wave,.flac,.m4a,.aac,.ogg,.opus,.aif,.aiff,.mp4" multiple hidden>
+      <input id="file" type="file" accept="audio/*,video/*,.wav,.wave,.flac,.m4a,.aac,.ogg,.opus,.aif,.aiff,.mp4,.mov,.webm,.mkv" multiple hidden>
     </label>
     <div class="opts">
       <div class="ctl">音質
@@ -327,6 +327,7 @@ header.top .logo{flex:none}
     <ul>
       <li>音声ファイルを選ぶか、ドロップすると変換が始まります。できたMP3は「保存」から保存できます。ファイル名は、元の名前の拡張子だけ .mp3 になります。</li>
       <li>WAV(16bit / 24bit / 32bit float)のほか、FLAC・M4A(AAC)・OGGなど、ブラウザで再生できる音声を変換できます。対応する形式は、お使いのブラウザによって少し違います。サンプルレートが高い音源(96kHzなど)は、変換のときに48kHz前後に変わります。</li>
+      <li>動画(MP4・MOV・WebMなど)を選ぶと、音声だけを取り出してMP3にします。ブラウザで再生できる動画が対象です。</li>
       <li>音質は 320 kbps がいちばん高く、128 kbps はファイルが小さくなります。迷ったら 320 kbps か 192 kbps がおすすめです。</li>
       <li>MP3は圧縮で音が少し変わります。納品や編集に使うデータは、WAVのまま残しておくのがおすすめです。</li>
       <li>変換には <a href="https://github.com/zhuker/lamejs" target="_blank" rel="noopener">lamejs</a>(LAME のJavaScript版)を使っています。</li>
@@ -338,7 +339,7 @@ header.top .logo{flex:none}
 <footer>
 <div class="share-row">
   <span class="share-label">このページをシェア</span>
-  <a class="sh sh-x" href="https://x.com/intent/post?text=WAV%E2%86%92MP3%E3%82%B3%E3%83%B3%E3%83%90%E3%83%BC%E3%82%BF%E3%83%BC%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Faudio2mp3%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E9%9F%B3%E5%A3%B0%E2%86%92MP3%E3%82%B3%E3%83%B3%E3%83%90%E3%83%BC%E3%82%BF%E3%83%BC%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Faudio2mp3%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
   <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Faudio2mp3%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
   <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
 </div>
