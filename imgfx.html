@@ -317,6 +317,7 @@ header.top .logo{flex:none}
     <div class="acts">
       <button class="btn" type="button" id="cmpBtn">押している間、元の画像</button>
       <button class="btn" type="button" id="seedBtn">別のパターン</button>
+      <button class="btn" type="button" id="pauseBtn" hidden>動きを止める</button>
     </div>
   </section>
 
@@ -344,6 +345,7 @@ header.top .logo{flex:none}
   <section class="how">
     <h2>使い方のメモ</h2>
     <ul>
+      <li>VHS・グリッチ・ドリームコア・バックルームと、動画を読み込んだときは、プレビューが動きます。止めたいときは「動きを止める」を押してください。</li>
       <li>エフェクトを選んで、スライダーで強さを調整します。「別のパターン」で、ランダムな部分(ローポリの点の位置、グリッチのずれ方など)が変わります。</li>
       <li>ドット絵: ドットの大きさと色数を選べます。ファミコン風・ゲームボーイ風・PICO-8風・白黒のパレットにも切り替えられ、ディザ(網点でなめらかに見せる処理)も使えます。</li>
       <li>ローポリ: 画像の輪郭に点を集めて三角形に分け、三角形ごとに色を塗ります。細かさと、輪郭に寄せる強さを選べます。</li>
@@ -473,26 +475,93 @@ async function dubC(c,n){
   }
   return cur;
 }
+/* ---------- 追加の部品 ---------- */
+function star(x,cx2,cy,r,col,a){
+  x.save();x.translate(cx2,cy);x.globalAlpha=a;
+  const g=x.createRadialGradient(0,0,0,0,0,r);g.addColorStop(0,col);g.addColorStop(1,"rgba(255,255,255,0)");x.fillStyle=g;x.beginPath();x.arc(0,0,r*0.7,0,Math.PI*2);x.fill();
+  x.fillStyle=col;x.beginPath();
+  for(let i=0;i<8;i++){const rr=i%2?r*0.14:r,an=Math.PI/4*i-Math.PI/2;x.lineTo(Math.cos(an)*rr,Math.sin(an)*rr)}
+  x.closePath();x.fill();x.restore();
+}
+function smearC(c,w){ /* 赤と青のチャンネルを横にのばす(色のにじみ) */
+  const W=c.width,H=c.height,id=getD(c),d=id.data,o=new Uint8ClampedArray(d);
+  for(let y=0;y<H;y++)for(let ch=0;ch<3;ch+=2){
+    let sum=0;const row=y*W*4+ch;
+    for(let x=0;x<W+w;x++){
+      if(x<W)sum+=o[row+x*4];if(x-w>=0)sum-=o[row+(x-w)*4];
+      const xx=x-(w>>1);if(xx>=0&&xx<W)d[row+xx*4]=sum/Math.min(w,x+1);
+    }
+  }
+  cx(c).putImageData(id,0,0);return c;
+}
+function barrel(c,k){
+  const W=c.width,H=c.height,id=getD(c),s=id.data,o=cx(mk(W,H)).createImageData(W,H),d=o.data,den=1+2*k;
+  for(let y=0;y<H;y++){
+    const ny=(y/(H-1))*2-1;
+    for(let x=0;x<W;x++){
+      const nx=(x/(W-1))*2-1,f=(1+k*(nx*nx+ny*ny))/den;
+      const sx=(nx*f+1)/2*(W-1),sy=(ny*f+1)/2*(H-1),x0=Math.floor(sx),y0=Math.floor(sy),x1=Math.min(W-1,x0+1),y1=Math.min(H-1,y0+1),fx=sx-x0,fy=sy-y0,i=(y*W+x)*4;
+      for(let ch=0;ch<4;ch++){
+        const a=s[(y0*W+x0)*4+ch],b=s[(y0*W+x1)*4+ch],c2=s[(y1*W+x0)*4+ch],e=s[(y1*W+x1)*4+ch];
+        d[i+ch]=(a*(1-fx)+b*fx)*(1-fy)+(c2*(1-fx)+e*fx)*fy;
+      }
+    }
+  }
+  const out=mk(W,H);cx(out).putImageData(o,0,0);return out;
+}
+function sortRows(c,thr){
+  const W=c.width,H=c.height,id=getD(c),d=id.data;
+  for(let y=0;y<H;y++){
+    let x=0;
+    while(x<W){
+      const i=(y*W+x)*4;
+      if(lum(d[i],d[i+1],d[i+2])>thr){
+        let e=x;while(e<W&&lum(d[(y*W+e)*4],d[(y*W+e)*4+1],d[(y*W+e)*4+2])>thr)e++;
+        if(e-x>2){
+          const arr=[];for(let k=x;k<e;k++){const j=(y*W+k)*4;arr.push([lum(d[j],d[j+1],d[j+2]),d[j],d[j+1],d[j+2]])}
+          arr.sort((a,b)=>a[0]-b[0]);
+          for(let k=x;k<e;k++){const j=(y*W+k)*4,v=arr[k-x];d[j]=v[1];d[j+1]=v[2];d[j+2]=v[3]}
+        }
+        x=e;
+      }else x++;
+    }
+  }
+  cx(c).putImageData(id,0,0);return c;
+}
+function textGlow(x,t,px,py,size,fill,glow,align){
+  x.save();x.textAlign=align||"center";x.textBaseline="middle";x.font="bold "+size+"px \"MaruMinyaM\",\"Hiragino Kaku Gothic ProN\",\"Yu Gothic\",sans-serif";
+  if(x.letterSpacing!==undefined)x.letterSpacing=Math.round(size*0.15)+"px";
+  x.shadowColor=glow;x.shadowBlur=size*0.5;x.fillStyle=fill;x.fillText(t,px,py);x.shadowBlur=0;x.fillText(t,px,py);x.restore();
+}
+function saturate(d,i,k){const g=lum(d[i],d[i+1],d[i+2]);d[i]=clamp(g+(d[i]-g)*k);d[i+1]=clamp(g+(d[i+1]-g)*k);d[i+2]=clamp(g+(d[i+2]-g)*k)}
+
+/* ---------- エフェクト ---------- */
 const FX={
-pixel:{name:"ドット絵",desc:"小さく縮めて、色を絞って、ぼかさずに拡大します。",
+pixel:{name:"ドット絵",desc:"小さく縮めて、色を絞って、ぼかさずに拡大します。輪郭線を入れると、ゲームの絵らしくなります。",
  params:[{k:"size",l:"ドットの大きさ",min:2,max:40,def:8},{k:"colors",l:"色数(自動のとき)",min:2,max:64,def:16},
   {k:"pal",l:"パレット",type:"select",opts:[["auto","自動(画像から)"],["nes","ファミコン風"],["gb","ゲームボーイ風"],["pico","PICO-8風"],["bw","白黒"]],def:"auto"},
+  {k:"sat",l:"鮮やかさ",min:0,max:100,def:25},
+  {k:"line",l:"輪郭線",type:"select",opts:[["off","なし"],["on","黒い輪郭線"]],def:"off"},
   {k:"dither",l:"ディザ",type:"select",opts:[["off","なし"],["on","あり"]],def:"off"}],
  run(src,p,R,u){
   const W=src.width,H=src.height,bs=Math.max(1,p.size*u),sw=Math.max(1,Math.round(W/bs)),sh=Math.max(1,Math.round(H/bs));
   const s=mk(sw,sh),sx=cx(s);sx.imageSmoothingQuality="high";sx.drawImage(src,0,0,sw,sh);
-  const id=sx.getImageData(0,0,sw,sh),d=id.data;
+  const id=sx.getImageData(0,0,sw,sh),d=id.data,k=1+p.sat/100*0.9;
+  for(let i=0;i<d.length;i+=4)saturate(d,i,k);
+  const g=new Float32Array(sw*sh);for(let i=0;i<g.length;i++)g[i]=lum(d[i*4],d[i*4+1],d[i*4+2]);
   const pal=p.pal==="auto"?gifenc.quantize(d,+p.colors):PALS[p.pal];
-  const sp=p.dither==="on"?255/Math.cbrt(pal.length)*0.55:0;
+  const dark=nearest(pal,15,12,25),sp=p.dither==="on"?255/Math.cbrt(pal.length)*0.55:0;
+  const edge=new Uint8Array(sw*sh);
+  if(p.line==="on")for(let y=0;y<sh;y++)for(let x=0;x<sw;x++){const i=y*sw+x;let m=0;if(x+1<sw)m=Math.max(m,Math.abs(g[i]-g[i+1]));if(y+1<sh)m=Math.max(m,Math.abs(g[i]-g[i+sw]));if(m>38)edge[i]=1}
   for(let y=0;y<sh;y++)for(let x=0;x<sw;x++){
-    const i=(y*sw+x)*4,t=sp?(BAYER[(y&3)*4+(x&3)]/16-0.5)*sp:0,c=nearest(pal,d[i]+t,d[i+1]+t,d[i+2]+t);
+    const i=(y*sw+x)*4,t=sp?(BAYER[(y&3)*4+(x&3)]/16-0.5)*sp:0,c=edge[y*sw+x]&&g[y*sw+x]<150?dark:nearest(pal,d[i]+t,d[i+1]+t,d[i+2]+t);
     d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2];d[i+3]=255;
   }
   sx.putImageData(id,0,0);
   const o=mk(W,H),ox=o.getContext("2d");ox.imageSmoothingEnabled=false;ox.drawImage(s,0,0,W,H);return o;
  }},
 lowpoly:{name:"ローポリ",desc:"輪郭に点を集めて三角形に分け、三角形ごとに色を塗ります。",
- params:[{k:"detail",l:"細かさ",min:1,max:100,def:60},{k:"edge",l:"輪郭に寄せる",min:0,max:100,def:60},
+ params:[{k:"detail",l:"細かさ",min:1,max:100,def:60},{k:"edge",l:"輪郭に寄せる",min:0,max:100,def:60},{k:"sat",l:"鮮やかさ",min:0,max:100,def:20},
   {k:"wire",l:"線",type:"select",opts:[["off","なし"],["on","白い線を入れる"]],def:"off"}],
  run(src,p,R,u){
   const W=src.width,H=src.height,sc=Math.min(1,320/Math.max(W,H)),sw=Math.max(8,Math.round(W*sc)),sh=Math.max(8,Math.round(H*sc));
@@ -508,13 +577,14 @@ lowpoly:{name:"ローポリ",desc:"輪郭に点を集めて三角形に分け、
     tries++;const x=R()*W,y=R()*H,mm=m[Math.min(sh-1,(y*sc)|0)*sw+Math.min(sw-1,(x*sc)|0)]/mx;
     if(R()<(1-bias)+bias*(0.06+0.94*Math.min(1,mm*3))){pts.push([x,y]);cnt++}
   }
-  const bl=blurC(src,Math.max(1,1.5*u)),bd=getD(bl).data;
+  const bl=blurC(src,Math.max(1,1.5*u)),bd=getD(bl).data,k=1+p.sat/100*0.8;
   const flat=new Float64Array(pts.length*2);pts.forEach((q,i)=>{flat[i*2]=q[0];flat[i*2+1]=q[1]});
   const tri=new Delaunator(flat).triangles,o=mk(W,H),x=o.getContext("2d");
   x.lineJoin="round";x.lineWidth=1;
   for(let i=0;i<tri.length;i+=3){
     const a=tri[i],b=tri[i+1],c=tri[i+2],px=(flat[a*2]+flat[b*2]+flat[c*2])/3,py=(flat[a*2+1]+flat[b*2+1]+flat[c*2+1])/3;
-    const j=((Math.min(H-1,py|0))*W+Math.min(W-1,px|0))*4,col="rgb("+bd[j]+","+bd[j+1]+","+bd[j+2]+")";
+    const j=((Math.min(H-1,py|0))*W+Math.min(W-1,px|0))*4,t=[bd[j],bd[j+1],bd[j+2],255];saturate(t,0,k);
+    const col="rgb("+(t[0]|0)+","+(t[1]|0)+","+(t[2]|0)+")";
     x.fillStyle=col;x.strokeStyle=col;x.beginPath();x.moveTo(flat[a*2],flat[a*2+1]);x.lineTo(flat[b*2],flat[b*2+1]);x.lineTo(flat[c*2],flat[c*2+1]);x.closePath();x.fill();x.stroke();
   }
   if(p.wire==="on"){
@@ -523,42 +593,70 @@ lowpoly:{name:"ローポリ",desc:"輪郭に点を集めて三角形に分け、
   }
   return o;
  }},
-vapor:{name:"ヴェーパーウェイブ",desc:"ピンク・紫・水色のグラデーションに、色ずれ・にじみ・走査線を重ねます。",
- params:[{k:"st",l:"色の強さ",min:0,max:100,def:80},{k:"shift",l:"色ずれ",min:0,max:20,def:6},{k:"glow",l:"にじみ",min:0,max:100,def:45},{k:"scan",l:"走査線",min:0,max:100,def:30}],
+vapor:{name:"ヴェーパーウェイブ",desc:"ピンク・紫・水色の色づけに、夕日・グリッドの床・日本語のロゴ文字。色ずれ・にじみ・走査線も重ねます。",
+ params:[{k:"st",l:"色の強さ",min:0,max:100,def:80},{k:"sun",l:"夕日",type:"select",opts:[["on","あり"],["off","なし"]],def:"on"},{k:"grid",l:"グリッドの床",type:"select",opts:[["on","あり"],["off","なし"]],def:"on"},
+  {k:"text",l:"文字",type:"text",def:"ＡＥＳＴＨＥＴＩＣ"},{k:"shift",l:"色ずれ",min:0,max:20,def:5},{k:"glow",l:"にじみ",min:0,max:100,def:50},{k:"scan",l:"走査線",min:0,max:100,def:25}],
  run(src,p,R,u){
-  const W=src.width,H=src.height;let o=clone(src);
-  tone(o,(d,i)=>{for(let k=0;k<3;k++)d[i+k]=clamp((d[i+k]-128)*1.2+120)});
-  gradMap(o,lut([[0,"#14083e"],[0.35,"#7a3cff"],[0.6,"#ff4fc3"],[0.8,"#ff7fdc"],[1,"#74f0ff"]]),p.st/100*0.9);
-  {const x=o.getContext("2d"),g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"rgba(0,235,255,"+0.5*p.st/100+")");g.addColorStop(0.55,"rgba(160,90,255,"+0.12*p.st/100+")");g.addColorStop(1,"rgba(255,40,190,"+0.5*p.st/100+")");
-   x.save();x.globalCompositeOperation="soft-light";x.fillStyle=g;x.fillRect(0,0,W,H);x.globalCompositeOperation="screen";x.globalAlpha=0.5;x.fillStyle=g;x.fillRect(0,0,W,H);x.restore()}
+  const W=src.width,H=src.height,s=p.st/100;let o=clone(src);
+  tone(o,(d,i)=>{for(let k=0;k<3;k++)d[i+k]=clamp((d[i+k]-128)*1.15+118)});
+  gradMap(o,lut([[0,"#14083e"],[0.35,"#7a3cff"],[0.6,"#ff4fc3"],[0.8,"#ff7fdc"],[1,"#74f0ff"]]),s*0.9);
+  const x=o.getContext("2d"),hz=H*0.62;
+  let g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"rgba(0,235,255,"+0.5*s+")");g.addColorStop(0.55,"rgba(160,90,255,"+0.12*s+")");g.addColorStop(1,"rgba(255,40,190,"+0.5*s+")");
+  x.save();x.globalCompositeOperation="soft-light";x.fillStyle=g;x.fillRect(0,0,W,H);x.globalCompositeOperation="screen";x.globalAlpha=0.5;x.fillRect(0,0,W,H);x.restore();
+  if(p.sun==="on"){
+    const L=mk(W,H),lx=L.getContext("2d"),r=H*0.2,sx2=W*0.5,sy=hz-r*0.85;
+    const sg=lx.createLinearGradient(0,sy-r,0,sy+r);sg.addColorStop(0,"#ffe66d");sg.addColorStop(0.5,"#ff7fb0");sg.addColorStop(1,"#d63cff");
+    lx.fillStyle=sg;lx.beginPath();lx.arc(sx2,sy,r,0,Math.PI*2);lx.fill();
+    lx.globalCompositeOperation="destination-out";for(let i=0;i<9;i++){const yy=sy+r*(0.05+i*0.11),hh=Math.max(1,r*(0.02+i*0.012));lx.fillRect(sx2-r,yy,r*2,hh)}
+    x.save();x.globalAlpha=0.92;x.drawImage(L,0,0);x.restore();
+    screen(o,blurC(L,12*u),0.5);
+  }
+  if(p.grid==="on"){
+    const L=mk(W,H),lx=L.getContext("2d");
+    const fg=lx.createLinearGradient(0,hz,0,H);fg.addColorStop(0,"rgba(40,0,90,0.0)");fg.addColorStop(0.15,"rgba(40,0,90,0.55)");fg.addColorStop(1,"rgba(20,0,60,0.85)");lx.fillStyle=fg;lx.fillRect(0,hz,W,H-hz);
+    lx.strokeStyle="#ff4fe0";lx.lineWidth=Math.max(1,1.6*u);lx.shadowColor="#ff4fe0";lx.shadowBlur=6*u;
+    for(let i=1;i<=12;i++){const t=Math.pow(i/12,2.2),y=hz+(H-hz)*t;lx.beginPath();lx.moveTo(0,y);lx.lineTo(W,y);lx.stroke()}
+    for(let i=-14;i<=14;i++){lx.beginPath();lx.moveTo(W/2+i*W*0.03*0.25,hz);lx.lineTo(W/2+i*W*0.14,H);lx.stroke()}
+    x.drawImage(L,0,0);
+  }
   if(p.shift>0)shiftRB(o,Math.round(p.shift*u),Math.round(p.shift*u));
   if(p.glow>0)screen(o,blurC(o,7*u),p.glow/100*0.85);
-  if(p.scan>0)scan(o,Math.max(1,Math.round(1.5*u)),p.scan/100*0.45);
+  if(p.scan>0)scan(o,Math.max(1,Math.round(1.5*u)),p.scan/100*0.4);
+  if(p.text){
+    const x2=o.getContext("2d"),fs=Math.round(46*u);
+    x2.save();x2.font="bold "+fs+"px \"MaruMinyaM\",sans-serif";x2.textAlign="center";x2.textBaseline="middle";
+    if(x2.letterSpacing!==undefined)x2.letterSpacing=Math.round(fs*0.2)+"px";
+    x2.fillStyle="#ff2fd0";x2.fillText(p.text,W/2+3*u,H*0.13+3*u);x2.fillStyle="#38f0ff";x2.fillText(p.text,W/2-2*u,H*0.13-2*u);
+    x2.shadowColor="#fff";x2.shadowBlur=10*u;x2.fillStyle="#fff";x2.fillText(p.text,W/2,H*0.13);x2.restore();
+  }
   return o;
  }},
-vhs:{anim:1,name:"VHS",desc:"解像度の低いテープ映像風。色のにじみ、横ゆれ、ノイズ、再生中の文字を入れます。",
- params:[{k:"st",l:"劣化の強さ",min:0,max:100,def:65},{k:"jit",l:"横ゆれ",min:0,max:100,def:40},{k:"ghost",l:"残像",min:0,max:100,def:25},{k:"dub",l:"ダビング",min:0,max:4,def:0},
+vhs:{anim:1,name:"VHS",desc:"ビデオテープ風。色のにじみ、横ゆれ、白い線のとびを重ねて、再生中の文字と日付を入れます。ダビングで劣化もさせられます。",
+ params:[{k:"st",l:"劣化の強さ",min:0,max:100,def:65},{k:"jit",l:"横ゆれ",min:0,max:100,def:40},{k:"ghost",l:"残像",min:0,max:100,def:25},{k:"drop",l:"白い線のとび",min:0,max:100,def:35},{k:"dub",l:"ダビング",min:0,max:4,def:0},
   {k:"osd",l:"文字",type:"select",opts:[["none","なし"],["play","PLAY ▶"],["rec","● REC"],["pause","PAUSE ❚❚"]],def:"play"},{k:"date",l:"日付",type:"select",opts:[["off","なし"],["on","入れる"]],def:"on"}],
  async run(src,p,R,u){
   const W=src.width,H=src.height,s=p.st/100;
   let o=lowres(src,1+1.8*s);
-  const b=Math.max(1,Math.round((1.5+5*s)*u));shiftRB(o,b,b);
-  tone(o,(d,i)=>{const g=lum(d[i],d[i+1],d[i+2]);d[i]=clamp((g+(d[i]-g)*0.85-128)*1.08+128+10);d[i+1]=clamp((g+(d[i+1]-g)*0.85-128)*1.08+128+2);d[i+2]=clamp((g+(d[i+2]-g)*0.85-128)*1.08+128-8)});
+  const b=Math.max(1,Math.round((1.5+5*s)*u));shiftRB(o,b,b);smearC(o,Math.max(2,Math.round((4+12*s)*u)));
+  tone(o,(d,i)=>{saturate(d,i,0.85);d[i]=clamp((d[i]-128)*1.08+138);d[i+1]=clamp((d[i+1]-128)*1.08+130);d[i+2]=clamp((d[i+2]-128)*1.08+120)});
   if(p.ghost>0){const x=o.getContext("2d");x.save();x.globalAlpha=p.ghost/100*0.35;x.drawImage(o,Math.round(10*u),0);x.restore()}
-  /* 横ゆれ + 下のノイズ帯 */
   const j=p.jit/100,w2=mk(W,H),wx=w2.getContext("2d");
   let y=0;
   while(y<H){
-    const hh=Math.max(1,Math.round((2+R()*10)*u)),near=y>H*0.92;
-    let dx=R()<j*0.5?(R()-0.5)*2*14*u*j:0;if(near)dx+=(R()-0.3)*36*u*(0.4+j);
+    const hh=Math.max(1,Math.round((2+R()*10)*u)),near=y>H*0.93;
+    let dx=R()<j*0.5?(R()-0.5)*2*14*u*j:0;if(near)dx+=(R()-0.3)*40*u*(0.4+j);
     wx.drawImage(o,0,y,W,hh,Math.round(dx),y,W,hh);y+=hh;
   }
   o=w2;
   if(p.dub>0)o=await dubC(o,+p.dub);
   noise(o,60*s+10,R);
+  const x=o.getContext("2d");
+  const nd=Math.round(4+p.drop/100*28);
+  for(let i=0;i<nd;i++){const yy=R()*H,ww=(20+R()*160)*u,xx=R()*W;x.fillStyle="rgba(255,255,255,"+(0.35+R()*0.5)+")";x.fillRect(xx,yy,ww,Math.max(1,Math.round((0.6+R()*1.2)*u)))}
+  {const by=H*(0.9+R()*0.06),bh=H*0.05,g=x.createLinearGradient(0,by,0,by+bh);g.addColorStop(0,"rgba(255,255,255,0)");g.addColorStop(0.5,"rgba(255,255,255,0.16)");g.addColorStop(1,"rgba(255,255,255,0)");x.fillStyle=g;x.fillRect(0,by,W,bh)}
   scan(o,Math.max(1,Math.round(u)),0.12);
   vignette(o,"0,0,0",0.45,0.5);
-  const x=o.getContext("2d"),fs=Math.round(30*u);
+  const fs=Math.round(30*u);
   x.font="bold "+fs+"px \"MaruMinyaM\",monospace";x.textBaseline="top";
   const txt=(t,tx,ty,al)=>{x.textAlign=al;x.fillStyle="rgba(0,0,0,.6)";x.fillText(t,tx+2*u,ty+2*u);x.fillStyle="#fff";x.fillText(t,tx,ty)};
   const mg=Math.round(28*u);
@@ -567,15 +665,33 @@ vhs:{anim:1,name:"VHS",desc:"解像度の低いテープ映像風。色のにじ
   if(p.date==="on"){const t=new Date(),M=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][t.getMonth()];txt(M+". "+String(t.getDate()).padStart(2,"0")+" "+t.getFullYear(),mg,H-mg-fs,"left")}
   return o;
  }},
-aero:{name:"フルティガーエアロ",desc:"2000年代の、つやつやで青空みたいな明るさ。シャボン玉と光を重ねます。",
- params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"bub",l:"シャボン玉",min:0,max:30,def:10},{k:"gloss",l:"つや",min:0,max:100,def:60}],
+aero:{anim:0,name:"フルティガーエアロ",desc:"2000年代の、つやつやで青空みたいな明るさ。光のすじ、シャボン玉、キラキラ、ガラスの枠で仕上げます。",
+ params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"gloss",l:"つや",min:0,max:100,def:60},{k:"rays",l:"光のすじ",min:0,max:100,def:50},{k:"bub",l:"シャボン玉",min:0,max:30,def:10},{k:"spark",l:"キラキラ",min:0,max:30,def:8},
+  {k:"frame",l:"枠",type:"select",opts:[["glass","ガラスの枠"],["none","なし"]],def:"glass"}],
  run(src,p,R,u){
   const W=src.width,H=src.height,s=p.st/100;let o=clone(src);
-  tone(o,(d,i)=>{const g=lum(d[i],d[i+1],d[i+2]),k=1+0.55*s;d[i]=clamp((g+(d[i]-g)*k)*0.96+10*s);d[i+1]=clamp((g+(d[i+1]-g)*k)*1.01+12*s);d[i+2]=clamp((g+(d[i+2]-g)*k)*1.05+14*s)});
+  tone(o,(d,i)=>{const g=lum(d[i],d[i+1],d[i+2]),k=1+0.6*s;d[i]=clamp((g+(d[i]-g)*k)*0.95+10*s);d[i+1]=clamp((g+(d[i+1]-g)*k)*1.02+14*s);d[i+2]=clamp((g+(d[i+2]-g)*k)*1.06+16*s)});
   screen(o,blurC(o,9*u),0.55*s);
   const x=o.getContext("2d");
-  let g=x.createLinearGradient(0,0,0,H*0.6);g.addColorStop(0,"rgba(110,215,255,"+0.5*s+")");g.addColorStop(1,"rgba(110,215,255,0)");x.fillStyle=g;x.fillRect(0,0,W,H);
-  g=x.createLinearGradient(0,H,0,H*0.55);g.addColorStop(0,"rgba(120,235,150,"+0.3*s+")");g.addColorStop(1,"rgba(120,235,150,0)");x.fillStyle=g;x.fillRect(0,0,W,H);
+  let g=x.createLinearGradient(0,0,0,H*0.62);g.addColorStop(0,"rgba(100,215,255,"+0.55*s+")");g.addColorStop(1,"rgba(100,215,255,0)");x.fillStyle=g;x.fillRect(0,0,W,H);
+  g=x.createLinearGradient(0,H,0,H*0.5);g.addColorStop(0,"rgba(110,235,140,"+0.35*s+")");g.addColorStop(1,"rgba(110,235,140,0)");x.fillStyle=g;x.fillRect(0,0,W,H);
+  /* 光のすじ */
+  if(p.rays>0){
+    const L=mk(W,H),lx=L.getContext("2d"),ox=W*0.12,oy=-H*0.12,a=p.rays/100;
+    for(let i=0;i<9;i++){const ang=0.35+i*0.17+R()*0.05,w=0.025+R()*0.05,len=Math.hypot(W,H)*1.3;
+      lx.fillStyle="rgba(255,255,255,"+(0.06+R()*0.1)*a+")";lx.beginPath();lx.moveTo(ox,oy);lx.lineTo(ox+Math.cos(ang-w)*len,oy+Math.sin(ang-w)*len);lx.lineTo(ox+Math.cos(ang+w)*len,oy+Math.sin(ang+w)*len);lx.closePath();lx.fill()}
+    screen(o,blurC(L,6*u),1);
+    /* 光のリボン */
+    const A=mk(W,H),ax=A.getContext("2d");
+    for(let k=0;k<3;k++){
+      const y0=H*(0.45+k*0.12+R()*0.08),amp=H*(0.12+R()*0.1),th=H*(0.05+R()*0.05);
+      const gr=ax.createLinearGradient(0,0,W,0);gr.addColorStop(0,"rgba(120,240,255,0)");gr.addColorStop(0.35,"rgba(200,255,255,"+0.55*a+")");gr.addColorStop(0.7,"rgba(150,255,190,"+0.4*a+")");gr.addColorStop(1,"rgba(255,255,255,0)");
+      ax.fillStyle=gr;ax.beginPath();ax.moveTo(0,y0);ax.bezierCurveTo(W*0.3,y0-amp,W*0.6,y0+amp,W,y0-amp*0.5);ax.lineTo(W,y0-amp*0.5+th);ax.bezierCurveTo(W*0.6,y0+amp+th*0.3,W*0.3,y0-amp+th*1.4,0,y0+th*0.4);ax.closePath();ax.fill();
+    }
+    screen(o,blurC(A,5*u),0.8);
+  }
+  /* ボケ */
+  for(let i=0;i<14;i++){const r=(14+R()*60)*u,bx=R()*W,by=R()*H*0.85;x.fillStyle="rgba("+(R()<0.5?"255,255,255":"170,240,255")+","+(0.05+R()*0.1)*s+")";x.beginPath();x.arc(bx,by,r,0,Math.PI*2);x.fill()}
   if(p.gloss>0){
     const a=p.gloss/100;g=x.createLinearGradient(0,0,0,H*0.5);g.addColorStop(0,"rgba(255,255,255,"+0.5*a+")");g.addColorStop(1,"rgba(255,255,255,0)");
     x.fillStyle=g;x.beginPath();x.ellipse(W/2,-H*0.18,W*0.85,H*0.62,0,0,Math.PI);x.fill();
@@ -588,38 +704,71 @@ aero:{name:"フルティガーエアロ",desc:"2000年代の、つやつやで�
     x.fillStyle="rgba(255,255,255,.85)";x.beginPath();x.ellipse(bx-r*0.38,by-r*0.42,r*0.22,r*0.12,-0.6,0,Math.PI*2);x.fill();
     x.fillStyle="rgba(255,255,255,.4)";x.beginPath();x.ellipse(bx+r*0.3,by+r*0.45,r*0.18,r*0.06,-0.6,0,Math.PI*2);x.fill();
   }
+  for(let i=0;i<p.spark;i++)star(x,R()*W,R()*H*0.9,(8+R()*26)*u,"#fff",0.7+R()*0.3);
+  if(p.frame==="glass"){
+    const b=Math.round(16*u),r=Math.round(20*u);
+    x.save();x.beginPath();x.rect(0,0,W,H);
+    x.roundRect?x.roundRect(b,b,W-b*2,H-b*2,r):x.rect(b,b,W-b*2,H-b*2);
+    const fg=x.createLinearGradient(0,0,0,H);fg.addColorStop(0,"rgba(255,255,255,0.55)");fg.addColorStop(0.5,"rgba(200,240,255,0.22)");fg.addColorStop(1,"rgba(255,255,255,0.4)");
+    x.fillStyle=fg;x.fill("evenodd");
+    x.strokeStyle="rgba(255,255,255,0.85)";x.lineWidth=Math.max(1,1.5*u);x.beginPath();x.roundRect?x.roundRect(b,b,W-b*2,H-b*2,r):x.rect(b,b,W-b*2,H-b*2);x.stroke();
+    x.restore();
+  }
   return o;
  }},
-dream:{anim:1,name:"ドリームコア",desc:"黒を持ち上げて、やわらかく、どこか懐かしい光に包みます。",
- params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"soft",l:"ぼんやり",min:0,max:100,def:55},{k:"grain",l:"粒",min:0,max:100,def:35}],
- run(src,p,R,u){
+dream:{anim:1,name:"ドリームコア",desc:"黒を持ち上げて、やわらかく、どこか懐かしい光に包みます。キラキラと、画質の劣化、ひと言の文字も入れられます。",
+ params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"soft",l:"ぼんやり",min:0,max:100,def:55},{k:"grain",l:"粒",min:0,max:100,def:35},{k:"spark",l:"キラキラ",min:0,max:30,def:8},{k:"ca",l:"色ずれ",min:0,max:12,def:3},{k:"crush",l:"画質の劣化",min:0,max:3,def:1},
+  {k:"text",l:"文字",type:"text",def:""}],
+ async run(src,p,R,u){
   const W=src.width,H=src.height,s=p.st/100;
   let o=lowres(src,1+p.soft/100*1.4);
-  tone(o,(d,i)=>{d[i]=clamp(d[i]*(1-0.2*s)+34*s+16*s);d[i+1]=clamp(d[i+1]*(1-0.2*s)+30*s+8*s);d[i+2]=clamp(d[i+2]*(1-0.2*s)+36*s+4*s)});
+  if(p.ca>0)shiftRB(o,Math.round(p.ca*u*0.6),Math.round(p.ca*u*0.6));
+  tone(o,(d,i)=>{d[i]=clamp(d[i]*(1-0.2*s)+50*s);d[i+1]=clamp(d[i+1]*(1-0.2*s)+38*s);d[i+2]=clamp(d[i+2]*(1-0.2*s)+40*s);saturate(d,i,1+0.15*s)});
   screen(o,blurC(o,(5+p.soft/100*14)*u),0.35+0.5*p.soft/100);
   const x=o.getContext("2d");
   x.save();x.globalCompositeOperation="screen";x.fillStyle="rgba(255,205,225,"+0.16*s+")";x.fillRect(0,0,W,H);x.restore();
+  { const g=x.createRadialGradient(W*0.5,H*0.45,0,W*0.5,H*0.45,Math.hypot(W,H)*0.4);g.addColorStop(0,"rgba(255,250,235,"+0.35*s+")");g.addColorStop(1,"rgba(255,250,235,0)");x.save();x.globalCompositeOperation="screen";x.fillStyle=g;x.fillRect(0,0,W,H);x.restore() }
   vignette(o,"255,238,246",0.6*s,0.35);
+  for(let i=0;i<p.spark;i++)star(x,R()*W,R()*H,(8+R()*24)*u,["#fff","#ffe9f4","#e9f4ff","#fffbd8"][(R()*4)|0],0.55+R()*0.4);
+  if(p.crush>0)o=await dubC(o,+p.crush);
   if(p.grain>0)noise(o,p.grain/100*70,R);
+  if(p.text){const x2=o.getContext("2d");x2.save();x2.textAlign="center";x2.textBaseline="middle";x2.font="italic "+Math.round(34*u)+"px Georgia,\"Times New Roman\",serif";x2.shadowColor="rgba(255,200,230,.95)";x2.shadowBlur=14*u;x2.fillStyle="#fff";x2.fillText(p.text,W/2,H*0.88);x2.shadowBlur=0;x2.fillText(p.text,W/2,H*0.88);x2.restore()}
   return o;
  }},
-backrooms:{anim:1,name:"バックルーム",desc:"黄ばんだ壁紙とカーペット、蛍光灯の、終わりのない部屋の画質です。",
- params:[{k:"st",l:"強さ",min:0,max:100,def:80},{k:"noise",l:"ノイズ",min:0,max:100,def:45},{k:"dark",l:"四隅の暗さ",min:0,max:100,def:60}],
+backrooms:{anim:1,name:"バックルーム",desc:"終わりのない部屋の画質。黄ばんだレベル0、水色のプールルーム、暗い廊下から選べます。広角のゆがみとカムコーダー風の表示つき。",
+ params:[{k:"type",l:"場所",type:"select",opts:[["l0","レベル0(黄ばんだ部屋)"],["pool","プールルーム"],["dark","暗い廊下"]],def:"l0"},{k:"st",l:"強さ",min:0,max:100,def:80},{k:"wide",l:"広角",min:0,max:100,def:45},{k:"noise",l:"ノイズ",min:0,max:100,def:45},{k:"dark",l:"四隅の暗さ",min:0,max:100,def:60},
+  {k:"osd",l:"カメラ表示",type:"select",opts:[["rec","● REC"],["none","なし"]],def:"rec"}],
  run(src,p,R,u){
   const W=src.width,H=src.height;
   let o=lowres(src,1.5);
-  gradMap(o,lut([[0,"#2b2410"],[0.5,"#a89a3a"],[1,"#ece08b"]]),p.st/100*0.85);
+  const maps={l0:[[0,"#2b2410"],[0.5,"#a89a3a"],[1,"#ece08b"]],pool:[[0,"#0b3a4a"],[0.5,"#5fcfe0"],[1,"#f2ffff"]],dark:[[0,"#050a05"],[0.5,"#3b4a2a"],[1,"#b4c58a"]]};
+  gradMap(o,lut(maps[p.type]),p.st/100*0.85);
   const x=o.getContext("2d");
-  x.save();x.globalCompositeOperation="screen";x.fillStyle="rgba(255,248,170,0.06)";
-  for(let y=-20*u;y<H;y+=100*u)x.fillRect(0,y,W,40*u);x.restore();
+  if(p.type==="pool"){
+    x.save();x.strokeStyle="rgba(255,255,255,0.22)";x.lineWidth=Math.max(1,2*u);const t=46*u;for(let xx=0;xx<W;xx+=t){x.beginPath();x.moveTo(xx,0);x.lineTo(xx,H);x.stroke()}for(let yy=0;yy<H;yy+=t){x.beginPath();x.moveTo(0,yy);x.lineTo(W,yy);x.stroke()}x.restore();
+    const L=mk(W,H),lx=L.getContext("2d");for(let i=0;i<60;i++){lx.fillStyle="rgba(255,255,255,"+(0.15+R()*0.3)+")";lx.beginPath();lx.ellipse(R()*W,R()*H,(10+R()*40)*u,(5+R()*20)*u,R()*3,0,Math.PI*2);lx.fill()}
+    screen(o,blurC(L,6*u),0.5);
+  }else{
+    x.save();x.globalCompositeOperation="screen";x.fillStyle=p.type==="l0"?"rgba(255,248,170,0.06)":"rgba(190,255,170,0.05)";
+    for(let y=-20*u;y<H;y+=100*u)x.fillRect(0,y,W,40*u);x.restore();
+  }
   screen(o,blurC(o,10*u),0.25);
+  if(p.wide>0)o=barrel(o,p.wide/100*0.7);
   if(p.noise>0)noise(o,p.noise/100*65,R);
   scan(o,Math.max(1,Math.round(u)),0.08);
-  vignette(o,"20,16,0",p.dark/100*0.85,0.3);
+  vignette(o,p.type==="pool"?"0,40,50":"20,16,0",p.dark/100*0.85,0.3);
+  if(p.osd==="rec"){
+    const x2=o.getContext("2d"),fs=Math.round(28*u),mg=Math.round(26*u);
+    x2.font="bold "+fs+"px \"MaruMinyaM\",monospace";x2.textBaseline="top";x2.textAlign="left";
+    x2.fillStyle="rgba(0,0,0,.55)";x2.fillText("REC",mg+fs*1.1+2*u,mg+2*u);x2.fillStyle="#fff";x2.fillText("REC",mg+fs*1.1,mg);
+    x2.fillStyle="#e22";x2.beginPath();x2.arc(mg+fs*0.4,mg+fs*0.5,fs*0.32,0,Math.PI*2);x2.fill();
+    x2.textAlign="right";x2.fillStyle="rgba(0,0,0,.55)";x2.fillText("00:"+String(13+((R()*40)|0))+":"+String((R()*60)|0).padStart(2,"0"),W-mg+2*u,H-mg-fs+2*u);x2.fillStyle="#fff";x2.fillText("00:"+String(13+((R()*40)|0))+":"+String((R()*60)|0).padStart(2,"0"),W-mg,H-mg-fs);
+  }
   return o;
  }},
-webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ風。216色のウェブセーフカラーと、ウィンドウ枠です。",
- params:[{k:"red",l:"荒さ",min:1,max:8,def:2},{k:"dither",l:"ディザ",type:"select",opts:[["on","あり"],["off","なし"]],def:"on"},{k:"frame",l:"枠",type:"select",opts:[["win","ウィンドウ枠"],["none","なし"]],def:"win"}],
+webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ風。216色のウェブセーフカラー、ウィンドウ枠、背景、訪問者カウンターと「NEW!」。",
+ params:[{k:"red",l:"荒さ",min:1,max:8,def:2},{k:"dither",l:"ディザ",type:"select",opts:[["on","あり"],["off","なし"]],def:"on"},{k:"frame",l:"枠",type:"select",opts:[["win","ウィンドウ枠"],["none","なし"]],def:"win"},
+  {k:"bg",l:"背景",type:"select",opts:[["star","星空"],["tile","ハートと星"],["desk","水色のデスクトップ"],["none","なし"]],def:"star"},{k:"deco",l:"飾り",type:"select",opts:[["on","カウンターとNEW!"],["off","なし"]],def:"on"}],
  run(src,p,R,u){
   const W=src.width,H=src.height,bs=Math.max(1,p.red*u),sw=Math.max(1,Math.round(W/bs)),sh=Math.max(1,Math.round(H/bs));
   const s=mk(sw,sh),sx=cx(s);sx.imageSmoothingQuality="high";sx.drawImage(src,0,0,sw,sh);
@@ -627,40 +776,89 @@ webcore:{name:"ウェブコア",desc:"90年代〜2000年代のホームページ
   for(let y=0;y<sh;y++)for(let x=0;x<sw;x++){const i=(y*sw+x)*4,t=sp?(BAYER[(y&3)*4+(x&3)]/16-0.5)*sp:0;for(let k=0;k<3;k++)d[i+k]=Math.round(clamp(d[i+k]+t)/51)*51;d[i+3]=255}
   sx.putImageData(id,0,0);
   const o=mk(W,H),ox=o.getContext("2d");ox.imageSmoothingEnabled=false;ox.drawImage(s,0,0,W,H);
-  if(p.frame!=="win")return o;
-  const b=Math.max(2,Math.round(3*u)),th=Math.round(26*u),Wo=W+b*4,Ho=H+th+b*5,f=mk(Wo,Ho),x=f.getContext("2d");
-  x.fillStyle="#c0c0c0";x.fillRect(0,0,Wo,Ho);
-  x.fillStyle="#fff";x.fillRect(0,0,Wo,b);x.fillRect(0,0,b,Ho);x.fillStyle="#404040";x.fillRect(0,Ho-b,Wo,b);x.fillRect(Wo-b,0,b,Ho);
-  const g=x.createLinearGradient(b*2,0,Wo-b*2,0);g.addColorStop(0,"#000080");g.addColorStop(1,"#1084d0");x.fillStyle=g;x.fillRect(b*2,b*2,Wo-b*4,th);
-  x.fillStyle="#fff";x.font="bold "+Math.round(16*u)+"px Arial,sans-serif";x.textBaseline="middle";{let t=fname+" - Paint";const mw=Wo-b*4-th*3.2-8*u;while(t.length>6&&x.measureText(t).width>mw)t=t.slice(0,-4)+"…";x.fillText(t,b*3+4*u,b*2+th/2)}
-  const bw=th-4*u;for(let k=0;k<3;k++){const bx=Wo-b*2-(k+1)*(bw+2*u)-2*u,by=b*2+2*u;x.fillStyle="#c0c0c0";x.fillRect(bx,by,bw,bw);x.fillStyle="#fff";x.fillRect(bx,by,bw,2);x.fillRect(bx,by,2,bw);x.fillStyle="#404040";x.fillRect(bx,by+bw-2,bw,2);x.fillRect(bx+bw-2,by,2,bw);x.fillStyle="#000";x.font="bold "+Math.round(14*u)+"px Arial";x.textAlign="center";x.fillText(["×","□","_"][k],bx+bw/2,by+bw/2);x.textAlign="left"}
-  const ix=b*2,iy=b*3+th;x.fillStyle="#404040";x.fillRect(ix-2,iy-2,W+4,H+4);x.fillStyle="#fff";x.fillRect(ix,iy+H,W+2,2);x.fillRect(ix+W,iy,2,H+2);x.drawImage(o,ix,iy);return f;
+  if(p.frame!=="win"&&p.bg==="none"&&p.deco==="off")return o;
+  /* ウィンドウ */
+  let win=o;
+  if(p.frame==="win"){
+    const b=Math.max(2,Math.round(3*u)),th=Math.round(26*u),Wo=W+b*4,Ho=H+th+b*5,f=mk(Wo,Ho),x=f.getContext("2d");
+    x.fillStyle="#c0c0c0";x.fillRect(0,0,Wo,Ho);
+    x.fillStyle="#fff";x.fillRect(0,0,Wo,b);x.fillRect(0,0,b,Ho);x.fillStyle="#404040";x.fillRect(0,Ho-b,Wo,b);x.fillRect(Wo-b,0,b,Ho);
+    const g=x.createLinearGradient(b*2,0,Wo-b*2,0);g.addColorStop(0,"#000080");g.addColorStop(1,"#1084d0");x.fillStyle=g;x.fillRect(b*2,b*2,Wo-b*4,th);
+    x.fillStyle="#fff";x.font="bold "+Math.round(16*u)+"px Arial,sans-serif";x.textBaseline="middle";
+    {let t=fname+" - Paint";const mw=Wo-b*4-th*3.2-8*u;while(t.length>6&&x.measureText(t).width>mw)t=t.slice(0,-4)+"…";x.fillText(t,b*3+4*u,b*2+th/2)}
+    const bw=th-4*u;for(let k=0;k<3;k++){const bx=Wo-b*2-(k+1)*(bw+2*u)-2*u,by=b*2+2*u;x.fillStyle="#c0c0c0";x.fillRect(bx,by,bw,bw);x.fillStyle="#fff";x.fillRect(bx,by,bw,2);x.fillRect(bx,by,2,bw);x.fillStyle="#404040";x.fillRect(bx,by+bw-2,bw,2);x.fillRect(bx+bw-2,by,2,bw);x.fillStyle="#000";x.font="bold "+Math.round(14*u)+"px Arial";x.textAlign="center";x.fillText(["×","□","_"][k],bx+bw/2,by+bw/2);x.textAlign="left"}
+    const ix=b*2,iy=b*3+th;x.fillStyle="#404040";x.fillRect(ix-2,iy-2,W+4,H+4);x.fillStyle="#fff";x.fillRect(ix,iy+H,W+2,2);x.fillRect(ix+W,iy,2,H+2);x.drawImage(o,ix,iy);win=f;
+  }
+  if(p.bg==="none"&&p.deco==="off")return win;
+  const mg=p.bg==="none"?0:Math.round(46*u),dh=p.deco==="on"?Math.round(78*u):0,Wf=win.width+mg*2,Hf=win.height+mg*2+dh,f2=mk(Wf,Hf),x=f2.getContext("2d");
+  if(p.bg==="desk"){x.fillStyle="#008080";x.fillRect(0,0,Wf,Hf)}
+  else if(p.bg==="star"){
+    const g=x.createLinearGradient(0,0,0,Hf);g.addColorStop(0,"#000020");g.addColorStop(1,"#1a0a4a");x.fillStyle=g;x.fillRect(0,0,Wf,Hf);
+    for(let i=0;i<Math.round(Wf*Hf/2600);i++){const sz=Math.max(1,Math.round((1+R()*2)*u));x.fillStyle=["#fff","#ffff99","#99ccff","#ff99cc"][(R()*4)|0];x.fillRect(R()*Wf,R()*Hf,sz,sz)}
+    for(let i=0;i<10;i++)star(x,R()*Wf,R()*Hf,(6+R()*10)*u,"#fff",0.9);
+  }else if(p.bg==="tile"){
+    const t=Math.round(34*u);x.fillStyle="#ffd6ec";x.fillRect(0,0,Wf,Hf);x.textAlign="center";x.textBaseline="middle";x.font=Math.round(20*u)+"px sans-serif";
+    for(let yy=0,r=0;yy<Hf+t;yy+=t,r++)for(let xx=0,c=0;xx<Wf+t;xx+=t,c++){x.fillStyle=(r+c)%2?"#ff7eb8":"#ffe36e";x.fillText((r+c)%2?"♥":"★",xx+(r%2?t/2:0),yy)}
+  }
+  const wx=mg,wy=mg;x.drawImage(win,wx,wy);
+  if(p.deco==="on"){
+    const y0=wy+win.height+Math.round(14*u),dg=Math.round(26*u);
+    x.textBaseline="middle";x.textAlign="left";x.font="bold "+Math.round(18*u)+"px \"MaruMinyaM\",sans-serif";x.fillStyle=p.bg==="tile"?"#a0005a":"#ffff66";
+    x.fillText("あなたは",wx,y0+dg/2);
+    const n=String(1000+((R()*98000)|0)).padStart(6,"0"),bx=wx+Math.round(88*u);
+    for(let i=0;i<6;i++){const dx=bx+i*(dg*0.8+2*u);x.fillStyle="#000";x.fillRect(dx,y0,dg*0.8,dg);x.strokeStyle="#808080";x.lineWidth=Math.max(1,u);x.strokeRect(dx,y0,dg*0.8,dg);x.fillStyle="#3cff3c";x.font="bold "+Math.round(20*u)+"px monospace";x.textAlign="center";x.fillText(n[i],dx+dg*0.4,y0+dg/2+u);x.textAlign="left"}
+    x.font="bold "+Math.round(18*u)+"px \"MaruMinyaM\",sans-serif";x.fillStyle=p.bg==="tile"?"#a0005a":"#ffff66";x.fillText("人目のお客様です",bx+6*(dg*0.8+2*u)+8*u,y0+dg/2);
+    /* 工事中テープ */
+    const ty=Hf-Math.round(20*u);x.save();x.beginPath();x.rect(0,ty,Wf,Math.round(20*u));x.clip();x.fillStyle="#ffd800";x.fillRect(0,ty,Wf,Math.round(20*u));x.fillStyle="#111";for(let xx=-40*u;xx<Wf+40*u;xx+=36*u){x.beginPath();x.moveTo(xx,ty+20*u);x.lineTo(xx+18*u,ty+20*u);x.lineTo(xx+38*u,ty);x.lineTo(xx+20*u,ty);x.fill()}x.restore();
+    /* NEW! */
+    const nx=wx+win.width-Math.round(30*u),ny=wy+Math.round(40*u),nr=Math.round(34*u);
+    x.save();x.translate(nx,ny);x.rotate(0.3);x.fillStyle="#e00";x.beginPath();for(let i=0;i<20;i++){const rr=i%2?nr*0.78:nr,an=Math.PI/10*i;x.lineTo(Math.cos(an)*rr,Math.sin(an)*rr)}x.closePath();x.fill();
+    x.fillStyle="#ffee00";x.textAlign="center";x.textBaseline="middle";x.font="bold "+Math.round(20*u)+"px Arial,sans-serif";x.fillText("NEW!",0,0);x.restore();
+  }
+  return f2;
  }},
-glitch:{anim:1,name:"グリッチ",desc:"横にずれたブロックと、赤青の色ずれ。デジタルの壊れた感じです。",
- params:[{k:"st",l:"強さ",min:0,max:100,def:60},{k:"sl",l:"ずれの数",min:0,max:40,def:14},{k:"split",l:"色ずれ",min:0,max:30,def:8}],
+glitch:{anim:1,name:"グリッチ",desc:"横にずれたブロックと、赤青の色ずれ。ピクセルソートで、明るい部分が流れるように崩れます。",
+ params:[{k:"st",l:"強さ",min:0,max:100,def:60},{k:"sl",l:"ずれの数",min:0,max:40,def:14},{k:"split",l:"色ずれ",min:0,max:30,def:8},{k:"sort",l:"ピクセルソート",min:0,max:100,def:0}],
  run(src,p,R,u){
   const W=src.width,H=src.height,s=p.st/100,o=clone(src),x=o.getContext("2d");
-  for(let i=0;i<p.sl;i++){const y=R()*H,h=(R()*0.07+0.004)*H,dx=(R()-0.5)*2*s*0.3*W;x.drawImage(src,0,y,W,h,dx,y,W,h)}
-  for(let i=0;i<Math.round(p.sl/3);i++){const w=(0.05+R()*0.2)*W,h=(0.02+R()*0.08)*H,sx2=R()*(W-w),sy=R()*(H-h);x.drawImage(src,sx2,sy,w,h,R()*(W-w),R()*(H-h),w,h)}
+  if(p.sort>0)sortRows(o,255*(1-p.sort/100*0.75));
+  const base=clone(o);
+  for(let i=0;i<p.sl;i++){const y=R()*H,h=(R()*0.07+0.004)*H,dx=(R()-0.5)*2*s*0.3*W;x.drawImage(base,0,y,W,h,dx,y,W,h)}
+  for(let i=0;i<Math.round(p.sl/3);i++){const w=(0.05+R()*0.2)*W,h=(0.02+R()*0.08)*H,sx2=R()*(W-w),sy=R()*(H-h);x.drawImage(base,sx2,sy,w,h,R()*(W-w),R()*(H-h),w,h)}
   if(p.split>0)shiftRB(o,Math.round(p.split*u*(0.4+s)),Math.round(p.split*u*(0.4+s)));
   x.fillStyle="rgba(255,255,255,.35)";for(let i=0;i<p.sl;i++){x.fillRect(R()*W,R()*H,(R()*0.3)*W,Math.max(1,u))}
   return o;
  }},
-halftone:{name:"ハーフトーン",desc:"新聞やポップアートのような、網点の絵にします。",
- params:[{k:"size",l:"ドットの間隔",min:4,max:30,def:10},{k:"mode",l:"色",type:"select",opts:[["bw","白地に黒"],["col","元の色(黒地)"]],def:"bw"}],
+halftone:{name:"ハーフトーン",desc:"新聞やポップアートのような、網点の絵にします。CMYKの4色の網点も選べます。",
+ params:[{k:"size",l:"ドットの間隔",min:4,max:30,def:10},{k:"mode",l:"色",type:"select",opts:[["cmyk","カラー(CMYK)"],["bw","白地に黒"],["col","元の色(黒地)"]],def:"cmyk"}],
  run(src,p,R,u){
-  const W=src.width,H=src.height,cell=Math.max(3,p.size*u),ang=Math.PI/4,ca=Math.cos(ang),sa=Math.sin(ang);
+  const W=src.width,H=src.height,cell=Math.max(3,p.size*u);
   const sm=mk(Math.max(1,Math.round(W/cell*1.5)),Math.max(1,Math.round(H/cell*1.5))),smx=cx(sm);smx.imageSmoothingQuality="high";smx.drawImage(src,0,0,sm.width,sm.height);
-  const sd=smx.getImageData(0,0,sm.width,sm.height).data,o=mk(W,H),x=o.getContext("2d"),bw=p.mode==="bw";
-  x.fillStyle=bw?"#fff":"#000";x.fillRect(0,0,W,H);
-  const R2=Math.hypot(W,H)/2,n=Math.ceil(R2/cell)+1;
-  for(let gy=-n;gy<=n;gy++)for(let gx=-n;gx<=n;gx++){
-    const lx=gx*cell,ly=gy*cell,X=W/2+lx*ca-ly*sa,Y=H/2+lx*sa+ly*ca;
-    if(X<-cell||Y<-cell||X>W+cell||Y>H+cell)continue;
-    const sx2=Math.min(sm.width-1,Math.max(0,(X/W*sm.width)|0)),sy=Math.min(sm.height-1,Math.max(0,(Y/H*sm.height)|0)),i=(sy*sm.width+sx2)*4;
-    const l=lum(sd[i],sd[i+1],sd[i+2])/255,k=bw?1-l:l,r=cell*0.72*Math.sqrt(k);
-    if(r<0.3)continue;
-    x.fillStyle=bw?"#111":"rgb("+sd[i]+","+sd[i+1]+","+sd[i+2]+")";x.beginPath();x.arc(X,Y,r,0,Math.PI*2);x.fill();
+  const sd=smx.getImageData(0,0,sm.width,sm.height).data,o=mk(W,H),x=o.getContext("2d"),R2=Math.hypot(W,H)/2,n=Math.ceil(R2/cell)+1;
+  const grid=(ang,fn)=>{const ca=Math.cos(ang),sa=Math.sin(ang);
+    for(let gy=-n;gy<=n;gy++)for(let gx=-n;gx<=n;gx++){
+      const lx=gx*cell,ly=gy*cell,X=W/2+lx*ca-ly*sa,Y=H/2+lx*sa+ly*ca;
+      if(X<-cell||Y<-cell||X>W+cell||Y>H+cell)continue;
+      const sx2=Math.min(sm.width-1,Math.max(0,(X/W*sm.width)|0)),sy=Math.min(sm.height-1,Math.max(0,(Y/H*sm.height)|0)),i=(sy*sm.width+sx2)*4;
+      fn(X,Y,sd[i],sd[i+1],sd[i+2]);
+    }};
+  const dot=(X,Y,r)=>{if(r<0.3)return;x.beginPath();x.arc(X,Y,r,0,Math.PI*2);x.fill()};
+  if(p.mode==="cmyk"){
+    x.fillStyle="#fffdf5";x.fillRect(0,0,W,H);x.globalCompositeOperation="multiply";
+    const inks=[["#00b4ee",15,0],["#f0148c",75,1],["#ffe800",0,2],["#222",45,3]];
+    for(const [col,deg,ch] of inks){
+      x.fillStyle=col;
+      grid(deg*Math.PI/180,(X,Y,r,g,b)=>{
+        const K=1-Math.max(r,g,b)/255,den=1-K||1,c=(1-r/255-K)/den,m=(1-g/255-K)/den,y=(1-b/255-K)/den,v=[c,m,y,K*0.9][ch];
+        dot(X,Y,cell*0.74*Math.sqrt(Math.max(0,v)));
+      });
+    }
+  }else if(p.mode==="bw"){
+    x.fillStyle="#fff";x.fillRect(0,0,W,H);x.fillStyle="#111";
+    grid(Math.PI/4,(X,Y,r,g,b)=>dot(X,Y,cell*0.72*Math.sqrt(1-lum(r,g,b)/255)));
+  }else{
+    x.fillStyle="#000";x.fillRect(0,0,W,H);
+    grid(Math.PI/4,(X,Y,r,g,b)=>{x.fillStyle="rgb("+r+","+g+","+b+")";dot(X,Y,cell*0.72*Math.sqrt(lum(r,g,b)/255))});
   }
   return o;
  }},
@@ -733,13 +931,39 @@ async function make(long,i){
   return await FX[cur].run(src,params(),R,u);
 }
 function show(c){cv.width=c.width;cv.height=c.height;cv.getContext("2d").drawImage(c,0,0)}
+let playTok=0,paused=false;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const LONG=560;
+async function loop(my){
+  let i=0,v=vid&&vid.video;
+  if(v){try{v.loop=false;v.currentTime=Math.min(+$("astart").value||0,Math.max(0,vid.dur-0.1));await v.play()}catch(e){}}
+  while(my===playTok){
+    if(paused||document.hidden){await sleep(200);continue}
+    const t0=performance.now();
+    try{
+      let src;
+      if(v){
+        const st=+$("astart").value||0,len=+$("alen").value||3;
+        if(v.ended||v.currentTime>=Math.min(st+len,vid.dur-0.05)||v.currentTime<st-0.2){v.currentTime=Math.min(st,Math.max(0,vid.dur-0.1));if(v.paused)try{await v.play()}catch(e){}}
+        const k=Math.min(1,LONG/Math.max(v.videoWidth,v.videoHeight));src=mk(v.videoWidth*k,v.videoHeight*k);const x=src.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,src.width,src.height);x.imageSmoothingQuality="high";x.drawImage(v,0,0,src.width,src.height);
+      }else src=fitCanvas(orig,LONG);
+      const R=rng(seed*7919+cur.length*31+(FX[cur].anim?(i+1)*977:0));
+      const c=await FX[cur].run(src,params(),R,src.width/800);
+      if(my!==playTok)return;
+      if(!showOrig)show(c);
+    }catch(e){console.error(e);return}
+    i++;await sleep(Math.max(0,95-(performance.now()-t0)));
+  }
+}
+function stopPlay(){playTok++;if(vid&&vid.video)try{vid.video.pause()}catch(e){}}
 async function render(){
-  if(!orig)return;const my=++token;$("busy").hidden=false;
+  if(!orig)return;const my=++token;playTok++;if(vid&&vid.video)try{vid.video.pause()}catch(e){}
+  $("busy").hidden=false;
   try{
     const c=await make(prevSize());
     if(my!==token)return;last=c;if(!showOrig)show(c);
   }catch(e){console.error(e);if(my===token)$("saveMsg").textContent="うまく作れませんでした。別の設定を試してください。"}
-  if(my===token)$("busy").hidden=true;
+  if(my===token){$("busy").hidden=true;if(vid||FX[cur].anim){$("pauseBtn").hidden=false;loop(++playTok)}else $("pauseBtn").hidden=true}
 }
 function later(){clearTimeout(timer);timer=setTimeout(render,100)}
 function buildParams(){
@@ -748,6 +972,7 @@ function buildParams(){
     const l=document.createElement("label");l.className="ctl";l.append(d.l+" ");
     let e;
     if(d.type==="select"){e=document.createElement("select");e.className="sel";d.opts.forEach(o=>{const op=document.createElement("option");op.value=o[0];op.textContent=o[1];e.appendChild(op)});e.value=(vals[cur+d.k]!=null?vals[cur+d.k]:d.def)}
+    else if(d.type==="text"){e=document.createElement("input");e.type="text";e.maxLength=24;e.value=(vals[cur+d.k]!=null?vals[cur+d.k]:d.def)}
     else{e=document.createElement("input");e.type="range";e.min=d.min;e.max=d.max;e.step=1;e.value=(vals[cur+d.k]!=null?vals[cur+d.k]:d.def)}
     e.id="p_"+d.k;e.setAttribute("aria-label",d.l);l.appendChild(e);
     if(e.type==="range"){const o=document.createElement("output");o.textContent=e.value;l.appendChild(o);e.addEventListener("input",()=>{o.textContent=e.value})}
@@ -763,12 +988,14 @@ function choose(id){
 }
 ORDER.forEach(id=>{const b=document.createElement("button");b.type="button";b.dataset.id=id;b.setAttribute("role","radio");b.textContent=FX[id].name;b.addEventListener("click",()=>choose(id));$("fxList").appendChild(b)});
 $("seedBtn").addEventListener("click",()=>{seed++;render()});
+$("pauseBtn").addEventListener("click",()=>{paused=!paused;$("pauseBtn").textContent=paused?"動かす":"動きを止める"});
 const cmp=$("cmpBtn");
 const showO=()=>{if(!orig)return;showOrig=true;show(fitCanvas(orig,prevSize()))},showR=()=>{showOrig=false;if(last)show(last)};
 cmp.addEventListener("pointerdown",e=>{e.preventDefault();showO()});
 ["pointerup","pointerleave","pointercancel"].forEach(t=>cmp.addEventListener(t,showR));
 cmp.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();showO()}});cmp.addEventListener("keyup",showR);
 async function frames(onp){
+  stopPlay();
   const secs=+$("alen").value,fps=+$("afps").value,W=+$("aw").value,n=Math.max(2,Math.min(120,Math.round(secs*fps))),out=[],t0=vid?(+$("astart").value||0):0;
   try{await document.fonts.load('20px "MaruMinyaM"')}catch(e){}
   for(let i=0;i<n;i++){
@@ -821,6 +1048,7 @@ $("saveBtn").addEventListener("click",async()=>{
     $("saveMsg").textContent=a.download+"("+dim+"px・"+(blob.size>=1048576?(blob.size/1048576).toFixed(1)+" MB":Math.max(1,Math.round(blob.size/1024))+" KB")+")を保存しました";
   }catch(e){console.error(e);$("saveMsg").textContent=e.message==="norec"?"このブラウザは、動画の書き出しに対応していません。GIFかAPNGで保存してください。":"保存できませんでした"}
   b.disabled=false;
+  if(vid||FX[cur].anim)render();
 });
 async function setImage(blob,nm,sample,full){
   fname=full||nm;if(vid){URL.revokeObjectURL(vid.url);vid=null}
