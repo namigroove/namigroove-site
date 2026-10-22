@@ -1,0 +1,11 @@
+{{ define "main" }}
+<main class="wrap post">
+  <p class="meta">NAMIGROOVE</p>
+  <h1>{{ .Title }}</h1>
+  <ul class="list">
+  {{ range .Pages.ByDate.Reverse }}
+    <li><a href="{{ .RelPermalink }}">{{ with .Params.image }}<img src="{{ . }}" alt="" loading="lazy">{{ else }}<span class="ph"></span>{{ end }}<span><time>{{ .Date.Format "2006.01.02" }}</time>{{ .Title }}</span></a></li>
+  {{ end }}
+  </ul>
+</main>
+{{ end }}

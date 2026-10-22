@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} – {{ .Site.Title }}{{ end }}</title>
+<link rel="canonical" href="{{ .Permalink }}">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ .Permalink }}">
+{{ with .Params.image }}<meta property="og:image" content="{{ . | absURL }}">{{ end }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+@font-face{font-family:"MaruMinyaM";src:url("https://namigroove.github.io/namigroove-site/fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+{{ readFile "assets_base.css" | safeCSS }}
+{{ readFile "assets_post.css" | safeCSS }}
+</style>
+</head>
+<body>
+{{ partial "header.html" . }}
+{{ block "main" . }}{{ end }}
+{{ partial "footer.html" . }}
+</body>
+</html>
