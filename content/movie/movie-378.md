@@ -178,7 +178,7 @@ Camelliaを曲名に使うと、同人作曲家のかめりあさんを連想し
 
 緑のソファの上に回転台を置き、そこに緑の下敷きを敷いてグリーンバックを生成。
 
-{{% video src="/wp-content/uploads/2022/01/20211218_131717.mp4" %}}
+[動画を見る(Google ドライブ)](https://drive.google.com/file/d/1e-X2HLJa7KCO1ALttCCahPpNpTLka8Pt/view)
 
 *※実は撮影に使用したのは椿ではなく山茶花*
 

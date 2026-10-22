@@ -141,7 +141,7 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 *うわああ*
 
-{{% video src="/wp-content/uploads/2023/02/20230225_201833_1.mp4" w="1080" h="1920" %}}
+[動画を見る(Google ドライブ)](https://drive.google.com/file/d/1Y5cV9ILOonUK6x4cDwjn487jPpZncDUE/view)
 
 ***✹‪MIX学び***ଳ
 
