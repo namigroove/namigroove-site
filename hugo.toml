@@ -12,3 +12,9 @@ enableRobotsTXT = false
 [outputs]
   home = ["HTML"]
   section = ["HTML"]
+
+# 新しく書く記事のURL(いまある記事は front matter の url をそのまま使う)
+[permalinks]
+  music = "/music/:slug/"
+  movie = "/movie/:slug/"
+  posts = "/:year/:month/:day/:slug/"

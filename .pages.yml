@@ -1,0 +1,65 @@
+# Pages CMS の設定(記事の編集画面)
+media:
+  input: static/wp-content/uploads
+  output: /wp-content/uploads
+  extensions: [webp, png, jpg, jpeg, gif]
+
+content:
+  - name: music
+    label: Music(楽曲)
+    type: collection
+    path: content/music
+    filename: "{fields.slug}.md"
+    format: yaml-frontmatter
+    view:
+      primary: title
+      fields: [date, categories]
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields: &article_fields
+      - { name: title, label: タイトル, type: string, required: true }
+      - { name: date, label: 公開日時, type: date, options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss" } }
+      - { name: slug, label: URL末尾(英数字), type: string, required: true }
+      - { name: draft, label: 下書き, type: boolean, default: false }
+      - { name: categories, label: カテゴリ, type: string, list: true }
+      - { name: image, label: 一覧・SNS用の画像, type: image }
+      - name: body
+        label: 本文
+        type: rich-text
+        options: { format: markdown, switcher: true }
+      - { name: lastmod, type: date, hidden: true, options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss" } }
+      - { name: wp_id, type: number, hidden: true }
+      - { name: url, type: string, hidden: true }
+      - { name: type, type: string, hidden: true }
+
+  - name: movie
+    label: Movie(動画)
+    type: collection
+    path: content/movie
+    filename: "{fields.slug}.md"
+    format: yaml-frontmatter
+    view:
+      primary: title
+      fields: [date, categories]
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields: *article_fields
+
+  - name: posts
+    label: お知らせ・ブログ
+    type: collection
+    path: content/posts
+    filename: "{fields.slug}.md"
+    format: yaml-frontmatter
+    view:
+      primary: title
+      fields: [date, categories]
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields: *article_fields
