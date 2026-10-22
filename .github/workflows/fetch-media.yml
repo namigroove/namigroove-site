@@ -1,0 +1,46 @@
+name: 動画・音声・PDFを記事別に取得(サイズ一覧つき)
+
+# WordPress から読むだけ。scripts/media-list.tsv の各ファイルを、記事別のフォルダに保存し、
+# zip(Artifact)にします。サイズ一覧は media-report ブランチの SIZES.txt に出します。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 取得
+        run: |
+          mkdir -p media-out
+          : > media-out/SIZES.txt
+          while IFS=$'\t' read -r dir p; do
+            [ -z "$p" ] && continue
+            mkdir -p "media-out/$dir"
+            f="media-out/$dir/$(basename "$p")"
+            if curl -fsSL --retry 5 --retry-delay 5 -o "$f" "https://www.namigroove.com/wp-content/uploads/$p"; then
+              printf '%s\t%s\t%s\n' "$(stat -c%s "$f")" "$dir" "$(basename "$p")" >> media-out/SIZES.txt
+            else
+              printf 'NG\t%s\t%s\n' "$dir" "$p" >> media-out/SIZES.txt
+            fi
+          done < scripts/media-list.tsv
+          cat media-out/SIZES.txt
+          du -sh media-out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: media-by-post
+          path: media-out
+          retention-days: 14
+      - name: サイズ一覧を別ブランチに保存
+        if: always()
+        run: |
+          mkdir report && cp media-out/SIZES.txt report/ && cd report
+          git init -q -b media-report
+          git config user.name "namigroove-bot"; git config user.email "namigroove-bot@users.noreply.github.com"
+          git add -A && git commit -qm "サイズ一覧"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin media-report
