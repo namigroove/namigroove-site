@@ -501,52 +501,6 @@ function glint(x,px,py,r,a){ /* レンズのきらめき:やわらかい光+細�
   ray(0,r*1.15,r*0.07,0.85);ray(Math.PI/2,r*0.8,r*0.06,0.75);ray(Math.PI/4,r*0.45,r*0.035,0.4);ray(-Math.PI/4,r*0.45,r*0.035,0.4);
   x.restore();
 }
-function vIcon(kind,r,R){ /* Vista風のガラスのアイコン */
-  const S=Math.ceil(r*2.4),L=mk(S,S),l=L.getContext("2d"),c=S/2,lw=Math.max(1,r*0.05);
-  l.lineJoin="round";l.lineCap="round";
-  if(kind==="cd"){
-    let cg;
-    if(l.createConicGradient){cg=l.createConicGradient(R()*6,c,c);["#ffd6f2","#cfe6ff","#d4fff0","#fff3c4","#ffd6f2"].forEach((k,i,a)=>cg.addColorStop(i/(a.length-1),k))}
-    else{cg=l.createLinearGradient(c-r,c-r,c+r,c+r);cg.addColorStop(0,"#ffd6f2");cg.addColorStop(0.5,"#cfe6ff");cg.addColorStop(1,"#fff3c4")}
-    l.fillStyle=cg;l.beginPath();l.arc(c,c,r,0,Math.PI*2);l.fill();
-    const rg=l.createRadialGradient(c,c,r*0.2,c,c,r);rg.addColorStop(0,"rgba(255,255,255,0.65)");rg.addColorStop(1,"rgba(255,255,255,0.12)");l.fillStyle=rg;l.beginPath();l.arc(c,c,r,0,Math.PI*2);l.fill();
-    l.globalCompositeOperation="destination-out";l.beginPath();l.arc(c,c,r*0.15,0,Math.PI*2);l.fill();l.globalCompositeOperation="source-over";
-    l.strokeStyle="rgba(255,255,255,.95)";l.lineWidth=lw*1.6;l.beginPath();l.arc(c,c,r,0,Math.PI*2);l.stroke();
-    l.lineWidth=lw;l.strokeStyle="rgba(255,255,255,.7)";l.beginPath();l.arc(c,c,r*0.3,0,Math.PI*2);l.stroke();l.beginPath();l.arc(c,c,r*0.15,0,Math.PI*2);l.stroke();
-  }else if(kind==="note"){
-    const P=new Path2D();
-    P.ellipse(c-r*0.5,c+r*0.55,r*0.32,r*0.23,-0.45,0,Math.PI*2);P.moveTo(c+r*0.4+r*0.32,c+r*0.35);P.ellipse(c+r*0.4,c+r*0.35,r*0.32,r*0.23,-0.45,0,Math.PI*2);
-    P.moveTo(c-r*0.24,c+r*0.5);P.lineTo(c-r*0.24,c-r*0.62);P.lineTo(c+r*0.66,c-r*0.84);P.lineTo(c+r*0.66,c+r*0.3);P.lineTo(c+r*0.5,c+r*0.3);P.lineTo(c+r*0.5,c-r*0.42);P.lineTo(c-r*0.08,c-r*0.28);P.lineTo(c-r*0.08,c+r*0.5);
-    const g=l.createLinearGradient(0,c-r,0,c+r);g.addColorStop(0,"#9df0ff");g.addColorStop(0.55,"#3aa3f0");g.addColorStop(1,"#1259c4");
-    l.strokeStyle="rgba(255,255,255,.95)";l.lineWidth=lw*3.2;l.stroke(P);l.fillStyle=g;l.fill(P,"nonzero");
-  }else if(kind==="person"){
-    const og=l.createRadialGradient(c-r*0.3,c-r*0.4,r*0.1,c,c,r);og.addColorStop(0,"#c4f3ff");og.addColorStop(0.5,"#3fa7f2");og.addColorStop(1,"#0a4aa8");
-    l.fillStyle=og;l.beginPath();l.arc(c,c,r,0,Math.PI*2);l.fill();
-    l.save();l.beginPath();l.arc(c,c,r*0.98,0,Math.PI*2);l.clip();
-    const pg=l.createLinearGradient(0,c-r*0.5,0,c+r);pg.addColorStop(0,"#ffffff");pg.addColorStop(1,"#bfe1ff");l.fillStyle=pg;
-    l.beginPath();l.arc(c,c-r*0.2,r*0.27,0,Math.PI*2);l.fill();
-    l.beginPath();l.ellipse(c,c+r*0.78,r*0.66,r*0.52,0,0,Math.PI*2);l.fill();l.restore();
-    l.strokeStyle="rgba(255,255,255,.95)";l.lineWidth=lw*1.8;l.beginPath();l.arc(c,c,r,0,Math.PI*2);l.stroke();
-  }else{ /* fish */
-    const pal=[["#fff08a","#ff8f3d"],["#8bebff","#2a77e0"],["#ffa6d4","#e0407f"]][(R()*3)|0];
-    const fin=l.createLinearGradient(0,c-r*0.8,0,c+r*0.8);fin.addColorStop(0,pal[0]);fin.addColorStop(1,pal[1]);
-    l.fillStyle=fin;l.strokeStyle="rgba(255,255,255,.9)";l.lineWidth=lw*1.4;
-    l.beginPath();l.moveTo(c+r*0.4,c);l.quadraticCurveTo(c+r*0.72,c-r*0.1,c+r*0.98,c-r*0.52);l.quadraticCurveTo(c+r*0.84,c,c+r*0.98,c+r*0.52);l.quadraticCurveTo(c+r*0.72,c+r*0.1,c+r*0.4,c);l.fill();l.stroke();
-    l.beginPath();l.moveTo(c-r*0.35,c-r*0.32);l.quadraticCurveTo(c-r*0.15,c-r*0.9,c+r*0.28,c-r*0.34);l.fill();l.stroke();
-    l.beginPath();l.moveTo(c-r*0.12,c+r*0.34);l.quadraticCurveTo(c,c+r*0.8,c+r*0.22,c+r*0.38);l.fill();l.stroke();
-    const bg=l.createLinearGradient(0,c-r*0.45,0,c+r*0.45);bg.addColorStop(0,pal[0]);bg.addColorStop(1,pal[1]);
-    l.fillStyle=bg;l.beginPath();l.ellipse(c-r*0.1,c,r*0.64,r*0.43,0,0,Math.PI*2);l.fill();l.stroke();
-    l.save();l.beginPath();l.ellipse(c-r*0.1,c,r*0.64,r*0.43,0,0,Math.PI*2);l.clip();l.fillStyle="rgba(255,255,255,.55)";
-    for(let k=0;k<2;k++){l.beginPath();l.moveTo(c-r*0.02+k*r*0.28,c-r*0.5);l.quadraticCurveTo(c+r*0.08+k*r*0.28,c,c-r*0.02+k*r*0.28,c+r*0.5);l.lineTo(c+r*0.1+k*r*0.28,c+r*0.5);l.quadraticCurveTo(c+r*0.2+k*r*0.28,c,c+r*0.1+k*r*0.28,c-r*0.5);l.fill()}
-    l.restore();
-    l.fillStyle="#fff";l.beginPath();l.arc(c-r*0.4,c-r*0.08,r*0.11,0,Math.PI*2);l.fill();l.fillStyle="#103060";l.beginPath();l.arc(c-r*0.42,c-r*0.08,r*0.06,0,Math.PI*2);l.fill();l.fillStyle="#fff";l.beginPath();l.arc(c-r*0.44,c-r*0.11,r*0.025,0,Math.PI*2);l.fill();
-  }
-  l.globalCompositeOperation="source-atop";
-  const g=l.createLinearGradient(0,c-r,0,c+r*0.1);g.addColorStop(0,"rgba(255,255,255,.7)");g.addColorStop(1,"rgba(255,255,255,0)");
-  l.fillStyle=g;l.beginPath();l.ellipse(c,c-r*0.38,r*0.95,r*0.6,0,0,Math.PI*2);l.fill();
-  l.globalCompositeOperation="source-over";
-  return L;
-}
 function smearC(c,w){ /* 赤と青のチャンネルを横にのばす(色のにじみ) */
   const W=c.width,H=c.height,id=getD(c),d=id.data,o=new Uint8ClampedArray(d);
   for(let y=0;y<H;y++)for(let ch=0;ch<3;ch+=2){
@@ -729,8 +683,8 @@ vhs:{anim:1,name:"VHS",desc:"ビデオテープ風。色のにじみ、横ゆれ
   if(p.date==="on"){const t=new Date(),M=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][t.getMonth()];txt(M+". "+String(t.getDate()).padStart(2,"0")+" "+t.getFullYear(),mg,H-mg-fs,"left")}
   return o;
  }},
-aero:{anim:0,name:"フルティガーエアロ",desc:"2000年代の、つやつやで青空みたいな明るさ。光のすじ、シャボン玉、レンズのきらめき、Vista風のCD・音符・人マーク・熱帯魚、ガラスの枠で仕上げます。",
- params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"gloss",l:"つや",min:0,max:100,def:60},{k:"rays",l:"光のすじ",min:0,max:100,def:50},{k:"bub",l:"シャボン玉",min:0,max:30,def:10},{k:"spark",l:"キラキラ",min:0,max:30,def:7},{k:"vista",l:"CD・音符・人・熱帯魚",type:"select",opts:[["0","なし"],["1","少なめ"],["2","ふつう"],["3","多め"]],def:"2"},
+aero:{anim:0,name:"フルティガーエアロ",desc:"2000年代の、つやつやで青空みたいな明るさ。光のすじ、シャボン玉、レンズのきらめき、ガラスの枠で仕上げます。",
+ params:[{k:"st",l:"強さ",min:0,max:100,def:70},{k:"gloss",l:"つや",min:0,max:100,def:60},{k:"rays",l:"光のすじ",min:0,max:100,def:50},{k:"bub",l:"シャボン玉",min:0,max:30,def:10},{k:"spark",l:"キラキラ",min:0,max:30,def:7},
   {k:"frame",l:"枠",type:"select",opts:[["glass","ガラスの枠"],["none","なし"]],def:"glass"}],
  run(src,p,R,u){
   const W=src.width,H=src.height,s=p.st/100;let o=clone(src);
@@ -768,13 +722,7 @@ aero:{anim:0,name:"フルティガーエアロ",desc:"2000年代の、つやつ�
     x.fillStyle="rgba(255,255,255,.85)";x.beginPath();x.ellipse(bx-r*0.38,by-r*0.42,r*0.22,r*0.12,-0.6,0,Math.PI*2);x.fill();
     x.fillStyle="rgba(255,255,255,.4)";x.beginPath();x.ellipse(bx+r*0.3,by+r*0.45,r*0.18,r*0.06,-0.6,0,Math.PI*2);x.fill();
   }
-  {const n=[0,3,6,10][+p.vista||0],kinds=["cd","note","person","fish"],k0=(R()*4)|0,cap=Math.min(W,H)*0.13;
-    for(let i=0;i<n;i++){
-      const r=Math.min(cap,(30+R()*44)*u),L=vIcon(kinds[(k0+i)%4],r,R),S=L.width;
-      x.save();x.translate(R()*W,R()*H);x.rotate((R()-0.5)*0.5);if(R()<0.5)x.scale(-1,1);
-      x.globalAlpha=0.82+R()*0.14;x.shadowColor="rgba(0,70,150,.35)";x.shadowBlur=10*u;x.shadowOffsetY=4*u;x.drawImage(L,-S/2,-S/2);x.restore();
-    }}
-  for(let i=0;i<p.spark;i++)glint(x,R()*W,R()*H*0.9,(14+R()*34)*u,0.55+R()*0.45);
+    for(let i=0;i<p.spark;i++)glint(x,R()*W,R()*H*0.9,(14+R()*34)*u,0.55+R()*0.45);
   if(p.frame==="glass"){
     const b=Math.round(16*u),r=Math.round(20*u);
     x.save();x.beginPath();x.rect(0,0,W,H);
