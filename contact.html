@@ -69,6 +69,14 @@ summary{cursor:pointer;padding:14px 4px;font-weight:700;list-style:none;display:
 summary::after{content:"+";font-family:var(--f-mono);color:var(--sea)}
 details[open] summary::after{content:"−"}
 details p{margin:0 4px 16px;font-size:14px;color:var(--ink-soft)}
+h3{font-family:var(--f-display);font-weight:400;font-size:17px;margin:22px 0 8px}
+.spec{margin:0;border-top:1.5px solid var(--ink)}
+.spec div{display:grid;grid-template-columns:9em minmax(0,1fr);gap:12px;padding:12px 4px;border-bottom:1px solid var(--line)}
+@media (max-width:560px){.spec div{grid-template-columns:1fr;gap:2px}}
+.spec dt{font-weight:700;font-size:14px}.spec dd{margin:0;font-size:14px;color:var(--ink-soft)}
+.steps{margin:0;padding-left:1.4em}.steps li{margin-bottom:10px;font-size:14px;color:var(--ink-soft)}.steps b{display:block;color:var(--ink)}
+.gear{margin:0;padding-left:1.2em;font-size:14px}.gear li{margin-bottom:4px}
+section p{font-size:14px}
 footer{padding-block:24px 40px;font-size:12px;color:var(--ink-soft)}
 </style>
 </head>
@@ -83,7 +91,7 @@ footer{padding-block:24px 40px;font-size:12px;color:var(--ink-soft)}
       <div><dt>納期の目安</dt><dd>1〜3か月</dd></div>
       <div><dt>お見積り</dt><dd>無料(有償案件のみ)</dd></div>
     </dl>
-    <p class="note">法人・商用のご依頼を優先して対応しています。ファンの方からのご質問は <a href="https://lit.link/namigroove">lit.link</a> をご覧ください。</p>
+    <p class="note">初回のお問い合わせは下のフォームをご利用ください。ご質問の前に、<a href="#faq">よくある質問</a>をご一読ください。案件が多いため、企業さまのご依頼を優先しています。納期・ご予算を書いていただけると返信しやすいです。</p>
   </header>
 
   <section id="form" style="padding-top:20px">
@@ -91,21 +99,116 @@ footer{padding-block:24px 40px;font-size:12px;color:var(--ink-soft)}
     <noscript><p class="note"><a href="https://tally.so/r/dbW2vr">フォームを開く</a></p></noscript>
   </section>
 
-  <section>
-    <h2>製作の流れ</h2>
-    <ol class="flow">
-      <li>ご相談・お見積り</li><li>ラフデモ</li><li>作詞・歌入りデモ</li><li>仮ミックス</li><li>納品</li>
-    </ol>
-    <p class="pay">お支払いは納品後およそ1か月以内の銀行振込です。初めてのお取引では前払いをお願いする場合があります。納品後の修正は原則お受けしていません。</p>
+  <section id="events" style="padding-top:8px">
+    <h2>イベント予定</h2>
+    <p class="note"><a href="https://timetr.ee/p/namigroove">TimeTreeでスケジュールを見る →</a></p>
   </section>
 
-  <section style="padding-top:8px">
-    <h2>よくある質問</h2>
-    <details><summary>楽曲の権利はどうなりますか？</summary><p>原盤権は原則として当方保持、またはご相談のうえ共同管理とします。商用利用は可能です。</p></details>
-    <details><summary>料金の目安を知りたい</summary><p>内容とご予算をうかがってからお見積りします。お見積りは無料です。</p></details>
-    <details><summary>二次創作・歌ってみたに使っていいですか？</summary><p>非営利の個人利用は連絡不要です。原曲(YouTubeまたはニコニコ動画)のクレジットとリンクを記載してください。商用利用はJASRAC・NexToneの手続きをお願いします。</p></details>
-    <details><summary>苦手な依頼はありますか？</summary><p>作詞のみ、楽譜作成、ミックス・マスタリングのみのご依頼はお受けしにくい場合があります。</p></details>
-    <details><summary>依頼プラットフォームからも頼めますか？</summary><p>FEATからもご依頼いただけます。半額前払いで手数料が抑えられます。</p></details>
+  <section id="flow">
+    <h2>製作の流れ・料金・お支払い</h2>
+    <dl class="spec">
+      <div><dt>対応内容</dt><dd>作詞・作曲・編曲・映像製作(個人・企業問わず)<br>※案件が多いため、企業さまのご依頼を優先しています</dd></div>
+      <div><dt>料金</dt><dd>内容とご予算をうかがってご相談します。お見積りは無料です。<br>※原則、有償のご依頼のみお受けしています</dd></div>
+      <div><dt>納期</dt><dd>平均1〜3か月程度</dd></div>
+      <div><dt>商用利用</dt><dd>可能です</dd></div>
+      <div><dt>原盤権</dt><dd>原則こちらで保有、または共同管理とさせていただくことが多いです。お互いが自由に使える形のほうが、楽曲を広く使ってもらえるためです</dd></div>
+    </dl>
+    <p class="note">抱えている依頼の数によってはご要望にお応えできない場合があります。ご検討中の方は、まずはお気軽にご連絡ください。</p>
+    <h3>製作の流れ(例:ボーカル曲の作詞・作曲・編曲をご依頼の場合)</h3>
+    <ol class="steps">
+      <li><b>打ち合わせ</b>内容のご相談やお見積りをします。テキストでも通話でもOK。Discordの進行用サーバーテンプレートをご案内することが多いです。</li>
+      <li><b>ラフの提出</b>大まかなオケ、または1コーラスができ次第デモをお送りします。大きな内容の変更はここまでにお願いします。</li>
+      <li><b>作詞・仮歌の提出</b>ボーカロイドやシンセでメロディを入れたデモをお送りします。キーの確認・変更もこのタイミングで。確認が取れたら、ボーカルデータをお送りいただきます。</li>
+      <li><b>仮2mixの提出</b>ボーカル込みのフルコーラスをお送りし、細かな修正点を確認します。</li>
+      <li><b>納品</b>ご希望のデータをGoogle Driveやギガファイル便などの共有リンクでお渡しします。納品後のリテイクは、基本的にお断りしています。</li>
+    </ol>
+    <h3>お支払い</h3>
+    <dl class="spec">
+      <div><dt>銀行振込</dt><dd>納品後1か月を目安に、指定の口座へお振込みください。振込先は別途ご連絡します。活動開始前・実績がない依頼者さまの場合、ラフ提出の時点で前払いをお願いすることがあります。納品後に連絡が取れなくなるケースが何度かあったため、ご了承ください(T_T)</dd></div>
+      <div><dt>FEAT</dt><dd>FEATに口座を登録すれば、お互いの本名や口座番号を出さずにやり取りできます。半額前払い・追加発注・金額の上乗せも簡単です(愛用しています)。オフィシャルアーティストのため手数料の割引も可能です。<br><a href="https://feat.kurogo.studio/namigroove">FEATから依頼する →</a></dd></div>
+    </dl>
+  </section>
+
+  <section id="skills" style="padding-top:8px">
+    <h2>得意分野・苦手分野</h2>
+    <h3>得意なこと</h3>
+    <dl class="spec">
+      <div><dt>作編曲</dt><dd>メロディに困ることはほぼありません。Jazz・R&amp;B・Soul・Funk・Popなどジャンル幅広く作れます。</dd></div>
+      <div><dt>楽器演奏</dt><dd>サックス・クラリネットを中心に、金管・ドラム以外は一通り自分で録れます。</dd></div>
+      <div><dt>映像・デザイン</dt><dd>最近は外注も増えましたが、自分でも作れます。</dd></div>
+    </dl>
+    <h3>苦手なこと</h3>
+    <dl class="spec">
+      <div><dt>作詞のみのご依頼</dt><dd>製作の中で一番時間がかかる工程です。フックになる言葉づくりは得意ですが、肉付けが苦手。メロディと歌詞をセットで考えるタイプなので、作詞作曲編曲まるごと、または作詞は別の方へのご依頼がおすすめです。</dd></div>
+      <div><dt>楽譜作成</dt><dd>読み書きはできますが、とても時間がかかります。</dd></div>
+      <div><dt>ミックス・マスタリング</dt><dd>既存曲くらいの品質でよければ可能です。歌もののミックスなど、高い品質をご希望の場合は外注をおすすめします。</dd></div>
+      <div><dt>トーク</dt><dd>ほとんどお断りしていますが、熱意に負けてお受けすることも…。ボイスチェンジャーを使えば可能な場合もあります。ネットにアーカイブが残るものは苦手で、公演などクローズドな場ならこなせます。</dd></div>
+    </dl>
+  </section>
+
+  <section id="dj" style="padding-top:8px">
+    <h2>DJ・イベント出演</h2>
+    <p>ソプラノサックス・テナーサックスを吹きながらのDJプレイができます。VOCALOID関連のクラブイベントによく呼んでいただいています。製作のお仕事を優先しているため、案件の状況やご予算によってはお受けできない場合があります。</p>
+    <h3>プレイ例</h3>
+    <p><a href="https://www.youtube.com/watch?v=ZxCW-OgMA0I">【🎷SAX DJ】㋰責任集合体 Live at 中国北京</a><br><a href="https://www.youtube.com/watch?v=QJnDJL89xfE">TETRAPOD 25'春 : なみぐる</a></p>
+    <h3>主な出演</h3>
+    <p>ニコニコ生放送(ボカコレ2023夏)/ ボカニコ2024 / <a href="https://club-mogra.jp/2023/10/13/5021/">Invaders1013</a> / 雪ミク2024 公式 DigitalStars / GOLD DISC / NEOMIX / NIGHT HIKE / 草苺祭(中国・北京)/ TETRAPOD(韓国)ほか<br><a href="https://www.namigroove.com/2023/03/28/setlist">過去のセットリストはこちら →</a></p>
+    <h3>主催者さまへ:機材について</h3>
+    <p><b>サックス用マイク</b> Xvive U7 ワイヤレスシステム(<a href="https://www.soundhouse.co.jp/products/detail/item/358204/">製品ページ</a>)。サックスに取り付けるメイン機です。電源不要・XLR接続なので、受信機をミキサー卓に接続してください。</p>
+    <p class="note">普段は雑談配信などをしないので、クラブイベントはファンや初めての方との接点づくり、音楽スキルのアップデート、同業の方との交流の場として大切にしています。</p>
+  </section>
+
+  <section id="faq" style="padding-top:8px">
+    <h2>よくある質問・二次創作規約</h2>
+    <h3>二次創作について</h3>
+    <p>二次創作は大歓迎です！本家の再現にオリジナル要素を加えたもの、歌ってみた、MADなど、二次創作文化が盛り上がるものであれば原則OKです。以下のルールだけ守ってください。</p>
+    <dl class="spec">
+      <div><dt>共通のお願い</dt><dd>作者(なみぐる)と原曲(YouTubeかニコニコ動画)へのリンクを、概要欄などに必ず書いてください。YouTubeならチャンネルメンション、ニコニコ動画ならコンテンツツリー(親作品登録)が便利です。<br>なみぐる以外が描いたイラストは、クレジットを見て各イラストレーターさんにご確認ください。<br>映像はそのままダウンロードして使ってOKです。</dd></div>
+      <div><dt>個人での利用</dt><dd>動画サイトなどで音源やMVを使う場合、連絡は不要です(お返事もできません)。<br>NG:商用利用・過度なR-18やグロテスクな表現・政治利用</dd></div>
+      <div><dt>商用での利用</dt><dd>商用利用や、投稿曲以外の楽曲・MVの利用、海外での利用は、著作権管理団体(<a href="https://www.jasrac.or.jp/info/index.html">JASRAC</a>・<a href="https://www.nex-tone.co.jp/">NexTone</a>)にご相談ください。信託されている曲かどうかは <a href="https://www2.jasrac.or.jp/eJwid">J-WID</a> / <a href="https://search.nex-tone.co.jp/">NexTone 作品検索</a> で調べられます。</dd></div>
+    </dl>
+    <h3>よくある質問</h3>
+    <details><summary>曲はどこで買えますか？</summary><p>サブスク配信中の曲は、Amazon MusicやApple Musicで購入できます。一部はBOOTHやBandcampでも買えます。購入した音源は、上のルールを守ってDJや二次創作に自由に使ってOKです。<br><a href="https://www.amazon.co.jp/music/player/artists/B09SN56JVM/%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B">Amazon Music</a> / <a href="https://piapro.jp/namigroove">piapro(Off Vocal)</a> / <a href="https://namigroove.fanbox.cc/">pixivFANBOX(STEM)</a> / <a href="https://soundcloud.com/namigroove">SoundCloud(一部Remixを無料配布)</a> / <a href="https://lit.link/namigroove">各種ショップ(lit.link)</a></p></details>
+    <details><summary>出演中の撮影はOK？SNSに上げていい？</summary><p><b>イベント出演時:</b>顔を隠しているときは、動画も写真もSNSに上げてOKです！イベントごとの規約もあわせて確認してください。撮った動画は、YouTube・TikTok・Instagramなどで使わせてもらうかもしれません。<br>動画を送ってくれる場合、XのDMに直接貼るとダウンロードできないので、Google Driveやギガファイル便、インスタのDMなどで送ってもらえると嬉しいです。<br><b>メディア出演時:</b>顔出しはなし(被り物をするか、演出で顔を隠す形)でお願いします。</p></details>
+    <details><summary>差し入れは何が嬉しい？</summary><p>基本なんでも嬉しいです🌊来てくれるだけでも嬉しいので無理せず🫶<br>お手紙：大切に読み返してます✉️ / お菓子：何でも嬉しいです。毎回ずんだタワーが建立されます🗼 / 飲み物：喉が潤います🫧<br>NG:デカすぎる物、手作りの食べ物(安全上)、危険物、盗聴器等<br><a href="https://x.com/namigroove/status/1783773839127974088">元のポスト(2024年4月26日)</a></p></details>
+    <details><summary>ファンレター・プレゼントの宛先は？</summary><p>「オーエン配送」から送れます。Amazonのほしい物リストも公開しています。<br><a href="https://ouen55.com/namigroove">オーエン配送(ファンレター・プレゼント)</a> / <a href="https://www.amazon.jp/hz/wishlist/ls/34NTG37FCSHYS">Amazon ほしい物リスト</a></p></details>
+    <details><summary>〇〇の曲をカラオケに入れてほしい！</summary><p>こちらではどうにもできないので、各社のリクエストフォームから送ってみてください。リクエストが多いと配信される確率が上がるかも…！<br><a href="https://www.joysound.com/web/s/request/form">JOYSOUND リクエスト</a> / <a href="https://www.clubdam.com/karaokerequest">DAM リクエスト</a></p></details>
+    <details><summary>名前の読み方は？</summary><p>「な↓み↑ぐ↑る↑」です。アブドゥルではなく、とたけけのイントネーション。<br><img src="https://www.namigroove.com/wp-content/uploads/2023/02/zunda2.gif" alt="ずんだもんによる「なみぐる」の発音" loading="lazy" width="320"><br>♪ ずんだもんによる、正しい「なみぐる」の発音(再生ボタンで聞けます)</p></details>
+    <details><summary>作品の中のずんだもんの性別は？</summary><p>受け手が自由に解釈できるところもずんだもんの魅力だと思っているので、特に決めていません。作品に合わせて、ガーリー・ボーイッシュの比率を変えることはあります。</p></details>
+  </section>
+
+  <section id="gear" style="padding-top:8px">
+    <h2>使用機材・ツール</h2>
+    <h3>楽器</h3>
+    <ul class="gear">
+      <li>テナーサックス:CannonBall Raven(メイン機)<a href="https://twitter.com/namigroove/status/1761569527723348315">演奏</a> / <a href="https://www.cannonballmusic.com/raven.php">製品</a></li>
+      <li>ソプラノサックス:Conn Vintage / Cannonball Big Bell <a href="https://www.namigroove.com/2021/09/11/post-119">演奏</a></li>
+      <li>バリトンサックス:Yanagisawa <a href="https://www.youtube.com/shorts/AtSg-zljb6U">演奏</a></li>
+      <li>クラリネット:クランポン R13(2025年1月〜)、以前はYAMAHA YCL-61 <a href="https://www.instagram.com/namigroove_music/reel/DE1YEx3uOWm/">演奏</a></li>
+      <li>バスクラリネット:LeBlanc(木製ショート管)<a href="https://youtube.com/shorts/P7J6SvD3eDI">演奏</a></li>
+      <li>フルート:YAMAHA 211SⅡ <a href="https://www.namigroove.com/2022/06/13/post-1047/">演奏</a></li>
+      <li>ベース:Momose 70s JB / Fender JP Precision Bass <a href="https://www.namigroove.com/2021/02/11/post-1110">演奏</a></li>
+      <li>ウッドベース:YAMAHA SLB300 <a href="https://www.namigroove.com/2024/11/08/post-6722/">演奏</a></li>
+      <li>キーボード:Roland JUNO-DS</li>
+      <li>エレキギター:Moon Telecaster Thinline</li>
+      <li>アコースティックギター:Taylor 110 <a href="https://www.namigroove.com/2021/08/02/post-1063">演奏</a></li>
+    </ul>
+    <h3>録音機材</h3>
+    <ul class="gear">
+      <li>オーディオインターフェース:Neumann MT 48 U(2025年1月〜)<a href="https://amzn.to/401YSk5">Amazon</a></li>
+      <li>ベースDI:BabyFace Pro FS または MXR Bass D.I.+ <a href="https://amzn.to/4kUSl3s">Amazon</a></li>
+      <li>マイク:Neumann TLM103(2025年6月〜)<a href="https://amzn.to/40g2Ohl">Amazon</a> / Shure SM58 <a href="https://amzn.to/45vZToh">Amazon</a> / Warm Audio WA-87(〜2025年5月)<a href="https://amzn.to/45vZy4Z">Amazon</a></li>
+    </ul>
+    <h3>ソフト</h3>
+    <ul class="gear">
+      <li>映像:AviUtl(メイン)、必要に応じて Blender / AzPainter2 / picoCAD / MMD</li>
+      <li>イラスト:Clip Studio Paint(2025年6月〜)、MediBang Paint(iPad)</li>
+    </ul>
+  </section>
+
+  <section id="feat" style="padding-top:8px">
+    <h2>FEAT(依頼プラットフォーム)からのご依頼</h2>
+    <p>FEATは別口の依頼プラットフォームです。請求書の自動発行などができるので、複数人が関わる案件のご依頼にも向いています。<br><a href="https://feat.kurogo.studio/namigroove">FEATの依頼フォームへ</a></p>
   </section>
 </div>
 <footer><div class="wrap">© namigroove</div></footer>
