@@ -1,0 +1,63 @@
+name: サイト全体をビルド(静的ページ + Hugoの記事)
+
+# 公開には使いません(試し組み立てだけ)。
+# deploy を true にして実行すると GitHub Pages に出しますが、
+# Pages の公開元を「GitHub Actions」に切り替えるまでは、失敗して何も変わりません。
+
+on:
+  workflow_dispatch:
+    inputs:
+      blog_branch:
+        description: "記事(Hugo)のブランチ"
+        default: "migrate-preview"
+      deploy:
+        description: "GitHub Pagesに公開する(true/false)"
+        default: "false"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: site }
+      - uses: actions/checkout@v4
+        with: { ref: "${{ github.event.inputs.blog_branch }}", path: blog }
+      - name: Hugo を入れる
+        run: pip install --quiet hugo && hugo version
+      - name: 記事をビルド
+        run: hugo --source blog --destination "$GITHUB_WORKSPACE/hugo-out" --quiet
+      - name: 組み立て(既存の静的ページ + 記事)
+        run: |
+          mkdir _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude 'scripts' --exclude 'node_modules' site/ _site/
+          # 記事側は、既存のファイルを上書きしない
+          rsync -a --ignore-existing hugo-out/ _site/
+          touch _site/.nojekyll
+      - name: 確認
+        run: |
+          test -f _site/index.html
+          test -f _site/works.html
+          test -f _site/music/music-10078/index.html
+          test -f _site/movie/movie-9826/index.html
+          test -f _site/music/works/index.html
+          n=$(find _site -name index.html | wc -l); echo "index.html: $n"
+          du -sm _site
+          [ "$(du -sm _site | cut -f1)" -lt 900 ]
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: _site }
+
+  deploy:
+    needs: build
+    if: github.event.inputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.d.outputs.page_url }}
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4
