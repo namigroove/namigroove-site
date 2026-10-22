@@ -13,15 +13,15 @@
 /* Layout: 依頼前に知りたい3点 → フォーム → 流れ・FAQは畳む。トップと同じ海のトークン */
 :root{
   --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
-  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--night:#142a66;--night-fg:#eaf0fd;--chip:#ffffff;--err:#b3261e;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--night:#142a66;--night-fg:#eaf0fd;--chip:#ffffff;--err:#b3261e;--head:#396cdf;
   --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
   --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
   --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--err:#ff8a80;color-scheme:dark}}
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--err:#ff8a80;--head:#396cdf;color-scheme:dark}}
 :root[data-theme="dark"]{
-  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--err:#ff8a80;color-scheme:dark}
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--night:#060c22;--night-fg:#e6ecfb;--chip:#121d40;--err:#ff8a80;--head:#396cdf;color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
 a{color:var(--sea)}
@@ -29,8 +29,8 @@ a{color:var(--sea)}
 :focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
 .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
 h1,h2{text-wrap:balance;margin:0}
-header{padding-block:28px 8px}
-header a.back{font-size:13px;color:var(--ink-soft);text-decoration:none}
+.pagehead{padding-block:28px 8px}
+.pagehead a.back{font-size:13px;color:var(--ink-soft);text-decoration:none}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,6vw,44px);line-height:1.2;margin-top:12px}
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-block:24px 8px}
 .facts div{background:var(--wash);padding:14px 16px;min-width:0}
@@ -77,12 +77,35 @@ h3{font-family:var(--f-display);font-weight:400;font-size:17px;margin:22px 0 8px
 .steps{margin:0;padding-left:1.4em}.steps li{margin-bottom:10px;font-size:14px;color:var(--ink-soft)}.steps b{display:block;color:var(--ink)}
 .gear{margin:0;padding-left:1.2em;font-size:14px}.gear li{margin-bottom:4px}
 section p{font-size:14px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px;flex:none}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
 footer{padding-block:24px 40px;font-size:12px;color:var(--ink-soft)}
 </style>
 </head>
 <body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="https://www.namigroove.com/"><img src="https://www.namigroove.com/img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="https://www.namigroove.com/works/" translate="no">Works</a>
+      <a href="https://www.namigroove.com/tools/" translate="no">Tools</a>
+      <a href="https://www.namigroove.com/#notes">おしらせ</a>
+      <a href="https://www.namigroove.com/#links" class="opt">リンク</a>
+      <a href="https://www.namigroove.com/contact/" aria-current="page">依頼</a>
+    </nav>
+  </div>
+</header>
 <div class="wrap">
-  <header>
+  <div class="pagehead">
     <a class="back" href="https://www.namigroove.com/">← なみぐる！トップ</a>
     <p class="eyebrow" style="margin-top:20px">COMMISSION</p>
     <h1>製作のご依頼・お問い合わせ</h1>
@@ -92,7 +115,7 @@ footer{padding-block:24px 40px;font-size:12px;color:var(--ink-soft)}
       <div><dt>お見積り</dt><dd>無料(有償案件のみ)</dd></div>
     </dl>
     <p class="note">初回のお問い合わせは下のフォームをご利用ください。ご質問の前に、<a href="#faq">よくある質問</a>をご一読ください。案件が多いため、企業さまのご依頼を優先しています。納期・ご予算を書いていただけると返信しやすいです。</p>
-  </header>
+  </div>
 
   <section id="form" style="padding-top:20px">
     <iframe data-tally-src="https://tally.so/embed/dbW2vr?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0" title="製作依頼フォーム"></iframe>
