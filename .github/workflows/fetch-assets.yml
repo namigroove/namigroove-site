@@ -1,0 +1,37 @@
+name: 追加の画像を取得(migrate-previewへ保存)
+
+# scripts/extra-assets.txt にあるWordPress上の画像を、同じパスで migrate-preview の static/ に保存します。
+# WordPress には何も書き込みません。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: site }
+      - uses: actions/checkout@v4
+        with: { ref: migrate-preview, path: blog }
+      - name: 取得
+        run: |
+          fail=0
+          while read -r p; do
+            [ -z "$p" ] && continue
+            mkdir -p "blog/static$(dirname "$p")"
+            if curl -fsSL --retry 5 --retry-delay 5 -o "blog/static$p" "https://www.namigroove.com$p"; then echo "ok $p"; else echo "NG $p"; fail=1; fi
+          done < site/scripts/extra-assets.txt
+          exit $fail
+      - name: 保存
+        if: always()
+        run: |
+          cd blog
+          git config user.name "namigroove-bot"
+          git config user.email "namigroove-bot@users.noreply.github.com"
+          git add -A
+          git commit -qm "追加の画像を取得" || echo "変更なし"
+          git push origin migrate-preview
