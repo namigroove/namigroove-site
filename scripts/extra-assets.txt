@@ -1,7 +1,7 @@
 /wp-content/uploads/2023/07/msmylbanaa2.png
 /wp-content/uploads/2023/12/hayubanner.png
 /wp-content/uploads/2023/12/namigroove_banner01.png
-/wp-content/uploads/2025/06/big_namigroove_square_banner.gif
+/wp-content/uploads/2025/06/big_namigroove_square_banner_gif.gif
 /wp-content/uploads/2025/06/big_namigroove_square_banner.png
 /wp-content/uploads/2025/11/76159488b6f6936c.png
 /wp-content/uploads/2026/08/sanmenso_banner.webp
