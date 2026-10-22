@@ -1,4 +1,5 @@
 baseURL = "https://www.namigroove.com/"
+timeZone = "Asia/Tokyo"
 languageCode = "ja"
 defaultContentLanguage = "ja"
 title = "なみぐる！"
