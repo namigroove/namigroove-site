@@ -27,7 +27,7 @@ const EN={
   "808・909":"808 / 909","シーケンサー":"Sequencer",
   "耳トレ":"Ear training","鳴った和音や音程を当てるクイズ。M9・m11・13 などおしゃれコードの聞き分けにも。":"A quiz where you identify the chord or interval you hear. Great for telling stylish chords like M9, m11 and 13 apart.",
   "コード当て":"Chord quiz","音程":"Intervals","聞き比べ":"A/B listening",
-  "歌詞の音数カウンター":"Lyric mora counter","歌詞の1行ごとのモーラ数を数えます。拗音は1音、「っ」「ん」「ー」も1音。ボカロの作詞に。":"Counts the morae in each line of lyrics. Small ya/yu/yo count as part of one sound; っ, ん and ー each count as one. Handy for writing Vocaloid lyrics.",
+  "歌詞の音数カウンター":"Lyric mora counter","歌詞の1行ごとのモーラ数を数えます。拗音は1音、「っ」「ん」「ー」も1音。漢字のひらがな化やMusicXML読み込みもできます。":"Counts the morae in each line of lyrics. Small ya/yu/yo count as part of one sound; っ, ん and ー each count as one. Also converts kanji to hiragana and loads MusicXML.",
   "作詞":"Lyrics","モーラ":"Morae","ボカロ":"Vocaloid",
   "お題ガチャ":"Prompt gacha","テーマ・ジャンル・歌声(合成音声)・キーワード・縛りをランダムに出す、作詞と曲づくりのお題メーカー。":"A random prompt maker for songwriting: theme, genre, singing voice (synth), keyword and constraint.",
   "お題":"Prompts","ジャンル":"Genre",
