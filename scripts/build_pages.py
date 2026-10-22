@@ -75,7 +75,7 @@ for fn, p in pages.items():
 # 3) js / webmanifest / json の中の github.io も直す
 for dp, _, fns in os.walk(out):
     for fn in fns:
-        if fn.endswith((".js", ".webmanifest", ".json")):
+        if fn.endswith((".js", ".webmanifest", ".json", ".css")):
             f = os.path.join(dp, fn)
             try:
                 t = open(f, encoding="utf8").read()
