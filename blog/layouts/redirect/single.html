@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>{{ .Title }}</title>
+<link rel="canonical" href="{{ .Params.redirect_to }}">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url={{ .Params.redirect_to }}">
+<script>location.replace({{ .Params.redirect_to }});</script></head>
+<body><p><a href="{{ .Params.redirect_to }}">移動しました。こちらをクリックしてください。</a></p></body></html>

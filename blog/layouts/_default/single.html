@@ -1,0 +1,8 @@
+{{ define "main" }}
+<main class="wrap post">
+  <p class="meta">{{ .Type | upper }} · <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time></p>
+  <h1>{{ .Title }}</h1>
+  {{ if gt (len .TableOfContents) 80 }}<details class="toc"><summary>目次</summary>{{ .TableOfContents }}</details>{{ end }}
+  {{ .Content }}
+</main>
+{{ end }}

@@ -1,0 +1,21 @@
+baseURL = "https://www.namigroove.com/"
+timeZone = "Asia/Tokyo"
+languageCode = "ja"
+defaultContentLanguage = "ja"
+title = "なみぐる！"
+disableKinds = ["home", "taxonomy", "term", "RSS"]
+enableRobotsTXT = false
+[markup.goldmark.renderer]
+  unsafe = true
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+[outputs]
+  home = ["HTML"]
+  section = ["HTML"]
+
+# 新しく書く記事のURL(いまある記事は front matter の url をそのまま使う)
+[permalinks]
+  music = "/music/:slug/"
+  movie = "/movie/:slug/"
+  posts = "/:year/:month/:day/:slug/"

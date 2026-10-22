@@ -1,0 +1,4 @@
+{{ define "main" }}
+<main class="wrap post"><h1>なみぐる！ (Hugo 試作)</h1>
+<ul>{{ range .Site.Sections }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a>({{ len .Pages }})</li>{{ end }}</ul></main>
+{{ end }}

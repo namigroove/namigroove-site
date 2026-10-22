@@ -12,7 +12,7 @@ import os, re, shutil, sys
 from urllib.parse import urlparse
 
 src, out = sys.argv[1], sys.argv[2]
-SKIP = {".git", ".github", "scripts", "node_modules", "__pycache__"}
+SKIP = {".git", ".github", "scripts", "node_modules", "__pycache__", "blog"}
 GH = "https://namigroove.github.io/namigroove-site/"
 HOST = "www.namigroove.com"
 
