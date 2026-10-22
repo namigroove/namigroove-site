@@ -9,7 +9,7 @@ wp_id: 6358
 draft: false
 image: "/wp-content/uploads/2024/08/5af6988802038705.webp"
 ---
-<iframe loading="lazy" title="さぁーもん - ？？？【オリジナル曲】/ feat.？？？" width="500" height="281" src="https://www.youtube.com/embed/DtC2J-lP1ms?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="DtC2J-lP1ms" %}}
 
 ## テーマ
 
@@ -91,10 +91,10 @@ Vtuberさんからのご依頼は数多あれど、ゲーム、それもスプ�
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="Rip Entry" width="500" height="281" src="https://www.youtube.com/embed/LLXaq2Jxm2A?list=PLoWWeK6rRGFpLjM2uKgQyG6WVrzta_ORX" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="LLXaq2Jxm2A" list="PLoWWeK6rRGFpLjM2uKgQyG6WVrzta_ORX" %}}
 
 ギターの感じはこれが近いかな
 
-<iframe loading="lazy" title="DANZEN！ふたりはプリキュア" width="500" height="375" src="https://www.youtube.com/embed/DN7BvSVupAw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="DN7BvSVupAw" %}}
 
 オーケストラヒットは完全にこれイメージ

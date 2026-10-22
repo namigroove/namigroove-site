@@ -33,7 +33,7 @@ image: "/wp-content/uploads/2025/04/2b7ad1f91fb4f7c6123faec08620ac17.webp"
 
 ## グッズ
 
-<iframe loading="lazy" title="【XFD】umigroove 1st Remix EP × フレークシール【なみぐる × 海茶 × nekomoコラボ】" width="422" height="750" src="https://www.youtube.com/embed/E8Hz8wbE89E?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="E8Hz8wbE89E" %}}
 
 ![](/wp-content/uploads/2025/04/2f5ddc130c421565c3c6bd54c202857d.webp)
 
@@ -60,7 +60,7 @@ image: "/wp-content/uploads/2025/04/2b7ad1f91fb4f7c6123faec08620ac17.webp"
 
 > [ニコニコ超会議2026 H2け-26ボ 春M3提供情報](https://www.namigroove.com/2026/04/09/post-9294/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ニコニコ超会議2026 H2け-26ボ 春M3提供情報” — なみぐる！" src="https://www.namigroove.com/2026/04/09/post-9294/embed/#?secret=VqpymT5dT4#?secret=uSW8l5P10u" data-secret="uSW8l5P10u" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ニコニコ超会議2026 H2け-26ボ 春M3提供情報” — なみぐる！](/2026/04/09/post-9294/)
 
 ◆Illust nekomo( [https://x.com/yumenkmc](https://x.com/yumenkmc) )  
 ◆Music　海茶 ( [https://x.com/ocean\_tea\_cafe](https://x.com/ocean_tea_cafe) )  

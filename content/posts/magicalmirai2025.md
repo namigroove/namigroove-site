@@ -28,7 +28,7 @@ image: "/wp-content/uploads/2025/08/250803_majimira_oshinagakl.webp"
 
 > [【1st Remix EP】umigroove](https://www.namigroove.com/music/music-7858/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【1st Remix EP】umigroove” — なみぐる！" src="https://www.namigroove.com/music/music-7858/embed/#?secret=mdUoB3AlHC#?secret=MrukzxtnM5" data-secret="MrukzxtnM5" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【1st Remix EP】umigroove” — なみぐる！](/music/music-7858/)
 
 https://x.com/namigroove/status/1915344976508314096?t=WnZ2yxP8Gbimfx\_F-qpqMQ&s=19
 
@@ -36,11 +36,11 @@ https://x.com/namigroove/status/1915344976508314096?t=WnZ2yxP8Gbimfx\_F-qpqMQ&s=
 
 うごく！アクキー
 
-<iframe loading="lazy" title="うごく！アクキー作ってみた【グッズ紹介】#vocaloid   #スパソゲッティ #ウニクラゲ" width="500" height="281" src="https://www.youtube.com/embed/fP_ehgt7lfE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="fP_ehgt7lfE" %}}
 
 > [うごく！アクキー作ってみた【グッズ紹介】](https://www.namigroove.com/2025/07/11/post-8416/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“うごく！アクキー作ってみた【グッズ紹介】” — なみぐる！" src="https://www.namigroove.com/2025/07/11/post-8416/embed/#?secret=PknBqj0acD#?secret=makNoUFlR8" data-secret="makNoUFlR8" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“うごく！アクキー作ってみた【グッズ紹介】” — なみぐる！](/2025/07/11/post-8416/)
 
 差し入れ  
 デカスーツケースで来たからキャパは大丈夫そう！
@@ -96,7 +96,7 @@ https://x.com/namigroove/status/1915344976508314096?t=WnZ2yxP8Gbimfx\_F-qpqMQ&s=
 
 > [ずんだシェイキング / なみぐる feat.ずんだもん 春日部つむぎ](https://www.namigroove.com/movie/movie-3805/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ずんだシェイキング / なみぐる feat.ずんだもん 春日部つむぎ” — なみぐる！" src="https://www.namigroove.com/movie/movie-3805/embed/#?secret=FTPO9nhg9v#?secret=w9MIkzVe2w" data-secret="w9MIkzVe2w" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ずんだシェイキング / なみぐる feat.ずんだもん 春日部つむぎ” — なみぐる！](/movie/movie-3805/)
 
 ずんだサイダーやずんだシェイクを手に入れたら  
 写真をとって#ずんだシェイキング でツイートやインスタ投稿してね  

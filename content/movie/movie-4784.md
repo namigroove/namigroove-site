@@ -9,7 +9,7 @@ wp_id: 4784
 draft: false
 image: "/wp-content/uploads/2024/01/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="あるいは地下鉄の私 - namigroove remix - 【なみぐる × 濁茶】" width="500" height="281" src="https://www.youtube.com/embed/liC2fl4lF8M?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="liC2fl4lF8M" %}}
 
 ## きっかけ
 
@@ -35,7 +35,7 @@ BPMはそのまま、中の楽器はあまり変えずに、ビートとベー�
 
 イントロはJersey Clubの元ネタになった、Bmore Breaksがモチーフ
 
-<iframe loading="lazy" title="Why Is Jersey Club Music Everywhere Right Now?" width="500" height="281" src="https://www.youtube.com/embed/ilcWHbbVwF4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ilcWHbbVwF4" %}}
 
 メインのビートはUK GarageのサブジャンルのUK Sheffield
 
@@ -43,7 +43,7 @@ BPMはそのまま、中の楽器はあまり変えずに、ビートとベー�
 
 アシッドベースだいすき
 
-<iframe loading="lazy" title="Phatworld - Northern Don" width="500" height="281" src="https://www.youtube.com/embed/pHl_Js1SwHA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="pHl_Js1SwHA" %}}
 
 Cメロ？はUK DrillのビートにSFCブラス音源をのせてノスタルジックに
 

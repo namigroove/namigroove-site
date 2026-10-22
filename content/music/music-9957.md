@@ -15,4 +15,4 @@ image: "/wp-content/uploads/2026/10/itd1099163.webp"
 
 [https://linkco.re/v5fC7AF7](https://linkco.re/v5fC7AF7)
 
-<iframe loading="lazy" title="雷華（Album ver.）" width="500" height="375" src="https://www.youtube.com/embed/QobKuaAqerM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="QobKuaAqerM" %}}

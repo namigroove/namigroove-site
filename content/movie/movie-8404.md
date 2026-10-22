@@ -9,7 +9,7 @@ wp_id: 8404
 draft: false
 image: "/wp-content/uploads/2025/07/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="CLOSE ENCOUNTER 〜 モミとの遭遇 〜 / をなもみだっ" width="500" height="281" src="https://www.youtube.com/embed/edvPCMQWrrU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="edvPCMQWrrU" %}}
 
 ビッグバンド風編曲と、クラリネットで参加！
 

@@ -9,7 +9,7 @@ wp_id: 3805
 draft: false
 image: "/wp-content/uploads/2023/08/2square_thumb.webp"
 ---
-<iframe loading="lazy" title="ずんだシェイキング / なみぐる feat.ずんだもん 春日部つむぎ" width="500" height="281" src="https://www.youtube.com/embed/DVSlQuF0Pcg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="DVSlQuF0Pcg" %}}
 
 ## テーマ
 
@@ -60,7 +60,7 @@ Electro Swing × UK Sheffield(ワブリーな UK Garage) ×演歌 × ロシア�
 
 > [ずんだパーリナイ / なみぐる feat.ずんだもん](https://www.namigroove.com/movie/movie-2957/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ずんだパーリナイ / なみぐる feat.ずんだもん” — なみぐる！" src="https://www.namigroove.com/movie/movie-2957/embed/#?secret=qi5GlxtOMY#?secret=MWLZnByM9W" data-secret="MWLZnByM9W" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ずんだパーリナイ / なみぐる feat.ずんだもん” — なみぐる！](/movie/movie-2957/)
 
 トップ100の舞台ではずんだもん大熱唱＋
 
@@ -110,7 +110,7 @@ Electro Swing × UK Sheffield(ワブリーな UK Garage) ×演歌 × ロシア�
 
 > [【My new gear…】10万円の木製バスクラリネット](https://www.namigroove.com/2021/04/10/post-212/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【My new gear…】10万円の木製バスクラリネット” — なみぐる！" src="https://www.namigroove.com/2021/04/10/post-212/embed/#?secret=q3NiagN7z3#?secret=Xgkr8uXdwR" data-secret="Xgkr8uXdwR" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【My new gear…】10万円の木製バスクラリネット” — なみぐる！](/2021/04/10/post-212/)
 
 #### ■**ベース**
 
@@ -132,7 +132,7 @@ Electro Swing × UK Sheffield(ワブリーな UK Garage) ×演歌 × ロシア�
 
 ▼プラック音作り方
 
-<iframe loading="lazy" title="【1分DTM講座】ずんだもんと学ぶ ～パキパキピコピコバッキング～【Chiptune】 #shorts" width="500" height="281" src="https://www.youtube.com/embed/7cFcGUfTCzs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="7cFcGUfTCzs" %}}
 
 #### ■**アコーディオン**
 
@@ -158,7 +158,7 @@ VINTAGE HORNS 2＋一部サンプル
 
 （ようこそジャパリパークへ のイントロで使われてる楽器）
 
-<iframe loading="lazy" title="TVアニメ『けものフレンズ』主題歌「ようこそジャパリパークへ / どうぶつビスケッツ×PPP」" width="500" height="281" src="https://www.youtube.com/embed/xkMdLcB_vNU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="xkMdLcB_vNU" %}}
 
 ### 調声
 
@@ -193,9 +193,9 @@ VOICEVOXは喋り始めと喋り終わりでアクセントが強く変化する
 
 長いセンテンスはブロックごとに重なるように分けて出力して連続部分をノイズにならない位置で重ねる。「箱入り娘は大」「娘は大豆になるまでさや」「までさやにこもってなさい」
 
-<iframe loading="lazy" title="夜夜中徘徊心地  / 宮守文学 feat.春日部つむぎ" width="500" height="281" src="https://www.youtube.com/embed/XWB_hTtDcqU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="XWB_hTtDcqU" %}}
 
-<iframe loading="lazy" title="king妃jack躍 / 宮守文学 feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/IsxdBZ0wgq8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IsxdBZ0wgq8" %}}
 
 ## 歌詞
 
@@ -231,7 +231,7 @@ VOICEVOXは喋り始めと喋り終わりでアクセントが強く変化する
 
 あとナンバラバンバンバン
 
-<iframe loading="lazy" title="魔法使いサリーのオープニング" width="500" height="375" src="https://www.youtube.com/embed/xD0-48G6wkM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="xD0-48G6wkM" %}}
 
 ## 映像
 
@@ -263,7 +263,7 @@ nekomo🐾とdiscord繋いで一週間缶詰で作った。
 
 > [ウニクラゲ / なみぐる feat.ずんだもん・初音ミク](https://www.namigroove.com/movie/movie-1648/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ウニクラゲ / なみぐる feat.ずんだもん・初音ミク” — なみぐる！" src="https://www.namigroove.com/movie/movie-1648/embed/#?secret=GfQSsrKolc#?secret=bTiXRiAawy" data-secret="bTiXRiAawy" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ウニクラゲ / なみぐる feat.ずんだもん・初音ミク” — なみぐる！](/movie/movie-1648/)
 
 ![](/wp-content/uploads/2023/08/image-3.webp)
 
@@ -328,7 +328,7 @@ Modern Tetris(テトリずロゴ）
 
 予告動画の伏線回収＆海茶チームにネゴっておどロボずんだもん（別個体）を入手
 
-<iframe loading="lazy" title="【VOICEVOX2周年】ずんだもん音頭【#ボカコレ2023夏予告】" width="500" height="281" src="https://www.youtube.com/embed/Dg7h0E38Cfw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Dg7h0E38Cfw" %}}
 
 曲中でエンドロールが流れて終わったら面白い
 
@@ -338,7 +338,7 @@ Modern Tetris(テトリずロゴ）
 
 > [【AviUtl】カラオケ風の歌詞字幕をルビ付きで作成！【簡易カラオケ字幕スクリプト】](https://aketama.work/aviutl-karaoke)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【AviUtl】カラオケ風の歌詞字幕をルビ付きで作成！【簡易カラオケ字幕スクリプト】” — AKETAMA OFFICIAL BLOG" src="https://aketama.work/aviutl-karaoke/embed#?secret=zsFXtPXgZ6#?secret=CVjBfZwoU6" data-secret="CVjBfZwoU6" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[【AviUtl】カラオケ風の歌詞字幕をルビ付きで作成！【簡易カラオケ字幕スクリプト】](https://aketama.work/aviutl-karaoke/)
 
 ケコーン　元ネタ
 
@@ -356,7 +356,7 @@ Modern Tetris(テトリずロゴ）
 
 ![](/wp-content/uploads/2023/08/image-19.webp)
 
-<iframe loading="lazy" title="ライアーダンサー／重音テトSV" width="500" height="281" src="https://www.youtube.com/embed/UHbmkxv-874?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="UHbmkxv-874" %}}
 
 コサックずんだはかわいいのに登場シーンが短い為、右上に退避
 
@@ -393,44 +393,44 @@ Twitter→Xになったのをイジりたくて同じフォントでずんだの
 
 耳に残るという点でCMソング最強
 
-<iframe title="Spotify Embed: たらこ・たらこ・たらこ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1Elup585e6KlsP9NiZ5nV4?si=0dcefe57204445ab&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1Elup585e6KlsP9NiZ5nV4" %}}
 
-<iframe loading="lazy" title="残業ミュージシャン、CMソングに物申す 【JAZZOFF】" width="500" height="281" src="https://www.youtube.com/embed/WgnT7RFRh9k?start=318&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="WgnT7RFRh9k" start="318" %}}
 
 *jazzoffの解説も面白い*
 
 ・くるっと・まわって・いっかいてん – キグルミ  
 これもロシア民謡
 
-<iframe title="Spotify Embed: くるっと・まわって・いっかいてん" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3b2aKXHcQNEvk4c1LYi9wH?si=6a0d54e4eb9a48cb&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3b2aKXHcQNEvk4c1LYi9wH" %}}
 
 ・コロブチカ – ロシア民謡
 
 TETRIず
 
-<iframe title="Spotify Embed: コロブチカ (ロシア)" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6V8YlNjKduW8Ydr1bN7QpL?si=5bba87842ce34246&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6V8YlNjKduW8Ydr1bN7QpL" %}}
 
 ・カリンカ – ロシア民謡  
 最後のコーラスパートで引用 テンポチェンジが熱い  
 
-<iframe title="Spotify Embed: カリンカ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/26VlabrMotucmZj05f2MkS?si=a6f8756f3a0c42cb&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/26VlabrMotucmZj05f2MkS" %}}
 
 ・そうだ! We’re ALIVE – モーニング娘  
 カリンカ引用
 
-<iframe loading="lazy" title="モーニング娘。 『そうだ！We're ALIVE』 (MV)" width="500" height="281" src="https://www.youtube.com/embed/I_zmewdR-b8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="I_zmewdR-b8" %}}
 
 ・Yeah！めっちゃストレス ｰ ゴールデンボンバー
 
 アイリッシュで似たようなことをやっている
 
-<iframe loading="lazy" title="ゴールデンボンバー「Yeah!めっちゃストレス」MV" width="500" height="281" src="https://www.youtube.com/embed/yxQW56zHRFU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="yxQW56zHRFU" %}}
 
 ・恋は渾沌の隷也 – 田中秀和
 
 ふるふる～　秀和神はワールドミュージック応用が本当にうまい
 
-<iframe title="Spotify Embed: 恋は渾沌の隷也" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/2g1k9DguVUrZSPIVzcphlQ?si=de46c06ae5654d07&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/2g1k9DguVUrZSPIVzcphlQ" %}}
 
 ・15歳の誕生日記念に演歌を作って歌ってみました【オリジナル曲】
 
@@ -443,7 +443,7 @@ UK Garageの中でも、UK Sheffieldというイングランド1都市で隆盛�
 
 （DJイベントで教えてもらった）
 
-<iframe title="Spotify Embed: Out Of Space" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/17YPCJEixnb6MM3Ahdf5uG?si=5bc2615677e64890&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/17YPCJEixnb6MM3Ahdf5uG" %}}
 
 ![](/wp-content/uploads/2023/10/image.webp)
 

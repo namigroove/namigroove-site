@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2024/09/GWYH0svaMAAGjn_.webp"
 ---
 ![](/wp-content/uploads/2024/09/GWYH0svaMAAGjn_.webp)
 
-<iframe loading="lazy" title="3rd Electro Swing Album「Milky Butler」- ど～ぱみん / 前線 / なみぐる / picco" width="500" height="281" src="https://www.youtube.com/embed/im-4YwGTfsA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="im-4YwGTfsA" %}}
 
   
 ❑サブスク配信❑  

@@ -58,7 +58,7 @@ YAMAHAの普通のB♭クラリネットも持ってるよ
 
 高い楽器じゃないのでレジスターのメカニズムが違って、高音域は当てにくい。でも古いグラナディラの良い音がするのでよし。
 
-<iframe loading="lazy" title="NEO SOUL BASS CLARINET SOLO" width="500" height="375" src="https://www.youtube.com/embed/P7J6SvD3eDI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="P7J6SvD3eDI" %}}
 
 ▼原曲はこちら
 

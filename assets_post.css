@@ -20,3 +20,7 @@
 .list .ph{width:64px;height:64px;border-radius:8px;background:var(--wash)}
 .list time{display:block;font-family:var(--f-mono);font-size:11px;color:var(--ink-soft)}
 .mochi{font-family:var(--f-body)}
+.embed{margin:16px 0}.embed iframe{width:100%;border:0;border-radius:12px;display:block}
+.embed.yt iframe{aspect-ratio:16/9;height:auto}
+.embed-media{display:block;max-width:100%;margin:16px 0}
+.post video.embed-media{max-height:80vh;height:auto;border-radius:8px}

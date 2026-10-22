@@ -9,7 +9,7 @@ wp_id: 239
 draft: false
 image: "/wp-content/uploads/2021/11/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="糖衣 / なみぐる feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/ANpj-5O1p6o?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ANpj-5O1p6o" %}}
 
 【製作裏話】
 
@@ -33,13 +33,13 @@ trap dnb等electro要素も折り入れつつ、
 
 キャッチーかつミニマルなメロディラインはこの辺りから影響うけてる。繰り返しの印象付けは大事。
 
-<iframe loading="lazy" title="Lizzo - Juice (Official Video)" width="500" height="281" src="https://www.youtube.com/embed/XaCrQL_8eMY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="XaCrQL_8eMY" %}}
 
 ヒップホップにお馴染みの8分刻みピアノはDr.dreから引用
 
 これよく調べたらグランドグリーンの孫引きだった。
 
-<iframe loading="lazy" title="Grant Green - Maybe tomorrow" width="500" height="375" src="https://www.youtube.com/embed/k9oNHowrg4w?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="k9oNHowrg4w" %}}
 
 ### 管楽器
 
@@ -67,7 +67,7 @@ EP:Wurly Premier G
 
 > [Wurly Premier G ビンテージ・エレクトリックピアノ音源](https://premiersoundfactory.jp/wurly-premier-g/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“Wurly Premier G ビンテージ・エレクトリックピアノ音源” — PREMIER SOUND FACTORY" src="https://premiersoundfactory.jp/wurly-premier-g/embed/#?secret=SVf7TqcKq0#?secret=AK1V8K0YpU" data-secret="AK1V8K0YpU" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[Wurly Premier G ビンテージ・エレクトリックピアノ音源](https://premiersoundfactory.jp/wurly-premier-g/)
 
 音が良い無料エレピ　ローズもいいけどウーリッツァーもなかなか
 
@@ -81,7 +81,7 @@ EP:Wurly Premier G
 
 ベースは要所でスライド　ハンマリングを入れてNeo soul感を出すなどした。
 
-<iframe loading="lazy" title="「名前のない月」大和田慧(2012)　Kei Owada at オトミツシズク" width="500" height="281" src="https://www.youtube.com/embed/gjYodyxn3l8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="gjYodyxn3l8" %}}
 
 *ベースのリファレンス　うるさすぎず、隙間を上手に縫う感じがGood*
 
@@ -145,7 +145,7 @@ blender頑張った。
 
 薬の飛び散り再現はマーブルチョコのメイキングを参考にした。
 
-<iframe loading="lazy" title="m&amp;m's In A Bowl - Blender3D" width="500" height="281" src="https://www.youtube.com/embed/uMFOf-_sMDo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="uMFOf-_sMDo" %}}
 
 薬に初音ミクの絵を半面だけ貼り付けるのが大変だった。
 

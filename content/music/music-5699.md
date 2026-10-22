@@ -14,7 +14,7 @@ image: "/wp-content/uploads/2024/07/image-2.webp"
 20250317追記  
 MVが～出た～出～た～🌕️
 
-<iframe loading="lazy" title="オツキミ超えてオツキアイ / をとは - なみぐる (Original Music Video)" width="500" height="281" src="https://www.youtube.com/embed/wjvMzxjgBc4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="wjvMzxjgBc4" %}}
 
 tr2.「オツキミ超えてオツキアイ」
 

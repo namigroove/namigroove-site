@@ -9,7 +9,7 @@ wp_id: 6785
 draft: false
 image: "/wp-content/uploads/2024/12/tunecore2.webp"
 ---
-<iframe loading="lazy" title="溶けちゃいそう / なみぐる feat. AiSuu【AiSuu2周年記念作品】" width="500" height="281" src="https://www.youtube.com/embed/Q3FjTt2bzoQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Q3FjTt2bzoQ" %}}
 
 ## 配信・ダウンロード
 
@@ -115,7 +115,7 @@ BメロだけFender PBのプレベでメロディアスなペンタフレーズ�
 
 初TAB譜作成記念で祭りを開きます（唐突）
 
-<iframe loading="lazy" title="【本人演奏】#AiSuuベースチャレンジ【溶けちゃいそう】" width="500" height="281" src="https://www.youtube.com/embed/CBTJ9g8Ejpw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="CBTJ9g8Ejpw" %}}
 
 ◆参加方法  
 ハッシュタグ #AiSuuベースチャレンジ をつけて、  
@@ -132,11 +132,11 @@ BメロだけFender PBのプレベでメロディアスなペンタフレーズ�
 
 ▼#AiSuuベースチャレンジ サンプル
 
-<audio controls="" src="/wp-content/uploads/2024/12/Sample_AiSuuBassChallenge.wav"></audio>
+{{% audio src="/wp-content/uploads/2024/12/Sample_AiSuuBassChallenge.wav" %}}
 
 ▼#AiSuuベースチャレンジ 練習&収録用
 
-<audio controls="" src="/wp-content/uploads/2024/12/AiSuuBassChallenge.wav"></audio>
+{{% audio src="/wp-content/uploads/2024/12/AiSuuBassChallenge.wav" %}}
 
 [ピアプロ](https://piapro.jp/t/q9TA)にベースマイナスワン音源のフルもあるよ
 
@@ -158,7 +158,7 @@ TAB譜
 
 ![](/wp-content/uploads/2024/12/image-2.webp)
 
-<iframe loading="lazy" title="【レトロゲーム裏技集】スーパーマリオブラザーズ3「壁抜け」編" width="500" height="281" src="https://www.youtube.com/embed/dmAuLZCxGZ4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="dmAuLZCxGZ4" %}}
 
 また、今回は実験でAI(gemini)に案出しを頼んでみた。
 
@@ -180,17 +180,17 @@ TAB譜
 
 A・サビコード進行参考
 
-<iframe loading="lazy" title="アドバンス・アドベンチャー～Advance Adventure～" width="500" height="375" src="https://www.youtube.com/embed/fVh_GJJuXJY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="fVh_GJJuXJY" %}}
 
 空気感　いつもの　血肉
 
-<iframe loading="lazy" title="ネオンライト 星宮とと×TEMPLIME" width="500" height="281" src="https://www.youtube.com/embed/FFtKDxZGs8A?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FFtKDxZGs8A" %}}
 
 テーマ性のリファレンス
 
 ピノキオピーさんは類似テーマについて、「推しへの盲目な愛」のようでいて「流行りに流されて好きが何かわからない皮肉」を織り交ぜて書いている。テーマに対する自分色の出し方の参考。
 
-<iframe loading="lazy" title="ピノキオピー - ラヴィット feat. 初音ミク / Loveit" width="500" height="281" src="https://www.youtube.com/embed/--41OGPMurU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="--41OGPMurU" %}}
 
 サムネ　元ネタ
 

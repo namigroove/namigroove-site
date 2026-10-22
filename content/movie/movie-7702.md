@@ -44,11 +44,11 @@ SLB300を買ったので、ウッドベースが主役のボカロ曲を作り�
 
 > [【My new gear…】サイレントウッドベース YAMAHA SLB300](https://www.namigroove.com/2024/11/08/post-6722/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【My new gear…】サイレントウッドベース YAMAHA SLB300” — なみぐる！" src="https://www.namigroove.com/2024/11/08/post-6722/embed/#?secret=UG2wRshIOc#?secret=OQohidWRbj" data-secret="OQohidWRbj" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【My new gear…】サイレントウッドベース YAMAHA SLB300” — なみぐる！](/2024/11/08/post-6722/)
 
 > [【提供】ゆくえレコーズ「腰痛持ち、4つ打ち feat.重音テト」（4UNREAL 2REAL）](https://www.namigroove.com/music/music-7062/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【提供】ゆくえレコーズ「腰痛持ち、4つ打ち feat.重音テト」（4UNREAL 2REAL）” — なみぐる！" src="https://www.namigroove.com/music/music-7062/embed/#?secret=G6fSKIchsb#?secret=bmxiod1TGQ" data-secret="bmxiod1TGQ" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【提供】ゆくえレコーズ「腰痛持ち、4つ打ち feat.重音テト」（4UNREAL 2REAL）” — なみぐる！](/music/music-7062/)
 
 ちょうど重いものを運んでぎっくり腰手前になり、整体通いになったのでテーマは腰痛に決定
 

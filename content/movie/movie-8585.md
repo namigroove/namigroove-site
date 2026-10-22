@@ -9,7 +9,7 @@ wp_id: 8585
 draft: false
 image: "/wp-content/uploads/2025/08/thumb_hukuro_new.webp"
 ---
-<iframe loading="lazy" title="【ニコニコ動画で先行公開中】ムリポッポ / なみぐる feat.重音テトSV" width="500" height="281" src="https://www.youtube.com/embed/FjNNF4xOfEg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FjNNF4xOfEg" %}}
 
 [https://www.nicovideo.jp/watch/sm45317675](https://www.nicovideo.jp/watch/sm45317675)
 
@@ -31,7 +31,7 @@ image: "/wp-content/uploads/2025/08/thumb_hukuro_new.webp"
 
 > [【参加】ウソのつづきかた](https://www.namigroove.com/music/music-7890/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【参加】ウソのつづきかた” — なみぐる！" src="https://www.namigroove.com/music/music-7890/embed/#?secret=XLT7Cb5mmp#?secret=RW73A3X4MA" data-secret="RW73A3X4MA" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【参加】ウソのつづきかた” — なみぐる！](/music/music-7890/)
 
 ## テーマ
 
@@ -181,26 +181,26 @@ VoltAL(英効果音)
 明る切ないボサノバの理想形  
 ちょこちょこRSE DP風音源も入れてる
 
-<iframe loading="lazy" title="【ポケモンRSE】  カナズミシティ  BGM　【1時間耐久】" width="500" height="281" src="https://www.youtube.com/embed/MOOpt9jeS5M?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="MOOpt9jeS5M" %}}
 
   
 **RHYMESTER B-BOYイズム**
 
-<iframe title="Spotify Embed: B-BOYイズム" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1Ob98NWvtnKx4xP6QhRHmt?si=c353110d8fb8425a&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1Ob98NWvtnKx4xP6QhRHmt" %}}
 
 Kick the verse 歌詞蹴っ飛ばす  
 まるでストレスとばすジェット・バス  
   
 わかりやすくオマージュ　映像もRHYMESCHEME風
 
-<iframe loading="lazy" title="B-BOYイズム / RHYMESTER（1998） | Japanese Hiphop Rhyme Scheme 039" width="500" height="281" src="https://www.youtube.com/embed/9_MQgp_n7Bg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="9_MQgp_n7Bg" %}}
 
 Wii Shop Channel
 
 わかりやすくオマージュ
 
-<iframe loading="lazy" title="Wii Shop Channel Main Theme (HQ)" width="500" height="281" src="https://www.youtube.com/embed/yyjUmv1gJEg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="yyjUmv1gJEg" %}}
 
 無限ダラダラガンダーラでも参考にした　遅い曲が倍breaksになるのがかっこいい
 
-<iframe title="Spotify Embed: ZARIGANI" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1vvqH0AaAG7tZwOjZVbntW?si=fc756e887aa64d77&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1vvqH0AaAG7tZwOjZVbntW" %}}

@@ -65,7 +65,7 @@ image: "/wp-content/uploads/2026/10/image-8.webp"
 
 > [チューナー&メトロノーム](https://www.namigroove.com/tools/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“チューナー&amp;メトロノーム” — なみぐる！" src="https://www.namigroove.com/tools/embed/#?secret=4bCN3qPYsA#?secret=F0GrgkYIVn" data-secret="F0GrgkYIVn" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“チューナー&メトロノーム” — なみぐる！](/tools/)
 
 > ◤₺ƾらせ [#M3秋2026](https://x.com/hashtag/M3%E7%A7%8B2026?src=hash&ref_src=twsrc%5Etfw) ⑤  
 >   

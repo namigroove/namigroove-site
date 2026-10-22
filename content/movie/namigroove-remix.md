@@ -9,6 +9,6 @@ wp_id: 4898
 draft: false
 image: "/wp-content/uploads/2024/02/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title=". - namigroove remix -" width="500" height="375" src="https://www.youtube.com/embed/ayHTGTBAdug?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ayHTGTBAdug" %}}
 
 *.respect*

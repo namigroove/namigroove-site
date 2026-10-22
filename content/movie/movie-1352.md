@@ -9,7 +9,7 @@ wp_id: 1352
 draft: false
 image: "/wp-content/uploads/2022/08/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="墨流し / なみぐる feat.星界 可不" width="500" height="281" src="https://www.youtube.com/embed/T9Uz2pvwvrM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="T9Uz2pvwvrM" %}}
 
 ## テーマ
 
@@ -55,7 +55,7 @@ image: "/wp-content/uploads/2022/08/maxresdefault.webp"
 
 > [雅楽で使用される管楽器『笙』の打ち込み方法まとめ](https://kohrogi.com/?p=7256)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“雅楽で使用される管楽器『笙』の打ち込み方法まとめ” — こおろぎさんち" src="https://kohrogi.com/?p=7256&amp;embed=true#?secret=im6H7DcOUo#?secret=nRDAemrKML" data-secret="nRDAemrKML" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[雅楽で使用される管楽器『笙』の打ち込み方法まとめ](https://kohrogi.com/?p=7256)
 
 ## MV
 
@@ -138,14 +138,14 @@ alert(); break; exit(); reboot-f
 
 雅楽ドラムンのインスピレーションはここから 教養と先人達へのリスペクトを感じる作風が大好き
 
-<iframe title="Spotify Embed: Time: The Donut of the Heart" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6ywnTBL62OTd8HUaztJizb?si=86c008e6d9f9411d&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6ywnTBL62OTd8HUaztJizb" %}}
 
 落ちメロのビートはJ Dillaサンプリング
 
-<iframe title="Spotify Embed: Brown Sugar" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7rt0kEDWRg3pgTZJKuszoE?si=8bbafcf57a1241c5&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7rt0kEDWRg3pgTZJKuszoE" %}}
 
 ヘビロテのオシャレ循環コード
 
-<iframe title="Spotify Embed: The First Circle" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6OxVL61RyzFgiz4ASNBy7d?si=E_0df4awT2iv7gKCTpohww&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6OxVL61RyzFgiz4ASNBy7d" %}}
 
 *変拍子作曲、パットメセニー楽曲の影響うけがち*

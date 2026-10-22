@@ -9,9 +9,9 @@ wp_id: 8446
 draft: false
 image: "/wp-content/uploads/2025/07/maxresdefault-2.webp"
 ---
-<iframe loading="lazy" title="なみぐる feat. 魔王トゥルシー『茹で上がってこうぜ』MV #メガミノウタゲ" width="500" height="281" src="https://www.youtube.com/embed/0wOoKHleJWs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="0wOoKHleJWs" %}}
 
-<iframe loading="lazy" title="茹で上がってこうぜ / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/SlM6qQSX1H8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="SlM6qQSX1H8" %}}
 
 > 🎥MVプレミア公開  
 > なみぐる feat. 魔王トゥルシー  
@@ -49,11 +49,11 @@ https://megamirec.com/discography/tako
 
 ▼参考資料
 
-<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" title="【グラフィティーの種類10個を紹介】タグやスローアップだけじゃない！ - BOMB mania（ボムマニア）" src="https://hatenablog-parts.com/embed?url=https%3A%2F%2Fsasmagazine.jp%2Fentry%2Fgraffiti-syurui-yobikata#?secret=PsoT6mFpHj" data-secret="PsoT6mFpHj" scrolling="no" frameborder="0"></iframe>
+[【グラフィティーの種類10個を紹介】タグやスローアップだけじゃない！ - BOMB mania（ボムマニア）](https://sasmagazine.jp/entry/graffiti-syurui-yobikata)
 
-<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" title="【グラフィティー用語解説】グラフィティーのスラングなどを紹介！ - BOMB mania（ボムマニア）" src="https://hatenablog-parts.com/embed?url=https%3A%2F%2Fsasmagazine.jp%2Fentry%2Fgraffiti-term-slang#?secret=ZTyx5zm3dw" data-secret="ZTyx5zm3dw" scrolling="no" frameborder="0"></iframe>
+[【グラフィティー用語解説】グラフィティーのスラングなどを紹介！ - BOMB mania（ボムマニア）](https://sasmagazine.jp/entry/graffiti-term-slang)
 
-<iframe loading="lazy" title="【なんでも使う】スプラトゥーン3で学ぶストリートカルチャー 前編" width="500" height="281" src="https://www.youtube.com/embed/AxXnUHw02zQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="AxXnUHw02zQ" %}}
 
 [https://db.10plus1.jp/backnumber/article/articleid/628](https://db.10plus1.jp/backnumber/article/articleid/628)
 
@@ -238,8 +238,8 @@ uh… pa pa para
 
 ホネdisco funk
 
-<iframe loading="lazy" title="【組曲2】花譜×ツミキ #141「チューイン・ディスコ」【オリジナルMV】" width="500" height="281" src="https://www.youtube.com/embed/mlgqhKr3fFI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="mlgqhKr3fFI" %}}
 
 ちょっとデジフューな感じも
 
-<iframe loading="lazy" title="Kitsune^2 - Rainbow Tylenol" width="500" height="375" src="https://www.youtube.com/embed/5K7Frc2lTI8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="5K7Frc2lTI8" %}}

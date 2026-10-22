@@ -9,7 +9,7 @@ wp_id: 9745
 draft: false
 image: "/wp-content/uploads/2026/08/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="デロスサントス / De Los Santos - namigroove remix -" width="500" height="281" src="https://www.youtube.com/embed/3YNIPNOzGFc?start=3&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="3YNIPNOzGFc" start="3" %}}
 
 ニコニコ
 

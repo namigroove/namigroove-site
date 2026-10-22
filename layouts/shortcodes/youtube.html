@@ -1,0 +1,2 @@
+{{- $id := .Get "id" -}}{{- $q := slice -}}{{- with .Get "start" }}{{ $q = $q | append (printf "start=%s" .) }}{{ end -}}{{- with .Get "list" }}{{ $q = $q | append (printf "list=%s" .) }}{{ end -}}
+<div class="embed yt"><iframe src="https://www.youtube.com/embed/{{ $id }}{{ if $q }}?{{ delimit $q "&" }}{{ end }}" title="YouTube" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>

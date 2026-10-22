@@ -9,7 +9,7 @@ wp_id: 1928
 draft: false
 image: "/wp-content/uploads/2022/11/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="雲隠 / なみぐる feat.双葉 湊音" width="500" height="281" src="https://www.youtube.com/embed/PTEF6pnP_FU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="PTEF6pnP_FU" %}}
 
 ## 収録情報
 
@@ -22,7 +22,7 @@ image: "/wp-content/uploads/2022/11/maxresdefault.webp"
 
 > [【提供】『Futaba Minato Official Compilation Futaba Mix 01』](https://www.namigroove.com/music/music-6585/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【提供】『Futaba Minato Official Compilation Futaba Mix 01』” — なみぐる！" src="https://www.namigroove.com/music/music-6585/embed/#?secret=06LPU5oy2n#?secret=wqoFIAgg6J" data-secret="wqoFIAgg6J" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【提供】『Futaba Minato Official Compilation Futaba Mix 01』” — なみぐる！](/music/music-6585/)
 
 ## 双葉湊音
 
@@ -64,7 +64,7 @@ image: "/wp-content/uploads/2022/11/maxresdefault.webp"
 
 10月30日　モノレールに乗り過ごすも、無事M3秋出展。
 
-<iframe loading="lazy" title="モノレールにも乗れない / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/nWnVjspFIys?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="nWnVjspFIys" %}}
 
 11月3日　楽曲公開
 
@@ -90,7 +90,7 @@ image: "/wp-content/uploads/2022/11/maxresdefault.webp"
 
 > [【My new gear…】万能ベース　Momose　MJ2-STD](https://www.namigroove.com/2021/02/11/post-1110/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【My new gear…】万能ベース　Momose　MJ2-STD” — なみぐる！" src="https://www.namigroove.com/2021/02/11/post-1110/embed/#?secret=P48WXKILiz#?secret=Ajir4Am6oD" data-secret="Ajir4Am6oD" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【My new gear…】万能ベース　Momose　MJ2-STD” — なみぐる！](/2021/02/11/post-1110/)
 
 ### ギター
 
@@ -134,30 +134,30 @@ LINEの通知音(ピコピコ)キメのシドシドとかぶせる
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="Eric.W" width="500" height="375" src="https://www.youtube.com/embed/_0ye4yo153s?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="_0ye4yo153s" %}}
 
 *Eric.W · the band apart　1～2年前ギター始めたきっかけになった曲　これでE7(9)の響きのとりこになった*
 
-<iframe loading="lazy" title="&quot;Smoky&quot; Char feat. AI   [2021.12.11 at Nippon Budokan]" width="500" height="281" src="https://www.youtube.com/embed/v6H4i6W-GBg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="v6H4i6W-GBg" %}}
 
 *Smorky – Char　冒頭ギターの平行移動なニュアンス参考*
 
-<iframe loading="lazy" title="おそ松さんチップチョップCM2" width="500" height="375" src="https://www.youtube.com/embed/XE4o1C0d0Uw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="XE4o1C0d0Uw" %}}
 
 *チップチョップCM – 山崎隆明、たけだよういち　ベースリフの着想元*
 
-<iframe loading="lazy" title="MONDO GROSSO 『LIFE feat.bird』" width="500" height="375" src="https://www.youtube.com/embed/GZY-KrpOe5c?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="GZY-KrpOe5c" %}}
 
 *LIFE feat.bird – MONDO GROSSO　名ハウス*
 
-<iframe loading="lazy" title="Charlie Parker-Donna Lee" width="500" height="375" src="https://www.youtube.com/embed/02apSoxB7B4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="02apSoxB7B4" %}}
 
 *Donna Lee-Charlie Parker 落ちサビのピアノ参考*
 
-<iframe loading="lazy" title="Brecker Brothers Live In Barcelona - Some Skunk Funk" width="500" height="375" src="https://www.youtube.com/embed/UIGsSLCoIhM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="UIGsSLCoIhM" %}}
 
 *Some Skunk Funk – Brecker Brothers　サックスの五度圏フレージングの影響元*
 
-<iframe loading="lazy" title="椎名林檎 - 長く短い祭" width="500" height="281" src="https://www.youtube.com/embed/3LVAmMxICoA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="3LVAmMxICoA" %}}
 
 *長く短い祭 – 椎名林檎　ベースリフ裏メロディのミッド↓ファッ↑ド↓な感じ？(伝われ*

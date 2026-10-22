@@ -9,11 +9,11 @@ wp_id: 6710
 draft: false
 image: "/wp-content/uploads/2024/11/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="#FFFFFFはまほう (namigroove flip)" width="500" height="375" src="https://www.youtube.com/embed/ywELS_XEvXA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ywELS_XEvXA" %}}
 
 ## ダウンロード(無料)
 
-<iframe loading="lazy" title="【FREE DL】#FFFFFFはまほう (namigroove flip) by なみぐる / namigroove" width="500" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1947173847&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1947173847&show_artwork=true&maxheight=750&maxwidth=500" h="400" title="【FREE DL】#FFFFFFはまほう (namigroove flip) by なみぐる / namigroove" %}}
 
 ## テーマ
 
@@ -26,7 +26,7 @@ tiktokリサーチ中にsped upの手描きカバーをたくさん見つけマ�
 
 ボカロやオタ箱でたくさん流したいし流してもらいたいので御本人からstemをもらいremix作成
 
-<iframe loading="lazy" title="#FFFFFFはまほう (feat. 初音ミク)" width="500" height="375" src="https://www.youtube.com/embed/mj2Wj9YJCmU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="mj2Wj9YJCmU" %}}
 
 せっかくだからAbletonも本格的に触って仕事曲以外で一曲実験音楽仕上げてみたいて思惑もあった
 
@@ -34,17 +34,17 @@ tiktokリサーチ中にsped upの手描きカバーをたくさん見つけマ�
 
 冒頭から一気にせつな下降クリシェで情緒ドカ
 
-<iframe title="Spotify Embed: レトロポリス" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7eWT36Oy6bZ9jE792hUV1W?si=df11b14b91544517&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7eWT36Oy6bZ9jE792hUV1W" %}}
 
 メルトの間奏ぽいフレーズで情緒ドカ2
 
-<iframe title="Spotify Embed: メルト -MIKU EXPO 2014 in INDONESIA Live-" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6nWONiqCJwFxKKfAJSKaev?si=0b0e473e979d40a9&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6nWONiqCJwFxKKfAJSKaev" %}}
 
 メタルギターと激割れ808 スパソで情緒破壊
 
 メロトロンと激ディレイアコギでヨシヨシ
 
-<iframe title="Spotify Embed: Strawberry Fields Forever - Remastered 2009" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3Am0IbOxmvlSXro7N5iSfZ?si=483ccfb3c85c4aea&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3Am0IbOxmvlSXro7N5iSfZ" %}}
 
 ガバキックでドカドカ
 

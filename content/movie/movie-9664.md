@@ -9,7 +9,7 @@ wp_id: 9664
 draft: false
 image: "/wp-content/uploads/2026/08/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="私を待つ、ガラスの靴 / なみぐる feat. ナースロボ＿タイプT" width="500" height="281" src="https://www.youtube.com/embed/lDA6CRziHoM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="lDA6CRziHoM" %}}
 
 ## コンセプト
 
@@ -33,7 +33,7 @@ image: "/wp-content/uploads/2026/08/maxresdefault.webp"
 
 > [【参加】「蛙円盤02 Organic Future」](https://www.namigroove.com/music/music-9666/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【参加】「蛙円盤02 Organic Future」” — なみぐる！" src="https://www.namigroove.com/music/music-9666/embed/#?secret=QiJkVoiuIT#?secret=BKp0AkPjqE" data-secret="BKp0AkPjqE" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【参加】「蛙円盤02 Organic Future」” — なみぐる！](/music/music-9666/)
 
 ## 歌詞
 
@@ -65,7 +65,7 @@ image: "/wp-content/uploads/2026/08/maxresdefault.webp"
 
 NeoSoulへのリスペクトで、意図的にTom mischぽいフレーズを崩していれてたりします
 
-<iframe title="Spotify Embed: Lost in Paris" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6LxuNFEU3oIZ5ybBdWbZNT?si=e15109ed1d044c6c&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6LxuNFEU3oIZ5ybBdWbZNT" %}}
 
 ボーカルはオーディションの結果ボカロ版のナースロボ＿タイプTが至高となった。
 
@@ -85,7 +85,7 @@ NeoSoulへのリスペクトで、意図的にTom mischぽいフレーズを崩�
 
 ハイが丸くて曲調にあう歌声♩
 
-<iframe loading="lazy" title="私を待つ、ガラスの靴(cover) - さぶれ" width="500" height="281" src="https://www.youtube.com/embed/Sp_EJ4GVOfs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Sp_EJ4GVOfs" %}}
 
 ## 映像
 

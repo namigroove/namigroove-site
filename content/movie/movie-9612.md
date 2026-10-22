@@ -9,7 +9,7 @@ wp_id: 9612
 draft: false
 image: "/wp-content/uploads/2026/07/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="ちゅ、お注射。 /  なみぐる feat.をとは somunia【CHUNITHM】" width="500" height="281" src="https://www.youtube.com/embed/P1yqH9jwf14?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="P1yqH9jwf14" %}}
 
 ## コンセプト
 
@@ -104,8 +104,8 @@ AIならではの悩みも入れたい
 
 CHUNITHM 10th Liveでsasakure.UK先生と出番隣接してて緊張した～
 
-<iframe loading="lazy" title="&quot;トゥイー・ボックスの人形劇場&quot;  feat. 初音ミク (Remaster ver) / sasakure.‌UK" width="500" height="281" src="https://www.youtube.com/embed/rkFQGtybKmw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="rkFQGtybKmw" %}}
 
 おれがついてるぜ～
 
-<iframe title="Spotify Embed: You&amp;apos;ve Got a Friend in Me" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/2stkLJ0JNcXkIRDNF3ld6c?si=799a78334bc54605&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/2stkLJ0JNcXkIRDNF3ld6c" %}}

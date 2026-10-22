@@ -9,7 +9,7 @@ wp_id: 4096
 draft: false
 image: "/wp-content/uploads/2023/09/jacket5.webp"
 ---
-<iframe loading="lazy" title="うちゅうのかんづめ / なみぐる feat.小夜/SAYO" width="500" height="281" src="https://www.youtube.com/embed/lkxQnx0jMNQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="lkxQnx0jMNQ" %}}
 
 ## テーマ
 
@@ -84,7 +84,7 @@ image: "/wp-content/uploads/2023/09/jacket5.webp"
 
 > [【作品解説】宇宙の罐詰（赤瀬川原平）｜宇宙を缶詰に閉じ込めたアート](https://yoshiteru-blog.com/artappreciation002/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【作品解説】宇宙の罐詰（赤瀬川原平）｜宇宙を缶詰に閉じ込めたアート” — アート数奇" src="https://yoshiteru-blog.com/artappreciation002/embed/#?secret=FTvjXm3TwI#?secret=qEstBwQ0Wx" data-secret="qEstBwQ0Wx" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[【作品解説】宇宙の罐詰（赤瀬川原平）｜宇宙を缶詰に閉じ込めたアート](https://yoshiteru-blog.com/artappreciation002/)
 
   
 
@@ -92,7 +92,7 @@ image: "/wp-content/uploads/2023/09/jacket5.webp"
 
 語彙はビビビビから拝借…
 
-<iframe loading="lazy" title="ビビビビ／星界（Be, be, be, be! / SEKAI）" width="500" height="281" src="https://www.youtube.com/embed/sWOvhZBS9IA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="sWOvhZBS9IA" %}}
 
 子供が宇宙と交信して、本当に宇宙人が出てきてその上雑な扱いをしたら面白いなと
 
@@ -114,9 +114,9 @@ image: "/wp-content/uploads/2023/09/jacket5.webp"
 
 以下を参考に円形の街並みの画像を貰って一部を映す形で作った。
 
-<iframe loading="lazy" title="家出少年と迷子少女 - cosMo＠暴走P feat. GUMI" width="500" height="281" src="https://www.youtube.com/embed/7snBeht9jYU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="7snBeht9jYU" %}}
 
-<iframe loading="lazy" title="月 / 可ラッカ feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/4MMUPmpABLg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="4MMUPmpABLg" %}}
 
 画内シークバーの演出は構想段階で既にあって、nekomoのアイデアで作品の雰囲気に合う黄色に。
 
@@ -133,23 +133,23 @@ image: "/wp-content/uploads/2023/09/jacket5.webp"
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: 恋とマシンガン -Young,Alive,in Love-" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0M3gmV8wqB84IWG2BtFIso?si=014df70c5014432b&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0M3gmV8wqB84IWG2BtFIso" %}}
 
 *渋谷系の金字塔  
 盛り上げどころ・変化する展開をあえて設けず、小夜のハスキー声を活かす方向性で*
 
-<iframe title="Spotify Embed: Salt Peanuts" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1xXydFs62EqOXFMPizVhn4?si=ebed695730784ad6&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1xXydFs62EqOXFMPizVhn4" %}}
 
 *冒頭のフレーズ*
 
-<iframe title="Spotify Embed: 女の子は誰でも" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/76dqvyeotRyr1pajxbUmmk?si=25441e8719a14831&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/76dqvyeotRyr1pajxbUmmk" %}}
 
 *ホールトーンスケールの入れ方とか、コード進行とか*
 
-<iframe title="Spotify Embed: グリズリーに襲われたら♡" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4tjRvHjQu2fK8uEgXtjiTN?si=f7d4930a65d74950&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4tjRvHjQu2fK8uEgXtjiTN" %}}
 
 *好きすぎてメロディの雰囲気引っ張られてる*
 
-<iframe loading="lazy" title="【BGM】マリオペイント - MARIO PAINT／BGM 1 お絵描き画面【サウンドリメイク】☆Request" width="500" height="281" src="https://www.youtube.com/embed/3TzQ2_lRw_Q?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="3TzQ2_lRw_Q" %}}
 
 *ソロパートの終わり際の雰囲気*

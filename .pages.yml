@@ -25,11 +25,11 @@ content:
       - { name: draft, label: 下書き, type: boolean, default: false }
       - { name: categories, label: カテゴリ, type: string, list: true }
       - { name: image, label: 一覧・SNS用の画像, type: image }
-      # 本文は「文字のまま」編集する(リッチテキスト編集だと、YouTube/Spotifyの埋め込みが消えるため)
+      # 埋め込みは {{% youtube id="動画ID" %}} / {{% spotify id="track/ID" %}} の短い書き方(HTMLをそのまま書くと、この編集画面では消えます)
       - name: body
-        label: 本文(Markdown / 埋め込みHTMLもそのまま)
-        type: code
-        options: { format: markdown }
+        label: 本文
+        type: rich-text
+        options: { format: markdown, switcher: true }
       - { name: lastmod, type: date, hidden: true, options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss" } }
       - { name: wp_id, type: number, hidden: true }
       - { name: url, type: string, hidden: true }

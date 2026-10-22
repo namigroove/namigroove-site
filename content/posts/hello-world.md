@@ -27,9 +27,9 @@ image: "/wp-content/uploads/2021/05/cropped-スクリーンショット-2021-05-
 -   ずんだパーリナイ / なみぐる feat.ずんだもん
 -   ひみつのふふふ / 超ときめき♡宣伝部(TVアニメ『ひみつのアイプリ』2期ED)
 
-<iframe loading="lazy" title="ずんだパーリナイ / なみぐる feat.ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/ywXQ9SqsaBQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ywXQ9SqsaBQ" %}}
 
-<iframe loading="lazy" title="超ときめき♡宣伝部 /「ひみつのふふふ」" width="500" height="281" src="https://www.youtube.com/embed/QeQhtzi-f1k?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="QeQhtzi-f1k" %}}
 
 ## 名前について
 
@@ -43,7 +43,7 @@ image: "/wp-content/uploads/2021/05/cropped-スクリーンショット-2021-05-
 
 > [Namigroove for Overseas](https://www.namigroove.com/2025/03/20/overseas/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“Namigroove for Overseas” — なみぐる！" src="https://www.namigroove.com/2025/03/20/overseas/embed/#?secret=TCrtQWiEOp#?secret=zbawCgZV5o" data-secret="zbawCgZV5o" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“Namigroove for Overseas” — なみぐる！](/2025/03/20/overseas/)
 
 ### 由来
 

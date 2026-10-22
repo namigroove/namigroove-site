@@ -15,7 +15,7 @@ image: "/wp-content/uploads/2022/06/29c9d24a694f092b75c206978d050cda.webp"
 
 DL版限定のRemix & MIDIファイル付き！
 
-<iframe loading="lazy" title="【ALBUM TEASER】あなたは世界の終わりにずんだを食べるのだ / なみぐる feat.ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/OH2t4alEXqo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="OH2t4alEXqo" %}}
 
 ▋Download ￥500
 

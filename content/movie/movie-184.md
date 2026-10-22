@@ -9,7 +9,7 @@ wp_id: 184
 draft: false
 image: "/wp-content/uploads/2021/10/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="ミニミニ ワーキングメモリ / なみぐる feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/-OcdIC8snm4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="-OcdIC8snm4" %}}
 
 【製作裏話】
 

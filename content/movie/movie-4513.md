@@ -9,7 +9,7 @@ wp_id: 4513
 draft: false
 image: "/wp-content/uploads/2023/12/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="はいぱーぽっぴっぽー(namigroove remix)【ぽっぴっぽー15周年】" width="500" height="281" src="https://www.youtube.com/embed/UzCZ6JZe2pE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="UzCZ6JZe2pE" %}}
 
 hyper poぴー！┗(^0^)┓))((┏(^0^)┛
 
@@ -19,7 +19,7 @@ hyper poぴー！┗(^0^)┓))((┏(^0^)┛
 
 > [これぞ令和の『ぽっぴっぽー』！ 15周年を迎えた初音ミクの人気曲をなみぐる氏がHyperpopにリミックス](https://originalnews.nico/444677)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“これぞ令和の『ぽっぴっぽー』！ 15周年を迎えた初音ミクの人気曲をなみぐる氏がHyperpopにリミックス” — ニコニコニュース オリジナル" src="https://originalnews.nico/444677/embed#?secret=HtAAT9H9jI#?secret=NvKHF6MdIR" data-secret="NvKHF6MdIR" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[これぞ令和の『ぽっぴっぽー』！ 15周年を迎えた初音ミクの人気曲をなみぐる氏がHyperpopにリミックス](https://originalnews.nico/444677/)
 
 *2023年12月13日 (水) 　ニコニコニュースで紹介されました！*
 
@@ -45,7 +45,7 @@ BPMは15周年を記念して150→100に音している
 
 (Zedd愛用のケロケロツールSound toys – little alterboy+MIDI補正やったけどうまくいかず）
 
-<iframe loading="lazy" title="How to Make Hyperpop (100 Gecs, Glaive)" width="500" height="281" src="https://www.youtube.com/embed/4EWe94BnoG0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="4EWe94BnoG0" %}}
 
 *ハーフテンポになるパートの音作り参考　Basic Shapeも歪み次第でhyperに*
 
@@ -53,7 +53,7 @@ BPMは15周年を記念して150→100に音している
 
 サンクラとようつーべをフォローすれば音源が手に入るという、なんともトレーディングな作り。
 
-<iframe loading="lazy" title="【FREE DL】はいぱーぽっぴっぽー(namigroove remix)【ぽっぴっぽー15周年】 by なみぐる / namigroove" width="500" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1686949272&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1686949272&show_artwork=true&maxheight=750&maxwidth=500" h="400" title="【FREE DL】はいぱーぽっぴっぽー(namigroove remix)【ぽっぴっぽー15周年】 by なみぐる / namigroove" %}}
 
 [https://pumpyoursound.com/](https://pumpyoursound.com/)
 
@@ -104,6 +104,6 @@ picoCADは完成したCADデータを回転表示してくれる
 
 ## 参考
 
-<iframe loading="lazy" title="毒deンぱ / Capchii feat. 分散型自律ゴーレム りむる" width="500" height="281" src="https://www.youtube.com/embed/IsS4wY43gFQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IsS4wY43gFQ" %}}
 
 *この攻撃的なSawとスネアがやりたかった*

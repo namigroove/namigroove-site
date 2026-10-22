@@ -69,4 +69,4 @@ image: "/wp-content/uploads/2023/09/jacket_20230814_v2_A.webp"
 
 > [ずんだエビフライ / なみぐる feat.ずんだもん・琴葉 茜](https://www.namigroove.com/movie/movie-2064/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“ずんだエビフライ / なみぐる feat.ずんだもん・琴葉 茜” — なみぐる！" src="https://www.namigroove.com/movie/movie-2064/embed/#?secret=3pLjflUUgv#?secret=2bRfTscLZY" data-secret="2bRfTscLZY" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ずんだエビフライ / なみぐる feat.ずんだもん・琴葉 茜” — なみぐる！](/movie/movie-2064/)

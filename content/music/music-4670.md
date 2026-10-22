@@ -9,13 +9,13 @@ wp_id: 4670
 draft: false
 image: "/wp-content/uploads/2021/11/RGBA.webp"
 ---
-<iframe loading="lazy" title="【サブスク配信開始】なみぐる 1st.EP「RGBA」TEASER" width="500" height="281" src="https://www.youtube.com/embed/2pyUBZnSOM4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="2pyUBZnSOM4" %}}
 
 ## 特設記事
 
 > [1st EP「RGBA」サブスク配信開始！＆ボカロ配信Tips](https://www.namigroove.com/2021/11/21/post-298/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“1st EP「RGBA」サブスク配信開始！＆ボカロ配信Tips” — なみぐる！" src="https://www.namigroove.com/2021/11/21/post-298/embed/#?secret=ncJXKGA6JT#?secret=FndkbRm6Cp" data-secret="FndkbRm6Cp" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“1st EP「RGBA」サブスク配信開始！＆ボカロ配信Tips” — なみぐる！](/2021/11/21/post-298/)
 
 ## 配信リンク
 

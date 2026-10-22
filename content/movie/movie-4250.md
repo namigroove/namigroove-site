@@ -9,7 +9,7 @@ wp_id: 4250
 draft: false
 image: "/wp-content/uploads/2023/11/thumb.webp"
 ---
-<iframe loading="lazy" title="ぅゅゅ(´；ω；｀) / なみぐる feat.可不（KAFU）" width="500" height="281" src="https://www.youtube.com/embed/p2FiGyhAXnc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="p2FiGyhAXnc" %}}
 
 ## 素材配布
 
@@ -39,7 +39,7 @@ Z世代の「絶望」「諦め」に共感しつつ
 
 日々の生活の中で感じる生きづらさや、苦しみのワードを集めていた。
 
-<iframe loading="lazy" title="脆弱性 / 可不" width="500" height="281" src="https://www.youtube.com/embed/1kONV6YKh9Q?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="1kONV6YKh9Q" %}}
 
 「何者にもなれない誰かの叫び」が
 
@@ -53,15 +53,15 @@ Z世代の「絶望」「諦め」に共感しつつ
 
 FUNKOTというインドネシアのダンスミュージックを基調に、オケヒや鳥の声、ウッドブロック等のばかっぽい音を入れる。
 
-<iframe loading="lazy" title="DJ JET BARON(高野政所） / Let's GO! シャンパンマン feat. CHOP STICK （Let's Go! Champagne-Man）" width="500" height="281" src="https://www.youtube.com/embed/zUiIOnuOwkI?start=1&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="zUiIOnuOwkI" start="1" %}}
 
 ベースはアナログシンセで、間抜け感を保ちつつカッコよく締まる感じに。
 
 ベースラインはよくJamioquaiのToo Young to Dieのサビフレーズを引用している（サビ前）
 
-<iframe loading="lazy" title="Jamiroquai - Too Young to Die" width="500" height="375" src="https://www.youtube.com/embed/mjeWKssl8Ic?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="mjeWKssl8Ic" %}}
 
-<iframe loading="lazy" title="ミニミニ ワーキングメモリ / なみぐる feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/-OcdIC8snm4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="-OcdIC8snm4" %}}
 
 *似たようなテーマで、FUNKOT×自分の弱さを書いたことも…*
 
@@ -108,7 +108,7 @@ FUNKOTというインドネシアのダンスミュージックを基調に、�
 
 > [墨流し / なみぐる feat.星界 可不](https://www.namigroove.com/movie/movie-1352/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“墨流し / なみぐる feat.星界 可不” — なみぐる！" src="https://www.namigroove.com/movie/movie-1352/embed/#?secret=zl6ihZdTIC#?secret=M4KsWGT6T1" data-secret="M4KsWGT6T1" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“墨流し / なみぐる feat.星界 可不” — なみぐる！](/movie/movie-1352/)
 
 > 好きなコード進行  
 > 循環　好きがち　多用がち  
@@ -125,9 +125,9 @@ FUNKOTというインドネシアのダンスミュージックを基調に、�
 
 https://www.makewordart.com
 
-<iframe loading="lazy" title="わけわかめらんこりー / 音街ウナ" width="500" height="281" src="https://www.youtube.com/embed/yjWJSvLl4Dg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="yjWJSvLl4Dg" %}}
 
-<iframe loading="lazy" title="葦ですか。／初音ミク" width="500" height="281" src="https://www.youtube.com/embed/kCwLWs2D5oM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="kCwLWs2D5oM" %}}
 
 Z世代向け作品ということで、以下2フォーマットを用意。  
 縦長：紙芝居（Tiktok・インスタ用)　  
@@ -145,22 +145,22 @@ Z世代向け作品ということで、以下2フォーマットを用意。
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="着包み / 可不" width="500" height="281" src="https://www.youtube.com/embed/WNQNCJgJOmg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="WNQNCJgJOmg" %}}
 
 *内向的な歌詞とリズムのセンス*
 
-<iframe loading="lazy" title="可愛くてごめん feat. ちゅーたん（CV：早見沙織）／HoneyWorks" width="500" height="281" src="https://www.youtube.com/embed/K4xLi8IF1FM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="K4xLi8IF1FM" %}}
 
 *本歌取り　メンタリティ的には逆*
 
-<iframe loading="lazy" title="相対性理論『LOVEずっきゅん』/ Soutaiseiriron - &quot;LOVE Zukkyun&quot;" width="500" height="375" src="https://www.youtube.com/embed/nFG4oQE1Et8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="nFG4oQE1Et8" %}}
 
 *メロディがひたすらペンタ*
 
-<iframe loading="lazy" title="チェッカーズ　ギザギザハートの子守唄" width="500" height="281" src="https://www.youtube.com/embed/JnPzSSjNqMA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="JnPzSSjNqMA" %}}
 
 *種曲　歌詞のリズム割りはほぼこれを踏襲*
 
-<iframe loading="lazy" title="柴又" width="500" height="281" src="https://www.youtube.com/embed/FIw-HUP7XK0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FIw-HUP7XK0" %}}
 
 *国産ネット発funkotの総本山*

@@ -9,11 +9,11 @@ wp_id: 7916
 draft: false
 image: "/wp-content/uploads/2025/05/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="【東方REMIX】ナイト・オブ・ナイツ (namigroove remix)" width="500" height="281" src="https://www.youtube.com/embed/ezXn-4DctE8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ezXn-4DctE8" %}}
 
 【東方CD】オールナイト・オブ・ナイツ プロジェクト（XFD Demo）【ビートまりお/COOL&CREATE】  
 
-<iframe loading="lazy" title="【東方CD】オールナイト・オブ・ナイツ プロジェクト（XFD Demo）【ビートまりお/COOL&amp;CREATE】" width="500" height="281" src="https://www.youtube.com/embed/IDaNmZF0UOA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IDaNmZF0UOA" %}}
 
 🔽公式BOOTHでCD購入：[https://cool-create.booth.pm/items/6843817](https://cool-create.booth.pm/items/6843817)  
 🔽特設サイト：[https://cool-create.cc/cd/cccd75/](https://cool-create.cc/cd/cccd75/)

@@ -9,9 +9,9 @@ wp_id: 9502
 draft: false
 image: "/wp-content/uploads/2026/05/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="日清焼そばU.F.O.50周年 vs はちゅねミク" width="500" height="281" src="https://www.youtube.com/embed/gQ5HLpHo_CI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="gQ5HLpHo_CI" %}}
 
-<iframe loading="lazy" title="VOCALOID6 はちゅねミクに「Ievan Polkka(日清焼そばU.F.O.50周年 Remix)」を歌わせてみた" width="500" height="281" src="https://www.youtube.com/embed/zl-5rsXS81g?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="zl-5rsXS81g" %}}
 
 > ◤₺ƾらせ  
 > 日清焼そばU.F.O.50周年🎉  
@@ -36,7 +36,7 @@ Original : Ievan Polkka by Otomania
 
 > [初音ミク、「日清焼そばU.F.O.」発売50周年を記念した濃厚コラボが実現！ 人気クリエイターが集結した記念動画が公開](https://originalnews.nico/529291)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“初音ミク、「日清焼そばU.F.O.」発売50周年を記念した濃厚コラボが実現！ 人気クリエイターが集結した記念動画が公開” — ニコニコニュース オリジナル" src="https://originalnews.nico/529291/embed#?secret=f0ORWyL8Tu#?secret=zrUpEiHSaO" data-secret="zrUpEiHSaO" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[初音ミク、「日清焼そばU.F.O.」発売50周年を記念した濃厚コラボが実現！ 人気クリエイターが集結した記念動画が公開](https://originalnews.nico/529291/)
 
 日清タイの時より、監督範囲が広がって自由に製作できました♩
 

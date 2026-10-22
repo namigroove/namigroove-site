@@ -9,7 +9,7 @@ wp_id: 5198
 draft: false
 image: "/wp-content/uploads/2024/03/maxresdefault-2.webp"
 ---
-<iframe loading="lazy" title="のじゃロリック / なみぐる feat.ちょこ 桃寝ちのい【maimai でらっくす】" width="500" height="281" src="https://www.youtube.com/embed/Qrsr5wBZNFE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Qrsr5wBZNFE" %}}
 
 ## 配信・ダウンロード
 
@@ -105,7 +105,7 @@ nekomo激推しの桃寝ちのいさんのコラボ✨️
 
 定式幕と右上の幾何学表現ははhikefdさんの地噺を見て、かっこいいなあ～と思い採用
 
-<iframe loading="lazy" title="【鏡音ﾚﾝ】地噺" width="500" height="281" src="https://www.youtube.com/embed/j-N07P4xick?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="j-N07P4xick" %}}
 
 当時から[ずんだタコヤーキ](https://www.youtube.com/watch?v=pbb7EQx-7tA)の構想があったため、再利用を見越して
 
@@ -133,14 +133,14 @@ Aメロ部の不自然なキャラの動き、シーンチェンジの粗さ、�
 
 面白いのに　儚い　ガチで　すごすぎる歌詞
 
-<iframe loading="lazy" title="九尾、凪ぐ。" width="500" height="375" src="https://www.youtube.com/embed/qXXKVBozJBs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="qXXKVBozJBs" %}}
 
 *九尾、凪ぐ。*
 
-<iframe title="Spotify Embed: 暮しガスメータ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/5m1zPNtvzzcEwYep2Kr4I9?si=09f36375d0854a9c&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/5m1zPNtvzzcEwYep2Kr4I9" %}}
 
 *ダンス踊ってダンスダンス*
 
-<iframe loading="lazy" title="月面探査機！かぐや姫 / 音街ウナ" width="500" height="281" src="https://www.youtube.com/embed/lN-LSAPY6xA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="lN-LSAPY6xA" %}}
 
 *和楽器アレンジ　執念の韻*

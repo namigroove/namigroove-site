@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2023/12/maxresdefault.webp"
 ---
 [https://www.nicovideo.jp/watch/sm43118144](https://www.nicovideo.jp/watch/sm43118144)
 
-<iframe loading="lazy" title="ぽん！ / なみぐる feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/vM3DhGht5rc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="vM3DhGht5rc" %}}
 
 ## テーマ
 
@@ -45,7 +45,7 @@ image: "/wp-content/uploads/2023/12/maxresdefault.webp"
 
 > [Granulizer | Introduction](https://www.image-line.com/fl-studio-news/granulizer/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“Granulizer | Introduction” — FL Studio" src="https://www.image-line.com/fl-studio-news/granulizer/embed/#?secret=Y0SjlQtKjZ#?secret=n40vC2jvmh" data-secret="n40vC2jvmh" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[Granulizer | Introduction](https://www.image-line.com/fl-studio-news/granulizer/)
 
 ### 歌詞
 
@@ -95,14 +95,14 @@ nekomoに一枚絵出ようぜとネゴって、5日前にギリギリで素材�
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="Goodbye, Shoegazer / 名前シレズ" width="500" height="281" src="https://www.youtube.com/embed/TV1jbMpLHRw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="TV1jbMpLHRw" %}}
 
 *タネ曲　プラックの使い方　アーメンブレイク　ボサノバチップチューン　聴きすぎてサビメロまでもなんとなく似てしまった*
 
-<iframe loading="lazy" title="あかちゃんremixies vol.1 by あかちゃん・シティ・ポップ" width="500" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F1724519526&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F1724519526&show_artwork=true&maxheight=750&maxwidth=500" h="450" title="あかちゃんremixies vol.1 by あかちゃん・シティ・ポップ" %}}
 
 *このコンピ　全て良いのですがSky of Beginning (すずめのめ Flip)でメロディをなぞる泣きスパソが良くって、メロディ、間奏のスパソを分厚くした。*
 
-<iframe loading="lazy" title="『フューチャー・イヴ』feat.初音ミク / sasakure.‌UK + 有形ランペイジ" width="500" height="281" src="https://www.youtube.com/embed/7j0mQH0BtEU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="7j0mQH0BtEU" %}}
 
 sasakureUK御大

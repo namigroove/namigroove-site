@@ -9,7 +9,7 @@ wp_id: 8641
 draft: false
 image: "/wp-content/uploads/2025/08/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="おどロボ BREAKCORE  - namigroove remix - 【なみぐる × 海茶】" width="500" height="281" src="https://www.youtube.com/embed/u-mlPJUVGi8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="u-mlPJUVGi8" %}}
 
 ## テーマ
 
@@ -19,9 +19,9 @@ image: "/wp-content/uploads/2025/08/maxresdefault-1.webp"
 
 > [なみぐる2025超会議　H2 あ-34 ボカ](https://www.namigroove.com/2025/04/10/chokaigi2025/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“なみぐる2025超会議　H2 あ-34 ボカ” — なみぐる！" src="https://www.namigroove.com/2025/04/10/chokaigi2025/embed/#?secret=MUeGWXE8YL#?secret=QZy6CCe9kF" data-secret="QZy6CCe9kF" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“なみぐる2025超会議　H2 あ-34 ボカ” — なみぐる！](/2025/04/10/chokaigi2025/)
 
-<iframe loading="lazy" title="【XFD】umigroove 1st Remix EP × フレークシール【なみぐる × 海茶 × nekomoコラボ】" width="500" height="375" src="https://www.youtube.com/embed/E8Hz8wbE89E?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="E8Hz8wbE89E" %}}
 
 DTMやり始めドパガキの頃サンクラでSupireさんや栄免建設をよく聴いてドーパミンを放出していたこともあり、馴染みのあるジャンルだった
 
@@ -57,12 +57,12 @@ nekomo先生からはEPやグッズでお出しした新規イラストをお借
 
 DRAGONLADY
 
-<iframe loading="lazy" title="DRAGONLADY (Original)" width="500" height="375" src="https://www.youtube.com/embed/xniQz5mMdKI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="xniQz5mMdKI" %}}
 
 柴又
 
-<iframe loading="lazy" title="柴又" width="500" height="281" src="https://www.youtube.com/embed/FIw-HUP7XK0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FIw-HUP7XK0" %}}
 
 毒deんぱ
 
-<iframe loading="lazy" title="毒deンぱ / Capchii feat. 分散型自律ゴーレム りむる" width="500" height="281" src="https://www.youtube.com/embed/IsS4wY43gFQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IsS4wY43gFQ" %}}

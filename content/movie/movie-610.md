@@ -9,7 +9,7 @@ wp_id: 610
 draft: false
 image: "/wp-content/uploads/2022/04/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="ロリポップ / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/8tk9V1HHhPM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="8tk9V1HHhPM" %}}
 
 ## テーマ
 
@@ -39,37 +39,37 @@ NEOSOUL = カッコイイ 洗練されたイメージがあったので、KAWAII
 
 Brown Sugar
 
-<iframe title="Spotify Embed: Brown Sugar" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7rt0kEDWRg3pgTZJKuszoE?si=bXvm-XL3SV-XmXDowY2A3w&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7rt0kEDWRg3pgTZJKuszoE" %}}
 
 *この曲の核となるコード進行*
 
 Isn’t She Lovely
 
-<iframe title="Spotify Embed: Isn’t She Lovely" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/56rFCOMQzN4Av0ik0nqHVu?si=xbt5kyJUToKgCPboi3go1A&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/56rFCOMQzN4Av0ik0nqHVu" %}}
 
 *リハモして、Aメロ→Bメロ サビの繋ぎを盛り上げる*
 
 さとうもか楽曲全般
 
-<iframe title="Spotify Embed: melt bitter" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6uSe3ACORUIVrAyiP84RZi?si=f2SxG7QbSBeIqhzuCvpn0g&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6uSe3ACORUIVrAyiP84RZi" %}}
 
 *個人的Kawaii Popの金字塔*
 
 Four
 
-<iframe title="Spotify Embed: Four" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/2CBfYM9el9Sh15s9NCeYFP?si=y8Gkm6GbRA23ARkn1124Vw&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/2CBfYM9el9Sh15s9NCeYFP" %}}
 
 ドレミモチーフのキャッチーさを教えてくれた曲
 
 Rock with you
 
-<iframe title="Spotify Embed: Rock with You - Single Version" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7oOOI85fVQvVnK5ynNMdW7?si=e89oHubnRtinrlsfiHQ--g&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7oOOI85fVQvVnK5ynNMdW7" %}}
 
 *サビ前ドラムフィル もろぶっこみアックス*
 
 Circus
 
-<iframe title="Spotify Embed: circus" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/2mJlqLBEOhoz8me8QgXZLp?si=sr9hffUlRvaeoJF7aAT80A&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/2mJlqLBEOhoz8me8QgXZLp" %}}
 
 *循環コードの妙*
 
@@ -77,7 +77,7 @@ Circus
 
 🍭はblenderでモデリングして、絵はさいなかもなかさん風な夢かわいい感じに仕上げた。
 
-<iframe loading="lazy" title="【blender2.9】星空キャンディを簡単モデリング！【初心者向けチュートリアル】" width="500" height="281" src="https://www.youtube.com/embed/RWWuprqWJlQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="RWWuprqWJlQ" %}}
 
 *モデリング参考*
 

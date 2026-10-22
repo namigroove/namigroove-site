@@ -9,7 +9,7 @@ wp_id: 3411
 draft: false
 image: "/wp-content/uploads/2023/05/337468ffeea29e8bfdeb87c43e44b7cf.webp"
 ---
-<iframe loading="lazy" title="太陽ポカポカで草 / なみぐる feat.星界 ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/1g1lXfgH_XI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="1g1lXfgH_XI" %}}
 
 *太陽ポカポカで草*
 
@@ -99,7 +99,7 @@ Bメロ（Am始まり下降コードで歌詞の内容と真逆なせつない�
 
 > [【My new gear…】100年前のカーブドソプラノサックス](https://www.namigroove.com/2021/09/11/post-119/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【My new gear…】100年前のカーブドソプラノサックス” — なみぐる！" src="https://www.namigroove.com/2021/09/11/post-119/embed/#?secret=doEZshw3kY#?secret=1h4hPpA8ln" data-secret="1h4hPpA8ln" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【My new gear…】100年前のカーブドソプラノサックス” — なみぐる！](/2021/09/11/post-119/)
 
 ### ギター
 
@@ -152,7 +152,7 @@ MODOBASS
 
 > [ハリボテ / なみぐる feat.可不(KAFU)](https://www.namigroove.com/movie/movie-545/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“ハリボテ / なみぐる feat.可不(KAFU)” — なみぐる！" src="https://www.namigroove.com/movie/movie-545/embed/#?secret=nA6BenDpGw#?secret=tN0DQGYTCQ" data-secret="tN0DQGYTCQ" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ハリボテ / なみぐる feat.可不(KAFU)” — なみぐる！](/movie/movie-545/)
 
 https://www.steinberg.net/ja/vst-instruments/lofi-piano
 
@@ -278,7 +278,7 @@ cf「雲さんもっくもくで草～の草～の部分は」ピッチを途中
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="延長一週間 ft.可不 / すずめのめ" width="500" height="375" src="https://www.youtube.com/embed/oHn05wVMPS4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="oHn05wVMPS4" %}}
 
 *延長一週間　- すずめのめ*
 
@@ -294,13 +294,13 @@ cf「雲さんもっくもくで草～の草～の部分は」ピッチを途中
 
 内向的な散文もよき
 
-<iframe loading="lazy" title="[メイプルストーリーBGM(MapleStory)]Raindrop Flower" width="500" height="281" src="https://www.youtube.com/embed/bgsXOXSaZKs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="bgsXOXSaZKs" %}}
 
 *メイプルストーリー　Raindrop Flower*
 
 消防時代を共にした泣ける楽曲　イキスギなコード遣いとマレットの質感参考
 
-<iframe loading="lazy" title="VULFPECK /// Animal Spirits" width="500" height="375" src="https://www.youtube.com/embed/qTUnDV3MgVQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="qTUnDV3MgVQ" %}}
 
 *VULFPECK /// Animal Spirits*
 
@@ -314,7 +314,7 @@ cf「雲さんもっくもくで草～の草～の部分は」ピッチを途中
 
   
 
-<iframe loading="lazy" title="SAM GREENFIELD | JUST ONE OF THOSE DAYS" width="500" height="281" src="https://www.youtube.com/embed/jHqdb905OCA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="jHqdb905OCA" %}}
 
 *SAM GREENFIELD | JUST ONE OF THOSE DAYS*
 
@@ -322,18 +322,18 @@ cf「雲さんもっくもくで草～の草～の部分は」ピッチを途中
 
 ベース それもモーグの食って入る感じとか、歌詞やアートワークのセンスも抜群！最近のサックスプレイヤーの中で一番好き
 
-<iframe loading="lazy" title="METERS  Cissy Strut" width="500" height="375" src="https://www.youtube.com/embed/MXI5Nuz6OHg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="MXI5Nuz6OHg" %}}
 
 *METERS Cissy Strut*
 
 コーダルなポップスにベースがペダルして（同じルートコードを弾いて）いるモーダルな場面を差し込んだら面白そうと思って2サビ後の雲さんもっくもくで草に挿入
 
-<iframe loading="lazy" title="GReeeeN - キセキ" width="500" height="281" src="https://www.youtube.com/embed/DwTinTO0o9I?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="DwTinTO0o9I" %}}
 
 *GReeeeN – キセキ*
 
 ピアノでカノン進行でCMajのポップス　これを下地にすればなんでもいい曲になる
 
-<iframe title="Spotify Embed: Sir Duke" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4pNiE4LCVV74vfIBaUHm1b?si=641bb12889c8453e&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4pNiE4LCVV74vfIBaUHm1b" %}}
 
 *言われてみればその１　シャッフル・ユニゾン感は影響を受けているかもしれない*

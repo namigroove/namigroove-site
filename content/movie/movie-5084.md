@@ -9,11 +9,11 @@ wp_id: 5084
 draft: false
 image: "/wp-content/uploads/2024/03/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="【MV】わんぬ／莉犬" width="500" height="281" src="https://www.youtube.com/embed/UqjEwvp_prQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="UqjEwvp_prQ" %}}
 
 *莉犬くんver*
 
-<iframe loading="lazy" title="わんぬ / なみぐる feat. 夏色花梨 ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/ukb5OpLHX8Q?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ukb5OpLHX8Q" %}}
 
 *夏色花梨 ずんだもんver*
 
@@ -25,7 +25,7 @@ image: "/wp-content/uploads/2024/03/maxresdefault-1.webp"
 
 ## 元ネタまとめ
 
-<iframe loading="lazy" title="【元ネタまとめ】わんぬ／莉犬【100万ぬ再生記念】" width="500" height="281" src="https://www.youtube.com/embed/D2wsJmNLeog?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="D2wsJmNLeog" %}}
 
 ## テーマ
 
@@ -42,7 +42,7 @@ onnellinen(オンネリオン)
 
 過去莉犬くん曲でモンプティ（私のかわいい人）・モナムール(私はあなたを愛している)というフランス語引用があった
 
-> <iframe loading="lazy" title="【MV】シャッターチャンス！／莉犬" width="500" height="281" src="https://www.youtube.com/embed/7OilmfH75FY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+> {{% youtube id="7OilmfH75FY" %}}
 
 これに倣って、他言語入れてみたいな～と思ってフィンランド要素を軸に作詞
 
@@ -88,7 +88,7 @@ I Love You → Minä rakastan sinua(ミナラカスタシヌア) → ゴロが�
 
 はんぶんこは「君の方が好きだけど」から着想。好きな人とシェアできるのって嬉しい→不安もシェアできる関係っていいな
 
-<iframe title="Spotify Embed: 君の方が好きだけど" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6zbuniEaGAxZu2l1YAIhK9?si=b7f828c0910e4852&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6zbuniEaGAxZu2l1YAIhK9" %}}
 
 ## 日付が変わる前に寝るのだ
 
@@ -139,7 +139,7 @@ Jazzオタクもニッコリしてもらいたい
 
 モントゥーノという、ラテン・ジャズで使われる技法
 
-<iframe loading="lazy" title="編曲 #13【ラテン風ピアノバッキング】モントゥーノ（トゥンバオ）Part1【基礎編】" width="500" height="281" src="https://www.youtube.com/embed/3iXBg-jZMuI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="3iXBg-jZMuI" %}}
 
 ### サックス
 
@@ -205,7 +205,7 @@ Jazzオタクもニッコリしてもらいたい
 
 ![](/wp-content/uploads/2024/03/c4559e3ffc0181da4f56fe8467969c0b-734x1024-1.webp)
 
-<iframe loading="lazy" title="うちゅうのかんづめ / なみぐる feat.小夜/SAYO" width="500" height="281" src="https://www.youtube.com/embed/lkxQnx0jMNQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="lkxQnx0jMNQ" %}}
 
 ### 3D
 
@@ -271,11 +271,11 @@ liltoonというシェーダーを最初に読み込まないとこうなる
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="LETTUCE- Squadlive" width="500" height="375" src="https://www.youtube.com/embed/tl5QZG4KgHY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="tl5QZG4KgHY" %}}
 
 *LETTUCE – Squadlive　0:33 Introで引用*
 
-<iframe loading="lazy" title="F it up - Louis Cole (Live Sesh)" width="500" height="281" src="https://www.youtube.com/embed/IxEIQQkhyeI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IxEIQQkhyeI" %}}
 
 *Louis Cole – F it up　1:18ラッティーアー　コールの箇所で引用*
 

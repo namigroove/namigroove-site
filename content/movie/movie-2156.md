@@ -9,7 +9,7 @@ wp_id: 2156
 draft: false
 image: "/wp-content/uploads/2022/12/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="【おちゃめ機能】かふ　っ　き　れ　た【なみぐる Remix】" width="500" height="281" src="https://www.youtube.com/embed/ttpFnE6Q4vQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ttpFnE6Q4vQ" %}}
 
 ## テーマ
 

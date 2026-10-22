@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2025/03/jacketv4.webp"
 ---
 ![](/wp-content/uploads/2025/03/jacketv4.webp)
 
-<iframe loading="lazy" title="ルウルウル / なみぐる feat.ルウル/LeuR" width="500" height="281" src="https://www.youtube.com/embed/IOS5dWvqyBs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IOS5dWvqyBs" %}}
 
 > ❌⚡ ルウル、侵入開始！(｀・ω・´) ⚡❌  
 >   
@@ -105,21 +105,21 @@ Utilityでコード楽器を広げて、kh haasで上モノを左右にパン振
 
 [https://wavesjapan.jp/plugins/waves-tune-real-time](https://wavesjapan.jp/plugins/waves-tune-real-time)
 
-<iframe loading="lazy" title="Waterland (Super Mario 64)" width="500" height="375" src="https://www.youtube.com/embed/GTkbtbpFDOI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="GTkbtbpFDOI" %}}
 
 *木琴？の音*
 
-<iframe title="Spotify Embed: supїdo" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0iTrYSvCB4NDvQR3DsFt6T?si=3091775af4e6495f&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0iTrYSvCB4NDvQR3DsFt6T" %}}
 
-<iframe title="Spotify Embed: last friday night pluggnb" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0Qgxzih4OdQOm5yaTrNBcN?si=4f9b962766e54ab5&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0Qgxzih4OdQOm5yaTrNBcN" %}}
 
-<iframe loading="lazy" title="suicide angel☆彡 (feat. nyankobrq)" width="500" height="375" src="https://www.youtube.com/embed/Lf1mFHL8s8k?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Lf1mFHL8s8k" %}}
 
 [https://vt.tiktok.com/ZS6aoLEUb](https://vt.tiktok.com/ZS6aoLEUb)
 
 [https://vt.tiktok.com/ZS6m1yakd](https://vt.tiktok.com/ZS6m1yakd)
 
-<iframe loading="lazy" title="鎖那 - ベイビーヘイロー [Official Video]" width="500" height="375" src="https://www.youtube.com/embed/U_7ZsVyXrBU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="U_7ZsVyXrBU" %}}
 
 前奏の繰り返し、プロデューサータグ・途中のビート・ピッチチェンジは同ジャンル様式美
 
@@ -133,11 +133,11 @@ Utilityでコード楽器を広げて、kh haasで上モノを左右にパン振
 
 いってよーし（落ち着き）
 
-<audio controls="" src="/wp-content/uploads/2025/03/97798cc2fe78b0249d3499df4155ceb0-1.wav"></audio>
+{{% audio src="/wp-content/uploads/2025/03/97798cc2fe78b0249d3499df4155ceb0-1.wav" %}}
 
 いってよーし（元気）
 
-<audio controls="" src="/wp-content/uploads/2025/03/3686a37d18642d8c2a830ba8e669ca3c-1.wav"></audio>
+{{% audio src="/wp-content/uploads/2025/03/3686a37d18642d8c2a830ba8e669ca3c-1.wav" %}}
 
 ![](/wp-content/uploads/2025/03/image-13.webp)
 
@@ -231,7 +231,7 @@ Aviutlのタイピングで速度調整して、プロンプトから歌って�
 
 > [なみぐる – ずんだバンド](https://www.namigroove.com/movie/movie-6242/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“なみぐる – ずんだバンド” — なみぐる！" src="https://www.namigroove.com/movie/movie-6242/embed/#?secret=V2DMsvKEW5#?secret=XD1UwjDpBd" data-secret="XD1UwjDpBd" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“なみぐる – ずんだバンド” — なみぐる！](/movie/movie-6242/)
 
 ### プログラミングネタ
 
@@ -269,11 +269,11 @@ Aviutl　さつき氏の音声同期+　そのままだと動きがうるさい�
 
 UI ビジュアライザー参考
 
-<iframe loading="lazy" title="アイサイト･ラブ / feat.flower" width="500" height="281" src="https://www.youtube.com/embed/bldgjIpCvpY?start=4&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="bldgjIpCvpY" start="4" %}}
 
 以前鬱曲のMVをお願いした読谷あかね氏から、「一度整列させたものを崩すと鬱感が出る」と教えて貰ったので、ゆがみグリッド背景を本作でも借用　どことなくwindowsロゴ感もある
 
-<iframe loading="lazy" title="言葉がサラダになっていく / なみぐる feat.可不（KAFU）" width="500" height="281" src="https://www.youtube.com/embed/A8TnJL116r0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="A8TnJL116r0" %}}
 
 終盤はピッチチェンジによるバグ感を出したくて  
 手癖のグリッチ・データモッシュ・モアレという液晶のにじみを使用
@@ -284,11 +284,11 @@ UI ビジュアライザー参考
 
 ▼y2k　windowsアート参考
 
-<iframe loading="lazy" title="somunia - 2024.02.03『GOLDDISC』Live performance video【YouTube Music Weekend 8.0 Edition】" width="500" height="281" src="https://www.youtube.com/embed/QVAHELn-fKs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="QVAHELn-fKs" %}}
 
-<iframe loading="lazy" title="monograph (feat.N) / しおばにら × Natrium" width="500" height="375" src="https://www.youtube.com/embed/nm4R-Ly4-JA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="nm4R-Ly4-JA" %}}
 
-<iframe loading="lazy" title="IA「残響ディスタンス」feat. hirihiri &amp; lilbesh ramko - MUSIC VIDEO" width="500" height="281" src="https://www.youtube.com/embed/Vi5COWkXcUo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Vi5COWkXcUo" %}}
 
 [https://www.nicovideo.jp/watch/sm43606350](https://www.nicovideo.jp/watch/sm43606350)
 

@@ -9,9 +9,9 @@ wp_id: 9213
 draft: false
 image: "/wp-content/uploads/2026/02/maxresdefault-2.webp"
 ---
-<iframe loading="lazy" title="とびだせ！わんだぴょい / なみぐる feat.ずんだもん 鏡音リン" width="500" height="281" src="https://www.youtube.com/embed/Eb6iBq0zNZg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Eb6iBq0zNZg" %}}
 
-<iframe loading="lazy" title="とびだせ！わんだぴょい / ワンダーランズ×ショウタイム × 鏡音リン" width="500" height="281" src="https://www.youtube.com/embed/yyA_PdAytBI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="yyA_PdAytBI" %}}
 
 ㊗️ワンダーランズ×ショウタイム書き下ろし＆ずんだもんプロセカ公式採用  
 ワンダショ＆ズンダショ
@@ -28,11 +28,11 @@ image: "/wp-content/uploads/2026/02/maxresdefault-2.webp"
 
 最も良い曲、ワンダショの書き下ろし「88☆彡」(まらしぃさん･kemuさん)に倣い、せっかくならゲームをプレイする人達にフルバージョンで楽曲を楽しんで欲しいという理由で2分尺にぎゅっと凝縮して、本楽曲が短い事自体も、｢楽しい時間はあっという間｣であることを示唆しています！
 
-<iframe title="Spotify Embed: 88☆彡 (feat. 天馬司&amp;鳳えむ&amp;草薙寧々&amp;神代類&amp;KAITO)" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7pemI3tVRsPMRgyrmE6L9B?si=1aa1a89791c446ab&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7pemI3tVRsPMRgyrmE6L9B" %}}
 
 (追記)フルサイズ=ゲーム版尺で満足出来なかった方々には申し訳ないですが、「ようこそジャパリパークへ　TVsize」の1分半とは思えない満足感と構成力をを2分曲でも再現したいという思いもありました。
 
-<iframe title="Spotify Embed: ようこそジャパリパークへ - TV Size" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4yWkbwVFSga03l4ha1U4Is?si=efafb954d8014408&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4yWkbwVFSga03l4ha1U4Is" %}}
 
 ### なんで同じスタイルのMVなの？
 

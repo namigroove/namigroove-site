@@ -9,7 +9,7 @@ wp_id: 6128
 draft: false
 image: "/wp-content/uploads/2024/08/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="ずんだプリン / なみぐる FEAT. ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/lZcNIkkAWC0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="lZcNIkkAWC0" %}}
 
 ## テーマ
 
@@ -32,11 +32,11 @@ image: "/wp-content/uploads/2024/08/maxresdefault.webp"
 
 従来のエレクトロスウィングでは 1920〜1930*年代*のディキシーランド・ジャズのサンプリングが多かった。
 
-<iframe loading="lazy" title="Original Dixieland Onestep" width="500" height="375" src="https://www.youtube.com/embed/h81fHwBXtpU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="h81fHwBXtpU" %}}
 
 そこであえて、1940年代以降に時代を進めカウント・ベイシーをはじめとする、よりスウィングが深く・バップ色の強いビッグバンドジャズをテーマしてみた
 
-<iframe loading="lazy" title="Splanky (Remix) (1994 Remaster)" width="500" height="375" src="https://www.youtube.com/embed/eMJOGhOrgrU?list=PLfJndz0utgONJwNMlJE1SM_FgG4cAu1-k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="eMJOGhOrgrU" list="PLfJndz0utgONJwNMlJE1SM_FgG4cAu1-k" %}}
 
 ビートはアフロビートメインで途中でハウスに
 
@@ -44,7 +44,7 @@ image: "/wp-content/uploads/2024/08/maxresdefault.webp"
 
 ドロップはUKっぽいサウンドのDub
 
-<iframe loading="lazy" title="Phatworld - Live Set Jobcentre @BoomtownFairOfficial 2020 (The Lost Chapter)" width="500" height="281" src="https://www.youtube.com/embed/NlqhPkZ8Cks?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="NlqhPkZ8Cks" %}}
 
 サックス、バスクラはマイク録り
 
@@ -84,7 +84,7 @@ MOCHIMOCHI ZUNZUN
 ずんだもん達は、BBを後ろにおいて、ペイントソフト（メディバン）で動かして  
 trumpet boy memeの感じを出す
 
-<iframe loading="lazy" title="🎺 Trumpet Boy 🎺" width="500" height="281" src="https://www.youtube.com/embed/8OnUoe1kXpA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="8OnUoe1kXpA" %}}
 
 ![](/wp-content/uploads/2024/08/image-4.webp)
 
@@ -237,14 +237,14 @@ No Doubt～！
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="Splanky (Remix) (1994 Remaster)" width="500" height="375" src="https://www.youtube.com/embed/eMJOGhOrgrU?list=PLfJndz0utgONJwNMlJE1SM_FgG4cAu1-k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="eMJOGhOrgrU" list="PLfJndz0utgONJwNMlJE1SM_FgG4cAu1-k" %}}
 
 *40年代以降のbigband jazzの雰囲気*
 
-<iframe title="Spotify Embed: Our Love Is Here To Stay" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/64J821Seupnc8LoMRGn0V2?si=_s4XBNvqQk6knG1SHCp1gA&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/64J821Seupnc8LoMRGn0V2" %}}
 
 *メロディ*
 
-<iframe loading="lazy" title="【CM】それにつけてもおやつはカール" width="500" height="281" src="https://www.youtube.com/embed/aBjIoBgwePQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="aBjIoBgwePQ" %}}
 
 *それにつけても*

@@ -9,7 +9,7 @@ wp_id: 1233
 draft: false
 image: "/wp-content/uploads/2022/07/zundanex.gif"
 ---
-<iframe loading="lazy" title="ずんだダンシング / なみぐる feat.ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/_RatgWc_iJ0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="_RatgWc_iJ0" %}}
 
 ## テーマ
 
@@ -103,7 +103,7 @@ image: "/wp-content/uploads/2022/07/zundanex.gif"
 
 APNG形式はAviutlで読み込めないので[ここ](https://ezgif.com/apng-to-gif)でアニメGIFに変換して使うと吉
 
-<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" title="Microsoft 365 Teams の絵文字アイコンが新しくなっています - （）のブログ" src="https://hatenablog-parts.com/embed?url=https%3A%2F%2Fmitomoha.hatenablog.com%2Fentry%2F2022%2F05%2F28%2F010307#?secret=rFvC3DJQSu" data-secret="rFvC3DJQSu" scrolling="no" frameborder="0"></iframe>
+[Microsoft 365 Teams の絵文字アイコンが新しくなっています - （）のブログ](https://mitomoha.hatenablog.com/entry/2022/05/28/010307)
 
 ### ドット絵
 
@@ -139,31 +139,31 @@ BメロSE→Windows XP効果音
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: ドリフの早口ことば" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/5GzFOH86ixyblZJ0LUgmsP?si=lpwKnDXpR6iHZMVByyt62Q&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/5GzFOH86ixyblZJ0LUgmsP" %}}
 
 前奏がインストのみだと寂しかったのでセリフとしてずずんだずんを入れた際にふと思いつき、早口言葉のフォーマットをずんだ系の歌詞に置き換えて引用　ブラスフレーズもここから
 
-<iframe loading="lazy" title="ピノキオピー - アルティメットセンパイ feat. 初音ミク / Ultimate Senpai" width="500" height="281" src="https://www.youtube.com/embed/MnJq5kSn-GY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="MnJq5kSn-GY" %}}
 
 *今回のタネ曲①　短期間製作故、シンプルな画作り+中毒性の高い楽曲のリファレンス*
 
-<iframe title="Spotify Embed: Superstition" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4N0TP4Rmj6QQezWV88ARNJ?si=be7d621ad787407c&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4N0TP4Rmj6QQezWV88ARNJ" %}}
 
 *今回のタネ曲②　メインのフレーズをベースライン・最後のキメで引用　早いBPMでも映える*
 
-<iframe title="Spotify Embed: Disco Yes" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6DKpDMpKuSHNsisfEVtDMZ?si=78465728204043f4&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6DKpDMpKuSHNsisfEVtDMZ" %}}
 
 *今回のタネ曲③　サビのコード・ベースラインで引用　おしゃれスギ*
 
-<iframe title="Spotify Embed: SUSHI食べたい feat.ソイソース" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/5C544HS3hfvJf4J2m5N7F4?si=c7fcb540fab94929&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/5C544HS3hfvJf4J2m5N7F4" %}}
 
 *ネタ系ELECTRO FUNKのリファレンス 　休符の使い方がうまい。0:14～ドコドコタッ　ドコドコドタッのリズムがFMガラージ　2stepを彷彿とさせる。*
 
-<iframe title="Spotify Embed: TOKYO通信〜Urbs Communication〜" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/56AClnYwgKE95gAtCIqyvu?si=9f9b2643a7a34854&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/56AClnYwgKE95gAtCIqyvu" %}}
 
 *2000年代な音作りのリファレンス　1:42～の決めフレーズを引用　アッアラララァアアァ*
 
-<iframe title="Spotify Embed: ダンス・ファウンダー" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6eqYH8ePCfvFhpGwlamJ0Q?si=681199d964034f78&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6eqYH8ePCfvFhpGwlamJ0Q" %}}
 
 *Bメロのリファレンス　(イントロのループするフレージング)  
 ナイル・ロジャースリスペクト楽曲なこともあり、親和性が高い。*
@@ -172,10 +172,10 @@ https://gentomiyano.hatenablog.com/entry/2017/11/12/213832
 
 ### 　無意識に影響を受けていた曲
 
-<iframe title="Spotify Embed: 妄想税 (feat. 初音ミク)" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/29JFaA8DQ4D7IPvaGM7jwI?si=b4195f3d18844535&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/29JFaA8DQ4D7IPvaGM7jwI" %}}
 
 言われてみれば① コメントでBメロが似てると指摘を受けた曲
 
-<iframe title="Spotify Embed: 右肩の蝶" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3g3aU6Rlwv4DRSv63KsL4d?si=95d1e24992d44d9b&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3g3aU6Rlwv4DRSv63KsL4d" %}}
 
 言われてみれば② コメントでラスサビが似てると指摘を受けた曲

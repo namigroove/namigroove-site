@@ -11,11 +11,11 @@ image: "/wp-content/uploads/2025/08/itdw1443434.webp"
 ---
 可不版
 
-<iframe loading="lazy" title="杏仁dope / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/fFL9NeOF7XM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="fFL9NeOF7XM" %}}
 
 わかみょ版
 
-<iframe loading="lazy" title="杏仁dope / なみぐる feat.わかばやし × みょみょ" width="500" height="281" src="https://www.youtube.com/embed/bT5ZBPLN7rQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="bT5ZBPLN7rQ" %}}
 
 ## サブスク配信
 
@@ -33,7 +33,7 @@ cut(e)vol.2 カワイイカッティング　収録曲
 
 > [【参加】cut(e)vol.2 カワイイカッティング](https://www.namigroove.com/music/music-6581/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【参加】cut(e)vol.2 カワイイカッティング” — なみぐる！" src="https://www.namigroove.com/music/music-6581/embed/#?secret=hfSo5l0Fra#?secret=RfKxNG3R9f" data-secret="RfKxNG3R9f" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【参加】cut(e)vol.2 カワイイカッティング” — なみぐる！](/music/music-6581/)
 
   
 タイトルができるまで  
@@ -42,7 +42,7 @@ cut(e)vol.2 カワイイカッティング　収録曲
   
 冗談ではなく本当に「杏仁dope」を作った。  
 
-<iframe loading="lazy" title="DISC003" width="500" height="375" src="https://www.youtube.com/embed/ihqZOKHHIOo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ihqZOKHHIOo" %}}
 
 タイトルから連想して
 
@@ -80,7 +80,7 @@ basslineな音ネタやガチャガチャボヨボヨしたリズムトラック
   
 Dokidoki Idea Wo Yoroshiku!(kurumizawa Garage Edit)
 
-<iframe loading="lazy" title="Dokidoki Idea Wo Yoroshiku!(kurumizawa Garage Edit) by ✨k u r u m i z a w a✨" width="500" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1407876805&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1407876805&show_artwork=true&maxheight=750&maxwidth=500" h="400" title="Dokidoki Idea Wo Yoroshiku!(kurumizawa Garage Edit) by ✨k u r u m i z a w a✨" %}}
 
 Aメロの入りがまったく一緒！
 
@@ -145,7 +145,7 @@ Aメロの入りがまったく一緒！
 
 サックスのモデリングは拙作「枯椿」と同じものを
 
-<iframe loading="lazy" title="枯椿 / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/TCAtaEPwDek?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="TCAtaEPwDek" %}}
 
 ![](/wp-content/uploads/2025/08/5abaeab32242093a45afabaf38829233.webp)
 
@@ -307,16 +307,16 @@ DOPE！
 Friends And Strangers – Dave Grusin (1980)　0:45～  
 基本のコード進行  
 
-<iframe loading="lazy" title="Friends And Strangers - Dave Grusin (1980)" width="500" height="375" src="https://www.youtube.com/embed/_2or5RqfyIc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="_2or5RqfyIc" %}}
 
 bolivia  
 Bメロ（嫌われちゃったらどうしよう）のベースライン引用
 
-<iframe loading="lazy" title="Cedar Walton - Bolivia" width="500" height="375" src="https://www.youtube.com/embed/FieH5e-dO4o?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FieH5e-dO4o" %}}
 
 Phatworld  
 全体のビート感とBメロの変なベースシンセ  
 UK SheffieldというUK Garage/Basslineのサブジャンルをやってるアーティスト  
 ▼ジェットコースターに乗りながらDJしている映像
 
-<iframe loading="lazy" title="Phatworld - Live Set Jobcentre @BoomtownFairOfficial 2020 (The Lost Chapter)" width="500" height="281" src="https://www.youtube.com/embed/NlqhPkZ8Cks?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="NlqhPkZ8Cks" %}}

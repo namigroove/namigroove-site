@@ -13,7 +13,7 @@ image: "/wp-content/uploads/2026/02/maxresdefault-1.webp"
 
 [](https://w.atwiki.jp/hmiku/pages/64542.html)
 
-<iframe loading="lazy" title="み　む　かｩ　わ　ナ　イ　ス　ト　ラ　イ  - namigroove remix -" width="500" height="281" src="https://www.youtube.com/embed/F47puv0tErc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="F47puv0tErc" %}}
 
 ## コンセプト
 
@@ -36,16 +36,16 @@ Gを基調にベースの赴くままにアレンジ + それにクラリネッ�
 
 文化背景はこの動画がわかりやすい　このチャンネルすこ
 
-<iframe loading="lazy" title="#ゆっくり解説 NewJackSwingはなぜ流行り、どう廃れ、どうしてリバイバルされたのか" width="500" height="281" src="https://www.youtube.com/embed/B4vgwLVkiJA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="B4vgwLVkiJA" %}}
 
 ![](/wp-content/uploads/2026/02/image-12.webp)
 
   
 ボカロにもちょくちょく素敵なNJSが上がっているが、弾数が少ないので補充していきたい。
 
-<iframe loading="lazy" title="ふせっしょー / 晴いちばん feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/C1NywTVYO_E?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="C1NywTVYO_E" %}}
 
-<iframe loading="lazy" title="SUPERHERO / めろくる feat. 鏡音レン" width="500" height="281" src="https://www.youtube.com/embed/EWGe3KRc144?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="EWGe3KRc144" %}}
 
 ## サンプリングネタ
 
@@ -53,14 +53,14 @@ Run-DMC「Here We Go（Live at the Funhouse）
 
 「Ah Yeah」の音がよく使われるが、その後のドンディリドン～もカッコいいからまるごと投入
 
-<iframe title="Spotify Embed: Here We Go - Live at the Funhouse, NYC - 1984" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6rs1Jt3bqNdPN01kQeAXX5?si=ed1b80a34261451d&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6rs1Jt3bqNdPN01kQeAXX5" %}}
 
   
 Lyn Collins – Think (About It)
 
 Think Break と言われる大ネタ
 
-<iframe title="Spotify Embed: Think (About It)" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1kG2PZ8geznbDA8I6iWeDi?si=d10b5eef93a6437d&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1kG2PZ8geznbDA8I6iWeDi" %}}
 
 ## 映像
 

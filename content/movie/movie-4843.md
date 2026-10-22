@@ -9,7 +9,7 @@ wp_id: 4843
 draft: false
 image: "/wp-content/uploads/2024/02/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="蟹っぽいな / なみぐる feat. 初音ミク 鏡音レン" width="500" height="281" src="https://www.youtube.com/embed/QpX6m1e4VuI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="QpX6m1e4VuI" %}}
 
 ## テーマ
 
@@ -72,28 +72,28 @@ Aメロが神っぽすぎて、「場合によってはパロディやオマー�
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: 神っぽいな" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/5ALRT96oaGuX7VHySBLbQu?si=3ae65d7fb91e4045&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/5ALRT96oaGuX7VHySBLbQu" %}}
 
 *オマージュ元　オクターブレンジのきいたサビ等*
 
-<iframe title="Spotify Embed: ソーラン節 (北海道)" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/2HxrdCMGQ2urw8ig6JDYy3?si=m6n1JtEETrCm4Nk0gIPLEQ&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/2HxrdCMGQ2urw8ig6JDYy3" %}}
 
-<iframe title="Spotify Embed: 君色マリンスノウ (feat. 初音ミク)" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/2MM6iYUG1egaxNVCojtM96?si=62310bcce47849e5&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/2MM6iYUG1egaxNVCojtM96" %}}
 
 *どっこいしょー　どっこいしょ*
 
-<iframe loading="lazy" title="Major / 重音テト" width="500" height="281" src="https://www.youtube.com/embed/VIjqWffacio?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="VIjqWffacio" %}}
 
 *ドロップの頭抜きとかちょっとだけphonkに寄せてる*
 
-<iframe title="Spotify Embed: Rock with You - Single Version" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7oOOI85fVQvVnK5ynNMdW7?si=0369a97b2eed4370&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7oOOI85fVQvVnK5ynNMdW7" %}}
 
 *冒頭ドラムフィル*
 
-<iframe title="Spotify Embed: Get on the Floor" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/78XG7U0UueeC86XpzF9O7f?si=CB-i0a_KQWyW-yP9CFz9fQ&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/78XG7U0UueeC86XpzF9O7f" %}}
 
 *ベースリフ（どっこいしょー）*
 
-<iframe title="Spotify Embed: KIMI☆JA☆NAI" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1ta7gMx9uX47Uhqiv9OvxR?si=MIwR0WEbReOuvTY-HHvUmQ&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1ta7gMx9uX47Uhqiv9OvxR" %}}
 
 *製作当時聴いてて1番かっこよかった曲　蟹じゃない　蟹じゃない*

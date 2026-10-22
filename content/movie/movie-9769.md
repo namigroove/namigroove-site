@@ -9,7 +9,7 @@ wp_id: 9769
 draft: false
 image: "/wp-content/uploads/2026/09/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="知りたい星人のピピピサーチ / をとは - なみぐる (Original Music Video)" width="500" height="281" src="https://www.youtube.com/embed/e4ZrjcINcls?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="e4ZrjcINcls" %}}
 
 作編曲とテーマだけ歌詞一緒に考えた！
 

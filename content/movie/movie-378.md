@@ -9,7 +9,7 @@ wp_id: 378
 draft: false
 image: "/wp-content/uploads/2022/01/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="枯椿 / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/TCAtaEPwDek?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="TCAtaEPwDek" %}}
 
 【製作裏話】
 
@@ -25,11 +25,11 @@ image: "/wp-content/uploads/2022/01/maxresdefault.webp"
 
 birdにハマっていたのと、TEMPLIME、電音部の影響でどうしてもモダンな2stepが作りたかった。
 
-<iframe loading="lazy" title="real 2step  /　#1 「life」 feat. bird [r2s remix]" width="500" height="375" src="https://www.youtube.com/embed/FJadwo1Wr5c?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FJadwo1Wr5c" %}}
 
 *かっけ～*
 
-<iframe loading="lazy" title="ネオンライト 星宮とと×TEMPLIME" width="500" height="281" src="https://www.youtube.com/embed/FFtKDxZGs8A?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FFtKDxZGs8A" %}}
 
 *かっけ～2*
 
@@ -178,7 +178,7 @@ Camelliaを曲名に使うと、同人作曲家のかめりあさんを連想し
 
 緑のソファの上に回転台を置き、そこに緑の下敷きを敷いてグリーンバックを生成。
 
-<video controls="" src="/wp-content/uploads/2022/01/20211218_131717.mp4"></video>
+{{% video src="/wp-content/uploads/2022/01/20211218_131717.mp4" %}}
 
 *※実は撮影に使用したのは椿ではなく山茶花*
 
@@ -226,7 +226,7 @@ Camelliaを曲名に使うと、同人作曲家のかめりあさんを連想し
 
 背景の光と四角形は、フレームバッファにミラーをかけることによって、難しそうな動きしてる風に。
 
-<iframe loading="lazy" title="枯椿 / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/TCAtaEPwDek?start=96&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="TCAtaEPwDek" start="96" %}}
 
 この作品で一番こだわったのは質感で、ノイズや紙のテクスチャをのせたり、Light Leakを散らしたり、シーンチェンジを塗り風にすることで絵の具のような表現をやってみた。
 

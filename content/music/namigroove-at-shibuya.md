@@ -13,7 +13,7 @@ image: "/wp-content/uploads/2026/04/jacket-scaled.webp"
 
 ![](/wp-content/uploads/2026/04/urajacket_qrnashi.webp)
 
-<iframe loading="lazy" title="【XFD】なみぐる 2nd Album「Namigroove at Shibuya」" width="500" height="375" src="https://www.youtube.com/embed/oWC5TBJeVXI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="oWC5TBJeVXI" %}}
 
 ## Namigroove at Shibuya
 
@@ -65,4 +65,4 @@ Music / Artwork
 
 > [ニコニコ超会議2026 H2け-26ボ 春M3提供情報](https://www.namigroove.com/2026/04/09/post-9294/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ニコニコ超会議2026 H2け-26ボ 春M3提供情報” — なみぐる！" src="https://www.namigroove.com/2026/04/09/post-9294/embed/#?secret=CrFdLh3bjA#?secret=K6IIxi66DV" data-secret="K6IIxi66DV" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ニコニコ超会議2026 H2け-26ボ 春M3提供情報” — なみぐる！](/2026/04/09/post-9294/)

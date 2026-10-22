@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2025/02/jct_ptn2.webp"
 ---
 [https://www.nicovideo.jp/watch/sm44637918](https://www.nicovideo.jp/watch/sm44637918)
 
-<iframe loading="lazy" title="【ニコニコ動画で先行放映中】ずんだレンジャー / なみぐる feat.ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/Un-WmFb3xvM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Un-WmFb3xvM" %}}
 
 [
 
@@ -58,7 +58,7 @@ nekomo先生が戦隊モノに強いこともあり、いつかレンジャー�
 
 ※勝利至上主義も尊重すべき考えであり自己成長に繋がるので否定するつもりは無いが、そういった状況下で悩んでいる人達に「自分にあった抜け穴をいかに見つけてやっていくか」という視点を提供したい。
 
-<iframe loading="lazy" title="ずんだパーリナイ / なみぐる feat.ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/ywXQ9SqsaBQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ywXQ9SqsaBQ" %}}
 
 20230516
 
@@ -117,17 +117,17 @@ nekomo先生が戦隊モノに強いこともあり、いつかレンジャー�
 
 街の風景を素材として撮影（後ほどドット絵化）
 
-<iframe loading="lazy" title="【Vlog】東北ずん子スタンプラリー【なみぐるレポ📝】 #ずん子スタンプラリー #ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/j9tUgcN6Gxk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="j9tUgcN6Gxk" %}}
 
 > [7/13 14 東北ずん子スタンプラリー](https://www.namigroove.com/2024/07/18/post-5931/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“7/13 14 東北ずん子スタンプラリー” — なみぐる！" src="https://www.namigroove.com/2024/07/18/post-5931/embed/#?secret=KnUcvd7xFb#?secret=iqw4QFZmAR" data-secret="iqw4QFZmAR" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“7/13 14 東北ずん子スタンプラリー” — なみぐる！](/2024/07/18/post-5931/)
 
 2024/08/23
 
 ボカコレ延期に伴いずんだバンドの曲目から外れる
 
-<iframe loading="lazy" title="なみぐる - ずんだバンド SPECIAL LIVE🎷【YouTube Music Weekend 8.0】" width="500" height="281" src="https://www.youtube.com/embed/LQNQsjErwF8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="LQNQsjErwF8" %}}
 
 2025
 
@@ -149,7 +149,7 @@ nekomo先生が戦隊モノに強いこともあり、いつかレンジャー�
 
 緊急出動！緊急出動！（絶叫ビーバー）
 
-<audio controls="" src="/wp-content/uploads/2025/02/246c4ee446819b0b29a8184a2a950fd3.wav"></audio>
+{{% audio src="/wp-content/uploads/2025/02/246c4ee446819b0b29a8184a2a950fd3.wav" %}}
 
 定番の「のだだだだ！」をキメフレーズに持ってくる
 
@@ -158,7 +158,7 @@ nekomo先生が戦隊モノに強いこともあり、いつかレンジャー�
 
 初期ズ！
 
-<audio controls="" src="/wp-content/uploads/2025/02/ae0c34c77639808d9ea83f3111afc952.wav"></audio>
+{{% audio src="/wp-content/uploads/2025/02/ae0c34c77639808d9ea83f3111afc952.wav" %}}
 
 ### **ABメロ**
 
@@ -186,7 +186,7 @@ nekomo先生が戦隊モノに強いこともあり、いつかレンジャー�
 
 悪を罰さず、最低限守るべき倫理だけを説き仲間に引き入れる
 
-<iframe loading="lazy" title="ずんだシェイキング / なみぐる feat.ずんだもん 春日部つむぎ" width="500" height="281" src="https://www.youtube.com/embed/DVSlQuF0Pcg?start=83&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="DVSlQuF0Pcg" start="83" %}}
 
 *滾る若さの枝豆に♪*
 
@@ -229,9 +229,9 @@ Stringsも少し手を入れてもらったぞ
 
 > [ウニクラゲ / なみぐる feat.ずんだもん・初音ミク](https://www.namigroove.com/movie/movie-1648/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ウニクラゲ / なみぐる feat.ずんだもん・初音ミク” — なみぐる！" src="https://www.namigroove.com/movie/movie-1648/embed/#?secret=Yd8GZJBvi6#?secret=MZyimr1jnM" data-secret="MZyimr1jnM" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ウニクラゲ / なみぐる feat.ずんだもん・初音ミク” — なみぐる！](/movie/movie-1648/)
 
-<iframe title="Spotify Embed: バトルフィーバーJ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0Y85lIs1FqE4u9kKbz3hIU?si=4cd154c260e04ca0&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0Y85lIs1FqE4u9kKbz3hIU" %}}
 
 ホルン
 
@@ -408,19 +408,19 @@ nekomo先生のFANBOX記事
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="frog's theme w/o triplets" width="500" height="281" src="https://www.youtube.com/embed/cdlWX6PlrYw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="cdlWX6PlrYw" %}}
 
 じゃかじゃんじゃかじゃん　じゃん
 
-<iframe loading="lazy" title="呪文降臨〜マジカル・フォース" width="500" height="375" src="https://www.youtube.com/embed/_16wmx5GXLk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="_16wmx5GXLk" %}}
 
 無意識下に影響を受けてた　ブラスマイナーキー　サビリフ　呪文テーマ
 
-<iframe loading="lazy" title="天体戦士ｻﾝﾚｯﾄﾞ001" width="500" height="281" src="https://www.youtube.com/embed/kE9Pv9rp6Wo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="kE9Pv9rp6Wo" %}}
 
 全体の空気感で一番参考にしている　グレーゾーンに抵触するユーモア、ヒーローの怠惰さ、悪役の憎めなさ
 
-<iframe loading="lazy" title="【公式】アニメ『秘密結社 鷹の爪』第1話『参上！鷹の爪団』｜（新TVアニメ『秘密結社 鷹の爪 ～ゴールデン・スペル～』放送記念｜2020年10月4日(日)放送開始決定）" width="500" height="281" src="https://www.youtube.com/embed/suFvmLR4i7U?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="suFvmLR4i7U" %}}
 
 *天体戦士サンレッドと同じく空気感の参考　最初鷹の爪団にMV見積もりを依頼したらウン百万と言われて横転し、8000円のNFCガチャで通常とカラバリの異なるキャラをランダム入手してくださいと説明され顔がなくなり、身の程を知って身内に依頼したという経緯がある  
 カウンターカルチャーが成長して大企業になるのは嬉しいことだけどせつない*

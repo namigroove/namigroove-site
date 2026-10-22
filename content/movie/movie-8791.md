@@ -9,7 +9,7 @@ wp_id: 8791
 draft: false
 image: "/wp-content/uploads/2025/11/98a45da30bc86579d5b7e7c0392bb6ae.webp"
 ---
-<iframe loading="lazy" title="わたし、いいこ / なみぐる feat.里石ユカ" width="500" height="281" src="https://www.youtube.com/embed/3Vjw2ZhSXE0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="3Vjw2ZhSXE0" %}}
 
 ![](/wp-content/uploads/2025/11/98a45da30bc86579d5b7e7c0392bb6ae.webp)
 
@@ -71,7 +71,7 @@ rei harakami風エレピ
 
 [https://meatbeats.gumroad.com/l/micro-piano](https://meatbeats.gumroad.com/l/micro-piano)
 
-<iframe title="Spotify Embed: owari no kisetsu" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0MpYcFOQXnjkQF4hRKpetC?si=ba7ac1f6b040479b&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0MpYcFOQXnjkQF4hRKpetC" %}}
 
 ピアノ
 

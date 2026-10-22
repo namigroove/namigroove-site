@@ -26,7 +26,7 @@ image: "/wp-content/uploads/2024/04/ANNS_ZSK.webp"
 
 [https://timetreeapp.com/public\_calendars/namigroove/2389118951965098228?date=2024-04-01&referer=timetree](https://timetreeapp.com/public_calendars/namigroove/2389118951965098228?date=2024-04-01&referer=timetree)
 
-<iframe title="Calendar" src="https://timetreeapp.com/public_calendars/namigroove/embed?calendar_name=true&amp;frame_color=%232ecc87" style="width:100%;min-height:700px;aspect-ratio:680/720;border:none"></iframe>
+{{% embed src="https://timetreeapp.com/public_calendars/namigroove/embed?calendar_name=true&frame_color=%232ecc87" h="400" title="Calendar" %}}
 
 ## 頒布グッズ
 
@@ -50,11 +50,11 @@ image: "/wp-content/uploads/2024/04/ANNS_ZSK.webp"
 
 *予備はフォトスポットになる予定！*
 
-<iframe loading="lazy" title="なみぐる 1st Album「ずんだもんがいっぱい」全曲XFD" width="500" height="281" src="https://www.youtube.com/embed/OYPi_8ZFwNs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="OYPi_8ZFwNs" %}}
 
 *なみぐる 1st Album「ずんだもんがいっぱい」全曲XFD*
 
-<iframe loading="lazy" title="なみぐる Remix EP 「ずんだエビフライ」メガ盛り弁当  全曲XFD" width="500" height="281" src="https://www.youtube.com/embed/hVUZ6Rn_nmk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="hVUZ6Rn_nmk" %}}
 
 *なみぐる Remix EP 「ずんだエビフライ」メガ盛り弁当 全曲XFD*
 
@@ -88,11 +88,11 @@ image: "/wp-content/uploads/2024/04/ANNS_ZSK.webp"
 
 > [【1st Album】「ずんだもんがいっぱい」](https://www.namigroove.com/music/music-3218/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【1st Album】「ずんだもんがいっぱい」” — なみぐる！" src="https://www.namigroove.com/music/music-3218/embed/#?secret=C4yHXeEhVG#?secret=HwsYrvY31J" data-secret="HwsYrvY31J" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【1st Album】「ずんだもんがいっぱい」” — なみぐる！](/music/music-3218/)
 
 > [【1st Remix EP】🍤「ずんだエビフライ」メガ盛り弁当🍱](https://www.namigroove.com/music/zunda-ebihurai/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【1st Remix EP】🍤「ずんだエビフライ」メガ盛り弁当🍱” — なみぐる！" src="https://www.namigroove.com/music/zunda-ebihurai/embed/#?secret=hxDUTVdg5z#?secret=LTuPXThMKD" data-secret="LTuPXThMKD" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【1st Remix EP】🍤「ずんだエビフライ」メガ盛り弁当🍱” — なみぐる！](/music/zunda-ebihurai/)
 
 nekomo
 
@@ -124,7 +124,7 @@ nekomo
 > 
 > — なみぐる@ずんだもんがいっぱい 超会議4/27\_28\_HALL8\_て-27 (@namigroove) [April 12, 2024](https://twitter.com/namigroove/status/1778749284328096139?ref_src=twsrc%5Etfw)
 
-<iframe loading="lazy" title="3rd Electro Swing Album「Milky Butler」- ど～ぱみん / 前線 / なみぐる / picco" width="500" height="281" src="https://www.youtube.com/embed/im-4YwGTfsA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="im-4YwGTfsA" %}}
 
 ## 差し入れ
 
@@ -251,4 +251,4 @@ nekomo
 
 > [電脳眠眠猫 / なみぐる feat. 可不](https://www.namigroove.com/movie/movie-5297/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“電脳眠眠猫 / なみぐる feat. 可不” — なみぐる！" src="https://www.namigroove.com/movie/movie-5297/embed/#?secret=BlKFd4w6GX#?secret=qVIV8aDTyZ" data-secret="qVIV8aDTyZ" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“電脳眠眠猫 / なみぐる feat. 可不” — なみぐる！](/movie/movie-5297/)

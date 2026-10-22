@@ -9,11 +9,11 @@ wp_id: 9826
 draft: false
 image: "/wp-content/uploads/2026/10/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="Charming☆Happy☆Star / なみぐる feat.初音ミク 重音テト" width="500" height="281" src="https://www.youtube.com/embed/oGyaTCOgdVI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="oGyaTCOgdVI" %}}
 
 🌟Chime de Happy (Idol Dance Performance) ver
 
-<iframe loading="lazy" title="【Dance Performance Video】Chime de Happy『Charming☆Happy☆Star』" width="500" height="281" src="https://www.youtube.com/embed/8kYJMgqZ9ak?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="8kYJMgqZ9ak" %}}
 
 ## テーマ
 
@@ -31,18 +31,18 @@ image: "/wp-content/uploads/2026/10/maxresdefault.webp"
 
 Just For You – Round Table feat. Nino
 
-<iframe title="Spotify Embed: Just For You" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3WBTOckLw95mPTgKu658ZO?si=0f42b00ff21d43c2&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3WBTOckLw95mPTgKu658ZO" %}}
 
   
 Be Your Girl- Round Table feat. Nino  
 
-<iframe title="Spotify Embed: Be Your Girl" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/5S3qPrc3v8xCHG6RWsLhtV?si=4d945aa4083c4b8d&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/5S3qPrc3v8xCHG6RWsLhtV" %}}
 
-<iframe loading="lazy" title="Aiobahn +81 feat. FUWAMOCO - side by side (Official Music Video) [Ending Theme for NEKOPARA After]" width="500" height="375" src="https://www.youtube.com/embed/1rzCDwmSvzQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="1rzCDwmSvzQ" %}}
 
 pluggのリードもいれて現代要素もいれつつ
 
-<iframe title="Spotify Embed: doodle" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3s1vLoxcml3hyCUZFqj2Xg?si=f9a1831cf05c4054&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3s1vLoxcml3hyCUZFqj2Xg" %}}
 
 他あっさりな分エレピやプレベでバッコリ自我を出しつつ（弾いた）
 
@@ -58,11 +58,11 @@ pluggのリードもいれて現代要素もいれつつ
 
 半年前からスケジュール抑えてやって頂きました。
 
-<iframe loading="lazy" title="太陽ポカポカで草 / なみぐる feat.星界 ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/1g1lXfgH_XI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="1g1lXfgH_XI" %}}
 
 ※以前公募で太陽ポカポカで草のMVやって頂いたこともあり！
 
-<iframe loading="lazy" title="I Can&amp;apos;t Wait feat. GUMI" width="500" height="375" src="https://www.youtube.com/embed/ESCmyMvPV_E?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ESCmyMvPV_E" %}}
 
 MVのイメージはこちらを参考に
 

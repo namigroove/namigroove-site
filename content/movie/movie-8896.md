@@ -9,7 +9,7 @@ wp_id: 8896
 draft: false
 image: "/wp-content/uploads/2025/11/maxresdefault-2.webp"
 ---
-<iframe loading="lazy" title="Aiobahn &amp; TAK feat. 初音ミク - DIVA (Official Music Video)" width="500" height="281" src="https://www.youtube.com/embed/vQ_NFqtGDgo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="vQ_NFqtGDgo" %}}
 
   
   
@@ -49,17 +49,17 @@ TAK氏の当時観・ミライへの推進力溢れる編曲・歌の世界を�
 多くの当時のボカロ曲に影響を受けています。  
 改めて初音ミクを見つめ直すに当たり、輝きをたくさんもらいました。
 
-<iframe loading="lazy" title="初音ミクの可愛すぎる3Dモデル登場！『ぶれないアイで』 Mitchie M" width="500" height="281" src="https://www.youtube.com/embed/8kX5_69sO8Q?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="8kX5_69sO8Q" %}}
 
-<iframe loading="lazy" title="livetune feat. 初音ミク「Redial」Music Video" width="500" height="281" src="https://www.youtube.com/embed/243vPl8HdVk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="243vPl8HdVk" %}}
 
-<iframe loading="lazy" title="【初音ミク】みんなみくみくにしてあげる♪【オリジナル】" width="500" height="281" src="https://www.youtube.com/embed/Dx9m4jpocAc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Dx9m4jpocAc" %}}
 
-<iframe loading="lazy" title="初音ミク　『きくお / テクノロジーに夢乗せて』" width="500" height="281" src="https://www.youtube.com/embed/gPIjhBsWPN4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="gPIjhBsWPN4" %}}
 
-<iframe loading="lazy" title="livetune - ファインダー" width="500" height="375" src="https://www.youtube.com/embed/Hh0dqDK9yEM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Hh0dqDK9yEM" %}}
 
-<iframe loading="lazy" title="【初音ミク】 Hand in Hand (Magical Mirai ver.) 【マジカルミライ 2015】" width="500" height="281" src="https://www.youtube.com/embed/RKtoreimcQ8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="RKtoreimcQ8" %}}
 
 私ずんだもんの人と思われてますが、原初ミクに対する想いもまた強いです
 

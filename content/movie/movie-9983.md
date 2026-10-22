@@ -9,7 +9,7 @@ wp_id: 9983
 draft: false
 image: "/wp-content/uploads/2026/10/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="なみぐる - ド七五サンバフェス 【YouTube Music Weekend 12.0】" width="500" height="281" src="https://www.youtube.com/embed/kLstaqZomS4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="kLstaqZomS4" %}}
 
 演奏というか、バラエティ番組
 
@@ -77,4 +77,4 @@ WADAI!!FES!! 8/1 digest ver
 
 > [ド七五サンバ / なみぐる feat. 重音テトSV](https://www.namigroove.com/movie/movie-9397/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ド七五サンバ&nbsp;/ なみぐる feat. 重音テトSV” — なみぐる！" src="https://www.namigroove.com/movie/movie-9397/embed/#?secret=OBMo7CU0mt#?secret=l63rdQ6DSg" data-secret="l63rdQ6DSg" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ド七五サンバ / なみぐる feat. 重音テトSV” — なみぐる！](/movie/movie-9397/)

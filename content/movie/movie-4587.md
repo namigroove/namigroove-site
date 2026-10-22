@@ -9,7 +9,7 @@ wp_id: 4587
 draft: false
 image: "/wp-content/uploads/2023/12/maxresdefault-2.webp"
 ---
-<iframe loading="lazy" title="サンタヒゲ脱毛  / なみぐる feat.歌愛ユキ" width="500" height="281" src="https://www.youtube.com/embed/Ye24rPiCxTI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Ye24rPiCxTI" %}}
 
 ## テーマ
 

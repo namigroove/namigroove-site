@@ -9,7 +9,7 @@ wp_id: 5994
 draft: false
 image: "/wp-content/uploads/2024/07/jacket_v2.webp"
 ---
-<iframe loading="lazy" title="【VOICEVOX全員歌唱】DREAMVOX / なみぐる feat. VOICEVOX1~8期生【#VOICEVOX3周年文化祭】" width="500" height="281" src="https://www.youtube.com/embed/lpc7JZX47Z0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="lpc7JZX47Z0" %}}
 
 VOICEVOX公式 3周年記念作品  
 ◆VOICEVOX 公式サイト  
@@ -198,20 +198,20 @@ p.s.
 
 ## 参考楽曲  
 
-<iframe loading="lazy" title="【NEUTRINOオリジナル曲】むかしあそび【アカペラ】（AIきりたん、ずん子、イタコ、めろう、No.7（セブン）、ナクモ）" width="500" height="281" src="https://www.youtube.com/embed/s_8TqgvDfQE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="s_8TqgvDfQE" %}}
 
 *ちからさんのアカペラ　目指したかったもの①*
 
 ゴスペルポップ
 
-<iframe loading="lazy" title="Penthouse - Live in This Way [Official Live Video]" width="500" height="281" src="https://www.youtube.com/embed/81UnZ5C06ws?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="81UnZ5C06ws" %}}
 
 *重厚なゴスペルを聴きやすくポップにアレンジ*
 
-<iframe loading="lazy" title="Blessing feat. VOCALOIDS (Collaboration)" width="500" height="281" src="https://www.youtube.com/embed/E4tIHBx7bqc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="E4tIHBx7bqc" %}}
 
 *合成音声合唱といえばこの曲　前向きなエッセンスは継承しつつ、ちょっと方向性を変えて*
 
-<iframe loading="lazy" title="あなたは世界の終わりにずんだを食べるのだ / なみぐる feat.ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/HE0mAgDAx-Q?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="HE0mAgDAx-Q" %}}
 
 *お気づきですか*

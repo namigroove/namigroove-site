@@ -9,7 +9,7 @@ wp_id: 4903
 draft: false
 image: "/wp-content/uploads/2024/02/maxresdefault-2.webp"
 ---
-<iframe loading="lazy" title="ずんだタコヤーキ / なみぐる FEAT.ずんだもん 琴葉茜" width="500" height="281" src="https://www.youtube.com/embed/pbb7EQx-7tA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="pbb7EQx-7tA" %}}
 
 ◤₺ƾらせ
 
@@ -19,7 +19,7 @@ image: "/wp-content/uploads/2024/02/maxresdefault-2.webp"
 
 [https://x.com/McDonaldsJapan/status/1816752818499268798](<https://twitter.com/McDonaldsJapan/status/1816752818499268798 https://www.youtube.com/watch?v=qo7TpKuv6Gc>)
 
-<iframe loading="lazy" title="マックカフェ「フラッペしちゃった♡すいか＆パイン」篇 30秒" width="500" height="281" src="https://www.youtube.com/embed/qo7TpKuv6Gc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="qo7TpKuv6Gc" %}}
 
 ## 配信・ダウンロード
 
@@ -259,30 +259,30 @@ VDLアドミーン(有償)
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: MAGIC MIRROR" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3BHRmNcNI0Tqg79OVsRNBT?si=787dfaff0b6444f8&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3BHRmNcNI0Tqg79OVsRNBT" %}}
 
 *ラグタイムコアの祖*
 
-<iframe title="Spotify Embed: Dough-Nuts Town&amp;apos;s map" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3OEHp9GQJ0orVM7AHyi8lM?si=1aada67d239745cf&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3OEHp9GQJ0orVM7AHyi8lM" %}}
 
 *大ご先祖様*
 
-<iframe title="Spotify Embed: Lunchtime" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6DwUjI95sKy6K9KTQ7Bj43?si=f4634069633e4826&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6DwUjI95sKy6K9KTQ7Bj43" %}}
 
 *ずんばらばんばん裏ギター Cory Wongイメージ*
 
-<iframe title="Spotify Embed: ヨーデル食べ放題" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/15B35KA9SwGHMJxhn2wyVS?si=7b212b7f993b4330&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/15B35KA9SwGHMJxhn2wyVS" %}}
 
 *食べたい食べたい食べたいな*
 
-<iframe title="Spotify Embed: Bolivia" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4I8n4AxTBIBwD90DsmDk5x?si=c8cdc701d71441b6&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4I8n4AxTBIBwD90DsmDk5x" %}}
 
 *サビのベース*
 
-<iframe loading="lazy" title="マイクがスキ☆スキ - 大乱闘スマッシュブラザーズX" width="500" height="281" src="https://www.youtube.com/embed/f_d2XOHGPP8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="f_d2XOHGPP8" %}}
 
 *ブギウギ*
 
-<iframe loading="lazy" title="【10分耐久】マリオカートWii ワリオこうざん (外) BGM  - Wario’s Gold Mine BGM" width="500" height="281" src="https://www.youtube.com/embed/LNOXDuawt0o?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="LNOXDuawt0o" %}}
 
 *ずんばらばんばん　バンジョーのフレーズ感とか*

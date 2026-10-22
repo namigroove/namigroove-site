@@ -9,9 +9,9 @@ wp_id: 6947
 draft: false
 image: "/wp-content/uploads/2024/12/b456d8811f020330e8c43aaa1389d367.webp"
 ---
-<iframe loading="lazy" title="ぞんぞんずんだエナジー / なみぐる feat.ぞん子 ずんだもん【VOICEVOX版】" width="500" height="281" src="https://www.youtube.com/embed/H6Bwv0E_AYM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="H6Bwv0E_AYM" %}}
 
-<iframe loading="lazy" title="ぞんぞんずんだエナジー / なみぐる feat.ぞん子 ずんだもん【本人歌唱版】" width="500" height="281" src="https://www.youtube.com/embed/TeFlOGkAWNc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="TeFlOGkAWNc" %}}
 
 ## 配信・ダウンロード
 
@@ -102,28 +102,28 @@ ZONeの缶やプシュ音やオケヒで注意をひく
 
 楽曲面の骨　コンプ感の強いドラム+太いベースのフレージング
 
-<iframe loading="lazy" title="I'm Tight - Louis Cole" width="500" height="281" src="https://www.youtube.com/embed/u9XrWB-u1vc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="u9XrWB-u1vc" %}}
 
 4つ打ちの上に滞留感がくせになるコード　シンセの質感
 
-<iframe loading="lazy" title="《キルミーベイベー》 NCED ふたりのきもちのほんとのひみつ Full Version" width="500" height="281" src="https://www.youtube.com/embed/rF9NLfraCE4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="rF9NLfraCE4" %}}
 
 わちゃわちゃバトルモノ①
 
 SSSさんとれでぃばさんに無理を言って、ずんだもんがゲーム好きのきりたんに教えてもらう設定をねじ込んだ（東北仕込みのスゴ技で）
 
-<iframe loading="lazy" title="永遠にゲームで対戦したいキリタン" width="500" height="281" src="https://www.youtube.com/embed/5uFrdGMo684?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="5uFrdGMo684" %}}
 
 わちゃわちゃバトルモノ②
 
 こちらは二次創作がべらぼうに多い
 
-<iframe loading="lazy" title="絶対敵対メチャキライヤー - ミクと可不" width="500" height="281" src="https://www.youtube.com/embed/kGDWVV_1do4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="kGDWVV_1do4" %}}
 
 1:09 the lickというジャズインプロネタ
 
-<iframe loading="lazy" title="The Lick" width="500" height="375" src="https://www.youtube.com/embed/krDxhnaKD7Q?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="krDxhnaKD7Q" %}}
 
 0:17 矩形波リフ
 
-<iframe loading="lazy" title="Michael Jackson - Don’t Stop 'Til You Get Enough (Official Video)" width="500" height="375" src="https://www.youtube.com/embed/yURRmWtbTbo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="yURRmWtbTbo" %}}

@@ -23,7 +23,7 @@ image: "/wp-content/uploads/2023/02/thumb11_withdots_ptn3.webp"
 > 
 > — ボカコレ【公式】@2024冬ありがとうございました！ (@the\_voca\_colle) [October 10, 2022](https://twitter.com/the_voca_colle/status/1579464471223111681?ref_src=twsrc%5Etfw)
 
-<iframe loading="lazy" title="ウニクラゲ / なみぐる feat.ずんだもん・初音ミク" width="500" height="281" src="https://www.youtube.com/embed/gPg_hosThbc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="gPg_hosThbc" %}}
 
 ## サブスク
 
@@ -39,7 +39,7 @@ image: "/wp-content/uploads/2023/02/thumb11_withdots_ptn3.webp"
 
 > [【DL\_Single】ウ​ニ​ク​ラ​ゲ](https://www.namigroove.com/music/music-1698/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【DL_Single】ウ​ニ​ク​ラ​ゲ” — なみぐる！" src="https://www.namigroove.com/music/music-1698/embed/#?secret=rFqP4QIUyB#?secret=STdeGNy2i1" data-secret="STdeGNy2i1" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【DL_Single】ウ​ニ​ク​ラ​ゲ” — なみぐる！](/music/music-1698/)
 
 ## テーマ
 
@@ -98,7 +98,7 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 > [【My new gear…】万能ベース　Momose　MJ2-STD](https://www.namigroove.com/2021/02/11/post-1110/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【My new gear…】万能ベース　Momose　MJ2-STD” — なみぐる！" src="https://www.namigroove.com/2021/02/11/post-1110/embed/#?secret=biUhddjpXz#?secret=0ECf5n0URA" data-secret="0ECf5n0URA" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【My new gear…】万能ベース　Momose　MJ2-STD” — なみぐる！](/2021/02/11/post-1110/)
 
 このベースはターボスイッチがついており、スイッチを引っ張ることでパラレル接続→シリーズ接続に切り替えることで、プレベのような力強いサウンドが得られる。
 
@@ -106,7 +106,7 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 > [＊ジャズベースのピックアップ（シングルx２）を活用して直列のハムバッカーにする方法](https://pop-guitars.com/brog/?p=1381)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“＊ジャズベースのピックアップ（シングルx２）を活用して直列のハムバッカーにする方法” — ポップギターズ" src="https://pop-guitars.com/brog/?p=1381&amp;embed=true#?secret=gJoKyrLpNm" data-secret="gJoKyrLpNm" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[＊ジャズベースのピックアップ（シングルx２）を活用して直列のハムバッカーにする方法](https://pop-guitars.com/brog/?p=1381)
 
 歪みはMXR M80で作成。サンズアンプよりも汎用性高くてすき。(コスパ厨ワイ、momoseみたいな私1本で何色にも染まりますよみたいな顔した機材ＬＯＶＥ)
 
@@ -123,7 +123,7 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 撮り音が良なので、あとはかいりきベア式タイム調整(波形を切り貼りして好みのタイミングで並べていく)だけでギターラインが完成した🎸
 
-<iframe loading="lazy" title="【本人解説】ダーリンダンスを大解剖！　唯一無二のサウンドを生み出す楽曲制作のこだわりに迫る！" width="500" height="281" src="https://www.youtube.com/embed/pnOR6NkpnDw?start=611&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="pnOR6NkpnDw" start="611" %}}
 
 *かいりきベア式　ギターエディット参考*
 
@@ -141,7 +141,7 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 *うわああ*
 
-<video height="1920" style="aspect-ratio: 1080 / 1920;" width="1080" controls="" src="/wp-content/uploads/2023/02/20230225_201833_1.mp4"></video>
+{{% video src="/wp-content/uploads/2023/02/20230225_201833_1.mp4" w="1080" h="1920" %}}
 
 ***✹‪MIX学び***ଳ
 
@@ -182,31 +182,31 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 フレデリックと同時期のコミックソングよりな邦ロックを中心に研究
 
-<iframe loading="lazy" title="フレデリック「オドループ」Music Video | Frederic &quot;oddloop&quot;" width="500" height="281" src="https://www.youtube.com/embed/PCp2iXA1uLE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="PCp2iXA1uLE" %}}
 
 *ペンタフレーズ　ピック弾きベースのニュアンス　クリシェ決め　マレットとギターの合わせリフなど楽曲の骨となる部分を拝借*
 
-<iframe loading="lazy" title="ダダダダ天使 / ナナヲアカリ" width="500" height="281" src="https://www.youtube.com/embed/ANp0qch3XVM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ANp0qch3XVM" %}}
 
 *イントロ・決めフレーズ・字幕テイスト(コーポレートロゴ)の参考　絵柄も寄せてもらった*
 
-<iframe loading="lazy" title="KANA-BOON 『ないものねだり』Music Video" width="500" height="281" src="https://www.youtube.com/embed/UgS7vgquBvo?start=74&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="UgS7vgquBvo" start="74" %}}
 
 *ゆらゆら～のリフレインをBメロのtrap部分に転用*
 
-<iframe loading="lazy" title="KEYTALK/「MONSTER DANCE」MUSIC VIDEO" width="500" height="281" src="https://www.youtube.com/embed/N39glrfql0I?start=97&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="N39glrfql0I" start="97" %}}
 
 *ビートダウンして曲調が祭り囃子に変わる箇所の着想元*
 
-<iframe loading="lazy" title="【Music】それゆけワンダーランド - 騒音のない世界" width="500" height="281" src="https://www.youtube.com/embed/ljKLdsoCa8o?list=PLuuu7x7YTnTLmS1ZRMh4h7x0JktAPHH2k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ljKLdsoCa8o" list="PLuuu7x7YTnTLmS1ZRMh4h7x0JktAPHH2k" %}}
 
 *ウニクラゲ～の「ウニクラ」の部分は多分ここから*
 
-<iframe loading="lazy" title="テレキャスタービーボーイ(long ver.) / すりぃ feat.鏡音レン" width="500" height="281" src="https://www.youtube.com/embed/i-DZukWFR64?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="i-DZukWFR64" %}}
 
 *フレデリックに似たマレット×ギターリフ、Aメロ6236進行でエスニック（中華）サウンドの強調・サビ436～下降クリシェの王道J-Popテイスト*
 
-<iframe loading="lazy" title="Ain't No Mountain High Enough (extra HQ) - Marvin Gaye &amp; Tammi Terrell" width="500" height="375" src="https://www.youtube.com/embed/IC5PL0XImjw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IC5PL0XImjw" %}}
 
 *サビ&イントロのコード進行の素地*
 
@@ -218,7 +218,7 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 タムの音(ポコポン）
 
-<iframe loading="lazy" title="Dragon Ball Z BGM - Title Card I (M708A-2?)" width="500" height="375" src="https://www.youtube.com/embed/vaTD-SvP-q0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="vaTD-SvP-q0" %}}
 
 ### 和風・チャイナ
 
@@ -240,7 +240,7 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 ぼのぼのの汗（Siren Whistleっていう楽器らしい）
 
-<iframe loading="lazy" title="Crazy Whistles &amp; Sound Effects" width="500" height="281" src="https://www.youtube.com/embed/2g15Aoxlxq8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="2g15Aoxlxq8" %}}
 
 ### ポケモン（ルビー・サファイア）
 
@@ -356,4 +356,4 @@ https://ocraviutl.fandom.com/ja/wiki/%E8%87%AA%E6%BC%94%E3%82%B3%E3%83%A1%E3%83%
 
 > [泡](https://ytsozaiyasan.com/download/3tr030)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“泡” — YouTuberのための素材屋さん" src="https://ytsozaiyasan.com/download/3tr030/embed#?secret=4s0wbEGmZg" data-secret="4s0wbEGmZg" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[泡](https://ytsozaiyasan.com/download/3tr030/)

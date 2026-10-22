@@ -9,7 +9,7 @@ wp_id: 7330
 draft: false
 image: "/wp-content/uploads/2025/02/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="夏に透明 - namigroove remix -" width="500" height="281" src="https://www.youtube.com/embed/JTW3gjy1zWQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="JTW3gjy1zWQ" %}}
 
 ## コンセプト
 
@@ -39,4 +39,4 @@ bondbond
 
 元はCDsでビジュアライザーを作って頂く機会があり、ぜひ映像のリミックスをお願いしたくお声がけした。
 
-<iframe loading="lazy" title="DISC002" width="500" height="375" src="https://www.youtube.com/embed/KXH3gs0-fEQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="KXH3gs0-fEQ" %}}

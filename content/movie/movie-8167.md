@@ -9,7 +9,7 @@ wp_id: 8167
 draft: false
 image: "/wp-content/uploads/2025/06/squarethumb.webp"
 ---
-<iframe loading="lazy" title="ホットダック！- Ui Remix - / なみぐる feat.雨衣" width="500" height="281" src="https://www.youtube.com/embed/_DuYHBio0H8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="_DuYHBio0H8" %}}
 
 ![](/wp-content/uploads/2025/06/image.webp)
 
@@ -17,7 +17,7 @@ image: "/wp-content/uploads/2025/06/squarethumb.webp"
 
 > [ホットダック！ なみぐる feat.大空スバル【提供】](https://www.namigroove.com/movie/movie-5537/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ホットダック！ なみぐる feat.大空スバル【提供】” — なみぐる！" src="https://www.namigroove.com/movie/movie-5537/embed/#?secret=Iw58W2KNBJ#?secret=mcoVcl6Jse" data-secret="mcoVcl6Jse" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ホットダック！ なみぐる feat.大空スバル【提供】” — なみぐる！](/movie/movie-5537/)
 
 ## 概要
 
@@ -39,7 +39,7 @@ VoiSona運営さんに沢山お仕事頂いているご恩もあるし…
 
   
 
-<iframe loading="lazy" title="ホットダック！- Ui Remix - by なみぐる / namigroove" width="500" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2105628381&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2105628381&show_artwork=true&maxheight=750&maxwidth=500" h="400" title="ホットダック！- Ui Remix - by なみぐる / namigroove" %}}
 
 インスト  
 [https://piapro.jp/t/lD00](https://piapro.jp/t/lD00)  
@@ -56,10 +56,10 @@ VoiSona運営さんに沢山お仕事頂いているご恩もあるし…
 
 イントロのユニゾン
 
-<iframe loading="lazy" title="Level 42 - Mr. Pink (Live At Reading Concert Hall, 01.12.2001)" width="500" height="281" src="https://www.youtube.com/embed/Dt1APRRddS4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Dt1APRRddS4" %}}
 
 #### 丸の内サディスティック（UNCHAIN)
 
 これくらいのビート感　リハモ感でSelfRemixやってみたかった
 
-<iframe title="Spotify Embed: 丸の内サディスティック" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6PDL4t1R5m3kYN2qIumKc1?si=001b773b344d4d97&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6PDL4t1R5m3kYN2qIumKc1" %}}

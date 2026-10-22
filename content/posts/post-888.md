@@ -17,7 +17,7 @@ image: "/wp-content/uploads/2022/05/zundateaser.gif"
 
 > [あなたは世界の終わりにずんだを食べるのだ / なみぐる feat.ずんだもん](https://www.namigroove.com/movie/movie-706/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“あなたは世界の終わりにずんだを食べるのだ / なみぐる feat.ずんだもん” — なみぐる！" src="https://www.namigroove.com/movie/movie-706/embed/#?secret=26kgkA6Axf#?secret=ZaJDSy3aGm" data-secret="ZaJDSy3aGm" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“あなたは世界の終わりにずんだを食べるのだ / なみぐる feat.ずんだもん” — なみぐる！](/movie/movie-706/)
 
 ## 御礼
 
@@ -55,7 +55,7 @@ Twitterでお見かけしたイラストは随時モーメントに入れさせ�
 
 #### twitter外
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" title="あなたは世界の終わりにずんだを食べるのだ" width="500" height="262" src="https://embed.pixiv.net/oembed_iframe.php?type=illust&amp;id=98754612#?secret=Uz5SK1V764" data-secret="Uz5SK1V764" frameborder="0"></iframe>
+{{% embed src="https://embed.pixiv.net/oembed_iframe.php?type=illust&id=98754612#?secret=Uz5SK1V764" h="262" title="あなたは世界の終わりにずんだを食べるのだ" %}}
 
 ## 歌ってみた
 
@@ -82,4 +82,4 @@ https://nana-music.com/sounds/0657899c
 
 [https://nico.ms/sm40594980](https://nico.ms/sm40594980)
 
-<iframe loading="lazy" title="【マッシュアップ】あなたは世界の終わりにずんだを食べるのだ x Hello" width="500" height="281" src="https://www.youtube.com/embed/sNE6bfdTICQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="sNE6bfdTICQ" %}}

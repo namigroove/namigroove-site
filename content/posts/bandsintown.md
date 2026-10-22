@@ -245,7 +245,7 @@ Googleカレンダーを公開するとプライベート予定も見えてし�
 
 ![](/wp-content/uploads/2025/05/image-1.webp)
 
-<iframe title="Calendar" src="https://timetreeapp.com/public_calendars/namigroove/embed?calendar_name=true&amp;frame_color=%232ecc87" style="width:100%;min-height:700px;aspect-ratio:680/720;border:none"></iframe>
+{{% embed src="https://timetreeapp.com/public_calendars/namigroove/embed?calendar_name=true&frame_color=%232ecc87" h="400" title="Calendar" %}}
 
 [https://timetreeapp.com/public\_calendars/namigroove](https://timetreeapp.com/public_calendars/namigroove)
 
@@ -259,4 +259,4 @@ Googleカレンダーを公開するとプライベート予定も見えてし�
 
 > [【中国進出】なみぐる式Bilibili動画 開設マニュアル](https://www.namigroove.com/2024/06/27/post-5584/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【中国進出】なみぐる式Bilibili動画 開設マニュアル” — なみぐる！" src="https://www.namigroove.com/2024/06/27/post-5584/embed/#?secret=7pvFDTTTDT#?secret=0nPEQpoqkp" data-secret="0nPEQpoqkp" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【中国進出】なみぐる式Bilibili動画 開設マニュアル” — なみぐる！](/2024/06/27/post-5584/)

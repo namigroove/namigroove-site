@@ -9,7 +9,7 @@ wp_id: 6242
 draft: false
 image: "/wp-content/uploads/2024/10/00c274a737e08ad893959eccc3b3ecd1.webp"
 ---
-<iframe loading="lazy" title="なみぐる - ずんだバンド SPECIAL LIVE🎷【YouTube Music Weekend 8.0】" width="500" height="281" src="https://www.youtube.com/embed/LQNQsjErwF8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="LQNQsjErwF8" %}}
 
 YoutubeMusicWeekend 8.0にてデビュー
 
@@ -27,7 +27,7 @@ YoutubeMusicWeekend 8.0にてデビュー
 
 > [2024秋M3情報](https://www.namigroove.com/2024/10/18/post-6566/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“2024秋M3情報” — なみぐる！" src="https://www.namigroove.com/2024/10/18/post-6566/embed/#?secret=QIFa65YI0y#?secret=DJQjQ34dgX" data-secret="DJQjQ34dgX" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“2024秋M3情報” — なみぐる！](/2024/10/18/post-6566/)
 
 ✦2024/10/27(日) Release  
 ✦東京流通センター　第2展示場 1F「え-09ab」  
@@ -59,7 +59,7 @@ YoutubeMusicWeekend 8.0にてデビュー
 **Bandcamp**  
 [https://namigroove.bandcamp.com/](https://namigroove.bandcamp.com/)
 
-<iframe loading="lazy" title="【TEASER】なみぐる ずんだバンド 1st EP" width="500" height="281" src="https://www.youtube.com/embed/E9XhgWveNdg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="E9XhgWveNdg" %}}
 
 ### CD版ご購入者様限定ページ
 
@@ -77,7 +77,7 @@ CD購入後、QRコード記載のページ▼にアクセスします。
 
 > [ずんだバンド　ご購入者様限定ページ](https://www.namigroove.com/2024/08/31/post-6363/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ずんだバンド　ご購入者様限定ページ” — なみぐる！" src="https://www.namigroove.com/2024/08/31/post-6363/embed/#?secret=3I8jRsyITG#?secret=7c1a2tpOqb" data-secret="7c1a2tpOqb" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ずんだバンド　ご購入者様限定ページ” — なみぐる！](/2024/08/31/post-6363/)
 
 CD盤面に記載されている\*\*\*\*\*\*\*(7文字の英数字)がご購入者様限定ページ閲覧用パスワードです。
 
@@ -180,7 +180,7 @@ https://linkco.re/ZQucx6mG
 
 ライブ経験・映像ストックもなく、DJやるよりかは、GYARIさんみたいにライブやりたいなと何となく思う。
 
-<iframe loading="lazy" title="2017.9.10 GYARI BAND LIVE! - GYABAN" width="500" height="281" src="https://www.youtube.com/embed/Hm3Alq0MDT0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Hm3Alq0MDT0" %}}
 
 ②もっちりしたパン・駄菓子O型とご飯いったときにYoutubeの音楽番組に出ることを話したら、「ヘヘッ　ナミグルさん、バンドやりましょうよ。人揃えますよ。」という話になった。  
 
@@ -199,7 +199,7 @@ neo soulっぽい雰囲気でアレンジ。　
 
 ピアノの決めフレーズはこちらを参考に
 
-<iframe title="Spotify Embed: Good Gravity" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7JTCUgiDM5PYY5y9NhODzO?si=b1100dbb281141bf&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7JTCUgiDM5PYY5y9NhODzO" %}}
 
 ### ずんだシェイキング
 
@@ -207,7 +207,7 @@ neo soulっぽい雰囲気でアレンジ。　
 （演歌はやりたかったので原曲まま）  
 ぐるぐるパートでは、もっちりしたパンと秋元さんのフリージャズ的アプローチが炸裂！
 
-<iframe loading="lazy" title="ずんだシェイキング/ ずんだもん&amp;春日部つむぎ【Genre Shaking Edit】" width="500" height="281" src="https://www.youtube.com/embed/6Nb6LzJLfbc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="6Nb6LzJLfbc" %}}
 
 ### ずんだパーリナイ
 

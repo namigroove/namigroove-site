@@ -9,7 +9,7 @@ wp_id: 5447
 draft: false
 image: "/wp-content/uploads/2024/05/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="言葉がサラダになっていく / なみぐる feat.可不（KAFU）" width="500" height="281" src="https://www.youtube.com/embed/A8TnJL116r0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="A8TnJL116r0" %}}
 
 ## 紹介記事
 
@@ -70,7 +70,7 @@ webサイトのまとめブログ等でよく見る意味のない文章達を�
 
 > [雲隠 / なみぐる feat.双葉 湊音](https://www.namigroove.com/movie/movie-1928/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“雲隠 / なみぐる feat.双葉 湊音” — なみぐる！" src="https://www.namigroove.com/movie/movie-1928/embed/#?secret=6NTFWkzCGm#?secret=eoXNaVT4aL" data-secret="eoXNaVT4aL" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“雲隠 / なみぐる feat.双葉 湊音” — なみぐる！](/movie/movie-1928/)
 
 テーマの深堀りは歌い手のはなさんと何回か打ち合わせして、どんな語があうか話し合った、
 
@@ -115,7 +115,7 @@ webサイトのまとめブログ等でよく見る意味のない文章達を�
 
 > [糖衣 / なみぐる feat.初音ミク](https://www.namigroove.com/movie/movie-239/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“糖衣 / なみぐる feat.初音ミク” — なみぐる！" src="https://www.namigroove.com/movie/movie-239/embed/#?secret=le4xZ0rxBh#?secret=n1FXbZqgpD" data-secret="n1FXbZqgpD" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“糖衣 / なみぐる feat.初音ミク” — なみぐる！](/movie/movie-239/)
 
 鬱ってminor keyじゃなくて、major 7th key なんですよね…
 
@@ -163,7 +163,7 @@ Illusts…my0nruri氏
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="The Isley Brothers - Between the Sheets (Official Audio)" width="500" height="281" src="https://www.youtube.com/embed/Pf_si60K9nM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Pf_si60K9nM" %}}
 
 *The Isley Brothers – Between the Sheets*
 
@@ -173,13 +173,13 @@ Illusts…my0nruri氏
 
 [https://www.whosampled.com/The-Isley-Brothers/Between-the-Sheets](https://www.whosampled.com/The-Isley-Brothers/Between-the-Sheets)
 
-<iframe loading="lazy" title="SAM GREENFIELD | JUST ONE OF THOSE DAYS" width="500" height="281" src="https://www.youtube.com/embed/jHqdb905OCA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="jHqdb905OCA" %}}
 
 *SAM GREENFIELD | JUST ONE OF THOSE DAYS*
 
 コード・ビート感
 
-<iframe loading="lazy" title="チャーリイ / エイハブ feat.POPY" width="500" height="375" src="https://www.youtube.com/embed/CcH9BII0Iek?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="CcH9BII0Iek" %}}
 
 *チャーリイ / エイハブ feat.POPY*
 

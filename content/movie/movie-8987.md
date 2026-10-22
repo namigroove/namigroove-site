@@ -9,9 +9,9 @@ wp_id: 8987
 draft: false
 image: "/wp-content/uploads/2026/01/PEPPER-Matsuri-thumbnail2.webp"
 ---
-<iframe loading="lazy" title="まつり / 藤井 風 - namigroove remix -  feat. ゲキヤク" width="500" height="281" src="https://www.youtube.com/embed/ZJgzEHb-oes?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ZJgzEHb-oes" %}}
 
-<iframe loading="lazy" title="まつり / 藤井 風 - namigroove remix - feat. ゲキヤク【Matsuri Fujii Kaze】 by なみぐる / namigroove" width="500" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2248786088&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2248786088&show_artwork=true&maxheight=750&maxwidth=500" h="400" title="まつり / 藤井 風 - namigroove remix - feat. ゲキヤク【Matsuri Fujii Kaze】 by なみぐる / namigroove" %}}
 
 ## コンセプト
 

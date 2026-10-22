@@ -13,7 +13,7 @@ image: "/wp-content/uploads/2023/02/maxresdefault.webp"
 
 #### かっこいいボカロ曲×変な歌詞(Amazon謎商品)×可不
 
-<iframe loading="lazy" title="キャンディー・パープル / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/Sc_cEfeyQr0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Sc_cEfeyQr0" %}}
 
 ## 着想
 
@@ -39,7 +39,7 @@ image: "/wp-content/uploads/2023/02/maxresdefault.webp"
 
 (インパクトずんだもん方式・再び)
 
-<iframe loading="lazy" title="インパクトずんだもんぬいぐるみランチブレイク人形ピロぬいぐるみピローひなまつりアニメ周辺オープンコスプレ小道具ピローギフトバースデー超やわらかいぬいぐるみ小さな人形クッションゲームの周りぬいぐるみコス" width="500" height="281" src="https://www.youtube.com/embed/ntXuwUCbl-M?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ntXuwUCbl-M" %}}
 
 DnBを軸にNeurofunkのウネウネ、Footworkの刻み、Glitch、Tripret、ColourBassのキラキラシンセ、MetalCoreのドロップ、デスボイス、界隈曲風オブリガード、中国風楽器、リスカピアノ、バップフレーズ、Virtual Riot、らせん階段、カブト虫、廃墟の町、イチジクのタルト、ゴムゴム、ネジネジ、北欧色のコーヒーごった煮な曲になってしまった（超常現象）  
 
@@ -47,7 +47,7 @@ DnBを軸にNeurofunkのウネウネ、Footworkの刻み、Glitch、Tripret、Co
 
 temu(中華ECサイト)で買ったよ～
 
-<iframe loading="lazy" title="【ついに購入】ゴムゴムゴムゴムパドパドドダダドダダパパドドププブブウウドブブググテチポめめブブブブブブブブブブブブブブブブブブブブブブブブブブブブブブブりりブりりりりりりりり【キャンディー・パープル】" width="500" height="281" src="https://www.youtube.com/embed/Zd_h3buQBo8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Zd_h3buQBo8" %}}
 
   
 
@@ -100,7 +100,7 @@ temu(中華ECサイト)で買ったよ～
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="柊マグネタイト「マーシャル・マキシマイザー」feat. 可不【Official Music Video】" width="500" height="281" src="https://www.youtube.com/embed/jMKPYg0uhCI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="jMKPYg0uhCI" %}}
 
 *マーシャル・マキシマイザー　BIGインスパイア　柊マグネタイトさんごめんなさい*
 
@@ -110,7 +110,7 @@ temu(中華ECサイト)で買ったよ～
 > 
 > — 柊マグネタイト (@hiiragi\_magne) [February 4, 2023](https://twitter.com/hiiragi_magne/status/1621858295035138051?ref_src=twsrc%5Etfw)
 
-<iframe loading="lazy" title="トーローボーイ／yowanecity feat.可不" width="500" height="281" src="https://www.youtube.com/embed/vHVgiD_T468?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="vHVgiD_T468" %}}
 
 *1:50～DnB×デスボイス合うな～と思ったきっかけの曲  
 yowanecityさんの作品でいちばんすき  
@@ -119,7 +119,7 @@ yowanecityさんの作品でいちばんすき
   
 Virtual Riotさん、いっぱいサンプルお借りしました、いつも素晴らしい楽曲をありがとうございます。
 
-<iframe title="Spotify Embed: Virtual Riot" style="border-radius: 12px" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/artist/4FXGRMSHh2JjHxVwS8dhH1?si=WURoUyr2QWKZakKNrJeu9Q&amp;utm_source=oembed"></iframe>
+{{% spotify id="artist/4FXGRMSHh2JjHxVwS8dhH1" h="352" %}}
 
 ## 追記
 

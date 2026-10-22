@@ -9,7 +9,7 @@ wp_id: 545
 draft: false
 image: "/wp-content/uploads/2022/02/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="ハリボテ / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/-x4BRRGXPeU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="-x4BRRGXPeU" %}}
 
 ## テーマ
 
@@ -21,7 +21,7 @@ image: "/wp-content/uploads/2022/02/maxresdefault.webp"
 
 マイナーペンタでxx兄貴節を効かせつつ、生楽器主体でグルーヴィーに、展開多めに仕上げた。
 
-<iframe loading="lazy" title="ヤツメ穴" width="500" height="375" src="https://www.youtube.com/embed/C9PFVo1FEwU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="C9PFVo1FEwU" %}}
 
 *リスペクト元*
 
@@ -136,7 +136,7 @@ https://alpha-photo.net/archives/8242
 
 xx兄貴リスペクトを手打ちでやるのはしんどいので、これに助けられた。
 
-<iframe loading="lazy" title="【紹介】AviUtlでMIDIを表示できるスクリプト" width="500" height="281" src="https://www.youtube.com/embed/d5S402Jt9g4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="d5S402Jt9g4" %}}
 
 ### Aviutlでオーディオ波形
 

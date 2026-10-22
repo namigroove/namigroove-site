@@ -9,7 +9,7 @@ wp_id: 1617
 draft: false
 image: "/wp-content/uploads/2022/09/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="【カバー】真夏の夜の夢 / なみぐる feat.ずんだもん 東北きりたん" width="500" height="375" src="https://www.youtube.com/embed/BnoX_J0I1kA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="BnoX_J0I1kA" %}}
 
 ## テーマ
 
@@ -59,11 +59,11 @@ image: "/wp-content/uploads/2022/09/maxresdefault.webp"
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="Graham Central Station - Hair" width="500" height="281" src="https://www.youtube.com/embed/nvMhPqg2jCo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="nvMhPqg2jCo" %}}
 
 *イントロ　ベースラインのテレレーン！の引っ掛けをスラップでなく指弾きで再現*
 
-<iframe loading="lazy" title="「日本の夏」七滝今 + 梓川（Prod. 平田義久）" width="500" height="281" src="https://www.youtube.com/embed/8i2x_f6sj_k?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="8i2x_f6sj_k" %}}
 
 *このカバーを作るきっかけになった曲　静かな盛り上がりがかっこいい  
 リズムやギターのリファレンス曲*

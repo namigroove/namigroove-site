@@ -9,7 +9,7 @@ wp_id: 8847
 draft: false
 image: "/wp-content/uploads/2025/11/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="柿杮 / なみぐる feat. 足立レイ" width="500" height="375" src="https://www.youtube.com/embed/cgJIMuBqZD8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="cgJIMuBqZD8" %}}
 
 無色版  
 [https://www.nicovideo.jp/watch/so45512585](https://www.nicovideo.jp/watch/so45512585)
@@ -25,7 +25,7 @@ Streaming
 
 全面モニターでテクノ楽曲のリズム（歌詞・ハイハットやキック）に合わせて文字が出てくるフロアがあって、これ面白いな～と思っていた。
 
-<video height="1280" style="aspect-ratio: 1080 / 1280;" width="1080" controls="" src="/wp-content/uploads/2025/11/designa_kirinuki.mp4"></video>
+{{% video src="/wp-content/uploads/2025/11/designa_kirinuki.mp4" w="1080" h="1280" %}}
 
 そして、同時期に似た漢字リストを収集していた。
 
@@ -69,7 +69,7 @@ Streaming
 
 やってみるとわかるけど、ユレ弧の音圧はすごすぎて真似できなかった！
 
-<iframe loading="lazy" title="ユレ弧 - カゼヒキβ, ゲキヤクβ, 重音テト" width="500" height="281" src="https://www.youtube.com/embed/AhbgUXP4vCw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="AhbgUXP4vCw" %}}
 
 地味に初足立レイフル尺曲
 
@@ -115,7 +115,7 @@ Streaming
 
 已己巳己～のシーンチェンジはイカオーっぽく
 
-<iframe loading="lazy" title="イカオー" width="500" height="281" src="https://www.youtube.com/embed/wbd71BgRzVw?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="wbd71BgRzVw" %}}
 
 音周りもうるさく監修  
 スネアのSTEMをお渡しして音同期等

@@ -9,15 +9,15 @@ wp_id: 9397
 draft: false
 image: "/wp-content/uploads/2026/05/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="ド七五サンバ / なみぐる feat. 重音テトSV" width="500" height="281" src="https://www.youtube.com/embed/-6WgX8_iyR0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="-6WgX8_iyR0" %}}
 
-<iframe loading="lazy" title="ド七五サンバ / ころねぽち (Official Music Video)" width="500" height="281" src="https://www.youtube.com/embed/X3Ka4vDvk_o?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="X3Ka4vDvk_o" %}}
 
-<iframe loading="lazy" title="ド七五サンバ (Sped Up) / なみぐる feat. 重音テトSV" width="500" height="281" src="https://www.youtube.com/embed/oVHA-SEpCXQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="oVHA-SEpCXQ" %}}
 
 > [【提供】ド七五サンバ / ころねぽち 2nd Album『NO-CONE DAPPO CORE』](https://www.namigroove.com/music/music-8749/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【提供】ド七五サンバ / ころねぽち 2nd Album『NO-CONE DAPPO CORE』” — なみぐる！" src="https://www.namigroove.com/music/music-8749/embed/#?secret=fvMEwswi8v#?secret=GZNgnud6BP" data-secret="GZNgnud6BP" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【提供】ド七五サンバ / ころねぽち 2nd Album『NO-CONE DAPPO CORE』” — なみぐる！](/music/music-8749/)
 
 ## テーマ  
 ド級の七五三、ド七五サンバ
@@ -35,16 +35,16 @@ image: "/wp-content/uploads/2026/05/maxresdefault.webp"
 BPMはマツケンサンバIIと同じ127(本家はBPM揺らぎあり）  
 キーも同じ
 
-<iframe title="Spotify Embed: マツケンサンバ II" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1GFyYd5RuyZkHh4A4pRUT6?si=acc4264cae9b4dae&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1GFyYd5RuyZkHh4A4pRUT6" %}}
 
 オルガンが主役の渋谷っぽい感じのサンバに
 
-<iframe title="Spotify Embed: 最大聖地カーニバル" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3YJ3E93oOO2VzbrydRkeJj?si=f5c7001946d447de&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3YJ3E93oOO2VzbrydRkeJj" %}}
 
   
 Aメロのオブリはトランペット吹きの休日モチーフ
 
-<iframe title="Spotify Embed: トランペット吹きの休日" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1e5a8ThM1BUUjnUpUdlYHA?si=7126b21c1d994656&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1e5a8ThM1BUUjnUpUdlYHA" %}}
 
   
 ベースはジャコパスっぽいフレーズをmoogで
@@ -53,11 +53,11 @@ Aメロのオブリはトランペット吹きの休日モチーフ
 
 DropにあたるRumbleパートはかっこいい曲をなるべく馬鹿っぽい音にしたくてquicaとかで再現
 
-<iframe title="Spotify Embed: Rumble" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/74fmYjFwt9CqEFAh8ybeBD?si=6f34291ee23648e8&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/74fmYjFwt9CqEFAh8ybeBD" %}}
 
 当時byun Gをかなり聴いてて低音アコギリフカッケーと思って一緒にいれてる(1:10～)
 
-<iframe title="Spotify Embed: byun G (feat. JUMADIBA &amp; LIL SOFT TENNIS)" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4ogfuPpYqAWYP6ABkyhVov?si=ba23071772764a5f&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4ogfuPpYqAWYP6ABkyhVov" %}}
 
 ## 歌詞
 
@@ -75,14 +75,14 @@ DropにあたるRumbleパートはかっこいい曲をなるべく馬鹿っぽ�
 
 これまたネットミームではあるが、、
 
-<iframe loading="lazy" title="棺桶ダンス フルバージョン" width="500" height="281" src="https://www.youtube.com/embed/qdewMnfrYiQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="qdewMnfrYiQ" %}}
 
 ## 調声
 
 ぽみさんがテトちゃんに似てるというコメントを見つけて、じゃあテトで仮歌を作ろう!というのが  
 テト起用のはじまり
 
-<iframe loading="lazy" title="『テトパート歌ってる人ほんとにテトみたいな声でメッチャかわいい』#shorts" width="422" height="750" src="https://www.youtube.com/embed/lRn013rBK9g?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="lRn013rBK9g" %}}
 
 最初力強い感じのテトSV歌唱で作ってたのを、マキシウキョウさんから頂いたアニメをみて、カル・テト仕様の方がかわいくない…？と思い急遽変更
 
@@ -99,14 +99,14 @@ DropにあたるRumbleパートはかっこいい曲をなるべく馬鹿っぽ�
 
 何度心を救ってもらったかわからない、カル・テトにも出張して貰ったぜ…Specialだ
 
-<iframe loading="lazy" title="カル・テト" width="500" height="281" src="https://www.youtube.com/embed/videoseries?list=PLyA_oAntekRsan9XFwDPJzud3_7Hilx6n" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="videoseries" list="PLyA_oAntekRsan9XFwDPJzud3_7Hilx6n" %}}
 
 さらに
 
 セニョリーちゃ節のパチンコみたいな愛、素敵ですねェ～～といったら、  
 なんとキラキラの題字まで作ってもらった
 
-<iframe loading="lazy" title="セニョリーちゃ節 / マキシウキョウ feat.重音テトSV" width="500" height="281" src="https://www.youtube.com/embed/5Bwy5Qy1XgM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="5Bwy5Qy1XgM" %}}
 
 ![](/wp-content/uploads/2026/05/04b3b062909c942524207515d521ebec.webp)
 
@@ -137,7 +137,7 @@ Nyanyanyanyanyanyanya!の再現をしたり
 
 ドカベンしたり（↓前例）
 
-<iframe loading="lazy" title="ウニクラゲ / なみぐる feat.ずんだもん・初音ミク" width="500" height="281" src="https://www.youtube.com/embed/gPg_hosThbc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="gPg_hosThbc" %}}
 
 ドカベンフォントのカタカナ以外はこちら
 

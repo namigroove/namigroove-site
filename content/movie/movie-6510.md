@@ -9,15 +9,15 @@ wp_id: 6510
 draft: false
 image: "/wp-content/uploads/2024/10/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="無限ダラダラガンダーラ / なみぐる feat. 琴葉 茜・葵" width="500" height="281" src="https://www.youtube.com/embed/k4JQpjIXSMg?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="k4JQpjIXSMg" %}}
 
 ちょこさん　猫宮ひなたさんver
 
-<iframe loading="lazy" title="無限ダラダラガンダーラ　なみぐる with ちょこ&amp;猫宮ひなた [ Original Song MV ]" width="500" height="281" src="https://www.youtube.com/embed/A9AKXo-5we0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="A9AKXo-5we0" %}}
 
 > [【提供】ちょこ / ラブコーション](https://www.namigroove.com/music/music-5694/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【提供】ちょこ / ラブコーション” — なみぐる！" src="https://www.namigroove.com/music/music-5694/embed/#?secret=IAcKVKlsUv#?secret=5JZXAbLuMi" data-secret="5JZXAbLuMi" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【提供】ちょこ / ラブコーション” — なみぐる！](/music/music-5694/)
 
 ## 配信・ダウンロード
 
@@ -55,13 +55,13 @@ image: "/wp-content/uploads/2024/10/maxresdefault.webp"
 
 ラスサビ途中で正露丸になってるの気付いた？
 
-<iframe loading="lazy" title="6連ラッパ　ゴッドファーザー" width="500" height="281" src="https://www.youtube.com/embed/4T2vB_S-pwk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="4T2vB_S-pwk" %}}
 
 NEW SUPER MARIO BROSノコノコのパァ
 
 koopa troopa danceというネットミームになっている
 
-<iframe loading="lazy" title="Bah Bah but it's in HD" width="500" height="281" src="https://www.youtube.com/embed/rfytfLpTTe4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="rfytfLpTTe4" %}}
 
 > 亀っぽいな(無料謎音源) [pic.twitter.com/hizHvsuAuw](https://t.co/hizHvsuAuw)
 > 
@@ -98,19 +98,19 @@ decayが長い民族楽器は帯域が埋まっておすすめ
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: ZARIGANI" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1vvqH0AaAG7tZwOjZVbntW?si=1cf9c2b5dc7741d9&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1vvqH0AaAG7tZwOjZVbntW" %}}
 
 途中からブレイクビーツで倍になるレゲエって面白い
 
-<iframe title="Spotify Embed: Out Of Space" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/17YPCJEixnb6MM3Ahdf5uG?si=e0d20ecdea474c98&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/17YPCJEixnb6MM3Ahdf5uG" %}}
 
 バカぽい＆カッコイイシンセの相性がいい
 
-<iframe title="Spotify Embed: 熱帯夜" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0Xs6JbTolXavra7Pz7UgJ9?si=p-QOOF2_R1SwAViQhJxHMQ&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0Xs6JbTolXavra7Pz7UgJ9" %}}
 
 ドドソ　ドドドドソ🎶
 
-<iframe title="Spotify Embed: My Name Is" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3ri2pJhxf8bkJNnrCzViY0?si=mT68V9UhR3mEbRa8fBXFTg&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3ri2pJhxf8bkJNnrCzViY0" %}}
 
 神降臨アーがおもしろい
 

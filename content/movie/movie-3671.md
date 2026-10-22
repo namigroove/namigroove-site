@@ -9,11 +9,11 @@ wp_id: 3671
 draft: false
 image: "/wp-content/uploads/2023/07/0711ce9044b89d2fce9c5d5bf6215975.webp"
 ---
-<iframe loading="lazy" title="𝙄 𝙒𝙖𝙣𝙣𝙖 𝘽𝙚 𝘼 𝙇𝙞𝙖𝙧  / なみぐる feat.知声" width="500" height="281" src="https://www.youtube.com/embed/hvyOQRtkkDY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="hvyOQRtkkDY" %}}
 
 *知声ver*
 
-<iframe loading="lazy" title="【MV】𝙄 𝙒𝙖𝙣𝙣𝙖 𝘽𝙚 𝘼 𝙇𝙞𝙖𝙧／しょぴくん【オリジナル曲】" width="500" height="281" src="https://www.youtube.com/embed/W0NIKakj3xk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="W0NIKakj3xk" %}}
 
 *しょぴくんver*
 
@@ -125,32 +125,32 @@ noncomさん　ゆにまるさんはベテランの雰囲気で、案出しも�
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: You Are The Universe" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7coOBdN6UnOZHMQyoKvssx?si=f87b61ceda4c4735&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7coOBdN6UnOZHMQyoKvssx" %}}
 
 *今回のタネ曲　アーバンでハウスな丸サ進行曲をより嗜好性強めに*
 
-<iframe title="Spotify Embed: 本能" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/2n85jrwWWqTVHrSUXxvMs8?si=a12fcbab4b0d44e3&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/2n85jrwWWqTVHrSUXxvMs8" %}}
 
 *サビ前ボーカルのガナリや抜けの良いスネアの参考*
 
-<iframe title="Spotify Embed: 死んでしまったんだ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/7x2fFCV5fqdvHTIAO91vJ4?si=94177632138a454b&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/7x2fFCV5fqdvHTIAO91vJ4" %}}
 
 *歪みブラス×ボーカルカットアップのカッコイイドロップをアコースティック曲にねじ込みたい願望*
 
-<iframe title="Spotify Embed: Killing In The Name" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/59WN2psjkt1tyaxjspN8fp?si=tucSYSzkTNqDZMJrNM5ErQ&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/59WN2psjkt1tyaxjspN8fp" %}}
 
 *アコギのDrop D低音リフの参考*
 
-<iframe title="Spotify Embed: 創造" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0fHIg7r8LqBB5M85rxD3Q0?si=accd0fa24fca456c&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0fHIg7r8LqBB5M85rxD3Q0" %}}
 
 *サビが世界一かっこいいカエルの歌　抜け出せたなら♪*
 
-<iframe title="Spotify Embed: Rapport" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0e4HssKedndIhLoDpkwBNH?si=95ff90d7ccd14353&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0e4HssKedndIhLoDpkwBNH" %}}
 
 *0:30～の爆イケリフ　イントロのギター・ベースリフの参考*
 
-<iframe title="Spotify Embed: Juice" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0k664IuFwVP557Gnx7RhIl?si=8c7782a61572462e&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0k664IuFwVP557Gnx7RhIl" %}}
 
 *Aメロ　花の香に(ソファソファラ）の歌フォールの感じ参考　ごま豆腐を火にかける♪*
 
-<iframe loading="lazy" title="ごまどうふを火にかける📛 / なみぐる feat.琴葉 茜・葵(Lizzo Cover)" width="500" height="281" src="https://www.youtube.com/embed/oyovnXV96YY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="oyovnXV96YY" %}}

@@ -9,7 +9,7 @@ wp_id: 5297
 draft: false
 image: "/wp-content/uploads/2024/04/maxresdefault-1.webp"
 ---
-<iframe loading="lazy" title="電脳眠眠猫 / なみぐる feat. 可不" width="500" height="281" src="https://www.youtube.com/embed/eEnY-buv4jE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="eEnY-buv4jE" %}}
 
 デ～ンノ～ウ　ミェンミェンマオ (=^\_^=)ﾉｼ
 
@@ -27,7 +27,7 @@ Internet 怠惰 猫 pop
 
 代わりに、2024年桃寝ちのいさんのアルバム収録曲としてデビュー
 
-<iframe loading="lazy" title="電脳眠眠猫 - 桃寝ちのい（original）" width="500" height="281" src="https://www.youtube.com/embed/50ABOddeI3c?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="50ABOddeI3c" %}}
 
 ## 歌詞
 
@@ -104,25 +104,25 @@ SFXはやりたい放題
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="D'Angelo - Brown Sugar" width="500" height="281" src="https://www.youtube.com/embed/H_WzjiTzZBA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="H_WzjiTzZBA" %}}
 
 *コード進行*
 
-<iframe loading="lazy" title="みきとP 『 いーあるふぁんくらぶ 』 MV" width="500" height="281" src="https://www.youtube.com/embed/oBgADhsOoog?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="oBgADhsOoog" %}}
 
 *中華ボカロ*
 
-<iframe loading="lazy" title="ウニクラゲ / なみぐる feat.ずんだもん・初音ミク" width="500" height="281" src="https://www.youtube.com/embed/gPg_hosThbc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="gPg_hosThbc" %}}
 
 *お気づきですか？*
 
-<iframe loading="lazy" title="ビビビビ／星界（Be, be, be, be! / SEKAI）" width="500" height="281" src="https://www.youtube.com/embed/sWOvhZBS9IA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="sWOvhZBS9IA" %}}
 
 *アシッド*
 
 ## 雑学
 
-<iframe loading="lazy" title="【作曲者解説】「電脳眠眠猫」の雑学【BGM配布】" width="500" height="281" src="https://www.youtube.com/embed/Eg-b4S-KJ_M?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Eg-b4S-KJ_M" %}}
 
 ## 【追記】抖音(Tiktok)で言われている件
 

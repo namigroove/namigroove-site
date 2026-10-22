@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2025/03/image-17.webp"
 ---
 ![](/wp-content/uploads/2025/03/image-17.webp)
 
-<iframe loading="lazy" title="ひみつのふふふ" width="500" height="375" src="https://www.youtube.com/embed/LbvhmDzhMQ4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="LbvhmDzhMQ4" %}}
 
 https://twitter.com/sendenbu\_staff/status/1902880535124512779
 

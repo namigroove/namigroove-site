@@ -9,7 +9,7 @@ wp_id: 5685
 draft: false
 image: "/wp-content/uploads/2024/07/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="こしたんたん / なみぐる feat. ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/Qu2IXJDgNBY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Qu2IXJDgNBY" %}}
 
 ## テーマ
 
@@ -32,7 +32,7 @@ image: "/wp-content/uploads/2024/07/maxresdefault.webp"
 
 ・ビャンビャン麺　音街ウナの元ネタ
 
-<iframe loading="lazy" title="ビャンビャン麺 / 音街ウナ - シカクドット" width="500" height="281" src="https://www.youtube.com/embed/b-pxDR83foQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="b-pxDR83foQ" %}}
 
 ・実は真夏の夜の夢 ずんだもん&きりたんカバーは、のんたおさんにお願いしてこしたんたんのイラストをお借りしたもの（製作順はこしたんたんが先）
 

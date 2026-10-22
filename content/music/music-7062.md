@@ -23,7 +23,7 @@ image: "/wp-content/uploads/2025/01/image.webp"
 
 > [腰痛持ち、4つ打ち / なみぐる feat.重音テトSV](https://www.namigroove.com/movie/movie-7702/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“腰痛持ち、4つ打ち / なみぐる feat.重音テトSV” — なみぐる！" src="https://www.namigroove.com/movie/movie-7702/embed/#?secret=xDZKcXqdLk#?secret=2x3S15tSCr" data-secret="2x3S15tSCr" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“腰痛持ち、4つ打ち / なみぐる feat.重音テトSV” — なみぐる！](/movie/movie-7702/)
 
 > 🧭お知らせ🧭[https://t.co/oMTVHylSiX](https://t.co/oMTVHylSiX)[https://t.co/oR4LtYXZh9](https://t.co/oR4LtYXZh9)  
 > オルタナティブ・ダンスミュージック・コンピレーションアルバム「4UNREAL 2REAL」OUT NOW!!!  
@@ -46,7 +46,7 @@ Bandcamp
 
 #### YTM
 
-<iframe loading="lazy" title="腰痛持ち、4つ打ち" width="500" height="375" src="https://www.youtube.com/embed/eb0WcFPkWas?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="eb0WcFPkWas" %}}
 
 #### ゆくえレコーズ
 

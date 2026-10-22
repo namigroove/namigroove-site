@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2026/08/image-1.webp"
 ---
 ![](/wp-content/uploads/2026/08/image-1.webp)
 
-<iframe loading="lazy" title="ラブリズム・エトワール(namigroove Remix) by なみぐる / namigroove" width="500" height="400" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2328817121&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2328817121&show_artwork=true&maxheight=750&maxwidth=500" h="400" title="ラブリズム・エトワール(namigroove Remix) by なみぐる / namigroove" %}}
 
 > ◤₺ƾらせ  
 > Hylenさん New EP F-LEX!! Remix  

@@ -14,11 +14,11 @@ image: "/wp-content/uploads/2025/03/maxresdefault.webp"
 
 青は止まれver
 
-<iframe loading="lazy" title="青は止まれ - しじまのはて（Prod by なみぐる）【Music Video】" width="500" height="375" src="https://www.youtube.com/embed/ZhynJZGwIHk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ZhynJZGwIHk" %}}
 
 テトver
 
-<iframe loading="lazy" title="しじまのはて / なみぐる &amp; 青は止まれ feat. 重音テト" width="500" height="375" src="https://www.youtube.com/embed/J9__K4e0ayc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="J9__K4e0ayc" %}}
 
 QRコードを読み込むと…？
 
@@ -27,7 +27,7 @@ QRコードを読み込むと…？
 
 > [「しじまのはて」MV テクニカルディレクションアワード金賞受賞！](https://www.namigroove.com/2025/08/06/post-8532/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“「しじまのはて」MV テクニカルディレクションアワード金賞受賞！” — なみぐる！" src="https://www.namigroove.com/2025/08/06/post-8532/embed/#?secret=5D3irQBGNR#?secret=GF6CvEY4AK" data-secret="GF6CvEY4AK" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“「しじまのはて」MV テクニカルディレクションアワード金賞受賞！” — なみぐる！](/2025/08/06/post-8532/)
 
 ## テーマ
 
@@ -35,7 +35,7 @@ QRコードを読み込むと…？
 
 ## 製作裏話
 
-<iframe loading="lazy" title="ハリボテ / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/-x4BRRGXPeU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="-x4BRRGXPeU" %}}
 
 ### 2022年4月14日
 
@@ -58,7 +58,7 @@ QRの誤り訂正機能を使ってなにかやりたいという話はいおた
 
 ゲームキューブの四度堆積和音を活かして音声とゲームキューブの描画を同期させたらおもしろそう
 
-<iframe loading="lazy" title="got distracted by this gamecube intro" width="500" height="281" src="https://www.youtube.com/embed/T3qrj4B08sc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="T3qrj4B08sc" %}}
 
 ドキドキ文芸部のmonika的な、リスナーに直接語りかけるメタ表現してみたい
 
@@ -76,7 +76,7 @@ QRの誤り訂正機能を使ってなにかやりたいという話はいおた
 
 時間がかかった裏話としてQRコード機能製作中に近いアイデアの先駆者としてキラーチューナーが出てきてしまい、参考にしつつも被らないように方針転換したとのこと。
 
-<iframe loading="lazy" title="【超学生】キラーチューナー" width="500" height="281" src="https://www.youtube.com/embed/yFf1voImS68?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="yFf1voImS68" %}}
 
 まさか本当にノベルゲームを作ってくるとは思わず、公開直前までずんだもんの調声やらBGMやらの手入れを行っていた。
 
@@ -100,7 +100,7 @@ QRの誤り訂正機能を使ってなにかやりたいという話はいおた
 
 > [ハリボテ / なみぐる feat.可不(KAFU)](https://www.namigroove.com/movie/movie-545/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ハリボテ / なみぐる feat.可不(KAFU)” — なみぐる！" src="https://www.namigroove.com/movie/movie-545/embed/#?secret=iRJec6s2dH#?secret=bkJswbz85x" data-secret="bkJswbz85x" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ハリボテ / なみぐる feat.可不(KAFU)” — なみぐる！](/movie/movie-545/)
 
 **ドラム**
 
@@ -110,7 +110,7 @@ QRの誤り訂正機能を使ってなにかやりたいという話はいおた
 
 リムショットも多用してたまに三連いれたりビートコピペにならないように
 
-<iframe loading="lazy" title="Beep street-Squarepusher" width="500" height="281" src="https://www.youtube.com/embed/sSdg3qgZXAQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="sSdg3qgZXAQ" %}}
 
 **ピアノ**
 
@@ -130,7 +130,7 @@ https://twitter.com/namigroove/status/1745127180307476808
 
 着想はララバイオブバードランドの0:24あたりから広げた
 
-<iframe loading="lazy" title="Sarah Vaughan - Lullaby of Birdland" width="500" height="375" src="https://www.youtube.com/embed/x8cFdZyWOOs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="x8cFdZyWOOs" %}}
 
 ![](/wp-content/uploads/2025/03/image-2.webp)
 
@@ -153,4 +153,4 @@ r-906さんの影響もあって、ミニマルな楽器構成、楽曲なので
 
 ゲームキューブ音サンプリングは星野源　創造より着想
 
-<iframe loading="lazy" title="星野源 – 創造 (Official Video)" width="500" height="281" src="https://www.youtube.com/embed/74FIsXlS0EQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="74FIsXlS0EQ" %}}

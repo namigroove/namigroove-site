@@ -9,7 +9,7 @@ wp_id: 113
 draft: false
 image: "/wp-content/uploads/2021/07/スクリーンショット-2021-07-31-010219.webp"
 ---
-<iframe loading="lazy" title="戻るボタン / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/GbdqgBvvayM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="GbdqgBvvayM" %}}
 
 **【製作裏話】**
 
@@ -45,7 +45,7 @@ CeVIO 開発チーム ありがとうございます 。
 
 ※2step:UKガラージの1ジャンルで00年代日本ポップスでも流行した　有名どころだとm-floのcome againとか
 
-<iframe loading="lazy" title="m-flo / come again" width="500" height="281" src="https://www.youtube.com/embed/RNBiaZbFGII?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="RNBiaZbFGII" %}}
 
 参考楽曲
 

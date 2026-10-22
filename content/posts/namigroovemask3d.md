@@ -14,9 +14,9 @@ image: "/wp-content/uploads/2021/05/10485812-scaled.webp"
 
 > [手作りなみぐる仮面 Ver1](https://www.namigroove.com/2024/08/16/post-6162/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“手作りなみぐる仮面 Ver1” — なみぐる！" src="https://www.namigroove.com/2024/08/16/post-6162/embed/#?secret=6gDylvDW3z#?secret=PA2nPRFZ8K" data-secret="PA2nPRFZ8K" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“手作りなみぐる仮面 Ver1” — なみぐる！](/2024/08/16/post-6162/)
 
-<iframe loading="lazy" title="なみぐる仮面　作り方全部見せます！【サックス演奏可🎷】" width="500" height="281" src="https://www.youtube.com/embed/ng-maJfawk0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ng-maJfawk0" %}}
 
 ![](/wp-content/uploads/2021/05/10485812.webp)
 

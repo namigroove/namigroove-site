@@ -171,7 +171,7 @@ Spotifyにアートワークの代わりに3～8秒の動画が入れられる�
 
 https://salondemuze.com/blog/spotify-for-artists/spotify-canvas
 
-<video controls="" src="/wp-content/uploads/2021/11/BACK_VERTICAL.mp4"></video>
+{{% video src="/wp-content/uploads/2021/11/BACK_VERTICAL.mp4" %}}
 
 *戻るボタン\_縦長MV*
 
@@ -179,7 +179,7 @@ https://salondemuze.com/blog/spotify-for-artists/spotify-canvas
 
 ▼こういうシカクイMV作ってみたさある。
 
-<iframe loading="lazy" title="ポルカドットスティングレイ「SQUEEZE」×「ラッコズ」MV" width="500" height="375" src="https://www.youtube.com/embed/stLSX-pTdsI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="stLSX-pTdsI" %}}
 
 最後まで見てくださりありがとうございました！
 

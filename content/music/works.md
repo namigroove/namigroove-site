@@ -21,7 +21,7 @@ image: "/wp-content/uploads/2022/05/icon.webp"
 
 ## Spotify配信済み楽曲プレイリスト
 
-<iframe title="Spotify Embed: なみぐる_works💿" style="border-radius: 12px" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/playlist/12Zt9i2yqbJyd22ppUAHLg?si=2341b2d4a1214434&amp;utm_source=oembed"></iframe>
+{{% spotify id="playlist/12Zt9i2yqbJyd22ppUAHLg" h="352" %}}
 
 *サブスク配信楽曲リスト*
 
@@ -41,7 +41,7 @@ BOOTH Bandcampに無い曲でサブスク出ている曲は、
 
 ## カバー曲
 
-<iframe loading="lazy" title="なみぐる / namigroove" width="500" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Fusers%2F1185960937&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Fusers%2F1185960937&show_artwork=true&maxheight=750&maxwidth=500" h="450" title="なみぐる / namigroove" %}}
 
 ## 沿革
 
@@ -51,4 +51,4 @@ BOOTH Bandcampに無い曲でサブスク出ている曲は、
 
 > [なみぐる\_DJセトリ](https://www.namigroove.com/2023/03/28/setlist/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“なみぐる_DJセトリ” — なみぐる！" src="https://www.namigroove.com/2023/03/28/setlist/embed/#?secret=bxoKKlmDVK#?secret=oqxziSqbu4" data-secret="oqxziSqbu4" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“なみぐる_DJセトリ” — なみぐる！](/2023/03/28/setlist/)

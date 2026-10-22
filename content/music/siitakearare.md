@@ -13,4 +13,4 @@ image: "/wp-content/uploads/2023/12/f81fd2e4c52864042852c112ce927ae2.webp"
 
 [https://orcd.co/gmzkoq1](https://orcd.co/gmzkoq1)
 
-<iframe loading="lazy" title="【しいたけ&amp;あられ】しいたけ＆あられのうた　踊ってみた【オリジナル振付】【オリジナル曲】" width="500" height="281" src="https://www.youtube.com/embed/8zy6easCfeo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="8zy6easCfeo" %}}

@@ -9,7 +9,7 @@ wp_id: 2064
 draft: false
 image: "/wp-content/uploads/2022/12/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="ずんだエビフライ / なみぐる feat.ずんだもん・琴葉 茜" width="500" height="281" src="https://www.youtube.com/embed/hNw3QoC6ISI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="hNw3QoC6ISI" %}}
 
 ## テーマ
 
@@ -25,13 +25,13 @@ EPの物理版がリリースされたのだ
 
 > [【1st Remix EP】🍤「ずんだエビフライ」メガ盛り弁当🍱](https://www.namigroove.com/music/zunda-ebihurai/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【1st Remix EP】🍤「ずんだエビフライ」メガ盛り弁当🍱” — なみぐる！" src="https://www.namigroove.com/music/zunda-ebihurai/embed/#?secret=h5svPpCXDc#?secret=WvRMPmMdrM" data-secret="WvRMPmMdrM" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【1st Remix EP】🍤「ずんだエビフライ」メガ盛り弁当🍱” — なみぐる！](/music/zunda-ebihurai/)
 
 ◤2023/9/1追記
 
 フルとEPのサブスク版が出たで〜
 
-<iframe loading="lazy" title="ずんだエビフライ (Full ver.)  / なみぐる feat.ずんだもん・琴葉 茜" width="500" height="281" src="https://www.youtube.com/embed/qWBGjWPV33M?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="qWBGjWPV33M" %}}
 
 > ◤₺ƾらせ  
 > 🍤✧🍤✧🍤✧🍤✧🍤✧🍤  
@@ -63,7 +63,7 @@ EPの物理版がリリースされたのだ
 
 > [結果発表](https://8bar-music.com/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“結果発表” — 第3回 8小節アワード" src="https://8bar-music.com/embed/#?secret=sGjEkKhPPb#?secret=rE4kLyT5TX" data-secret="rE4kLyT5TX" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[結果発表](https://8bar-music.com/)
 
 *8小節アワード*
 
@@ -85,7 +85,7 @@ EPの物理版がリリースされたのだ
 
 ・ほわんとした音を作るためにはスパソにローパスフィルターかければ良いらしい。
 
-<iframe loading="lazy" title="【プリセット無料配布】Future Bassで使われる「ほわん」って感じの音の作り方【配布は概要欄です】" width="500" height="281" src="https://www.youtube.com/embed/4LOiJZMXseU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="4LOiJZMXseU" %}}
 
 *やさしそう　この人最近投稿が無いけど、元気かな*
 
@@ -155,14 +155,14 @@ NEUTRINO
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="ピーナッツくん 『 グミ超うめぇ 』Official Music Video / Album &quot;False Memory Syndrome&quot;" width="500" height="281" src="https://www.youtube.com/embed/9VhrJCbr58A?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="9VhrJCbr58A" %}}
 
 *神trap ブラスのフレーズを移調*
 
-<iframe loading="lazy" title="パソコン音楽クラブ  - KICK&amp;GO feat. 林青空" width="500" height="375" src="https://www.youtube.com/embed/ZAYXDRISnKE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ZAYXDRISnKE" %}}
 
 *調性感の参考 レミソミシララ いいフレーズ*
 
-<iframe loading="lazy" title="サカナクション / 夜の踊り子　-Music Video-" width="500" height="281" src="https://www.youtube.com/embed/2I25AFSBm2g?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="2I25AFSBm2g" %}}
 
 *あまり意識してなかったけどコメントで言及があり思い出した。しなしな　漬けキャベツみたいに♪*

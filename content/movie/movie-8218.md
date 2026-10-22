@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2025/06/250602_design_jacket-scaled.webp"
 ---
 ![](/wp-content/uploads/2025/06/250602_design_jacket.webp)
 
-<iframe loading="lazy" title="スパソゲッティ / なみぐる feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/EDlRdRjVmSE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="EDlRdRjVmSE" %}}
 
 ## テーマ
 
@@ -58,7 +58,7 @@ SuperSaw(キラハピもといエレクトロで良く使われる音色）⚡�
 
 > [【参加】キラハピ Collection vol.1](https://www.namigroove.com/music/music-8204/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【参加】キラハピ Collection vol.1” — なみぐる！" src="https://www.namigroove.com/music/music-8204/embed/#?secret=aMONsuS2Wo#?secret=MvsPT3DX7v" data-secret="MvsPT3DX7v" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【参加】キラハピ Collection vol.1” — なみぐる！](/music/music-8204/)
 
 メンバーが一人ひとりは納得だけど組み合わせとしては意外な所から集結していて、意図を伺うと  
 （汲み取り間違ってたら申し訳ないですが）「キラハピでも多様性を大事にしたい」「ボカコレ等で活躍している若手の面々を集めた」とのこと。  
@@ -187,15 +187,15 @@ SD絵のかわいさ、3D技術力はさることながら、キャラモノへ�
 
 めっちゃ寄せたとかではないけど作った時電波ソングの正解ってこれよなと頭に残ってた
 
-<iframe title="Spotify Embed: みとらじギャラクティカ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6KZmsnf11d91L5MVIhx2BX?si=eca04819c6b84a5e&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6KZmsnf11d91L5MVIhx2BX" %}}
 
 ベース手癖
 
-<iframe title="Spotify Embed: Actual Proof" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1Aix42Q7mxGLMDglHhIOg3?si=4466e07db18e4f93&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1Aix42Q7mxGLMDglHhIOg3" %}}
 
 露～骨露骨
 
-<iframe title="Spotify Embed: APT." style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/2a7uMsktcs7YggUXJ4rwTw?si=07b6a843cece41a0&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/2a7uMsktcs7YggUXJ4rwTw" %}}
 
 映像は分かる/オーダーに入れた範囲内で軽く
 
@@ -236,16 +236,16 @@ Yahoo知恵袋
   
 奥行きの画作りや色味等教科書すぎ
 
-<iframe loading="lazy" title="初星学園 「ハッピーミルフィーユ」Official Music Video (HATSUBOSHI GAKUEN - Happy Millefeuille)" width="500" height="281" src="https://www.youtube.com/embed/AON5aAVG3QU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="AON5aAVG3QU" %}}
 
 賑やかなイラストの動かし方
 
-<iframe loading="lazy" title="DECO*27 - テレパシ feat. 初音ミク" width="500" height="281" src="https://www.youtube.com/embed/c56TpxfO9q0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="c56TpxfO9q0" %}}
 
   
 さくらさんのご趣味全開（私もこれ好き）
 
-<iframe loading="lazy" title="PAS TASTA - My Mutant Ride feat.柴田聡子 &amp; TAKU INOUE" width="500" height="281" src="https://www.youtube.com/embed/aJAUt531xCs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="aJAUt531xCs" %}}
 
 ![](/wp-content/uploads/2025/06/image-8.webp)
 
@@ -260,7 +260,7 @@ ariiol先生の極座標変換DAWオシャレでリファレンスに案出し
 
 アルデンテもちもち（リスペクト返し）
 
-<iframe loading="lazy" title="[MV] TAK - ‘mochimochi‘ feat. 初音ミク" width="500" height="281" src="https://www.youtube.com/embed/tQM8pfwmcU0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="tQM8pfwmcU0" %}}
 
 ![](/wp-content/uploads/2025/06/image-7.webp)
 

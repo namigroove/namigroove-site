@@ -9,13 +9,13 @@ wp_id: 706
 draft: false
 image: "/wp-content/uploads/2022/05/zundateaser.gif"
 ---
-<iframe loading="lazy" title="あなたは世界の終わりにずんだを食べるのだ / なみぐる feat.ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/HE0mAgDAx-Q?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="HE0mAgDAx-Q" %}}
 
 ## ▼御礼、二次創作紹介記事公開中
 
 > [【御礼&二次創作紹介】あなたは世界の終わりにずんだを食べるのだ](https://www.namigroove.com/2022/06/03/post-888/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【御礼&amp;二次創作紹介】あなたは世界の終わりにずんだを食べるのだ” — なみぐる！" src="https://www.namigroove.com/2022/06/03/post-888/embed/#?secret=vx8pdOrTTJ#?secret=wAipZNBi8z" data-secret="wAipZNBi8z" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【御礼&二次創作紹介】あなたは世界の終わりにずんだを食べるのだ” — なみぐる！](/2022/06/03/post-888/)
 
 ## サブスク配信
 
@@ -26,13 +26,13 @@ image: "/wp-content/uploads/2022/05/zundateaser.gif"
 ■あなたは世界の終わりにずんだを食べるのだ  
 [https://link-map.jp/links/x\_DpCurX](https://link-map.jp/links/x_DpCurX)
 
-<iframe title="Spotify Embed: あなたは世界の終わりにずんだを食べるのだ" style="border-radius: 12px" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/album/7sce2qnI6WM4oLPw3WIg6a?utm_source=oembed"></iframe>
+{{% spotify id="album/7sce2qnI6WM4oLPw3WIg6a" h="352" %}}
 
   
 ■あなたは世界の終わりにずんだを食べるのだ(Self Remix)  
 [https://link-map.jp/links/i-zcA1fX](https://link-map.jp/links/i-zcA1fX)
 
-<iframe title="Spotify Embed: あなたは世界の終わりにずんだを食べるのだ (Self Remix)" style="border-radius: 12px" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/album/5kqBw5sZijGJO3KYR9K5As?si=KWToAS6MS4SL4i9C99hc_g&amp;utm_source=oembed"></iframe>
+{{% spotify id="album/5kqBw5sZijGJO3KYR9K5As" h="352" %}}
 
 ## Remix&MIDI付きアルバム(DL版)
 
@@ -64,7 +64,7 @@ image: "/wp-content/uploads/2022/05/zundateaser.gif"
 
 ▼以下のサイトの解説がわかりやすい
 
-<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" title="dimスケール・コンディミスケール - 音楽理論 ざっくり解説" src="https://hatenablog-parts.com/embed?url=https%3A%2F%2Fwww.mie238f.com%2Fentry%2F2019%2F07%2F21%2F120000%23%3A~%3Atext%3D%25E3%2582%25B3%25E3%2583%25B3%25E3%2583%2587%25E3%2582%25A3%25E3%2583%259F%25E3%2581%25A8%25E3%2581%25AF%25E9%259F%25B3%25E7%25A8%258B%25E3%2581%258C%2C%25E3%2581%2584%25E3%2582%258B%25E3%2582%25B9%25E3%2582%25B1%25E3%2583%25BC%25E3%2583%25AB%25E3%2581%25AE%25E3%2581%2593%25E3%2581%25A8%25E3%2581%25A7%25E3%2581%2599%25E3%2580%2582#?secret=7tWoph4MSk" data-secret="7tWoph4MSk" scrolling="no" frameborder="0"></iframe>
+[dimスケール・コンディミスケール - 音楽理論 ざっくり解説](https://www.mie238f.com/entry/2019/07/21/120000#:~:text=%E3%82%B3%E3%83%B3%E3%83%87%E3%82%A3%E3%83%9F%E3%81%A8%E3%81%AF%E9%9F%B3%E7%A8%8B%E3%81%8C,%E3%81%84%E3%82%8B%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AB%E3%81%AE%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82)
 
 ▼今回真似したコード
 
@@ -168,7 +168,7 @@ QRを読み込むと別verが見られるようこのサイト内のどこかに
 
 着想はゆる言語学ラジオの姉妹番組、ゆるコンピュータ科学ラジオで「和文モールス伝達効率悪すぎワロタ」と紹介されていたこと。
 
-<iframe loading="lazy" title="「サクラサク」はシャノン先生ブチギレ符号化。脳はスマホに繋ぐべき【情報理論4】#12" width="500" height="281" src="https://www.youtube.com/embed/YSnieUyGRS8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="YSnieUyGRS8" %}}
 
 欧文モールスより和文モールスの方がマイナーなのと、音ハメしてみたら尺がちょうど良かったので和文モールスを使うことに決定。
 
@@ -229,24 +229,24 @@ QRを読み込むと別verが見られるようこのサイト内のどこかに
 
 [https://www.nicovideo.jp/watch/sm36213377](https://www.nicovideo.jp/watch/sm36213377)
 
-<iframe loading="lazy" title="ヤツメ穴" width="500" height="375" src="https://www.youtube.com/embed/C9PFVo1FEwU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="C9PFVo1FEwU" %}}
 
 *xx氏の作品　シンプルながら目を引くフォーマットは芸術*
 
-<iframe loading="lazy" title="エフェメラリズム/青栗鼠(feat.歌愛ユキ)" width="500" height="281" src="https://www.youtube.com/embed/oqsZ1m5CEU0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="oqsZ1m5CEU0" %}}
 
 *青栗鼠氏の作品　xx氏節を自分のものにしつつ、知的で退廃的な曲をロリ(歌愛 ユキ)に歌わせるギャップに惹かれた*
 
-<iframe loading="lazy" title="Hello" width="500" height="375" src="https://www.youtube.com/embed/AWRYCGefTvY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="AWRYCGefTvY" %}}
 
 *CAPSULE不朽の名作　サビ前の緊張～緩和なコード感・空白感のリファレンス元*
 
-<iframe loading="lazy" title="クーネル・エンゲイザー" width="500" height="281" src="https://www.youtube.com/embed/sGNOLLOfFwM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="sGNOLLOfFwM" %}}
 
 *退廃カワイイ系  
 Aメロの雰囲気と大きめドット絵のダンスのリファレンス元*
 
-<iframe loading="lazy" title="極東の羊、テレキャスターと踊る (Sheep of the Far East, Dancing with the Telecaster) / しゃろう" width="500" height="375" src="https://www.youtube.com/embed/Cwj910TeKRQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Cwj910TeKRQ" %}}
 
 *しゃろうさんの有名なフリーBGM　言われてみれば似てる*
 
@@ -254,4 +254,4 @@ Aメロの雰囲気と大きめドット絵のダンスのリファレンス元*
 
 似てると言われてたから自分でRemixした
 
-<iframe loading="lazy" title="極東の羊、ずんだを食べる【REMIX】" width="500" height="375" src="https://www.youtube.com/embed/fbyvwfw5qMY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="fbyvwfw5qMY" %}}

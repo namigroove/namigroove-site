@@ -17,7 +17,7 @@ image: "/wp-content/uploads/2023/04/20375ced40379f1e8ea26f8e6c287f04.webp"
 
 ## 1st Album「ずんだもんがいっぱい」XFD
 
-<iframe loading="lazy" title="なみぐる 1st Album「ずんだもんがいっぱい」全曲XFD" width="500" height="281" src="https://www.youtube.com/embed/OYPi_8ZFwNs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="OYPi_8ZFwNs" %}}
 
 ## CD
 

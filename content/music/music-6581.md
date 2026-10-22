@@ -13,7 +13,7 @@ image: "/wp-content/uploads/2024/10/cute2_jacket_image_CD.webp"
 
 ✦Tr.03 杏仁dope / なみぐる
 
-<iframe loading="lazy" title="杏仁dope" width="500" height="375" src="https://www.youtube.com/embed/TkuMNtnOmRo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="TkuMNtnOmRo" %}}
 
 > ✨試聴できます✨  
 > cut(e)vol.2 収録曲  

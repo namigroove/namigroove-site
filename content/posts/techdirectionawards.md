@@ -67,13 +67,13 @@ image: "/wp-content/uploads/2025/08/image-3.webp"
 
 前述のナレッジシェア系の視点の他にも、オーダーに対してどう要求を汲みつつ変化球を投げるか、リサーチ～試行錯誤の緻密さ等、普段あまり触れられない実務的な側面の評価をいただける印象を受けた。
 
-<iframe loading="lazy" title="第２回テクニカルディレクションアワード授賞式｜2025.8.6(水)17:00-" width="500" height="281" src="https://www.youtube.com/embed/ruFurYTc88E?start=4187&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ruFurYTc88E" start="4187" %}}
 
 ## 楽曲記事
 
 > [しじまのはて / なみぐる & 青は止まれ feat. 重音テト](https://www.namigroove.com/movie/movie-7367/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“しじまのはて / なみぐる &amp; 青は止まれ feat. 重音テト” — なみぐる！" src="https://www.namigroove.com/movie/movie-7367/embed/#?secret=hWQLPpBX9o#?secret=KXkkuI5Z67" data-secret="KXkkuI5Z67" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“しじまのはて / なみぐる & 青は止まれ feat. 重音テト” — なみぐる！](/movie/movie-7367/)
 
 ## Tech Direction Awards
 

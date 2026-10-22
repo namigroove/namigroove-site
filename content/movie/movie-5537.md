@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2024/06/jacket.webp"
 ---
 ![](/wp-content/uploads/2024/06/thumb.webp)
 
-<iframe loading="lazy" title="【オリジナル曲】ホットダック！【ホロライブ/大空スバル】" width="500" height="281" src="https://www.youtube.com/embed/K_IsIE1TS8U?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="K_IsIE1TS8U" %}}
 
 ## 配信・ダウンロード
 
@@ -43,7 +43,7 @@ MV・イラストも含めて作風にかなり期待を寄せて頂きモチベ
 
 アイドルとしての一面はぷれあですで既に歌われているので、エモ路線でいくよりはノリとネタに舵を切った方がいいなと判断
 
-<iframe loading="lazy" title="【オリジナル曲】ぷ・れ・あ・で・す！【ホロライブ/大空スバル】" width="500" height="281" src="https://www.youtube.com/embed/RRsw5tT8BJI?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="RRsw5tT8BJI" %}}
 
 ずんだパーリナイの各要素は踏襲しつつ（アーティスト性の担保）
 
@@ -59,7 +59,7 @@ MV・イラストも含めて作風にかなり期待を寄せて頂きモチベ
 
 わんぬに引き続き以下のお二人に依頼
 
-<iframe loading="lazy" title="【MV】わんぬ／莉犬" width="500" height="281" src="https://www.youtube.com/embed/UqjEwvp_prQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="UqjEwvp_prQ" %}}
 
 ギター：noxiryさん
 
@@ -143,7 +143,7 @@ https://chroma960.booth.pm/items/1002538)
 
 > [ぅゅゅ(´；ω；｀) / なみぐる feat.可不](https://www.namigroove.com/movie/movie-4250/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“ぅゅゅ(´；ω；｀) / なみぐる feat.可不” — なみぐる！" src="https://www.namigroove.com/movie/movie-4250/embed/#?secret=AOIfPASd5N#?secret=rgIBf6OXUi" data-secret="rgIBf6OXUi" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ぅゅゅ(´；ω；｀) / なみぐる feat.可不” — なみぐる！](/movie/movie-4250/)
 
 左上にアヒル関連用語のカウンタを設置
 
@@ -157,6 +157,6 @@ https://chroma960.booth.pm/items/1002538)
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="ずんだパーリナイ / なみぐる feat.ずんだもん" width="500" height="281" src="https://www.youtube.com/embed/ywXQ9SqsaBQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ywXQ9SqsaBQ" %}}
 
 *アイドルファンクのツボを抑える*

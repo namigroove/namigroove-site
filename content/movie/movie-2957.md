@@ -107,7 +107,7 @@ FUNK×REGGAE×EUROBEAT　まとめて復権
 
 まずはアイカツの「オトナモード」を聴いてください。
 
-<iframe title="Spotify Embed: オトナモード - ～みくるソロ Ver.～" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4GPoJjfarydMvAXAdZ3uwj?si=d63051e743ec432d&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4GPoJjfarydMvAXAdZ3uwj" %}}
 
 本格Reggaeで女児に音楽英才教育をしていてすばらしい。
 
@@ -202,7 +202,7 @@ VOICEVOXの哀愁漂うしわしわ声とSeirenVoiceのモッチモッチ発音�
 
 > [【My new gear…】万能ベース　Momose　MJ2-STD](https://www.namigroove.com/2021/02/11/post-1110/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“【My new gear…】万能ベース　Momose　MJ2-STD” — なみぐる！" src="https://www.namigroove.com/2021/02/11/post-1110/embed/#?secret=tfH6EVd5nT#?secret=re1WkJwuBU" data-secret="re1WkJwuBU" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【My new gear…】万能ベース　Momose　MJ2-STD” — なみぐる！](/2021/02/11/post-1110/)
 
 ### ギター
 
@@ -212,7 +212,7 @@ VOICEVOXの哀愁漂うしわしわ声とSeirenVoiceのモッチモッチ発音�
 
 ようやく日の目を見た。
 
-<audio controls="" src="/wp-content/uploads/2023/03/b032613e8df416b7d694c9b22305beaa-1.wav"></audio>
+{{% audio src="/wp-content/uploads/2023/03/b032613e8df416b7d694c9b22305beaa-1.wav" %}}
 
 今回は杉村謙心さんという何でも弾けちゃうプロギタリストさんにニュアンス参考だけお送りし、
 
@@ -268,7 +268,7 @@ nekomo🐾fanbox記事(全体公開)
 > 
 > — なみぐる@ずんだもんがいっぱい全国販売中 (@namigroove) [March 19, 2023](https://twitter.com/namigroove/status/1637337675022888960?ref_src=twsrc%5Etfw)
 
-<iframe loading="lazy" title="ヘラヘラリ - 初音ミク" width="500" height="281" src="https://www.youtube.com/embed/PE1r1zpknzY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="PE1r1zpknzY" %}}
 
 *もちもちず～んだの動きはめりさんのmemeの動きをリファレンスで提示して作ってもらった*
 
@@ -328,7 +328,7 @@ picoCADという、ドット絵３Dモデル作成ツールで生成したもの
 
 > [ドット絵の3DモデルをpicoCADで作る方法](https://styly.cc/ja/tips/picocad-3dmodeling-pixelart/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" title="“ドット絵の3DモデルをpicoCADで作る方法” — STYLY" src="https://styly.cc/ja/tips/picocad-3dmodeling-pixelart/embed/#?secret=JT6xDZ8pwQ#?secret=wzJTCUIzKX" data-secret="wzJTCUIzKX" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[ドット絵の3DモデルをpicoCADで作る方法](https://styly.cc/ja/tips/picocad-3dmodeling-pixelart/)
 
 ![](/wp-content/uploads/2023/03/image-3.webp)
 
@@ -374,7 +374,7 @@ ZUNDA PARTY NIGHTやカルダモンソロの文字アニメは
 
 U.S.A　以前作ったカルダモンMMDに踊らせてみた
 
-<iframe loading="lazy" title="【MMDずんだもん】ずんだダンシング / なみぐる feat.ずんだもん【踊ってみた】" width="500" height="281" src="https://www.youtube.com/embed/9Yq985_9HLE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="9Yq985_9HLE" %}}
 
 カッカッカ―の動きよりサビの腕を上下にさせる動きのほうがより引用元楽曲を象徴しているので、そっちの動きを採用 ～右下にカルダモンも添えて～
 
@@ -402,44 +402,44 @@ THANK YOU “HO” WATCHING!!　ZNK（ずん子)
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: ナナナナナナナ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/1nGpsjyx5QQNPaeqv32nV2?si=fc0260811a6c4db8&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/1nGpsjyx5QQNPaeqv32nV2" %}}
 
 *最強のファンクポップ　タネ曲　もちもちず～んだの譜割り　や　ベースラインのリファレンス*
 
-<iframe title="Spotify Embed: オリジナルスター☆彡" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/49H75OFzOhGIlhbI9qA1Ph?si=kCIt5DvnQPOps1MGpNp-Xg&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/49H75OFzOhGIlhbI9qA1Ph" %}}
 
 *大胆な往年のR&B引用やってもいいんだと気づかせてくれた某氏の名曲、はやく戻ってきて（懇願）  
 ここではEarth・Wind&FireのGetawayが引用されている*
 
-<iframe title="Spotify Embed: Getaway" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/67J6NR2Tdl0h2epWHcCBBN?si=PbTe5-QIRk-nMOeEAD9nUg&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/67J6NR2Tdl0h2epWHcCBBN" %}}
 
-<iframe title="Spotify Embed: The Dude" style="border-radius: 12px" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/album/2GD9TjWG3Tu4JygAZniBY0?si=kScIdBLyRMiKnysIqXeH6g&amp;utm_source=oembed"></iframe>
+{{% spotify id="album/2GD9TjWG3Tu4JygAZniBY0" h="352" %}}
 
 *この曲の印象的なブラスリフを引用　”わかる”人向け*
 
-<iframe title="Spotify Embed: U.S.A." style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4qZyuyqLoZ3CaH79rGvJFR?si=2a5604e77a95473b&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4qZyuyqLoZ3CaH79rGvJFR" %}}
 
 *カルダモンゾーン  
 カッの音がボイスパーカッション的に使えるので採用*
 
-<iframe title="Spotify Embed: ロキ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/5WCK18MbTKuOcmLsOXMaHd?si=9efcdf830cb54275&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/5WCK18MbTKuOcmLsOXMaHd" %}}
 
 *Emキーでラップしてたらメロディラインが自然と寄ってしまった*
 
-<iframe title="Spotify Embed: Lingus" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/68d6ZfyMUYURol2y15Ta2Y?si=db74a2ec75f54fbf&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/68d6ZfyMUYURol2y15Ta2Y" %}}
 
 *特にREGGAEってわけじゃないんだけどREGGAE部のベースラインとしてアレンジ  
 リフの感じは全体の80sの質感と逆で、Snarky Puppyをイメージしてちょっと今風にしてる*
 
-<iframe title="Spotify Embed: DON&amp;apos;T STAND SO CLOSE" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4xXKz73vuPKI6IWPQhuVMT?si=963edc719e8c4f6e&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4xXKz73vuPKI6IWPQhuVMT" %}}
 
 *あつ（くるし～）いギター入りのユーロビートがやりたかった*
 
-<iframe title="Spotify Embed: INTERNET OVERDOSE" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/0KQt5nhZHJbarR7V4bsDZB?si=0781150d0bd74ac4&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/0KQt5nhZHJbarR7V4bsDZB" %}}
 
 *こんな楽曲令和に出されたら、ユーロビートやらずには居られない…！*
 
-<iframe title="Spotify Embed: アポロ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/578Pc0O5sx9gcH28CFdHgL?si=d08c071164c14527&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/578Pc0O5sx9gcH28CFdHgL" %}}
 
 *プランAのワードチョイスや、メーデー・酩酊押韻の影響元（製作当時一番聴いてた曲）*
 

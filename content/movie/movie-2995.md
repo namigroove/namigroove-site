@@ -9,11 +9,11 @@ wp_id: 2995
 draft: false
 image: "/wp-content/uploads/2023/03/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="キッカイケッタイ - Electro Swing Remix - 【なみぐる × メドミア】" width="500" height="281" src="https://www.youtube.com/embed/IRXWcxORf8s?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IRXWcxORf8s" %}}
 
 ## 原曲
 
-<iframe loading="lazy" title="キッカイケッタイ - ミクと可不" width="500" height="281" src="https://www.youtube.com/embed/ft97RCDnCaY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ft97RCDnCaY" %}}
 
 ## サブスク
 
@@ -68,10 +68,10 @@ DROPは8バースだったのが、もっと欲しいな～と思って16に増�
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: Velours" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/6qelWJZgIv9woWtbOfrktP?si=ce2b0c24187547e7&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/6qelWJZgIv9woWtbOfrktP" %}}
 
 *1:13～　ずっとやりたかった引用をElectro SwingのDropにもってくる*
 
-<iframe title="Spotify Embed: Devil&amp;apos;s Devil" style="border-radius: 12px" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/album/5Cothe3Vc8Aid4lrr0Il7k?si=ASR0jUFOQ56uuhlGSw-GcQ&amp;utm_source=oembed"></iframe>
+{{% spotify id="album/5Cothe3Vc8Aid4lrr0Il7k" h="352" %}}
 
 *ElectroSwing作家として一目置いているzensenさん　ブラス音源のパキとした質感やclapで完全に音止めするところ　サイレンまでリファレンス*

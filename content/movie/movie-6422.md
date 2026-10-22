@@ -21,19 +21,19 @@ x0o0x\_さんに誘い合わせ頂きコラボ
 
 現在Youtubeで削除対象になっており、ボカロ版のみ生存中
 
-<iframe loading="lazy" title="【FREE DL】らくらく安楽死 - namigroove remix - ♪初音ミク/VY1/ぽよろいど by なみぐる / namigroove" width="500" height="400" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2182804115&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2182804115&show_artwork=true&maxheight=750&maxwidth=500" h="400" title="【FREE DL】らくらく安楽死 - namigroove remix - ♪初音ミク/VY1/ぽよろいど by なみぐる / namigroove" %}}
 
 ## 参考楽曲
 
-<iframe loading="lazy" title="きゅびびびびずむ" width="500" height="281" src="https://www.youtube.com/embed/DjGxGMxvg4M?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="DjGxGMxvg4M" %}}
 
 *冒頭の金属音は以前沙輔さんにもらったもの　1:41～きける*
 
-<iframe loading="lazy" title="キッカイケッタイ - ミクと可不" width="500" height="281" src="https://www.youtube.com/embed/ft97RCDnCaY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ft97RCDnCaY" %}}
 
 *お化けシンセ（sine波を揺らして作っている）*
 
-<iframe loading="lazy" title="ウ”ィ”エ”" width="500" height="281" src="https://www.youtube.com/embed/iSsct7423J4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="iSsct7423J4" %}}
 
 *ドロップ　ロシアンハードバス*
 
@@ -41,10 +41,10 @@ https://www.youtube.com/watch?v=\_RPUXebUuQk
 
 *0:40 サビ前シタールのインドな感じ*
 
-<iframe loading="lazy" title="Traxman - Footworkin on Air" width="500" height="375" src="https://www.youtube.com/embed/zzOG_v0ituY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="zzOG_v0ituY" %}}
 
 *footwork*
 
-<iframe loading="lazy" title="ニャハハ！" width="500" height="375" src="https://www.youtube.com/embed/GQWuIxIts5A?list=PLHbxXFeDduFuq4TnCNSi2wLjUKKaJerg5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="GQWuIxIts5A" list="PLHbxXFeDduFuq4TnCNSi2wLjUKKaJerg5" %}}
 
 *落ちサビ*

@@ -16,7 +16,7 @@ image: "/wp-content/uploads/2025/03/image-1.webp"
 
 > [ホットダック！ なみぐる feat.大空スバル【提供】](https://www.namigroove.com/movie/movie-5537/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“ホットダック！ なみぐる feat.大空スバル【提供】” — なみぐる！" src="https://www.namigroove.com/movie/movie-5537/embed/#?secret=hGKFpDSv3W#?secret=fFNXK0511P" data-secret="fFNXK0511P" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“ホットダック！ なみぐる feat.大空スバル【提供】” — なみぐる！](/movie/movie-5537/)
 
 ![](/wp-content/uploads/2025/03/image.webp)
 

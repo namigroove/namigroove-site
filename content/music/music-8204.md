@@ -17,13 +17,13 @@ image: "/wp-content/uploads/2025/06/image-2.webp"
 -   特設サイト： [https://onprism-rec.com/kirahapi-collection1/](https://onprism-rec.com/kirahapi-collection1/)
 -   XFD
 
-<iframe loading="lazy" title="【Album XFD】キラハピ Collection vol.1 / On Prism Records" width="500" height="281" src="https://www.youtube.com/embed/r6TYtLOFqfk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="r6TYtLOFqfk" %}}
 
 Tr.6 スパソゲッティ なみぐる feat. 初音ミク にて参加
 
 > [スパソゲッティ / なみぐる feat.初音ミク](https://www.namigroove.com/movie/movie-8218/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“スパソゲッティ / なみぐる feat.初音ミク” — なみぐる！" src="https://www.namigroove.com/movie/movie-8218/embed/#?secret=tpDPnm2UwA#?secret=E0M4LrjaS9" data-secret="E0M4LrjaS9" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“スパソゲッティ / なみぐる feat.初音ミク” — なみぐる！](/movie/movie-8218/)
 
 > ＿＿＿＿＿＿＿＿＿＿＿＿  
 > ✨ [#キラハピLive](https://twitter.com/hashtag/%E3%82%AD%E3%83%A9%E3%83%8F%E3%83%94Live?src=hash&ref_src=twsrc%5Etfw) 2025 ✨  

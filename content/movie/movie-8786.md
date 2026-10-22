@@ -9,7 +9,7 @@ wp_id: 8786
 draft: false
 image: "/wp-content/uploads/2025/11/thumb3.webp"
 ---
-<iframe loading="lazy" title="ミアレシティ Electro Swing - namigroove remix - 【Pokémon Legends: Z-A /ポケモンZA】" width="500" height="281" src="https://www.youtube.com/embed/ePPdh9ta_fs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ePPdh9ta_fs" %}}
 
 > ❏NEW REMIX❏  
 >   
@@ -20,7 +20,7 @@ image: "/wp-content/uploads/2025/11/thumb3.webp"
 > 
 > — なみぐる (@namigroove) [November 10, 2025](https://twitter.com/namigroove/status/1987822544209224171?ref_src=twsrc%5Etfw)
 
-<iframe loading="lazy" title="ミアレシティ Lumiose City Electro Swing - namigroove remix - 【Pokémon Legends: Z-A /ポケモンZA】 by なみぐる / namigroove" width="500" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2209922960&amp;show_artwork=true&amp;maxheight=750&amp;maxwidth=500"></iframe>
+{{% embed src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2209922960&show_artwork=true&maxheight=750&maxwidth=500" h="400" title="ミアレシティ Lumiose City Electro Swing - namigroove remix - 【Pokémon Legends: Z-A /ポケモンZA】 by なみぐる / namigroove" %}}
 
 > ミアレシティのエレスイって作ったら需要ある？
 > 

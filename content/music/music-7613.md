@@ -46,7 +46,7 @@ image: "/wp-content/uploads/2025/03/Gl__hfSbEAAgU2X.webp"
 
 「ずんだシェイキングのブラス要素+電音部らしいエレクトロ要素」を意識したら往年のEDM感漂うRiddim baileになった
 
-<iframe loading="lazy" title="Timmy Trumpet &amp; Savage - Freaks (Official Music Video)" width="500" height="281" src="https://www.youtube.com/embed/ofmzX1nI7SE?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="ofmzX1nI7SE" %}}
 
 タイトル「ガルルルルルル！」は最後まで迷って、「すもももももも」と一緒の文字数にしよう！で決議を出しました🐯
 
@@ -69,7 +69,7 @@ Phonkの割れカウベルが作れた
 
 [大賀ルキア♡お気に入りの曲](https://open.spotify.com/playlist/7EaWfBjQKVfopH574xXI4s)
 
-<iframe title="Spotify Embed: 大賀ルキア♡お気に入りの曲" style="border-radius: 12px" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/playlist/7EaWfBjQKVfopH574xXI4s?utm_source=oembed"></iframe>
+{{% spotify id="playlist/7EaWfBjQKVfopH574xXI4s" h="352" %}}
 
 VOLTAさんのfanbox
 

@@ -9,7 +9,7 @@ wp_id: 130
 draft: false
 image: "/wp-content/uploads/2021/09/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="反実夢想 / なみぐる feat.可不(KAFU)" width="500" height="281" src="https://www.youtube.com/embed/WKcpZ1VtzgA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="WKcpZ1VtzgA" %}}
 
 【製作裏話】
 
@@ -49,7 +49,7 @@ image: "/wp-content/uploads/2021/09/maxresdefault.webp"
 
 洋楽感も出したくて、コード進行はNo Scrubsっぽくしてる。
 
-<iframe loading="lazy" title="TLC - No Scrubs (Official HD Video)" width="500" height="375" src="https://www.youtube.com/embed/FrLequ6dUdM?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FrLequ6dUdM" %}}
 
 aiko感も出したくて、サビでブルーノートひっかけてる。これやるとだいぶ違う。
 

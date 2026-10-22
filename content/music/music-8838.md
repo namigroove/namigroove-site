@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2025/11/G6QqtBBacAcvBOK.webp"
 ---
 ![](/wp-content/uploads/2025/11/G6QqtBBacAcvBOK.webp)
 
-<iframe loading="lazy" title="コピペパペット / あおぎり高校(official)" width="500" height="281" src="https://www.youtube.com/embed/XqbW4oZOY2E?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="XqbW4oZOY2E" %}}
 
 ◤₺ƾらせ
 

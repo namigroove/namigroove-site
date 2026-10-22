@@ -11,7 +11,7 @@ image: "/wp-content/uploads/2025/10/b0d66c3e6fd9596b26c26ef09e9559c4.webp"
 ---
 ![](/wp-content/uploads/2025/10/b0d66c3e6fd9596b26c26ef09e9559c4.webp)
 
-<iframe loading="lazy" title="【M3秋-2025】ころねぽち 2nd Album『NO-CONE DAPPO CORE』【XFD】" width="500" height="281" src="https://www.youtube.com/embed/5aR8KAeN5V0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="5aR8KAeN5V0" %}}
 
 > ◤ぽƾらせ  
 > ころねぽち様 2nd Album  

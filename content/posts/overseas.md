@@ -66,7 +66,7 @@ If you are interested, please contact us using the inquiry form!
 
 > [お問い合わせ](https://www.namigroove.com/contact/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“お問い合わせ” — なみぐる！" src="https://www.namigroove.com/contact/embed/#?secret=ErGw42OU1N#?secret=UuLfhl61pP" data-secret="UuLfhl61pP" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“お問い合わせ” — なみぐる！](/contact/)
 
 Currently, except for Chinese,  
 I’m taking the time to translate the lyrics,  
@@ -77,7 +77,7 @@ Let me know in the comments if you’d like me to fix it.
 
 ## Namigroove Overseas appearances
 
-<iframe title="Calendar" src="https://timetreeapp.com/public_calendars/namigroove/embed?calendar_name=true&amp;frame_color=%232ecc87" style="width:100%;min-height:700px;aspect-ratio:680/720;border:none"></iframe>
+{{% embed src="https://timetreeapp.com/public_calendars/namigroove/embed?calendar_name=true&frame_color=%232ecc87" h="400" title="Calendar" %}}
 
 ### 2025
 
@@ -115,7 +115,7 @@ Let me know in the comments if you’d like me to fix it.
 
 【メン限】中国北京公演映像
 
-<iframe loading="lazy" title="【メン限】なみぐる2025中国北京公演" width="500" height="281" src="https://www.youtube.com/embed/_4mhtA8pUnc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="_4mhtA8pUnc" %}}
 
 2025/05/17
 

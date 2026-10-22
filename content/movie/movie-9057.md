@@ -9,7 +9,7 @@ wp_id: 9057
 draft: false
 image: "/wp-content/uploads/2026/02/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="UniTECH / なみぐる feat.初音ミク" width="500" height="281" src="https://www.youtube.com/embed/IHD4UKHUj5Q?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="IHD4UKHUj5Q" %}}
 
 ## コンセプト
 
@@ -25,7 +25,7 @@ image: "/wp-content/uploads/2026/02/maxresdefault.webp"
 
 > [【提供】UniTECH feat.無來 ナースロボ＿タイプT / 『VocaTECH Fusion』](https://www.namigroove.com/music/music-8762/)
 
-<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; visibility: hidden;" title="“【提供】UniTECH feat.無來 ナースロボ＿タイプT / 『VocaTECH Fusion』” — なみぐる！" src="https://www.namigroove.com/music/music-8762/embed/#?secret=KXoszzKUBd#?secret=ahSuVQhjko" data-secret="ahSuVQhjko" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+[“【提供】UniTECH feat.無來 ナースロボ＿タイプT / 『VocaTECH Fusion』” — なみぐる！](/music/music-8762/)
 
 ど～ぱみん氏、Shu氏にVocaTECHコンピのお誘いを受け、  
 Hi – Tech作ったことないけどノリでやってみた。  
@@ -60,11 +60,11 @@ Bモチーフを6/8ハネリズム→4/4DnBで繰り返した後　徐々に音�
 ラスサビ  
 psytranceのリフレインで乗れる感を大事にしたくてサビ～ドロップの大枠は変えずに転調だけ
 
-<iframe title="Spotify Embed: 死んでしまったんだ" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/5AggyCt0qlsfDwPbFKqV2m?si=749bd9581723469c&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/5AggyCt0qlsfDwPbFKqV2m" %}}
 
-<iframe title="Spotify Embed: What Is Hitech?" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/4Uavy8iAzZY5hnf0vXWG71?si=eb74441abf034b0c&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/4Uavy8iAzZY5hnf0vXWG71" %}}
 
-<iframe title="Spotify Embed: Funk Assembly" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/01ftuuAZgt7x4YN5ijmKfE?si=23fe33f6ac9e440f&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/01ftuuAZgt7x4YN5ijmKfE" %}}
 
 ## 調声
 
@@ -111,7 +111,7 @@ VOCALOID6エディタでV4Xのピッチを作り込むことで無理やり再�
 
 ![](/wp-content/uploads/2026/02/image-5.webp)
 
-<video height="1080" style="aspect-ratio: 1080 / 1080;" width="1080" controls="" src="/wp-content/uploads/2026/02/rikai.mp4"></video>
+{{% video src="/wp-content/uploads/2026/02/rikai.mp4" w="1080" h="1080" %}}
 
 【追記】Twitterでプチバズしたので「うにお願いします」のレシピを公開します
 
@@ -151,7 +151,7 @@ VOCALOID6エディタでV4Xのピッチを作り込むことで無理やり再�
 同作者のFOOT-AGE HEROは「よくある映像をそのままやる」という図鑑になっており、動画部分は丸々Aepを配布しています▼とのこと  
 [https://note.com/ideoaves2/n/n535959cc5eb9](https://note.com/ideoaves2/n/n535959cc5eb9)
 
-<iframe loading="lazy" title="【MV】FOOT-AGE HERO／d.j.ァネイロ【#ボカコレ】 / feat.ci flower" width="500" height="281" src="https://www.youtube.com/embed/_6_lMz9PuJU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="_6_lMz9PuJU" %}}
 
 私はAviutlしか使えないのですが、↑でも頻出の箱文字をAviutlのBounding boxで再現しています。
 
@@ -167,11 +167,11 @@ VOCALOID6エディタでV4Xのピッチを作り込むことで無理やり再�
 
 元々個性になっちゃったのようなキャラ分身がしたいと伝えていて、たくさんミク素材を描いてもらったのち
 
-<iframe loading="lazy" title="個性になっちゃった；；" width="500" height="281" src="https://www.youtube.com/embed/Lm46uVgr1cQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="Lm46uVgr1cQ" %}}
 
 「ひみつの小学生　読谷あかねremix」こまり氏の分身の出方がかっこよいので、寄せてイージング処理
 
-<iframe loading="lazy" title="ひみつの小学生　近所　通学路　明るめ　色違い　シークレット　水陸両用　誰" width="500" height="281" src="https://www.youtube.com/embed/FdcXJ5fcRj4?start=55&amp;feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="FdcXJ5fcRj4" start="55" %}}
 
 ドロップパートはロゴのトゲシェイプ感を活かして幾何学的に
 

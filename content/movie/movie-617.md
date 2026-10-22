@@ -9,7 +9,7 @@ wp_id: 617
 draft: false
 image: "/wp-content/uploads/2022/05/maxresdefault.webp"
 ---
-<iframe loading="lazy" title="音成 / なみぐる feat.知声(Chis-A)" width="500" height="281" src="https://www.youtube.com/embed/4UzdA4cP_Ho?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+{{% youtube id="4UzdA4cP_Ho" %}}
 
 ## テーマ
 
@@ -36,12 +36,12 @@ image: "/wp-content/uploads/2022/05/maxresdefault.webp"
 
 ## 参考楽曲
 
-<iframe title="Spotify Embed: Isn&amp;apos;t She Lovely" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3NlLmKBJozwoi0k03Feb1N?si=feeafd99e82f4dcc&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3NlLmKBJozwoi0k03Feb1N" %}}
 
 *同じメロディの繰り返し(リフレイン)が気持ちいい*
 
   
 
-<iframe title="Spotify Embed: マーメイド3000" style="border-radius: 12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src="https://open.spotify.com/embed/track/3brLYO7eXwrn0A2mkFayng?si=c8e4027a47ba444b&amp;utm_source=oembed"></iframe>
+{{% spotify id="track/3brLYO7eXwrn0A2mkFayng" %}}
 
 *2step　少ない音数のアンサンブルが素敵*
