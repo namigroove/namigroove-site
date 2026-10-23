@@ -321,6 +321,8 @@ header.top .logo{flex:none}
       <button class="btn" type="button" id="cIns">選んだ場所に入れる</button>
     </div>
     <p class="note-s" id="cMsg" style="text-align:left">TABの数字の場所をタップして選び、下の数字キーで入力します。</p>
+    <div class="row" style="margin-top:8px"><span class="seg" id="viewSeg" role="group" aria-label="表示"><button type="button" data-v="tab" aria-pressed="true">TAB譜</button><button type="button" data-v="dia" aria-pressed="false">押さえ方の図</button></span></div>
+    <p class="note-s" id="viewNote" hidden style="text-align:left">押さえ方の図は見るだけの表示です。書き換えるときは「TAB譜」に戻してください。コード名がある場合は、次のコード名まで1つの図にまとめます。</p>
     <div class="tabhost" id="tabHost" tabindex="0" aria-label="TAB譜(矢印キーで移動、数字で入力)"></div>
     <div class="pad" id="pad" role="group" aria-label="数字キー">
       <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button>
@@ -364,6 +366,7 @@ header.top .logo{flex:none}
       <li>数字のあとに「h(ハンマリング)」「p(プリング)」「/ \(スライド)」「b(ベンド)」「~(ビブラート)」を足せます。「5h7」のように続けて数字も入れられ、再生ではそのとおりに2つの音を鳴らします。</li>
       <li>横の1マスは、「刻み」で選んだ長さです。8分音符ごとなら、4/4拍子の1小節は8マスです。細かいリズムを書くときは「16分音符ごと」にしてください。</li>
       <li>コードを選んで「選んだ場所に入れる」を押すと、その押さえ方が入ります。「同時」は同じマスに全部、「アルペジオ」は低い弦から順に、右のマスへ並びます。コード名もTABの上に入ります。ベースでは、ルート・5度・オクターブの3音が入ります。</li>
+      <li>「押さえ方の図」にすると、書いた内容が指板の図(コード表のような丸の図)で見られます。コード名ごとに1つの図にまとまり、アルペジオのときは弾く順の番号が丸の中に出ます。PNG保存も、いま見ている表示のままの画像になります。</li>
       <li>押さえ方は、開放弦を使う基本の形と、6弦・5弦ルートのバレーコードの形です。ギターのチューニングがレギュラーのときだけ使えます。</li>
       <li>「小節を足す」は最後に、「ここに小節を入れる」は選んだ小節の前に空の小節を入れます。「小節を複製」は、選んだ小節のすぐ後ろにコピーを入れます。</li>
       <li>再生は、選んだ場所からではなく先頭から鳴らします。音はギターやベースの弦をはじいたような音で、実際の音色とは違います。</li>
@@ -478,9 +481,55 @@ function layout(W,o){
   }
   return s+"</svg>";
 }
-const host=$("tabHost");
+
+/* ===== 押さえ方の図(指板) ===== */
+function diaGroups(){
+  const cols=colCount(),n=S.tun.length,flat=[];
+  S.ms.forEach((m,mi)=>{for(let c=0;c<cols;c++){const notes=[];for(let si=0;si<n;si++){const v=m.c[c][si];if(!v)continue;if(v==="x"){notes.push({s:si,f:-1});continue}nums(v).forEach(f=>notes.push({s:si,f}))}flat.push({m:mi,c,ch:m.ch[c]||"",notes})}});
+  const anyCh=flat.some(x=>x.ch),groups=[];
+  if(anyCh){let g=null;flat.forEach(x=>{if(x.ch||!g){g={ch:x.ch,m:x.m,cols:[]};groups.push(g)}g.cols.push(x)})}
+  else flat.forEach(x=>{if(x.notes.length)groups.push({ch:"",m:x.m,cols:[x]})});
+  return groups.map(g=>{const ns=[];g.cols.forEach((x,i)=>x.notes.forEach(nt=>ns.push({...nt,o:i})));return{ch:g.ch,m:g.m,notes:ns,multi:g.cols.filter(x=>x.notes.length).length>1}}).filter(g=>g.notes.length);
+}
+function diagramSvg(W,o){
+  const P=o.pal,n=S.tun.length,gs=diaGroups(),dx=14,dy=18,cw=n*dx+46,top=o.title?54:0,chH=22,nF=5;
+  const rowsOf=g=>{const fs=g.notes.filter(x=>x.f>0).map(x=>x.f);if(!fs.length)return nF;const mn=Math.min(...fs),mx=Math.max(...fs);return mx<=nF?nF:Math.max(nF,mx-mn+1)};
+  const maxR=gs.reduce((a,g)=>Math.max(a,rowsOf(g)),nF);
+  const per=Math.max(1,Math.floor((W-12)/cw)),rowH=chH+24+maxR*dy+26,rows=Math.max(1,Math.ceil(gs.length/per));
+  const width=o.fit?Math.min(per,Math.max(1,gs.length))*cw+12:Math.max(W,per*cw+12),height=top+rows*rowH+8;
+  let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" font-family="'DM Mono',ui-monospace,Menlo,Consolas,monospace">`;
+  if(o.bg)s+=`<rect width="${width}" height="${height}" fill="${P.bg}"/>`;
+  if(o.title){s+=`<text x="10" y="26" font-size="20" font-weight="700" fill="${P.ink}" font-family="'Zen Maru Gothic','Hiragino Sans',sans-serif">${esc(S.title||"無題")}</text><text x="10" y="44" font-size="11" fill="${P.sub}">${esc((TUNS[S.inst].find(t=>t[0]===S.tn)||TUNS[S.inst][0])[1])}  ${S.beats}/4  ♩=${S.bpm}</text>`}
+  if(!gs.length)s+=`<text x="12" y="${top+30}" font-size="13" fill="${P.sub}">TAB表示で数字を入れると、ここに押さえ方の図が出ます</text>`;
+  gs.forEach((g,gi)=>{
+    const r=Math.floor(gi/per),k=gi%per,x0=10+k*cw+22,y0=top+r*rowH+chH+22;
+    const fs=g.notes.filter(x=>x.f>0).map(x=>x.f),mn=fs.length?Math.min(...fs):1,mx=fs.length?Math.max(...fs):1;
+    const start=mx<=nF?1:mn,H=rowsOf(g)*dy;
+    s+=`<text x="${x0}" y="${top+r*rowH+chH}" font-size="14" font-weight="700" fill="${P.acc}">${esc(g.ch||("小節"+(g.m+1)))}</text>`;
+    for(let i=0;i<n;i++)s+=`<line x1="${x0+i*dx}" y1="${y0}" x2="${x0+i*dx}" y2="${y0+H}" stroke="${P.line}" stroke-width="1" opacity=".75"/>`;
+    for(let j=0;j<=H/dy;j++)s+=`<line x1="${x0}" y1="${y0+j*dy}" x2="${x0+(n-1)*dx}" y2="${y0+j*dy}" stroke="${P.line}" stroke-width="${j===0&&start===1?3:1}" opacity="${j===0&&start===1?1:.75}"/>`;
+    if(start>1)s+=`<text x="${x0-6}" y="${y0+dy*.7}" font-size="11" text-anchor="end" fill="${P.sub}">${start}</text>`;
+    const seen={};g.notes.forEach(nt=>{
+      const x=x0+nt.s*dx;seen[nt.s]=1;
+      if(nt.f<0)s+=`<text x="${x}" y="${y0-7}" font-size="12" text-anchor="middle" fill="${P.sub}">×</text>`;
+      else if(nt.f===0)s+=`<circle cx="${x}" cy="${y0-9}" r="4" fill="none" stroke="${P.ink}" stroke-width="1.4"/>`;
+      else{const cy=y0+(nt.f-start+.5)*dy;s+=`<circle cx="${x}" cy="${cy}" r="6.3" fill="${P.acc}"/>`;if(g.multi)s+=`<text x="${x}" y="${cy+3.6}" font-size="9" font-weight="700" text-anchor="middle" fill="#fff">${nt.o+1}</text>`}
+    });
+    for(let i=0;i<n;i++)if(!seen[i]&&!g.multi)s+=`<text x="${x0+i*dx}" y="${y0-7}" font-size="12" text-anchor="middle" fill="${P.sub}" opacity=".6">×</text>`;
+    for(let i=0;i<n;i++)s+=`<text x="${x0+i*dx}" y="${y0+H+13}" font-size="9" text-anchor="middle" fill="${P.sub}">${esc(sname(i))}</text>`;
+  });
+  return s+"</svg>";
+}
+const host=$("tabHost");let view="tab";
 let playPos=null;
-function draw(){host.innerHTML=layout(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel,play:playPos,hit:true});}
+function draw(){
+  if(view==="dia")host.innerHTML=diagramSvg(Math.max(280,host.clientWidth-4),{pal:PAL_UI});
+  else host.innerHTML=layout(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel,play:playPos,hit:true});
+}
+document.querySelectorAll("#viewSeg button").forEach(b=>b.addEventListener("click",()=>{
+  view=b.dataset.v;document.querySelectorAll("#viewSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+  $("pad").hidden=view==="dia";$("viewNote").hidden=view!=="dia";draw();
+}));
 new ResizeObserver(()=>{if(!playPos)draw()}).observe(host);
 
 /* ===== 入力 ===== */
@@ -700,11 +749,11 @@ function textTab(){
 function dl(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000)}
 const fname=()=>(S.title||"tab").replace(/[\\\/:*?"<>|]+/g,"_").slice(0,40);
 $("pngBtn").addEventListener("click",()=>{
-  const svg=layout(900,{pal:PAL_EX,title:true,bg:true,fit:true,cw:S.sub===4?20:S.sub===1?36:26});
+  const svg=view==="dia"?diagramSvg(900,{pal:PAL_EX,title:true,bg:true,fit:true}):layout(900,{pal:PAL_EX,title:true,bg:true,fit:true,cw:S.sub===4?20:S.sub===1?36:26});
   const m=svg.match(/width="(\d+)" height="(\d+)"/),W=+m[1],H=+m[2],sc=2;
   const img=new Image();
   img.onload=()=>{const c=document.createElement("canvas");c.width=W*sc;c.height=H*sc;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);
-    c.toBlob(b=>{dl(b,fname()+".png");$("saveMsg").textContent=fname()+".png を保存しました("+c.width+"×"+c.height+"px)"},"image/png")};
+    c.toBlob(b=>{dl(b,fname()+(view==="dia"?"_diagram":"")+".png");$("saveMsg").textContent=fname()+(view==="dia"?"_diagram":"")+".png を保存しました("+c.width+"×"+c.height+"px)"},"image/png")};
   img.onerror=()=>{$("saveMsg").textContent="画像にできませんでした"};
   img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
 });
