@@ -2,7 +2,7 @@
    - ツール一覧とすべてのツール(チューナー&メトロノーム・ピアノ・ドラム・コード表など)は、最初に開いたときにまとめて保存する
    - ほかのツールも、一度開いたページは電波がなくても開ける
    - ページは「ネット優先(つながらなければ保存した版)」、画像・フォント・スクリプトは「保存した版を先に使って裏で更新」 */
-const VER = "ng-tools-v14";
+const VER = "ng-tools-v15";
 const ASSET_HOSTS = ["namigroove.github.io", "fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"];
 const SKIP = /googletagmanager|google-analytics|gtag|recaptcha|doubleclick/;
 
