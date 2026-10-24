@@ -78,15 +78,8 @@ type: posts
 >
 > — なみぐる (@namigroove) [October 21, 2026](https://x.com/namigroove/status/2112768166720094254?ref_src=twsrc%5Etfw)
 
-<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">◤₺ƾらせ #M3秋2026 ⑥
 
-第2展示場 1F え-22ab
-
-M6.ドリーム▼ライト▽アンドロメダ
-namigroove Remix
-
-chiptuneバラードをお届け</p>&mdash; なみぐる┊︎M3秋 S11ｰa (@namigroove) <a href="https://x.com/namigroove/status/2113473935094452273?ref_src=twsrc%5Etfw">October 23, 2026</a></blockquote>
-<script async src="https://platform.x.com/widgets.js" charset="utf-8"></script>
-
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">◤₺ƾらせ <a href="https://twitter.com/hashtag/M3%E7%A7%8B2026?src=hash&amp;ref_src=twsrc%5Etfw">#M3秋2026</a> ⑥<br><br>第2展示場 1F え-22ab<br><br>M6.ドリーム▼ライト▽アンドロメダ<br>namigroove Remix<br><br>chiptuneバラードをお届け</p>&mdash; namigroove (@namigroove) <a href="https://twitter.com/namigroove/status/2113473935094452273">ツイートを表示</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 &nbsp;
