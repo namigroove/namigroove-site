@@ -377,6 +377,10 @@ let my=NB.load();
 let useMy=!!store.get("jamUseMy",false),builder=null;
 const qMs=QS.get("prog")||QS.get("m"),qM=qMs?NB.dec(qMs):null;if(qM){my=qM;useMy=true;}else if((QS.get("pg")||QS.get("p")))useMy=false;
 const cur=()=>useMy?{g:"my",n:"マイ進行",c:my,ln:NB.lns(my)}:LIST[pi];
+let fromTab=null;
+if(location.hash==="#tab"){try{const d=JSON.parse(localStorage.getItem("ngTools.tabToJam")||"null");localStorage.removeItem("ngTools.tabToJam");
+  if(d&&NB.ok(d.prog)){fromTab=d;my=NB.dec(NB.enc(d.prog))||d.prog;useMy=true;key=0;store.set("jamBars",1);if(d.bpm>=50&&d.bpm<=200)bpm=Math.round(d.bpm);NB.save(my);}
+  history.replaceState(null,"",location.pathname+location.search);}catch(e){}}
 let bars=+store.get("jamBars",1),cat=useMy?"my":LIST[pi].g;
 let V=[];const kOff=()=>key>6?key-12:key;
 function prepare(){V=NP.piano(cur().c);}
@@ -555,6 +559,7 @@ if(window.NamiVidRec)NamiVidRec.mount({after:$("jShare"),name:"jam",title:"ジ�
       row.forEach(c=>{I.rrect(g,x,y,c.w,ph,12);g.fillStyle=c.i===ni?C.coral:C.panel;g.fill();I.fit(g,c.n,x+c.w/2,y+ph/2,c.w-6,fs,500,c.i===ni?"#fff":C.ink);x+=c.w+gap;});y+=ph+gap;});
   }});
 renderNow();renderList();prepare();
+if(fromTab){save();$("jKey").value="0";$("jBars").value=String(bars);toast("TAB譜のコード進行を読み込みました("+my.length+"コード・キーC)"+(fromTab.cut?"。17コード目以降は入りきらないので省きました":"")+(fromTab.bad?"。読み取れないコード名"+fromTab.bad+"個は省きました":""));}
 window.__jam={stepEvents,setStyle:s=>{style=s},prepare,get V(){return V}};
 
 const sb=$("shareBtn");

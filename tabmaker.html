@@ -359,6 +359,12 @@ header.top .logo{flex:none}
       <button class="btn" type="button" id="colPaste">貼り付け</button>
       <button class="btn" type="button" id="colPasteNext">貼り付けて次へ</button>
     </div>
+    <div class="acts rg">
+      <span>小節</span><select id="rgA" class="sel" aria-label="コピーする最初の小節"></select><span>〜</span><select id="rgB" class="sel" aria-label="コピーする最後の小節"></select>
+      <button class="btn" type="button" id="rgCopy">コピー</button>
+      <button class="btn" type="button" id="rgIns">選んだ小節の後ろに挿入</button>
+      <button class="btn" type="button" id="rgOver">選んだ小節から上書き</button>
+    </div>
     <div class="acts">
       <button class="btn" type="button" id="mAdd">小節を足す</button>
       <button class="btn" type="button" id="mIns">ここに小節を入れる</button>
@@ -374,6 +380,7 @@ header.top .logo{flex:none}
       <button class="btn" type="button" id="txtDl">テキストで保存</button>
       <button class="btn" type="button" id="jsonDl">作業ファイルを保存</button>
       <label class="btn fbtn" id="jsonPick" tabindex="0" role="button">作業ファイルを開く<input id="jsonFile" type="file" accept=".json,application/json" hidden></label>
+      <button class="btn" type="button" id="toJam">ジャムモードの「自分で作る」へ</button>
       <button class="btn" type="button" id="clrBtn">全部消す</button>
     </div>
     <p class="note-s" id="saveMsg">書いた内容はこのブラウザに自動で保存されます(どこにも送信されません)。</p>
@@ -388,6 +395,8 @@ header.top .logo{flex:none}
       <li>拍子は「分子/分母」で選べます(例:6/8、7/8、3/4)。数字は、▲▼ボタン・ホイール・上下ドラッグ・矢印キーで変えられます(ドラムマシンと同じ操作です)。横の1マスは、「刻み」で選んだ長さです。4/4拍子で8分音符ごとなら、1小節は8マスです。細かいリズムを書くときは「16分音符ごと」にしてください。</li>
       <li>コードを選んで「選んだ場所に入れる」を押すと、その押さえ方が入ります。ルート(12音)・分類(基本/7th/テンション/sus・変化)・種類の順に選び、分数コードは「ベース音」で選びます。「Am7/G」のようにコード名で入力することもできます(「入れ方・押さえ方・コード名で入力」を開きます)。「同時」は同じマスに全部、「アルペジオ」は低い弦から順に、右のマスへ並びます。コード名もTABの上に入ります。ベースでは、ルート・5度・オクターブの3音が入ります。</li>
       <li>「押さえ方の図」にすると、書いた内容が指板の図(コード表のような丸の図)で見られます。上の大きな指板をタップすると、選んだマスの押さえ方をそのまま入力できます(丸をもう一度タップで消えます)。コード名ごとに1つの図にまとまり、アルペジオのときは弾く順の番号が丸の中に出ます。PNG保存も、いま見ている表示のままの画像になります。</li>
+      <li>列のコピーのほか、小節ごと・範囲(例:小節2〜4)もコピーできます。「小節 ○〜○」で範囲を選んで「コピー」を押し、貼り付けたい小節を選んで「選んだ小節の後ろに挿入」か「選んだ小節から上書き」を押します(上書きで足りない小節は自動で足されます)。コード名もいっしょに写ります。</li>
+      <li>コード名を入れたTABは、「ジャムモードの「自分で作る」へ」で、そのコード進行をジャムモードに持っていけます。コード名の間隔がそのままコードの長さ(1小節=1、半分=1/2、など)になります。</li>
       <li>押さえ方は、よく使う形は決まった形(開放弦の形や6弦・5弦ルートのバレーコード)で、それ以外のコードや分数コードは、指の数やポジションを見て弾きやすい形を自動で探します。ベースの分数コードは、ベース音が1音入ります。</li>
       <li>「TABからコードを推定」は、書いた音の組み合わせからコード名を推し量って、TABの上に入れます。小節ごと・1拍ごと・2拍ごとから選べます。ベース音がルートになりやすい前提で、分数コード(C/Eなど)も出ます。あくまで目安なので、違うときはコード名の欄で直してください。</li>
       <li>ジャムモードの「TAB譜(ギター)」「TAB譜(ベース)」から来たときは、その進行がコード名つきで入ります(ほかのTABは「元に戻す」で戻せます)。分数コードや、ベースが特殊なコードの押さえ方は、近い形で入るので確認して直してください。</li>
@@ -432,6 +441,8 @@ header.top .logo{flex:none}
 .chpick details.more summary{cursor:pointer;text-align:center}
 #bpm{-moz-appearance:textfield;text-align:center}#bpm::-webkit-inner-spin-button,#bpm::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 #bpmDn,#bpmUp{width:36px;height:36px;font-size:20px}
+
+.rg{align-items:center}.rg .sel{min-width:3.4em}
 </style>
 <script>
 (()=>{
@@ -610,6 +621,7 @@ $("dPrev").addEventListener("click",()=>move(-1,0));$("dNext").addEventListener(
 $("dUp").addEventListener("click",()=>{dpos=1;drawEdit()});
 $("dDown").addEventListener("click",()=>{dpos=13;drawEdit()});
 function draw(){
+  rgSync();
   if(view==="dia"){$("diaEdit").hidden=false;drawEdit();host.innerHTML=diagramSvg(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel})}
   else{$("diaEdit").hidden=true;host.innerHTML=layout(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel,play:playPos,hit:true})}
 }
@@ -861,6 +873,56 @@ function pasteCol(next){
 }
 $("colCopy").addEventListener("click",copyCol);$("colPaste").addEventListener("click",()=>pasteCol(false));$("colPasteNext").addEventListener("click",()=>pasteCol(true));
 /* ===== 小節の操作 ===== */
+/* ===== 小節・範囲のコピー ===== */
+let mClip=null,rgPin=false,rgN=-1;
+function rgSync(){
+  const n=S.ms.length,A=$("rgA"),B=$("rgB");if(!A)return;
+  if(n!==rgN){rgN=n;const o=Array.from({length:n},(_,i)=>`<option value="${i}">${i+1}</option>`).join("");const a=+A.value||0,b=+B.value||0;A.innerHTML=o;B.innerHTML=o;A.value=String(Math.min(a,n-1));B.value=String(Math.min(b,n-1))}
+  if(!rgPin){A.value=String(S.sel.m);B.value=String(S.sel.m)}
+}
+$("rgA").addEventListener("change",()=>{rgPin=true;if(+$("rgB").value<+$("rgA").value)$("rgB").value=$("rgA").value});
+$("rgB").addEventListener("change",()=>{rgPin=true;if(+$("rgA").value>+$("rgB").value)$("rgA").value=$("rgB").value});
+$("rgCopy").addEventListener("click",()=>{
+  let a=+$("rgA").value,b=+$("rgB").value;if(b<a)[a,b]=[b,a];
+  mClip={ms:JSON.parse(JSON.stringify(S.ms.slice(a,b+1))),n:S.tun.length,cols:colCount()};rgPin=false;
+  const chs=mClip.ms.reduce((s,m)=>s+Object.keys(m.ch).length,0);
+  $("cMsg").textContent="小節"+(a+1)+(b>a?"〜"+(b+1):"")+"をコピーしました("+mClip.ms.length+"小節"+(chs?"・コード名"+chs+"個":"")+")。貼り付けたい小節を選んで「挿入」か「上書き」を押してください。";
+});
+function rgPaste(over){
+  if(!mClip){$("cMsg").textContent="先に「小節 ○〜○」を選んで「コピー」を押してください";return}
+  if(mClip.n!==S.tun.length){$("cMsg").textContent="弦の数が違うので貼り付けられません(ギターとベースの間)";return}
+  if(mClip.cols!==colCount()){$("cMsg").textContent="拍子か刻みが、コピーしたときと変わっているので貼り付けられません";return}
+  const k=mClip.ms.length,at=over?S.sel.m:S.sel.m+1;
+  if((over?Math.max(S.ms.length,at+k):S.ms.length+k)>200){$("cMsg").textContent="小節が200を超えてしまうので貼り付けられません";return}
+  snap();const cp=JSON.parse(JSON.stringify(mClip.ms));
+  if(over){while(S.ms.length<at+k)S.ms.push(newMeasure());cp.forEach((m,i)=>{S.ms[at+i]=m})}else S.ms.splice(at,0,...cp);
+  S.sel={m:at,c:0,s:S.sel.s};$("cLab").value=S.ms[at].ch[0]||"";rgPin=false;persist();draw();
+  $("cMsg").textContent=k+"小節を"+(over?"小節"+(at+1)+"から上書き":"小節"+at+"の後ろに挿入")+"しました。「元に戻す」で戻せます。";
+}
+$("rgIns").addEventListener("click",()=>rgPaste(false));$("rgOver").addEventListener("click",()=>rgPaste(true));
+
+/* ===== ジャムモードの「自分で作る」へ ===== */
+const BTYPES=["","m","7","M7","m7","6","m6","9","M9","m9","add9","madd9","6/9","sus4","sus2","7sus4","9sus4","13","m11","dim","dim7","m7(♭5)","aug","7(♯5)","mM7","7(♭9)","7(♯9)","7(♯11)","M7(♯11)"];
+$("toJam").addEventListener("click",()=>{
+  const cols=colCount(),it=[];
+  S.ms.forEach((m,mi)=>Object.keys(m.ch).map(Number).sort((a,b)=>a-b).forEach(c=>it.push({pos:mi+c/cols,name:m.ch[c]})));
+  if(!it.length){$("saveMsg").textContent="コード名が入っていません。TABの上の枠にコード名を入れるか、コードを入れてから押してください。";return}
+  const prog=[],bad=[];let approx=0;
+  it.forEach((x,i)=>{
+    const r=parseChordName(x.name);if(!r){bad.push(x.name);return}
+    let t=TYPES[r.type][0].replace(/b/g,"♭").replace(/#/g,"♯").replace("sus♭","sus");
+    if(t==="5")t="";
+    if(!BTYPES.includes(t)){const t2=t.replace(/\(.*\)$/,"");approx++;t=BTYPES.includes(t2)?t2:""}
+    let sp=(i+1<it.length?it[i+1].pos:S.ms.length)-x.pos;const ents=[];
+    while(sp>=2-1e-6){ents.push(2);sp-=2}
+    if(sp>1e-6)ents.push([0.25,0.5,1,2].reduce((a,b)=>Math.abs(b-sp)<Math.abs(a-sp)?b:a));
+    ents.forEach(ln=>{const c=[r.root,t];if(r.bass!=null||ln!==1)c.push(r.bass);if(ln!==1)c.push(ln);prog.push(c)});
+  });
+  if(!prog.length){$("saveMsg").textContent="読み取れるコード名がありませんでした("+bad.slice(0,3).join("、")+")。";return}
+  const cut=prog.length>16;
+  try{localStorage.setItem("ngTools.tabToJam",JSON.stringify({prog:prog.slice(0,16),bpm:S.bpm,cut,bad:bad.length,approx}))}catch(e){$("saveMsg").textContent="このブラウザでは受け渡しができませんでした";return}
+  location.href="jam.html#tab";
+});
 function mop(fn){snap();fn();if(S.sel.m>=S.ms.length)S.sel.m=S.ms.length-1;persist();draw()}
 $("mAdd").addEventListener("click",()=>mop(()=>S.ms.push(newMeasure())));
 $("mIns").addEventListener("click",()=>mop(()=>S.ms.splice(S.sel.m,0,newMeasure())));
