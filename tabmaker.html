@@ -315,7 +315,7 @@ header.top .logo{flex:none}
 
   <section class="panel" aria-label="TABを書く">
     <div class="chpick">
-      <div class="chhead"><span class="chname" id="chName" aria-live="polite">C</span><button class="btn go" type="button" id="cIns">選んだ場所に入れる</button></div>
+      <div class="chhead"><span class="chname" id="chName" aria-live="polite">C</span><button class="btn go" type="button" id="cIns">選んだ場所に入れる</button><button class="btn" type="button" id="cMute" title="全部の弦に×(ミュート)を入れる">×ブラッシング</button></div>
       <div class="seg roots" id="rootSeg" role="group" aria-label="ルート"></div>
       <div class="seg cats" id="catSeg" role="group" aria-label="コードの分類"></div>
       <div class="seg types" id="typeSeg" role="group" aria-label="コードの種類"></div>
@@ -386,6 +386,7 @@ header.top .logo{flex:none}
       <li>押さえ方は、よく使う形は決まった形(開放弦の形や6弦・5弦ルートのバレーコード)で、それ以外のコードや分数コードは、指の数やポジションを見て弾きやすい形を自動で探します。ベースの分数コードは、ベース音が1音入ります。</li>
       <li>「TABからコードを推定」は、書いた音の組み合わせからコード名を推し量って、TABの上に入れます。小節ごと・1拍ごと・2拍ごとから選べます。ベース音がルートになりやすい前提で、分数コード(C/Eなど)も出ます。あくまで目安なので、違うときはコード名の欄で直してください。</li>
       <li>ジャムモードの「TAB譜(ギター)」「TAB譜(ベース)」から来たときは、その進行がコード名つきで入ります(ほかのTABは「元に戻す」で戻せます)。分数コードや、ベースが特殊なコードの押さえ方は、近い形で入るので確認して直してください。</li>
+      <li>「×ブラッシング」は、選んだマスの全部の弦に「x」(ミュート)を入れます。コードを刻むあいだの「ザッ」という音(カッティング)の場所に使います。「入れ方」がアルペジオのときは、低い弦から順に右のマスへ並びます。再生では、短い「ザッ」というノイズが鳴ります。</li>
       <li>「小節を足す」は最後に、「ここに小節を入れる」は選んだ小節の前に空の小節を入れます。「小節を複製」は、選んだ小節のすぐ後ろにコピーを入れます。</li>
       <li>再生は、選んだ場所からではなく先頭から鳴らします。音はギターやベースの弦をはじいたような音で、実際の音色とは違います。</li>
       <li>画像(PNG)はそのままSNSに貼れます。テキストは、メモやチャットに貼れる文字のTABです(幅をそろえる等幅フォントで見てください)。「作業ファイル」は、あとで続きを書くための保存で、このツールで開けます。</li>
@@ -639,6 +640,13 @@ function pluck(midi,when,dur,gain){
   const t=when==null?ctx.currentTime:when;src.start(t);
   if(dur){g.gain.setValueAtTime(g.gain.value,t+dur);g.gain.linearRampToValueAtTime(0,t+dur+0.08);src.stop(t+dur+0.12)}
 }
+function scratch(when){
+  const ctx=ac();if(!ctx)return;
+  const len=Math.floor(ctx.sampleRate*0.07),b=ctx.createBuffer(1,len,ctx.sampleRate),d=b.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.2);
+  const src=ctx.createBufferSource();src.buffer=b;const f=ctx.createBiquadFilter();f.type="bandpass";f.frequency.value=2200;f.Q.value=0.7;const g=ctx.createGain();g.gain.value=0.5;
+  src.connect(f);f.connect(g);g.connect(ctx.destination);src.start(when==null?ctx.currentTime:when);
+}
 function nums(v){return(String(v).match(/\d+/g)||[]).map(Number)}
 function soundCell(si){if(!$("snd").checked)return;const v=cell()[si];const n=nums(v);if(n.length)pluck(S.tun[si]+n[0],null,null,.4)}
 function setCell(v){snap();cell()[S.sel.s]=v;persist();draw()}
@@ -793,6 +801,11 @@ function applyName(){
 $("cNameBtn").addEventListener("click",applyName);
 $("cName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();applyName()}});
 $("cIns").addEventListener("click",insertChord);
+$("cMute").addEventListener("click",()=>{
+  const {m,c}=S.sel,n=S.tun.length,way=$("cWay").value;snap();
+  if(way==="arp"){let mi=m,ci=c;for(let si=0;si<n;si++){if(mi<S.ms.length)S.ms[mi].c[ci][si]="x";ci++;if(ci>=colCount()){ci=0;mi++}}}
+  else for(let si=0;si<n;si++)S.ms[m].c[c][si]="x";
+  $("cMsg").textContent="全部の弦に × を入れました(ブラッシング)";persist();draw();if($("snd").checked)scratch(null)});
 
 
 /* ===== コード推定 ===== */
@@ -905,6 +918,7 @@ function startPlay(){
   const cols=colCount(),dur=60/S.bpm*4/S.den/S.sub,t0=ctx.currentTime+.12;let any=false;
   S.ms.forEach((m,mi)=>m.c.forEach((col,ci)=>{
     const tt=t0+(mi*cols+ci)*dur;
+    if(col.some(v=>v==="x")&&!col.some(v=>nums(v).length)){any=true;scratch(tt)}
     col.forEach((v,si)=>{const ns=nums(v);if(!ns.length)return;any=true;
       const tech=/[hp\/\\b~]/.test(v)&&ns.length>1;
       ns.forEach((f,k)=>{const at=tt+(tech?k*dur/ns.length:0);pluck(S.tun[si]+f,at,tech?dur/ns.length*1.6:Math.max(dur*3,.5),.4)});
