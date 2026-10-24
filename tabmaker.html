@@ -306,7 +306,7 @@ header.top .logo{flex:none}
       <div class="ctl">チューニング <select id="tuning" class="sel" aria-label="チューニング"></select></div>
     </div>
     <div class="row">
-      <div class="ctl">拍子 <select id="beats" class="sel" aria-label="1小節の拍数"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/4</option></select></div>
+      <div class="ctl">拍子 <select id="beats" class="sel" aria-label="拍子の分子(1小節の拍の数)"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span>/</span><select id="den" class="sel" aria-label="拍子の分母(1拍の長さ)"><option value="2">2</option><option value="4" selected>4</option><option value="8">8</option><option value="16">16</option></select></div>
       <div class="ctl">刻み <select id="sub" class="sel" aria-label="1拍の分け方"><option value="2" selected>8分音符ごと</option><option value="4">16分音符ごと</option><option value="1">4分音符ごと</option></select></div>
       <div class="ctl">テンポ <input id="bpm" class="sel num" type="number" min="40" max="240" value="100" style="width:4.2em" aria-label="テンポ(BPM)"></div>
       <div class="ctl">タイトル <input id="ttl" class="sel" type="text" maxlength="40" placeholder="曲名など" style="width:11em" aria-label="タイトル"></div>
@@ -320,9 +320,16 @@ header.top .logo{flex:none}
       <div class="ctl" id="cPosBox">押さえ方 <select id="cPos" class="sel" aria-label="押さえ方"><option value="auto" selected>おまかせ</option><option value="e">6弦ルート</option><option value="a">5弦ルート</option></select></div>
       <button class="btn" type="button" id="cIns">選んだ場所に入れる</button>
     </div>
+    <div class="row"><div class="ctl">コード推定 <select id="eUnit" class="sel" aria-label="推定する範囲"><option value="0" selected>小節ごと</option><option value="1">1拍ごと</option><option value="2">2拍ごと</option></select></div><button class="btn" type="button" id="eBtn">TABからコードを推定</button></div>
     <p class="note-s" id="cMsg" style="text-align:left">TABの数字の場所をタップして選び、下の数字キーで入力します。</p>
     <div class="row" style="margin-top:8px"><span class="seg" id="viewSeg" role="group" aria-label="表示"><button type="button" data-v="tab" aria-pressed="true">TAB譜</button><button type="button" data-v="dia" aria-pressed="false">押さえ方の図</button></span></div>
-    <p class="note-s" id="viewNote" hidden style="text-align:left">押さえ方の図は見るだけの表示です。書き換えるときは「TAB譜」に戻してください。コード名がある場合は、次のコード名まで1つの図にまとめます。</p>
+    <div id="diaEdit" hidden>
+      <p class="note-s" style="text-align:left;margin:8px 0 4px">指板の丸をタップすると、選んだマスのその弦に、その場所を入れます(もう一度タップで消えます)。上の○と×の欄は、タップするたびに「開放弦○ → 弾かない× → なし」と変わります。</p>
+      <div class="row"><button class="btn" type="button" id="dPrev">◀ 前のマス</button><span class="note-s" id="dWhere" style="margin:0"></span><button class="btn" type="button" id="dNext">次のマス ▶</button></div>
+      <div class="dedit" id="dSvg"></div>
+      <div class="row"><button class="btn" type="button" id="dUp">▲ ナットのほうへ</button><span class="note-s" id="dPosLab" style="margin:0"></span><button class="btn" type="button" id="dDown">高いフレットへ ▼</button></div>
+      <p class="note-s" style="text-align:left;margin:8px 0 0">下は、書いた内容の全体の図です。図をタップすると、そのコードの最初のマスが選ばれます。コード名がある場合は、次のコード名まで1つの図にまとめます。</p>
+    </div>
     <div class="tabhost" id="tabHost" tabindex="0" aria-label="TAB譜(矢印キーで移動、数字で入力)"></div>
     <div class="pad" id="pad" role="group" aria-label="数字キー">
       <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button>
@@ -364,10 +371,11 @@ header.top .logo{flex:none}
     <ul>
       <li>TABの数字を入れたい場所(弦と、横の位置)をタップして選び、下の数字キーでフレット番号を入れます。パソコンでは、キーボードの数字と矢印キーでも打てます。「1」のあと続けて「2」で12、というように2けたも打てます。</li>
       <li>数字のあとに「h(ハンマリング)」「p(プリング)」「/ \(スライド)」「b(ベンド)」「~(ビブラート)」を足せます。「5h7」のように続けて数字も入れられ、再生ではそのとおりに2つの音を鳴らします。</li>
-      <li>横の1マスは、「刻み」で選んだ長さです。8分音符ごとなら、4/4拍子の1小節は8マスです。細かいリズムを書くときは「16分音符ごと」にしてください。</li>
+      <li>拍子は「分子/分母」で選べます(例:6/8、7/8、3/4)。横の1マスは、「刻み」で選んだ長さです。4/4拍子で8分音符ごとなら、1小節は8マスです。細かいリズムを書くときは「16分音符ごと」にしてください。</li>
       <li>コードを選んで「選んだ場所に入れる」を押すと、その押さえ方が入ります。「同時」は同じマスに全部、「アルペジオ」は低い弦から順に、右のマスへ並びます。コード名もTABの上に入ります。ベースでは、ルート・5度・オクターブの3音が入ります。</li>
-      <li>「押さえ方の図」にすると、書いた内容が指板の図(コード表のような丸の図)で見られます。コード名ごとに1つの図にまとまり、アルペジオのときは弾く順の番号が丸の中に出ます。PNG保存も、いま見ている表示のままの画像になります。</li>
+      <li>「押さえ方の図」にすると、書いた内容が指板の図(コード表のような丸の図)で見られます。上の大きな指板をタップすると、選んだマスの押さえ方をそのまま入力できます(丸をもう一度タップで消えます)。コード名ごとに1つの図にまとまり、アルペジオのときは弾く順の番号が丸の中に出ます。PNG保存も、いま見ている表示のままの画像になります。</li>
       <li>押さえ方は、開放弦を使う基本の形と、6弦・5弦ルートのバレーコードの形です。ギターのチューニングがレギュラーのときだけ使えます。</li>
+      <li>「TABからコードを推定」は、書いた音の組み合わせからコード名を推し量って、TABの上に入れます。小節ごと・1拍ごと・2拍ごとから選べます。ベース音がルートになりやすい前提で、分数コード(C/Eなど)も出ます。あくまで目安なので、違うときはコード名の欄で直してください。</li>
       <li>「小節を足す」は最後に、「ここに小節を入れる」は選んだ小節の前に空の小節を入れます。「小節を複製」は、選んだ小節のすぐ後ろにコピーを入れます。</li>
       <li>再生は、選んだ場所からではなく先頭から鳴らします。音はギターやベースの弦をはじいたような音で、実際の音色とは違います。</li>
       <li>画像(PNG)はそのままSNSに貼れます。テキストは、メモやチャットに貼れる文字のTABです(幅をそろえる等幅フォントで見てください)。「作業ファイル」は、あとで続きを書くための保存で、このツールで開けます。</li>
@@ -393,6 +401,8 @@ header.top .logo{flex:none}
 .pad{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px;max-width:380px;margin-left:auto;margin-right:auto}
 .pad button{font:600 17px var(--f-mono);padding:11px 0;border-radius:12px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .pad button:active{background:var(--wash)}
+.dedit{margin:10px auto;max-width:360px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.dedit .e{cursor:pointer}
 </style>
 <script>
 (()=>{
@@ -406,21 +416,21 @@ const TUNS={
   b4:[["std","レギュラー(EADG)",[28,33,38,43]],["dropd","ドロップD",[26,33,38,43]],["half","半音下げ",[27,32,37,42]]],
   b5:[["std","レギュラー(BEADG)",[23,28,33,38,43]]]
 };
-const TYPES=[["","メジャー",[0,4,7]],["m","マイナー(m)",[0,3,7]],["7","7",[0,4,7,10]],["m7","m7",[0,3,7,10]],["M7","M7",[0,4,7,11]],["sus4","sus4",[0,5,7]]];
+const TYPES=[["","メジャー",7],["m","マイナー(m)",7],["7","7",7],["m7","m7",7],["M7","M7",7],["6","6",7],["m6","m6",7],["9","9",7],["m9","m9",7],["M9","M9",7],["add9","add9",7],["sus4","sus4",7],["sus2","sus2",7],["7sus4","7sus4",7],["dim","dim(ディミニッシュ)",6],["dim7","dim7",6],["aug","aug(オーギュメント)",8],["m7(b5)","m7(♭5)",6]];
 /* 6弦→1弦の順。-1は弾かない */
-const E_SH={"":[0,2,2,1,0,0],"m":[0,2,2,0,0,0],"7":[0,2,0,1,0,0],"m7":[0,2,0,0,0,0],"M7":[0,-1,1,1,0,-1],"sus4":[0,2,2,2,0,0]};
-const A_SH={"":[-1,0,2,2,2,0],"m":[-1,0,2,2,1,0],"7":[-1,0,2,0,2,0],"m7":[-1,0,2,0,1,0],"M7":[-1,0,2,1,2,0],"sus4":[-1,0,2,2,3,0]};
+const E_SH={"":[0,2,2,1,0,0],"m":[0,2,2,0,0,0],"7":[0,2,0,1,0,0],"m7":[0,2,0,0,0,0],"M7":[0,-1,1,1,0,-1],"6":[0,2,2,1,2,0],"m6":[0,2,2,0,2,0],"9":[0,2,0,1,0,2],"m9":[0,2,0,0,0,2],"M9":[0,-1,1,1,0,2],"add9":[0,2,4,1,0,0],"sus4":[0,2,2,2,0,0],"sus2":[0,2,4,4,0,0],"7sus4":[0,2,0,2,0,0],"dim":[0,1,2,0,-1,-1],"dim7":[0,1,2,0,2,-1],"aug":[0,3,2,1,1,0],"m7(b5)":[0,1,0,0,-1,-1]};
+const A_SH={"":[-1,0,2,2,2,0],"m":[-1,0,2,2,1,0],"7":[-1,0,2,0,2,0],"m7":[-1,0,2,0,1,0],"M7":[-1,0,2,1,2,0],"6":[-1,0,2,2,2,2],"m6":[-1,0,2,2,1,2],"9":[-1,0,2,4,2,3],"m9":[-1,0,2,4,1,3],"M9":[-1,0,2,1,0,0],"add9":[-1,0,2,4,2,0],"sus4":[-1,0,2,2,3,0],"sus2":[-1,0,2,2,0,0],"7sus4":[-1,0,2,0,3,0],"dim":[-1,0,1,2,1,-1],"dim7":[-1,0,1,2,1,2],"aug":[-1,0,3,2,2,1],"m7(b5)":[-1,0,1,0,1,-1]};
 const OPEN={"0|":[-1,3,2,0,1,0],"2|":[-1,-1,0,2,3,2],"4|":[0,2,2,1,0,0],"7|":[3,2,0,0,0,3],"9|":[-1,0,2,2,2,0],
   "9|m":[-1,0,2,2,1,0],"4|m":[0,2,2,0,0,0],"2|m":[-1,-1,0,2,3,1],"0|7":[-1,3,2,3,1,0],"7|7":[3,2,0,0,0,1],"2|7":[-1,-1,0,2,1,2],"4|7":[0,2,0,1,0,0],"9|7":[-1,0,2,0,2,0],
   "9|m7":[-1,0,2,0,1,0],"4|m7":[0,2,0,0,0,0],"2|m7":[-1,-1,0,2,1,1],"0|M7":[-1,3,2,0,0,0],"5|M7":[-1,-1,3,2,1,0],"7|M7":[3,-1,0,0,0,2],"9|M7":[-1,0,2,1,2,0],"4|sus4":[0,2,2,2,0,0],"9|sus4":[-1,0,2,2,3,0],"2|sus4":[-1,-1,0,2,3,3]};
 
 let S; /* 状態 */
 function newMeasure(){return{c:Array.from({length:S.beats*S.sub},()=>Array(S.tun.length).fill("")),ch:{}}}
-function fresh(){return{inst:"gt",tn:"std",beats:4,sub:2,bpm:100,title:"",ms:[],sel:{m:0,c:0,s:0}}}
+function fresh(){return{inst:"gt",tn:"std",beats:4,den:4,sub:2,bpm:100,title:"",ms:[],sel:{m:0,c:0,s:0}}}
 function tunArr(){const l=TUNS[S.inst];return(l.find(t=>t[0]===S.tn)||l[0])[2]}
 function normalize(d){
   if(!d||!TUNS[d.inst])return null;
-  const o=fresh();Object.assign(o,{inst:d.inst,tn:d.tn,beats:+d.beats||4,sub:+d.sub||2,bpm:+d.bpm||100,title:String(d.title||"")});
+  const o=fresh();Object.assign(o,{inst:d.inst,tn:d.tn,beats:Math.max(1,Math.min(12,+d.beats||4)),den:[2,4,8,16].includes(+d.den)?+d.den:4,sub:[1,2,4].includes(+d.sub)?+d.sub:2,bpm:+d.bpm||100,title:String(d.title||"")});
   if(!TUNS[o.inst].some(t=>t[0]===o.tn))o.tn="std";
   S=o;S.tun=tunArr();const n=S.tun.length,cols=S.beats*S.sub;
   S.ms=(Array.isArray(d.ms)?d.ms:[]).slice(0,200).map(m=>{const nm=newMeasure();(m.c||[]).slice(0,cols).forEach((col,ci)=>{(col||[]).slice(0,n).forEach((v,si)=>nm.c[ci][si]=String(v||"").slice(0,8))});Object.entries(m.ch||{}).forEach(([k,v])=>{if(+k<cols)nm.ch[k]=String(v).slice(0,12)});return nm});
@@ -429,7 +439,7 @@ function normalize(d){
 }
 S=fresh();S.tun=tunArr();for(let i=0;i<4;i++)S.ms.push(newMeasure());S.sel={m:0,c:0,s:5};
 {const d=store.get("tabDoc",null);if(d){const r=normalize(d);if(!r){S=fresh();S.tun=tunArr();for(let i=0;i<4;i++)S.ms.push(newMeasure());S.sel={m:0,c:0,s:5}}}}
-const dump=()=>JSON.stringify({inst:S.inst,tn:S.tn,beats:S.beats,sub:S.sub,bpm:S.bpm,title:S.title,ms:S.ms});
+const dump=()=>JSON.stringify({inst:S.inst,tn:S.tn,beats:S.beats,den:S.den,sub:S.sub,bpm:S.bpm,title:S.title,ms:S.ms});
 let undo=[],redo=[];
 function snap(){undo.push(dump());if(undo.length>120)undo.shift();redo=[];}
 function persist(){store.set("tabDoc",JSON.parse(dump()))}
@@ -451,7 +461,7 @@ function layout(W,o){
   let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" font-family="'DM Mono',ui-monospace,Menlo,Consolas,monospace">`;
   if(o.bg)s+=`<rect width="${width}" height="${height}" fill="${P.bg}"/>`;
   if(o.title){s+=`<text x="${lab}" y="26" font-size="20" font-weight="700" fill="${P.ink}" font-family="'Zen Maru Gothic','Hiragino Sans',sans-serif">${esc(S.title||"無題")}</text>`;
-    s+=`<text x="${lab}" y="44" font-size="11" fill="${P.sub}">${esc((TUNS[S.inst].find(t=>t[0]===S.tn)||TUNS[S.inst][0])[1])}  ${S.beats}/4  ♩=${S.bpm}</text>`}
+    s+=`<text x="${lab}" y="44" font-size="11" fill="${P.sub}">${esc((TUNS[S.inst].find(t=>t[0]===S.tn)||TUNS[S.inst][0])[1])}  ${S.beats}/${S.den}  ♩=${S.bpm}</text>`}
   for(let r=0;r<rows;r++){
     const y0=top+r*rowH+chordH,x0=lab;
     for(let i=0;i<n;i++){const y=y0+i*lh;s+=`<text x="${x0-6}" y="${y+4}" font-size="11" text-anchor="end" fill="${P.sub}">${esc(sname(n-1-i))}</text>`}
@@ -489,7 +499,7 @@ function diaGroups(){
   const anyCh=flat.some(x=>x.ch),groups=[];
   if(anyCh){let g=null;flat.forEach(x=>{if(x.ch||!g){g={ch:x.ch,m:x.m,cols:[]};groups.push(g)}g.cols.push(x)})}
   else flat.forEach(x=>{if(x.notes.length)groups.push({ch:"",m:x.m,cols:[x]})});
-  return groups.map(g=>{const ns=[];g.cols.forEach((x,i)=>x.notes.forEach(nt=>ns.push({...nt,o:i})));return{ch:g.ch,m:g.m,notes:ns,multi:g.cols.filter(x=>x.notes.length).length>1}}).filter(g=>g.notes.length);
+  return groups.map(g=>{const ns=[];g.cols.forEach((x,i)=>x.notes.forEach(nt=>ns.push({...nt,o:i})));return{ch:g.ch,m:g.m,m0:g.cols[0].m,c0:g.cols[0].c,a:g.cols[0].m*cols+g.cols[0].c,z:g.cols[g.cols.length-1].m*cols+g.cols[g.cols.length-1].c,notes:ns,multi:g.cols.filter(x=>x.notes.length).length>1}}).filter(g=>g.notes.length);
 }
 function diagramSvg(W,o){
   const P=o.pal,n=S.tun.length,gs=diaGroups(),dx=14,dy=18,cw=n*dx+46,top=o.title?54:0,chH=22,nF=5;
@@ -499,12 +509,15 @@ function diagramSvg(W,o){
   const width=o.fit?Math.min(per,Math.max(1,gs.length))*cw+12:Math.max(W,per*cw+12),height=top+rows*rowH+8;
   let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" font-family="'DM Mono',ui-monospace,Menlo,Consolas,monospace">`;
   if(o.bg)s+=`<rect width="${width}" height="${height}" fill="${P.bg}"/>`;
-  if(o.title){s+=`<text x="10" y="26" font-size="20" font-weight="700" fill="${P.ink}" font-family="'Zen Maru Gothic','Hiragino Sans',sans-serif">${esc(S.title||"無題")}</text><text x="10" y="44" font-size="11" fill="${P.sub}">${esc((TUNS[S.inst].find(t=>t[0]===S.tn)||TUNS[S.inst][0])[1])}  ${S.beats}/4  ♩=${S.bpm}</text>`}
+  if(o.title){s+=`<text x="10" y="26" font-size="20" font-weight="700" fill="${P.ink}" font-family="'Zen Maru Gothic','Hiragino Sans',sans-serif">${esc(S.title||"無題")}</text><text x="10" y="44" font-size="11" fill="${P.sub}">${esc((TUNS[S.inst].find(t=>t[0]===S.tn)||TUNS[S.inst][0])[1])}  ${S.beats}/${S.den}  ♩=${S.bpm}</text>`}
   if(!gs.length)s+=`<text x="12" y="${top+30}" font-size="13" fill="${P.sub}">TAB表示で数字を入れると、ここに押さえ方の図が出ます</text>`;
   gs.forEach((g,gi)=>{
     const r=Math.floor(gi/per),k=gi%per,x0=10+k*cw+22,y0=top+r*rowH+chH+22;
     const fs=g.notes.filter(x=>x.f>0).map(x=>x.f),mn=fs.length?Math.min(...fs):1,mx=fs.length?Math.max(...fs):1;
     const start=mx<=nF?1:mn,H=rowsOf(g)*dy;
+    const gx=x0-22,gy=top+r*rowH+4,gw=(n-1)*dx+44,gh2=rowH-8,selIdx=o.sel?o.sel.m*colCount()+o.sel.c:-1;
+    if(o.sel&&selIdx>=g.a&&selIdx<=g.z)s+=`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh2}" rx="8" fill="${P.hl}"/>`;
+    if(o.sel)s+=`<rect class="gh" data-m="${g.m0}" data-c="${g.c0}" x="${gx}" y="${gy}" width="${gw}" height="${gh2}" fill="transparent"/>`;
     s+=`<text x="${x0}" y="${top+r*rowH+chH}" font-size="14" font-weight="700" fill="${P.acc}">${esc(g.ch||("小節"+(g.m+1)))}</text>`;
     for(let i=0;i<n;i++)s+=`<line x1="${x0+i*dx}" y1="${y0}" x2="${x0+i*dx}" y2="${y0+H}" stroke="${P.line}" stroke-width="1" opacity=".75"/>`;
     for(let j=0;j<=H/dy;j++)s+=`<line x1="${x0}" y1="${y0+j*dy}" x2="${x0+(n-1)*dx}" y2="${y0+j*dy}" stroke="${P.line}" stroke-width="${j===0&&start===1?3:1}" opacity="${j===0&&start===1?1:.75}"/>`;
@@ -522,13 +535,50 @@ function diagramSvg(W,o){
 }
 const host=$("tabHost");let view="tab";
 let playPos=null;
+let dpos=1,colKey="";
+function fitWindow(){const fs=[];cell().forEach(v=>{if(v&&v!=="x")nums(v).forEach(f=>{if(f>0)fs.push(f)})});if(fs.length){const mn=Math.min(...fs),mx=Math.max(...fs);if(mn<dpos||mx>dpos+4)dpos=Math.max(1,mn)}}
+function drawEdit(){
+  const key=S.sel.m+","+S.sel.c;if(key!==colKey){colKey=key;fitWindow()}
+  const n=S.tun.length,dx=42,dy=38,x0=46,y0=46,nF=5,W=x0+(n-1)*dx+34,H=y0+nF*dy+30,P=PAL_UI,cl=cell();
+  let g=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="max-width:100%;height:auto;display:block;margin:0 auto" font-family="'DM Mono',ui-monospace,monospace">`;
+  for(let i=0;i<n;i++)g+=`<line x1="${x0+i*dx}" y1="${y0}" x2="${x0+i*dx}" y2="${y0+nF*dy}" stroke="${P.line}" stroke-width="${1+(n-1-i)*0.12}" opacity=".8"/>`;
+  for(let j=0;j<=nF;j++)g+=`<line x1="${x0}" y1="${y0+j*dy}" x2="${x0+(n-1)*dx}" y2="${y0+j*dy}" stroke="${P.line}" stroke-width="${j===0&&dpos===1?5:1}" opacity="${j===0&&dpos===1?1:.8}"/>`;
+  for(let j=0;j<nF;j++)g+=`<text x="${x0-16}" y="${y0+(j+.5)*dy+4}" font-size="12" text-anchor="end" fill="${P.sub}">${dpos+j}</text>`;
+  for(let i=0;i<n;i++){
+    const x=x0+i*dx,v=cl[i];
+    for(let j=0;j<nF;j++)g+=`<circle cx="${x}" cy="${y0+(j+.5)*dy}" r="13" fill="${P.ink}" opacity=".06"/>`;
+    if(v==="x")g+=`<text x="${x}" y="${y0-14}" font-size="18" text-anchor="middle" fill="${P.ink}">×</text>`;
+    else if(v&&nums(v).includes(0))g+=`<circle cx="${x}" cy="${y0-17}" r="7" fill="none" stroke="${P.ink}" stroke-width="2"/>`;
+    else g+=`<circle cx="${x}" cy="${y0-17}" r="7" fill="none" stroke="${P.ink}" stroke-width="1" stroke-dasharray="2 3" opacity=".3"/>`;
+    if(v&&v!=="x"){const fs=nums(v).filter(f=>f>0);fs.forEach(f=>{
+      if(f>=dpos&&f<dpos+nF){const cy=y0+(f-dpos+.5)*dy;g+=`<circle cx="${x}" cy="${cy}" r="14" fill="${P.acc}"/><text x="${x}" y="${cy+4}" font-size="12" font-weight="700" text-anchor="middle" fill="#fff">${f}</text>`}
+      else g+=`<text x="${x}" y="${y0-30}" font-size="11" text-anchor="middle" fill="${P.acc}">${f}${f<dpos?"▲":"▼"}</text>`})}
+    g+=`<text x="${x}" y="${y0+nF*dy+20}" font-size="11" text-anchor="middle" fill="${P.sub}">${esc(sname(i))}</text>`;
+    g+=`<rect class="e" data-s="${i}" data-f="m" x="${x-dx/2}" y="${y0-36}" width="${dx}" height="32" fill="transparent"/>`;
+    for(let j=0;j<nF;j++)g+=`<rect class="e" data-s="${i}" data-f="${dpos+j}" x="${x-dx/2}" y="${y0+j*dy}" width="${dx}" height="${dy}" fill="transparent"/>`;
+  }
+  $("dSvg").innerHTML=g+"</svg>";
+  const lab=S.ms[S.sel.m].ch[S.sel.c];
+  $("dWhere").textContent="小節"+(S.sel.m+1)+" ・ "+(S.sel.c+1)+"マス目"+(lab?" ・ "+lab:"");
+  $("dPosLab").textContent=dpos+"〜"+(dpos+nF-1)+"フレット";
+}
+$("dSvg").addEventListener("click",e=>{
+  const r=e.target.closest(".e");if(!r)return;const si=+r.dataset.s,f=r.dataset.f,cur=cell()[si];
+  S.sel.s=si;let nv;
+  if(f==="m"){nv=cur==="0"?"x":cur==="x"?"":"0"}
+  else nv=cur===f?"":f;
+  snap();cell()[si]=nv;persist();draw();if(nv&&nv!=="x")soundCell(si);
+});
+$("dPrev").addEventListener("click",()=>move(-1,0));$("dNext").addEventListener("click",()=>move(1,0));
+$("dUp").addEventListener("click",()=>{dpos=Math.max(1,dpos-(dpos>4?4:dpos-1));drawEdit()});
+$("dDown").addEventListener("click",()=>{dpos=Math.min(20,dpos+4);drawEdit()});
 function draw(){
-  if(view==="dia")host.innerHTML=diagramSvg(Math.max(280,host.clientWidth-4),{pal:PAL_UI});
-  else host.innerHTML=layout(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel,play:playPos,hit:true});
+  if(view==="dia"){$("diaEdit").hidden=false;drawEdit();host.innerHTML=diagramSvg(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel})}
+  else{$("diaEdit").hidden=true;host.innerHTML=layout(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel,play:playPos,hit:true})}
 }
 document.querySelectorAll("#viewSeg button").forEach(b=>b.addEventListener("click",()=>{
   view=b.dataset.v;document.querySelectorAll("#viewSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
-  $("pad").hidden=view==="dia";$("viewNote").hidden=view!=="dia";draw();
+  $("pad").hidden=view==="dia";draw();
 }));
 new ResizeObserver(()=>{if(!playPos)draw()}).observe(host);
 
@@ -583,7 +633,7 @@ function key(k){
   if(k==="del"){if(cur)setCell("");else move(-1,0);return}
   if(k==="left")move(-1,0);else if(k==="right")move(1,0);else if(k==="up")move(0,1);else if(k==="down")move(0,-1);
 }
-host.addEventListener("click",e=>{const r=e.target.closest(".h");if(!r)return;const m=+r.dataset.m,c=+r.dataset.c,s=+r.dataset.s;
+host.addEventListener("click",e=>{const gq=e.target.closest(".gh");if(gq){setSel(+gq.dataset.m,+gq.dataset.c,S.sel.s);return}const r=e.target.closest(".h");if(!r)return;const m=+r.dataset.m,c=+r.dataset.c,s=+r.dataset.s;
   if(s>=0){S.sel={m,c,s};$("cLab").value=S.ms[m].ch[c]||"";draw();soundCell(s)}else{S.sel={m,c,s:S.sel.s};draw();$("cLab").value=S.ms[m].ch[c]||"";$("cLab").focus()}
   if(s>=0)host.focus({preventScroll:true});
 });
@@ -615,23 +665,23 @@ function chordFrets(rp,type,pos){
   }
   return null;
 }
-function bassNotes(rp){ /* [弦, フレット] ルート→5度→オクターブ */
+function bassNotes(rp,fifth){ /* [弦, フレット] ルート→5度→オクターブ */
   const t=S.tun,n=t.length;let s0=0,f0=pc(rp-t[0]);
   if(f0>7&&n>1){s0=1;f0=pc(rp-t[1])}
   const out=[[s0,f0]];
-  if(s0+1<n){const f5=pc(rp+7-t[s0+1]);out.push([s0+1,f5<f0-2?f5+12:f5>f0+4&&f5-12>=0?f5-12:f5])}
+  if(s0+1<n){const f5=pc(rp+(fifth||7)-t[s0+1]);out.push([s0+1,f5<f0-2?f5+12:f5>f0+4&&f5-12>=0?f5-12:f5])}
   if(s0+2<n){const fo=pc(rp-t[s0+2]);out.push([s0+2,fo+(fo<f0?12:0)])}
   return out;
 }
 function insertChord(){
-  const rp=+$("cRoot").value,ty=TYPES[+$("cType").value][0],name=NN[rp]+ty;
+  const rp=+$("cRoot").value,TY=TYPES[+$("cType").value],ty=TY[0],name=NN[rp]+ty;
   const {m,c}=S.sel;const way=$("cWay").value;
   let notes=[];
   if(S.inst==="gt"){
     const fr=chordFrets(rp,ty,$("cPos").value);
     if(!fr){$("cMsg").textContent="コードの入力は、ギターのレギュラーチューニングのときに使えます。";return}
     fr.forEach((f,i)=>{if(f>=0)notes.push([i,f])});
-  }else notes=bassNotes(rp).map(x=>x);
+  }else notes=bassNotes(rp,TY[2]).map(x=>x);
   snap();
   const arp=way==="arp"||S.inst!=="gt"&&false;
   const place=(mi,ci,si,f)=>{if(mi<S.ms.length&&ci<colCount())S.ms[mi].c[ci][si]=String(f)};
@@ -649,6 +699,35 @@ function insertChord(){
 }
 $("cIns").addEventListener("click",insertChord);
 
+
+/* ===== コード推定 ===== */
+const IVS=[["",[0,4,7]],["m",[0,3,7]],["7",[0,4,7,10]],["m7",[0,3,7,10]],["M7",[0,4,7,11]],["6",[0,4,7,9]],["m6",[0,3,7,9]],["9",[0,4,7,10,2]],["m9",[0,3,7,10,2]],["M9",[0,4,7,11,2]],["add9",[0,4,7,2]],["sus4",[0,5,7]],["sus2",[0,2,7]],["7sus4",[0,5,7,10]],["dim",[0,3,6]],["dim7",[0,3,6,9]],["aug",[0,4,8]],["m7(b5)",[0,3,6,10]],["5",[0,7]]];
+function estChord(midis){
+  const w=Array(12).fill(0);midis.forEach(x=>w[pc(x)]+=1);
+  const low=Math.min(...midis),bass=pc(low);w[bass]+=0.5;
+  const total=w.reduce((a,b)=>a+b,0),pcs=w.filter(x=>x>0).length;if(pcs<2)return null;
+  let best=null;
+  for(let r=0;r<12;r++)for(const [name,ivs] of IVS){
+    const set=new Set(ivs.map(x=>pc(r+x)));let inn=0;set.forEach(p=>inn+=w[p]);
+    const out=total-inn,miss=ivs.filter(x=>x!==7&&w[pc(r+x)]===0).length;
+    const sc=inn-1.3*out-0.7*miss-0.05*ivs.length+(bass===r?1.6:set.has(bass)?0.2:-0.8)+(name==="5"?-0.25:0);
+    if(!best||sc>best.sc)best={sc,r,name,set,inn,total};
+  }
+  if(!best||best.inn/best.total<0.62)return null;
+  return NN[best.r]+best.name+((bass!==best.r&&best.set.has(bass))?"/"+NN[bass]:"");
+}
+$("eBtn").addEventListener("click",()=>{
+  const cols=colCount(),unit=+$("eUnit").value,len=unit===0?cols:Math.max(1,unit*S.sub);
+  snap();let done=[],skip=0;
+  S.ms.forEach((m,mi)=>{for(let a=0;a<cols;a+=len){
+    const midis=[];for(let c=a;c<Math.min(cols,a+len);c++)m.c[c].forEach((v,si)=>{if(v&&v!=="x")nums(v).forEach(f=>midis.push(S.tun[si]+f))});
+    if(!midis.length)continue;
+    const name=estChord(midis);
+    if(name){m.ch[a]=name;for(let c=a+1;c<Math.min(cols,a+len);c++)delete m.ch[c];done.push(name)}else skip++;
+  }});
+  persist();draw();$("cLab").value=S.ms[S.sel.m].ch[S.sel.c]||"";
+  $("cMsg").textContent=done.length?("コードを推定しました: "+done.slice(0,10).join(" → ")+(done.length>10?" …":"")+(skip?"(判定できなかった所が"+skip+"か所)":"")+" ※目安です。違うときはコード名の欄で直せます"):"推定できる音の組み合わせがありませんでした(2音以上が必要です)";
+});
 /* ===== 小節の操作 ===== */
 function mop(fn){snap();fn();if(S.sel.m>=S.ms.length)S.sel.m=S.ms.length-1;persist();draw()}
 $("mAdd").addEventListener("click",()=>mop(()=>S.ms.push(newMeasure())));
@@ -665,12 +744,12 @@ function fillChord(){
 }
 function syncUI(){
   document.querySelectorAll("#instSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.i===S.inst?"true":"false"));
-  fillTunings();$("beats").value=S.beats;$("sub").value=S.sub;$("bpm").value=S.bpm;$("ttl").value=S.title;
+  fillTunings();$("beats").value=S.beats;$("den").value=S.den;fillSub();$("sub").value=S.sub;$("bpm").value=S.bpm;$("ttl").value=S.title;
   $("cPosBox").hidden=S.inst!=="gt";$("cWayBox").hidden=false;$("cLab").value=(S.ms[S.sel.m]&&S.ms[S.sel.m].ch[S.sel.c])||"";
 }
 function rebuild(keep){ /* 弦数・列数が変わったときに、できるだけ内容を引き継ぐ */
-  const old=JSON.parse(dump()),inst=S.inst,tn=S.tn,beats=S.beats,sub=S.sub;
-  const o={...old,inst,tn,beats,sub};
+  const old=JSON.parse(dump()),inst=S.inst,tn=S.tn,beats=S.beats,den=S.den,sub=S.sub;
+  const o={...old,inst,tn,beats,den,sub};
   const oldN=old.ms[0]?old.ms[0].c[0].length:0;
   /* 弦数が変わる(ギター⇔ベース)ときは、数字は引き継がない */
   const sameStr=oldN===TUNS[inst][0][2].length;
@@ -683,6 +762,8 @@ document.querySelectorAll("#instSeg button").forEach(b=>b.addEventListener("clic
 }));
 $("tuning").addEventListener("change",()=>{snap();S.tn=$("tuning").value;S.tun=tunArr();draw();persist()});
 $("beats").addEventListener("change",()=>{snap();S.beats=+$("beats").value;rebuildCols()});
+$("den").addEventListener("change",()=>{snap();S.den=+$("den").value;fillSub();$("sub").value=S.sub;persist();draw()});
+function fillSub(){const d=S.den;$("sub").innerHTML=[1,2,4].map(k=>`<option value="${k}">${d*k}分音符ごと</option>`).join("")}
 $("sub").addEventListener("change",()=>{snap();S.sub=+$("sub").value;rebuildCols()});
 function rebuildCols(){
   const cols=colCount(),n=S.tun.length;
@@ -708,7 +789,7 @@ let playTimer=null,playEnd=0;
 function stopPlay(){clearInterval(playTimer);playTimer=null;playPos=null;$("playBtn").textContent="▶ 再生";draw()}
 function startPlay(){
   const ctx=ac();if(!ctx){$("saveMsg").textContent="このブラウザは、音の再生に対応していません。";return}
-  const cols=colCount(),dur=60/S.bpm/S.sub,t0=ctx.currentTime+.12;let any=false;
+  const cols=colCount(),dur=60/S.bpm*4/S.den/S.sub,t0=ctx.currentTime+.12;let any=false;
   S.ms.forEach((m,mi)=>m.c.forEach((col,ci)=>{
     const tt=t0+(mi*cols+ci)*dur;
     col.forEach((v,si)=>{const ns=nums(v);if(!ns.length)return;any=true;
@@ -732,7 +813,7 @@ function bufsStop(){if(AC){try{AC.close()}catch(e){}AC=null;bufs={}}}
 /* ===== 書き出し ===== */
 function textTab(){
   const n=S.tun.length,cols=colCount(),cw=3,mw=cols*cw+1,per=Math.max(1,Math.floor(66/mw));
-  let out=(S.title?S.title+"\n":"")+(TUNS[S.inst].find(t=>t[0]===S.tn)||TUNS[S.inst][0])[1]+"  "+S.beats+"/4  BPM "+S.bpm+"\n\n";
+  let out=(S.title?S.title+"\n":"")+(TUNS[S.inst].find(t=>t[0]===S.tn)||TUNS[S.inst][0])[1]+"  "+S.beats+"/"+S.den+"  BPM "+S.bpm+"\n\n";
   for(let a=0;a<S.ms.length;a+=per){
     const grp=S.ms.slice(a,a+per),ch=Array(2+grp.length*mw).fill(" ");let end=0;
     grp.forEach((m,k)=>{for(let c=0;c<cols;c++){const lab=m.ch[c];if(!lab)continue;let p=Math.max(2+k*mw+c*cw,end);for(const x of lab)ch[p++]=x;end=p+1}});
@@ -765,7 +846,7 @@ $("jsonFile").addEventListener("change",async()=>{const f=$("jsonFile").files[0]
 });
 $("jsonPick").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("jsonFile").click()}});
 $("clrBtn").addEventListener("click",()=>{if(!S.ms.some(m=>m.c.some(c=>c.some(v=>v))||Object.keys(m.ch).length)){return}
-  snap();const keep={inst:S.inst,tn:S.tn,beats:S.beats,sub:S.sub,bpm:S.bpm,title:S.title};normalize({...keep,ms:[]});syncUI();draw();persist();$("saveMsg").textContent="全部消しました(「元に戻す」で戻せます)";});
+  snap();const keep={inst:S.inst,tn:S.tn,beats:S.beats,den:S.den,sub:S.sub,bpm:S.bpm,title:S.title};normalize({...keep,ms:[]});syncUI();draw();persist();$("saveMsg").textContent="全部消しました(「元に戻す」で戻せます)";});
 
 fillChord();syncUI();draw();
 $("cRoot").value="0";
