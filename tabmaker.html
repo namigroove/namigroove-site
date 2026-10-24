@@ -355,6 +355,11 @@ header.top .logo{flex:none}
       <button class="btn" type="button" id="redoBtn">やり直す</button>
     </div>
     <div class="acts">
+      <button class="btn" type="button" id="colCopy">この列をコピー</button>
+      <button class="btn" type="button" id="colPaste">貼り付け</button>
+      <button class="btn" type="button" id="colPasteNext">貼り付けて次へ</button>
+    </div>
+    <div class="acts">
       <button class="btn" type="button" id="mAdd">小節を足す</button>
       <button class="btn" type="button" id="mIns">ここに小節を入れる</button>
       <button class="btn" type="button" id="mDup">小節を複製</button>
@@ -387,6 +392,7 @@ header.top .logo{flex:none}
       <li>「TABからコードを推定」は、書いた音の組み合わせからコード名を推し量って、TABの上に入れます。小節ごと・1拍ごと・2拍ごとから選べます。ベース音がルートになりやすい前提で、分数コード(C/Eなど)も出ます。あくまで目安なので、違うときはコード名の欄で直してください。</li>
       <li>ジャムモードの「TAB譜(ギター)」「TAB譜(ベース)」から来たときは、その進行がコード名つきで入ります(ほかのTABは「元に戻す」で戻せます)。分数コードや、ベースが特殊なコードの押さえ方は、近い形で入るので確認して直してください。</li>
       <li>「×ブラッシング」は、選んだマスの全部の弦に「x」(ミュート)を入れます。コードを刻むあいだの「ザッ」という音(カッティング)の場所に使います。「入れ方」がアルペジオのときは、低い弦から順に右のマスへ並びます。再生では、短い「ザッ」というノイズが鳴ります。</li>
+      <li>「この列をコピー」は、選んだマスの押さえ方(全部の弦の数字と、コード名)を覚えます。「貼り付け」で選んだマスに入り、「貼り付けて次へ」は貼ったあと右のマスに進むので、同じ形を続けて置くときに便利です。パソコンでは Ctrl(Mac は ⌘)+C / V でも同じです。</li>
       <li>「小節を足す」は最後に、「ここに小節を入れる」は選んだ小節の前に空の小節を入れます。「小節を複製」は、選んだ小節のすぐ後ろにコピーを入れます。</li>
       <li>再生は、選んだ場所からではなく先頭から鳴らします。音はギターやベースの弦をはじいたような音で、実際の音色とは違います。</li>
       <li>画像(PNG)はそのままSNSに貼れます。テキストは、メモやチャットに貼れる文字のTABです(幅をそろえる等幅フォントで見てください)。「作業ファイル」は、あとで続きを書くための保存で、このツールで開けます。</li>
@@ -677,7 +683,7 @@ host.addEventListener("click",e=>{const gq=e.target.closest(".gh");if(gq){setSel
 });
 document.addEventListener("keydown",e=>{
   const t=e.target,tag=t&&t.tagName;
-  if((e.ctrlKey||e.metaKey)&&!/INPUT|SELECT|TEXTAREA/.test(tag||"")){const k=e.key.toLowerCase();if(k==="z"){e.preventDefault();e.shiftKey?doRedo():doUndo();return}if(k==="y"){e.preventDefault();doRedo();return}}
+  if((e.ctrlKey||e.metaKey)&&!/INPUT|SELECT|TEXTAREA/.test(tag||"")){const k=e.key.toLowerCase();if(k==="z"){e.preventDefault();e.shiftKey?doRedo():doUndo();return}if(k==="y"){e.preventDefault();doRedo();return}if(k==="c"){e.preventDefault();copyCol();return}if(k==="v"){e.preventDefault();pasteCol(false);return}}
   if(/INPUT|SELECT|TEXTAREA/.test(tag||"")||e.ctrlKey||e.metaKey||e.altKey||(t&&t.getAttribute&&t.getAttribute("role")==="spinbutton"))return;
   const map={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",Backspace:"del",Delete:"del",Enter:"right"," ":"right"};
   let k=map[e.key]||(e.key.length===1?e.key.toLowerCase():null);if(!k)return;
@@ -839,6 +845,21 @@ $("eBtn").addEventListener("click",()=>{
   persist();draw();$("cLab").value=S.ms[S.sel.m].ch[S.sel.c]||"";
   $("cMsg").textContent=done.length?("コードを推定しました: "+done.slice(0,10).join(" → ")+(done.length>10?" …":"")+(skip?"(判定できなかった所が"+skip+"か所)":"")+" ※目安です。違うときはコード名の欄で直せます"):"推定できる音の組み合わせがありませんでした(2音以上が必要です)";
 });
+/* ===== 列のコピー・貼り付け ===== */
+let colClip=null;
+function copyCol(){colClip={cells:cell().slice(),ch:S.ms[S.sel.m].ch[S.sel.c]||"",n:S.tun.length};
+  const used=colClip.cells.filter(v=>v).length;
+  $("cMsg").textContent=used||colClip.ch?"小節"+(S.sel.m+1)+"の"+(S.sel.c+1)+"マス目をコピーしました("+used+"本の弦"+(colClip.ch?"、"+colClip.ch:"")+")":"空のマスをコピーしました"}
+function pasteCol(next){
+  if(!colClip){$("cMsg").textContent="先に「この列をコピー」を押してください";return}
+  if(colClip.n!==S.tun.length){$("cMsg").textContent="弦の数が違うので貼り付けられません(ギターとベースの間)";return}
+  snap();const m=S.ms[S.sel.m];m.c[S.sel.c]=colClip.cells.slice();
+  if(colClip.ch)m.ch[S.sel.c]=colClip.ch;else delete m.ch[S.sel.c];
+  $("cLab").value=colClip.ch||"";persist();
+  if(next)move(1,0);else draw();
+  $("cMsg").textContent="貼り付けました"+(colClip.ch?"("+colClip.ch+")":"");
+}
+$("colCopy").addEventListener("click",copyCol);$("colPaste").addEventListener("click",()=>pasteCol(false));$("colPasteNext").addEventListener("click",()=>pasteCol(true));
 /* ===== 小節の操作 ===== */
 function mop(fn){snap();fn();if(S.sel.m>=S.ms.length)S.sel.m=S.ms.length-1;persist();draw()}
 $("mAdd").addEventListener("click",()=>mop(()=>S.ms.push(newMeasure())));
