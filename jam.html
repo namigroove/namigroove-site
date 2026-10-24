@@ -302,6 +302,8 @@ header.top .logo{flex:none}
     <div class="row" style="gap:10px">
       <button class="go" type="button" id="jPlay">▶ ジャム開始</button>
       <button class="btn" type="button" id="jMidi">⬇ MIDI(ドラム入り)</button>
+      <button class="btn" type="button" id="jTabG">TAB譜(ギター)</button>
+      <button class="btn" type="button" id="jTabB">TAB譜(ベース)</button>
       <button class="btn" type="button" id="jShare">🔗 共有</button>
     </div>
   </section>
@@ -332,6 +334,7 @@ header.top .logo{flex:none}
     <ul>
       <li>進行をえらんで「ジャム開始」。「✏️ 自分で作る」では、コードを1つずつ選んでオリジナルの進行でジャムできます(最大16コード)。再生中にリズム・キー・テンポを変えると、次の小節から切り替わります。</li>
       <li>リズムは「定番」「ダンス・クラブ」「ソウル・ジャズ・ヒップホップ」「ネット・DTM」「ラテン・ワールド」「3拍子・変拍子」の6つに分けて、全部で36種類。ベースと鍵盤の刻みもリズムに合わせて変わります。MIDIにも拍子が入ります。ジャズはベースが4分音符で歩きます(ウォーキングベース)。</li>
+      <li>「TAB譜(ギター)」「TAB譜(ベース)」を押すと、いま選んでいる進行・キー・テンポ・拍子のコード名と押さえ方が入った状態で、<a href="tabmaker.html">TAB譜メーカー</a>が開きます。ギターはコードごとに押さえ方を、ベースはルート・5度・オクターブを並べます。押さえ方はTAB譜メーカーで自由に直せます。</li>
       <li>「MIDI(ドラム入り)」で、鍵盤・ベース・ドラム(GMドラム配列・10ch)の3トラックを書き出します。DAWに読み込んで、そのまま曲づくりに使えます。</li>
       <li>アドリブの練習にも。スケールは <a href="scales.html">スケール表</a> で確認できます。</li>
     </ul>
@@ -477,6 +480,16 @@ function midi(){
   a.download=("namigroove_jam_"+(useMy?"my":LIST[pi].n)+"_"+KEYN[key]+"_"+ST[style].n+"_"+bpm+"bpm").replace(/[\\/:*?"<>|\s]+/g,"_")+".mid";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
 }
 $("jMidi").onclick=midi;
+/* 進行をTAB譜メーカーに渡す(コード名・小節の位置・拍子・テンポ。押さえ方はTAB譜メーカー側で作る) */
+function toTab(inst){
+  prepare();if(playing)stop();
+  const S=ST[style],P=cur(),T=chordTL(),bar=SB(S),ts=S.ts||[4,4];
+  const chords=P.c.map((c,i)=>({name:chName(c),root:pc(c[0]+key),type:c[1],bass:c[2]!=null?pc(c[2]+key):null,start:T.st[i],len:T.L[i]}));
+  store.set("tabFromJam",{inst,title:P.n+"(キー"+KEYN[key]+")",bpm,ts:[ts[0],ts[1]],bar,ns:T.ns,chords});
+  if(window.ngTrack)ngTrack("jam_tab",{label:inst});
+  location.href="tabmaker.html#jam";
+}
+$("jTabG").onclick=()=>toTab("gt");$("jTabB").onclick=()=>toTab("b4");
 
 /* ---------- 画面 ---------- */
 function renderNow(){const P=cur();$("jTitle").textContent=P.n+"(キー"+KEYN[key]+")";$("jChips").innerHTML=P.c.map((c,i)=>`<span${P.ln&&P.ln[i]<1?' class="hf" title="半分の長さ"':""}>${chName(c)}</span>`).join("");}

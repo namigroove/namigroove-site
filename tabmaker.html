@@ -376,6 +376,7 @@ header.top .logo{flex:none}
       <li>「押さえ方の図」にすると、書いた内容が指板の図(コード表のような丸の図)で見られます。上の大きな指板をタップすると、選んだマスの押さえ方をそのまま入力できます(丸をもう一度タップで消えます)。コード名ごとに1つの図にまとまり、アルペジオのときは弾く順の番号が丸の中に出ます。PNG保存も、いま見ている表示のままの画像になります。</li>
       <li>押さえ方は、開放弦を使う基本の形と、6弦・5弦ルートのバレーコードの形です。ギターのチューニングがレギュラーのときだけ使えます。</li>
       <li>「TABからコードを推定」は、書いた音の組み合わせからコード名を推し量って、TABの上に入れます。小節ごと・1拍ごと・2拍ごとから選べます。ベース音がルートになりやすい前提で、分数コード(C/Eなど)も出ます。あくまで目安なので、違うときはコード名の欄で直してください。</li>
+      <li>ジャムモードの「TAB譜(ギター)」「TAB譜(ベース)」から来たときは、その進行がコード名つきで入ります(ほかのTABは「元に戻す」で戻せます)。分数コードや、ベースが特殊なコードの押さえ方は、近い形で入るので確認して直してください。</li>
       <li>「小節を足す」は最後に、「ここに小節を入れる」は選んだ小節の前に空の小節を入れます。「小節を複製」は、選んだ小節のすぐ後ろにコピーを入れます。</li>
       <li>再生は、選んだ場所からではなく先頭から鳴らします。音はギターやベースの弦をはじいたような音で、実際の音色とは違います。</li>
       <li>画像(PNG)はそのままSNSに貼れます。テキストは、メモやチャットに貼れる文字のTABです(幅をそろえる等幅フォントで見てください)。「作業ファイル」は、あとで続きを書くための保存で、このツールで開けます。</li>
@@ -848,7 +849,34 @@ $("jsonPick").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.
 $("clrBtn").addEventListener("click",()=>{if(!S.ms.some(m=>m.c.some(c=>c.some(v=>v))||Object.keys(m.ch).length)){return}
   snap();const keep={inst:S.inst,tn:S.tn,beats:S.beats,den:S.den,sub:S.sub,bpm:S.bpm,title:S.title};normalize({...keep,ms:[]});syncUI();draw();persist();$("saveMsg").textContent="全部消しました(「元に戻す」で戻せます)";});
 
-fillChord();syncUI();draw();
+
+/* ===== ジャムモードから受け取る ===== */
+const JAMMAP={"":"","m":"m","7":"7","m7":"m7","M7":"M7","M9":"M9","m9":"m9","7(♭9)":"7","9":"9","13":"9","m6":"m6","m7(♭5)":"m7(b5)","M7(♯11)":"M7","dim7":"dim7","7sus4":"7sus4","add9":"add9","m11":"m9","dim":"dim","9sus4":"7sus4","6":"6","sus4":"sus4","aug":"aug","madd9":"m","mM7":"m","7(♯9)":"7","7(♯5)":"7","6/9":"6","sus2":"sus2","7(♯11)":"7"};
+function importJam(){
+  const P=store.get("tabFromJam",null);if(!P||!P.chords||!P.chords.length)return false;
+  snap();
+  const ts=P.ts||[4,4],den=[2,4,8,16].includes(+ts[1])?+ts[1]:4,beats=Math.max(1,Math.min(12,+ts[0]||4)),sub=den>=8?1:2;
+  const spc=16/(den*sub),inst=P.inst==="b4"?"b4":"gt";
+  normalize({inst,tn:"std",beats,den,sub,bpm:Math.max(40,Math.min(240,+P.bpm||100)),title:String(P.title||""),ms:[]});
+  const cols=colCount(),bar=P.bar||16,nm=Math.max(1,Math.min(200,Math.ceil((P.ns||bar)/bar)));
+  S.ms=[];for(let i=0;i<nm;i++)S.ms.push(newMeasure());
+  const pos=P.chords.map(c=>{const m=Math.floor(c.start/bar),st=c.start%bar;return{m:Math.min(nm-1,m),c:Math.max(0,Math.min(cols-1,Math.round(st/spc))),ch:c}});
+  pos.forEach((p,i)=>{
+    const c=p.ch,ty=JAMMAP[c.type]!=null?JAMMAP[c.type]:"";const TY=TYPES.find(t=>t[0]===ty)||TYPES[0];
+    S.ms[p.m].ch[p.c]=c.name;
+    const next=pos[i+1],limit=next?next.m*cols+next.c:nm*cols;
+    let notes=null;
+    if(inst==="gt"){const fr=chordFrets(c.root,TY[0],"auto");if(fr){notes=[];fr.forEach((f,si)=>{if(f>=0)notes.push([si,f])});notes.forEach(([si,f])=>{S.ms[p.m].c[p.c][si]=String(f)})}}
+    else{notes=bassNotes(c.bass!=null?c.bass:c.root,TY[2]);let idx=p.m*cols+p.c;notes.sort((a,b)=>a[0]-b[0]).forEach(([si,f],k)=>{const j=idx+k;if(j<limit&&j<nm*cols)S.ms[Math.floor(j/cols)].c[j%cols][si]=String(f)})}
+  });
+  S.sel={m:0,c:0,s:S.tun.length-1};
+  try{localStorage.removeItem("ngTools.tabFromJam")}catch(e){}
+  try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+  persist();syncUI();draw();
+  $("cMsg").textContent="ジャムモードの進行を読み込みました("+P.chords.length+"コード・"+nm+"小節)。ギターはコードごとの押さえ方を、ベースはルート・5度・オクターブを入れています。以前のTABは「元に戻す」で戻せます。";
+  return true;
+}
+fillChord();syncUI();draw();if(/^#jam/.test(location.hash))importJam();
 $("cRoot").value="0";
 const sb=$("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{
