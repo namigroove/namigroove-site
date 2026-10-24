@@ -335,7 +335,7 @@ header.top .logo{flex:none}
       <p class="note-s" style="text-align:left;margin:8px 0 4px">指板の丸をタップすると、選んだマスのその弦に、その場所を入れます(もう一度タップで消えます)。上の○と×の欄は、タップするたびに「開放弦○ → 弾かない× → なし」と変わります。</p>
       <div class="row"><button class="btn" type="button" id="dPrev">◀ 前のマス</button><span class="note-s" id="dWhere" style="margin:0"></span><button class="btn" type="button" id="dNext">次のマス ▶</button></div>
       <div class="dedit" id="dSvg"></div>
-      <div class="row"><button class="btn" type="button" id="dUp">▲ ナットのほうへ</button><span class="note-s" id="dPosLab" style="margin:0"></span><button class="btn" type="button" id="dDown">高いフレットへ ▼</button></div>
+      <div class="row"><button class="btn" type="button" id="dUp">1〜12フレット</button><span class="note-s" id="dPosLab" style="margin:0"></span><button class="btn" type="button" id="dDown">13〜24フレット</button></div>
       <p class="note-s" style="text-align:left;margin:8px 0 0">下は、書いた内容の全体の図です。図をタップすると、そのコードの最初のマスが選ばれます。コード名がある場合は、次のコード名まで1つの図にまとめます。</p>
     </div>
     <div class="tabhost" id="tabHost" tabindex="0" aria-label="TAB譜(矢印キーで移動、数字で入力)"></div>
@@ -412,7 +412,7 @@ header.top .logo{flex:none}
 .pad{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px;max-width:380px;margin-left:auto;margin-right:auto}
 .pad button{font:600 17px var(--f-mono);padding:11px 0;border-radius:12px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .pad button:active{background:var(--wash)}
-.dedit{margin:10px auto;max-width:360px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.dedit{margin:10px auto;max-width:380px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .dedit .e{cursor:pointer}
 .mt-ts{display:inline-flex;align-items:center;gap:6px}.mt-sp{display:inline-flex;align-items:center;gap:3px}.mt-ar{display:flex;flex-direction:column;gap:2px}.mt-ar button{width:30px;height:20px;padding:0;border:1px solid var(--line);border-radius:6px;background:var(--chip);color:var(--ink-soft);font-size:10px;line-height:1;cursor:pointer;touch-action:manipulation}.mt-ar button:active{background:var(--sea);color:#fff}
 .mt-n{display:inline-block;min-width:2ch;padding:4px 8px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font:700 18px var(--f-display,var(--f-mono));text-align:center;cursor:ns-resize;touch-action:none;user-select:none}.mt-n:focus-visible{outline:2px solid var(--sea)}
@@ -564,22 +564,25 @@ function diagramSvg(W,o){
 const host=$("tabHost");let view="tab";
 let playPos=null;
 let dpos=1,colKey="";
-function fitWindow(){const fs=[];cell().forEach(v=>{if(v&&v!=="x")nums(v).forEach(f=>{if(f>0)fs.push(f)})});if(fs.length){const mn=Math.min(...fs),mx=Math.max(...fs);if(mn<dpos||mx>dpos+4)dpos=Math.max(1,mn)}}
+function fitWindow(){const fs=[];cell().forEach(v=>{if(v&&v!=="x")nums(v).forEach(f=>{if(f>0)fs.push(f)})});if(fs.length){const mn=Math.min(...fs);dpos=mn>12?13:1}}
 function drawEdit(){
   const key=S.sel.m+","+S.sel.c;if(key!==colKey){colKey=key;fitWindow()}
-  const n=S.tun.length,dx=42,dy=38,x0=46,y0=46,nF=5,W=x0+(n-1)*dx+34,H=y0+nF*dy+30,P=PAL_UI,cl=cell();
+  const n=S.tun.length,dx=42,dy=31,x0=46,y0=46,nF=12,W=x0+(n-1)*dx+34,H=y0+nF*dy+30,P=PAL_UI,cl=cell();
   let g=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="max-width:100%;height:auto;display:block;margin:0 auto" font-family="'DM Mono',ui-monospace,monospace">`;
   for(let i=0;i<n;i++)g+=`<line x1="${x0+i*dx}" y1="${y0}" x2="${x0+i*dx}" y2="${y0+nF*dy}" stroke="${P.line}" stroke-width="${1+(n-1-i)*0.12}" opacity=".8"/>`;
   for(let j=0;j<=nF;j++)g+=`<line x1="${x0}" y1="${y0+j*dy}" x2="${x0+(n-1)*dx}" y2="${y0+j*dy}" stroke="${P.line}" stroke-width="${j===0&&dpos===1?5:1}" opacity="${j===0&&dpos===1?1:.8}"/>`;
-  for(let j=0;j<nF;j++)g+=`<text x="${x0-16}" y="${y0+(j+.5)*dy+4}" font-size="12" text-anchor="end" fill="${P.sub}">${dpos+j}</text>`;
+  for(let j=0;j<nF;j++){const fn=dpos+j;g+=`<text x="${x0-16}" y="${y0+(j+.5)*dy+4}" font-size="12" text-anchor="end" fill="${P.sub}">${fn}</text>`;
+    const mid=x0+(n-1)*dx/2,iy=y0+(j+.5)*dy;
+    if([3,5,7,9,15,17,19,21].includes(fn))g+=`<circle cx="${mid}" cy="${iy}" r="4" fill="${P.sub}" opacity=".18"/>`;
+    else if(fn===12||fn===24)g+=`<circle cx="${mid-dx}" cy="${iy}" r="4" fill="${P.sub}" opacity=".18"/><circle cx="${mid+dx}" cy="${iy}" r="4" fill="${P.sub}" opacity=".18"/>`}
   for(let i=0;i<n;i++){
     const x=x0+i*dx,v=cl[i];
-    for(let j=0;j<nF;j++)g+=`<circle cx="${x}" cy="${y0+(j+.5)*dy}" r="13" fill="${P.ink}" opacity=".06"/>`;
+    for(let j=0;j<nF;j++)g+=`<circle cx="${x}" cy="${y0+(j+.5)*dy}" r="11" fill="${P.ink}" opacity=".06"/>`;
     if(v==="x")g+=`<text x="${x}" y="${y0-14}" font-size="18" text-anchor="middle" fill="${P.ink}">×</text>`;
     else if(v&&nums(v).includes(0))g+=`<circle cx="${x}" cy="${y0-17}" r="7" fill="none" stroke="${P.ink}" stroke-width="2"/>`;
     else g+=`<circle cx="${x}" cy="${y0-17}" r="7" fill="none" stroke="${P.ink}" stroke-width="1" stroke-dasharray="2 3" opacity=".3"/>`;
     if(v&&v!=="x"){const fs=nums(v).filter(f=>f>0);fs.forEach(f=>{
-      if(f>=dpos&&f<dpos+nF){const cy=y0+(f-dpos+.5)*dy;g+=`<circle cx="${x}" cy="${cy}" r="14" fill="${P.acc}"/><text x="${x}" y="${cy+4}" font-size="12" font-weight="700" text-anchor="middle" fill="#fff">${f}</text>`}
+      if(f>=dpos&&f<dpos+nF){const cy=y0+(f-dpos+.5)*dy;g+=`<circle cx="${x}" cy="${cy}" r="12" fill="${P.acc}"/><text x="${x}" y="${cy+4}" font-size="11" font-weight="700" text-anchor="middle" fill="#fff">${f}</text>`}
       else g+=`<text x="${x}" y="${y0-30}" font-size="11" text-anchor="middle" fill="${P.acc}">${f}${f<dpos?"▲":"▼"}</text>`})}
     g+=`<text x="${x}" y="${y0+nF*dy+20}" font-size="11" text-anchor="middle" fill="${P.sub}">${esc(sname(i))}</text>`;
     g+=`<rect class="e" data-s="${i}" data-f="m" x="${x-dx/2}" y="${y0-36}" width="${dx}" height="32" fill="transparent"/>`;
@@ -598,8 +601,8 @@ $("dSvg").addEventListener("click",e=>{
   snap();cell()[si]=nv;persist();draw();if(nv&&nv!=="x")soundCell(si);
 });
 $("dPrev").addEventListener("click",()=>move(-1,0));$("dNext").addEventListener("click",()=>move(1,0));
-$("dUp").addEventListener("click",()=>{dpos=Math.max(1,dpos-(dpos>4?4:dpos-1));drawEdit()});
-$("dDown").addEventListener("click",()=>{dpos=Math.min(20,dpos+4);drawEdit()});
+$("dUp").addEventListener("click",()=>{dpos=1;drawEdit()});
+$("dDown").addEventListener("click",()=>{dpos=13;drawEdit()});
 function draw(){
   if(view==="dia"){$("diaEdit").hidden=false;drawEdit();host.innerHTML=diagramSvg(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel})}
   else{$("diaEdit").hidden=true;host.innerHTML=layout(Math.max(280,host.clientWidth-4),{pal:PAL_UI,sel:S.sel,play:playPos,hit:true})}
