@@ -308,7 +308,7 @@ header.top .logo{flex:none}
     <div class="row">
       <div class="ctl" id="meterBox" role="group" aria-label="拍子(▲▼ボタン・上下ドラッグ・ホイール・矢印キーで変更)">拍子 <span class="mt-ts"><b class="mt-n" id="mtN" tabindex="0" role="spinbutton" aria-label="拍の数" aria-valuemin="1" aria-valuemax="12">4</b><span>/</span><b class="mt-n" id="mtD" tabindex="0" role="spinbutton" aria-label="1拍の長さ(分母)" aria-valuemin="2" aria-valuemax="16">4</b></span></div>
       <div class="ctl">刻み <select id="sub" class="sel" aria-label="1拍の分け方"><option value="2" selected>8分音符ごと</option><option value="4">16分音符ごと</option><option value="1">4分音符ごと</option></select></div>
-      <div class="ctl">テンポ <button class="btn round" type="button" id="bpmDn" aria-label="テンポを1下げる">−</button><input id="bpm" class="sel num" type="number" min="40" max="240" value="100" style="width:4.2em" aria-label="テンポ(BPM)"><button class="btn round" type="button" id="bpmUp" aria-label="テンポを1上げる">+</button></div>
+      <div class="ctl">テンポ <button class="btn round" type="button" id="bpmDn" aria-label="テンポを1下げる">−</button><input id="bpm" class="sel num" type="number" min="40" max="240" value="100" style="width:4.2em" aria-label="テンポ(BPM)"><button class="btn round" type="button" id="bpmUp" aria-label="テンポを1上げる">+</button><button class="btn" type="button" id="bpmTap" title="一定のリズムでタップするとテンポを測ります">TAP</button></div>
       <div class="ctl">タイトル <input id="ttl" class="sel" type="text" maxlength="40" placeholder="曲名など" style="width:11em" aria-label="タイトル"></div>
     </div>
   </section>
@@ -379,7 +379,7 @@ header.top .logo{flex:none}
     <ul>
       <li>TABの数字を入れたい場所(弦と、横の位置)をタップして選び、下の数字キーでフレット番号を入れます。パソコンでは、キーボードの数字と矢印キーでも打てます。「1」のあと続けて「2」で12、というように2けたも打てます。</li>
       <li>数字のあとに「h(ハンマリング)」「p(プリング)」「/ \(スライド)」「b(ベンド)」「~(ビブラート)」を足せます。「5h7」のように続けて数字も入れられ、再生ではそのとおりに2つの音を鳴らします。</li>
-      <li>テンポは、−・+ボタン(Shiftを押しながらのホイールで5ずつ)、ホイール、数字の直接入力で変えられます。</li>
+      <li>テンポは、「TAP」ボタンを曲のリズムに合わせて4回以上タップすると測れます(2秒以上あくと測り直し)。そのほか、−・+ボタン(Shiftを押しながらのホイールで5ずつ)、ホイール、数字の直接入力で変えられます。</li>
       <li>拍子は「分子/分母」で選べます(例:6/8、7/8、3/4)。数字は、▲▼ボタン・ホイール・上下ドラッグ・矢印キーで変えられます(ドラムマシンと同じ操作です)。横の1マスは、「刻み」で選んだ長さです。4/4拍子で8分音符ごとなら、1小節は8マスです。細かいリズムを書くときは「16分音符ごと」にしてください。</li>
       <li>コードを選んで「選んだ場所に入れる」を押すと、その押さえ方が入ります。ルート(12音)・分類(基本/7th/テンション/sus・変化)・種類の順に選び、分数コードは「ベース音」で選びます。「Am7/G」のようにコード名で入力することもできます(「入れ方・押さえ方・コード名で入力」を開きます)。「同時」は同じマスに全部、「アルペジオ」は低い弦から順に、右のマスへ並びます。コード名もTABの上に入ります。ベースでは、ルート・5度・オクターブの3音が入ります。</li>
       <li>「押さえ方の図」にすると、書いた内容が指板の図(コード表のような丸の図)で見られます。上の大きな指板をタップすると、選んだマスの押さえ方をそのまま入力できます(丸をもう一度タップで消えます)。コード名ごとに1つの図にまとまり、アルペジオのときは弾く順の番号が丸の中に出ます。PNG保存も、いま見ている表示のままの画像になります。</li>
@@ -888,6 +888,11 @@ function rebuildCols(){
 }
 function setBpm(v){S.bpm=Math.max(40,Math.min(240,Math.round(+v||100)));$("bpm").value=S.bpm;persist()}
 $("bpm").addEventListener("change",()=>setBpm($("bpm").value));
+let taps=[];
+$("bpmTap").addEventListener("click",()=>{
+  const n=performance.now();if(taps.length&&n-taps[taps.length-1]>2000)taps=[];taps.push(n);taps=taps.slice(-8);
+  if(taps.length>=2){const iv=(taps[taps.length-1]-taps[0])/(taps.length-1);setBpm(60000/iv);$("bpmTap").textContent=taps.length>=4?"TAP":"TAP ("+taps.length+")"}else $("bpmTap").textContent="TAP (1)";
+});
 $("bpmDn").addEventListener("click",()=>setBpm(S.bpm-1));$("bpmUp").addEventListener("click",()=>setBpm(S.bpm+1));
 $("bpm").addEventListener("wheel",e=>{e.preventDefault();setBpm(S.bpm+(e.deltaY<0?1:-1)*(e.shiftKey?5:1))},{passive:false});
 $("ttl").addEventListener("input",()=>{S.title=$("ttl").value;persist()});
