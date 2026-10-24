@@ -87,4 +87,11 @@ type: posts
 >
 > chiptuneバラードをお届け
 >
-> — なみぐる (@namigroove) [October 23, 2026](https://x.com/namigroove/status/2113473935094452273?ref_src=twsrc%5Etfw)
+> — なみぐる (@namigroove) [October 23, 2026](https://x.com/namigroove/status/2113473935094452273?ref_src=twsrc%5Etfw)  
+>
+> 📍出展ブース&マップ  
+> [https://x.com/namigroove/status/2113823463660265503?s=20](https://x.com/namigroove/status/2113823463660265503?s=20)
+>
+> ![M3秋2026_出展位置マップ.png](/wp-content/uploads/M3秋2026_出展位置マップ.png)
+
+[https://x.com/namigroove/status/2113823463660265503?s=20](https://x.com/namigroove/status/2113823463660265503?s=20)
