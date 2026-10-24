@@ -397,6 +397,7 @@ header.top .logo{flex:none}
       <li>「押さえ方の図」にすると、書いた内容が指板の図(コード表のような丸の図)で見られます。上の大きな指板をタップすると、選んだマスの押さえ方をそのまま入力できます(丸をもう一度タップで消えます)。コード名ごとに1つの図にまとまり、アルペジオのときは弾く順の番号が丸の中に出ます。PNG保存も、いま見ている表示のままの画像になります。</li>
       <li>列のコピーのほか、小節ごと・範囲(例:小節2〜4)もコピーできます。「小節 ○〜○」で範囲を選んで「コピー」を押し、貼り付けたい小節を選んで「選んだ小節の後ろに挿入」か「選んだ小節から上書き」を押します(上書きで足りない小節は自動で足されます)。コード名もいっしょに写ります。</li>
       <li>コード名を入れたTABは、「ジャムモードの「自分で作る」へ」で、そのコード進行をジャムモードに持っていけます。コード名の間隔がそのままコードの長さ(1小節=1、半分=1/2、など)になります。</li>
+      <li>「動画で撮る」を押すと、最初から自動で再生して録画し、終わると自動で止まります。画面には、いまのコードの押さえ方(丸の中がフレット番号、開放弦は0、ミュートは×)と、数字のTAB譜が流れます。縦長・正方形から選べ、不要な前後は切り取れます。最長60秒です。</li>
       <li>押さえ方は、よく使う形は決まった形(開放弦の形や6弦・5弦ルートのバレーコード)で、それ以外のコードや分数コードは、指の数やポジションを見て弾きやすい形を自動で探します。ベースの分数コードは、ベース音が1音入ります。</li>
       <li>「TABからコードを推定」は、書いた音の組み合わせからコード名を推し量って、TABの上に入れます。小節ごと・1拍ごと・2拍ごとから選べます。ベース音がルートになりやすい前提で、分数コード(C/Eなど)も出ます。あくまで目安なので、違うときはコード名の欄で直してください。</li>
       <li>ジャムモードの「TAB譜(ギター)」「TAB譜(ベース)」から来たときは、その進行がコード名つきで入ります(ほかのTABは「元に戻す」で戻せます)。分数コードや、ベースが特殊なコードの押さえ方は、近い形で入るので確認して直してください。</li>
@@ -444,6 +445,7 @@ header.top .logo{flex:none}
 
 .rg{align-items:center}.rg .sel{min-width:3.4em}
 </style>
+<script src="https://namigroove.github.io/namigroove-site/vidrec.js?v=2"></script>
 <script>
 (()=>{
 "use strict";
@@ -642,7 +644,8 @@ function move(dc,ds){
   if(ds){s=Math.max(0,Math.min(S.tun.length-1,s-ds))}  /* 上=高い弦 */
   setSel(m,c,s);
 }
-let AC=null,bufs={};
+let AC=null,bufs={},MST=null,MSTc=null;
+function master(ctx){if(MSTc!==ctx){MST=ctx.createGain();MST.connect(ctx.destination);MSTc=ctx}return MST}
 function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==="suspended")AC.resume();return AC}
 function pluckBuf(ctx,midi){
   if(bufs[midi])return bufs[midi];
@@ -657,7 +660,7 @@ function pluckBuf(ctx,midi){
 function pluck(midi,when,dur,gain){
   const ctx=ac();if(!ctx)return;
   const src=ctx.createBufferSource();src.buffer=pluckBuf(ctx,midi);
-  const g=ctx.createGain();g.gain.value=gain||0.45;src.connect(g);g.connect(ctx.destination);
+  const g=ctx.createGain();g.gain.value=gain||0.45;src.connect(g);g.connect(master(ctx));
   const t=when==null?ctx.currentTime:when;src.start(t);
   if(dur){g.gain.setValueAtTime(g.gain.value,t+dur);g.gain.linearRampToValueAtTime(0,t+dur+0.08);src.stop(t+dur+0.12)}
 }
@@ -666,7 +669,7 @@ function scratch(when){
   const len=Math.floor(ctx.sampleRate*0.07),b=ctx.createBuffer(1,len,ctx.sampleRate),d=b.getChannelData(0);
   for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.2);
   const src=ctx.createBufferSource();src.buffer=b;const f=ctx.createBiquadFilter();f.type="bandpass";f.frequency.value=2200;f.Q.value=0.7;const g=ctx.createGain();g.gain.value=0.5;
-  src.connect(f);f.connect(g);g.connect(ctx.destination);src.start(when==null?ctx.currentTime:when);
+  src.connect(f);f.connect(g);g.connect(master(ctx));src.start(when==null?ctx.currentTime:when);
 }
 function nums(v){return(String(v).match(/\d+/g)||[]).map(Number)}
 function soundCell(si){if(!$("snd").checked)return;const v=cell()[si];const n=nums(v);if(n.length)pluck(S.tun[si]+n[0],null,null,.4)}
@@ -998,7 +1001,9 @@ $("ttl").addEventListener("input",()=>{S.title=$("ttl").value;persist()});
 
 /* ===== 再生 ===== */
 let playTimer=null,playEnd=0;
-function stopPlay(){clearInterval(playTimer);playTimer=null;playPos=null;$("playBtn").textContent="▶ 再生";draw()}
+let vrPlay=false;
+function stopPlay(){clearInterval(playTimer);playTimer=null;playPos=null;$("playBtn").textContent="▶ 再生";draw();
+  if(vrPlay){vrPlay=false;setTimeout(()=>{const b=document.querySelector(".vr-btn[aria-pressed=true]");if(b)b.click()},300)}}
 function startPlay(){
   const ctx=ac();if(!ctx){$("saveMsg").textContent="このブラウザは、音の再生に対応していません。";return}
   const cols=colCount(),dur=60/S.bpm*4/S.den/S.sub,t0=ctx.currentTime+.12;let any=false;
@@ -1022,6 +1027,65 @@ function startPlay(){
 }
 $("playBtn").addEventListener("click",()=>{if(playTimer){stopPlay();bufsStop()}else startPlay()});
 function bufsStop(){if(AC){try{AC.close()}catch(e){}AC=null;bufs={}}}
+
+/* ===== 動画で撮る(vidrec.js) ===== */
+function vdraw(g,b,I){
+  const n=S.tun.length,cols=colCount(),total=S.ms.length*cols,C=I.C,sq=I.sq;
+  const cur=playPos?playPos.m*cols+playPos.c:0,started=!!playPos;
+  const cellAt=gi=>S.ms[Math.floor(gi/cols)].c[gi%cols];
+  const labAt=gi=>S.ms[Math.floor(gi/cols)].ch[gi%cols];
+  const hC=Math.round(b.h*(sq?.11:.09)),hF=Math.round(b.h*(sq?.45:.5)),hT=b.h-hC-hF;
+  /* いまのコード(ここまでで一番近いコード名)と、その区間の音 */
+  let gs=cur;while(gs>0&&!labAt(gs))gs--;
+  const name=labAt(gs)||"";
+  const from=Math.max(gs,cur-(labAt(gs)?11:3)),held={};
+  for(let gi=from;gi<=cur&&started;gi++){const col=cellAt(gi);col.forEach((v,si)=>{const ns=nums(v);if(ns.length)held[si]={f:ns[ns.length-1],now:gi===cur};else if(v==="x")held[si]={x:1,now:gi===cur}})}
+  I.fit(g,name||(started?"":"▶"),b.x+b.w/2,b.y+hC/2,b.w,Math.round(hC*.9),400,C.ink);
+  /* 押さえ方(数字入り) */
+  const fy=b.y+hC,pad=sq?26:40;
+  const fr=Object.values(held).filter(h=>h.f>0).map(h=>h.f);
+  const mn=fr.length?Math.min(...fr):1,mx=fr.length?Math.max(...fr):4;
+  const f0=mx<=5?1:Math.max(1,mn-(mx-mn<4?0:0)),rows=Math.max(5,Math.min(12,mx-f0+1));
+  const sp=Math.min(sq?58:76,(b.w*.7)/Math.max(1,n-1)),gw=(n-1)*sp,gx=b.x+(b.w-gw)/2+(f0>1?18:0);
+  const gy=fy+pad+(sq?16:22),rh=Math.min(sq?42:64,(hF-pad-(sq?26:40))/rows),gh=rh*rows,R=Math.min(rh*.42,sp*.4,sq?18:26);
+  g.lineCap="round";g.strokeStyle=C.line;g.lineWidth=2;
+  for(let i=0;i<n;i++){g.beginPath();g.moveTo(gx+i*sp,gy);g.lineTo(gx+i*sp,gy+gh);g.stroke()}
+  for(let r=0;r<=rows;r++){g.beginPath();g.moveTo(gx,gy+r*rh);g.lineTo(gx+gw,gy+r*rh);g.stroke()}
+  if(f0===1){g.strokeStyle=C.soft;g.lineWidth=sq?6:8;g.beginPath();g.moveTo(gx-2,gy);g.lineTo(gx+gw+2,gy);g.stroke()}
+  else{g.fillStyle=C.soft;g.font="500 "+(sq?18:24)+"px "+I.font;g.textAlign="right";g.textBaseline="middle";g.fillText(f0+"fr",gx-12,gy+rh/2)}
+  g.textAlign="center";g.textBaseline="middle";
+  Object.keys(held).forEach(k=>{const si=+k,h=held[k],x=gx+si*sp;
+    if(h.x){g.fillStyle=C.warn;g.font="700 "+(sq?20:28)+"px "+I.font;g.fillText("×",x,gy-(sq?14:20));return}
+    if(h.f===0){g.strokeStyle=C.coral;g.lineWidth=3;g.beginPath();g.arc(x,gy-(sq?14:20),sq?9:12,0,7);g.stroke();g.fillStyle=C.coral;g.font="700 "+(sq?13:17)+"px "+I.font;g.fillText("0",x,gy-(sq?14:20));return}
+    const y=gy+(h.f-f0+.5)*rh;if(h.f<f0||h.f>f0+rows-1)return;
+    g.fillStyle=C.coral;g.beginPath();g.arc(x,y,R,0,7);g.fill();if(h.now){g.strokeStyle="#fff";g.lineWidth=4;g.beginPath();g.arc(x,y,R+4,0,7);g.stroke()}
+    g.fillStyle="#1b2440";g.font="700 "+Math.round(R*1.15)+"px "+I.font;g.fillText(String(h.f),x,y+1)});
+  /* TAB(数字)が流れる */
+  const ty=b.y+hC+hF,cw=sq?36:42,vis=Math.max(4,Math.floor((b.w-8)/cw)),ws=total<=vis?0:Math.max(0,Math.min(total-vis,cur-2));
+  const top=ty+(sq?32:42),ls=Math.min(sq?26:36,(hT-(sq?40:56))/n),x0=b.x+(b.w-Math.min(vis,total)*cw)/2,rowY=r=>top+r*ls;
+  g.strokeStyle=C.line;g.lineWidth=2;
+  for(let r=0;r<n;r++){g.beginPath();g.moveTo(b.x,rowY(r));g.lineTo(b.x+b.w,rowY(r));g.stroke()}
+  for(let gi=ws;gi<Math.min(total,ws+vis);gi++){
+    const x=x0+(gi-ws)*cw,cx=x+cw/2,col=cellAt(gi);
+    if(started&&gi===cur){g.fillStyle=C.coral;g.globalAlpha=.22;g.fillRect(x,rowY(0)-ls*.6,cw,rowY(n-1)-rowY(0)+ls*1.2);g.globalAlpha=1}
+    if(gi%cols===0){g.strokeStyle=C.soft;g.lineWidth=2.5;g.beginPath();g.moveTo(x,rowY(0));g.lineTo(x,rowY(n-1));g.stroke();
+      g.fillStyle=C.soft;g.font="400 "+(sq?13:16)+"px "+I.font;g.textAlign="left";g.fillText(String(gi/cols+1),x+3,rowY(n-1)+ls*.85);g.textAlign="center"}
+    const lb=labAt(gi);if(lb){g.fillStyle=gi>=gs&&gs<=cur&&gi===gs?C.coral:C.sea;g.font="500 "+(sq?16:22)+"px "+I.font;g.textAlign="left";g.fillText(lb,x+2,ty+(sq?10:14)-2);g.textAlign="center"}
+    for(let si=0;si<n;si++){const v=col[si];if(!v)continue;const r=n-1-si,t=v==="x"?"×":v;
+      g.font="700 "+(sq?17:22)+"px "+I.font;const tw=g.measureText(t).width+6;
+      g.fillStyle=C.bg1;g.fillRect(cx-tw/2,rowY(r)-ls*.42,tw,ls*.84);
+      g.fillStyle=started&&gi===cur?C.coral:C.ink;g.fillText(t,cx,rowY(r)+1)}
+  }
+  g.textAlign="start";g.textBaseline="alphabetic";
+}
+if(window.NamiVidRec){
+  NamiVidRec.mount({after:$("playBtn"),name:"tab",title:"TAB譜",url:"https://www.namigroove.com/tools/tabmaker/",
+    sub:()=>(S.title?S.title+" ・ ":"")+"BPM "+S.bpm+" ・ "+S.beats+"/"+S.den,
+    tap:()=>{const ctx=ac();if(!ctx)return null;if(!playTimer){startPlay();if(!playTimer)return null}vrPlay=true;return{ctx,node:master(ctx)}},
+    draw:vdraw});
+  const vb=document.querySelector(".vr-btn");
+  if(vb)new MutationObserver(()=>{if(vb.getAttribute("aria-pressed")==="false"&&playTimer){vrPlay=false;stopPlay();setTimeout(bufsStop,600)}}).observe(vb,{attributes:true,attributeFilter:["aria-pressed"]});
+}
 
 /* ===== 書き出し ===== */
 function textTab(){
