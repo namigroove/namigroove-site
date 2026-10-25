@@ -70,6 +70,8 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);l
 .row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
 .ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
 .seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+/* 弾いているあいだ、ボタンの文字や矢印が選択状態(青いハイライト)になるのを防ぐ(iPhone) */
+button,.btn,summary,.seg,.pb,.mp,.mt-v,.mt-tap,.nami-btn{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
@@ -1016,6 +1018,10 @@ kb.addEventListener("pointermove",e=>{if(!ptr.has(e.pointerId))return;const k=ke
 const up=e=>{if(!ptr.has(e.pointerId))return;const m=ptr.get(e.pointerId);ptr.delete(e.pointerId);if(m!=null)lift(m);};
 kb.addEventListener("pointerup",up);kb.addEventListener("pointercancel",up);kb.addEventListener("lostpointercapture",up);
 kb.addEventListener("contextmenu",e=>e.preventDefault());
+/* iPhone:長押し・複数の指で、まわりの文字が選択されてしまうのを止める(弾いている間は選択を始めさせない) */
+kb.addEventListener("touchstart",e=>{e.preventDefault()},{passive:false});
+document.addEventListener("selectstart",e=>{const t=e.target&&e.target.nodeType===1?e.target:e.target&&e.target.parentElement;if(t&&t.closest&&t.closest("input,textarea,select,[contenteditable]"))return;if(ptr.size>0||down.size>0)e.preventDefault();});
+kb.addEventListener("pointerup",()=>{try{const g=getSelection();if(g&&!g.isCollapsed&&!/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||""))g.removeAllRanges();}catch(_){}});
 
 /* PCのキーボード(配列に関係なくキーの位置で判定) */
 const KEYMAP={KeyA:0,KeyW:1,KeyS:2,KeyE:3,KeyD:4,KeyF:5,KeyT:6,KeyG:7,KeyY:8,KeyH:9,KeyU:10,KeyJ:11,KeyK:12,KeyO:13,KeyL:14,KeyP:15,Semicolon:16,Quote:17,BracketRight:18,Backslash:19};
