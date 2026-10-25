@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ステム分離(試作) – なみぐる！</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="曲をボーカル・ドラム・ベースなどに分ける試作ツール。ブラウザの中だけで処理するので、音源は送信されません。">
+<meta property="og:title" content="ステム分離(試作) – なみぐる！">
+<meta property="og:description" content="曲をボーカル・ドラム・ベースなどに分ける試作ツール。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/stem/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg">
+<link rel="canonical" href="https://www.namigroove.com/tools/stem/">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+/* チューナー */
+.meter{position:relative;max-width:420px;margin:0 auto}
+.meter svg{display:block;width:100%;height:auto;overflow:visible}
+.meter .tick{stroke:var(--line);stroke-width:2;stroke-linecap:round}
+.meter .tick.big{stroke:var(--ink-soft)}
+.meter .zone{stroke:var(--ok);stroke-width:10;stroke-linecap:round;fill:none;opacity:.25}
+.meter .lbl{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+#needle{transform-origin:150px 160px;transition:transform .12s linear}
+#needle line{stroke:var(--ink-soft);stroke-width:3;stroke-linecap:round}
+#needle circle{fill:var(--ink-soft)}
+.tuner.in-tune #needle line,.tuner.in-tune #needle circle{stroke:var(--ok);fill:var(--ok)}
+.tuner.idle #needle{opacity:.35}
+.readout{text-align:center;margin-top:-6px}
+.note{font-family:var(--f-display);font-size:clamp(64px,16vw,96px);line-height:1;display:inline-flex;align-items:flex-start;color:var(--ink);transition:color .15s;min-height:1em}
+.note sup{font-size:.4em;line-height:1;margin-top:.12em}
+.note sub{font-size:.32em;align-self:flex-end;margin-bottom:.1em;margin-left:2px;color:var(--ink-soft);font-family:var(--f-mono)}
+.tuner.in-tune .note{color:var(--ok)}
+.tuner.idle .note{color:var(--line)}
+.sub-read{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--ink-soft);margin-top:6px;min-height:1.75em}
+.sub-read b{font-weight:500;color:var(--ink)}
+.flag{display:flex;gap:12px;justify-content:center;font-size:13px;margin-top:2px;min-height:1.75em;font-weight:700}
+.flag .lo,.flag .hi{opacity:.18;transition:opacity .1s}
+.flag.lo .lo,.flag.hi .hi{opacity:1;color:var(--warn)}
+.flag .ok{opacity:.18;color:var(--ok)}
+.flag.ok .ok{opacity:1}
+.concert{font-size:12px;color:var(--ink-soft);text-align:center;min-height:1.6em}
+.level{height:4px;border-radius:2px;background:var(--wash);max-width:220px;margin:12px auto 18px;overflow:hidden}
+.level i{display:block;height:100%;width:0;background:var(--sea);transition:width .08s}
+
+/* メトロノーム */
+.bpm-big{display:flex;align-items:center;justify-content:center;gap:14px}
+.bpm-big output{font-family:var(--f-display);font-size:clamp(64px,17vw,104px);line-height:1;min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.bpm-sub{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.bpm-sub b{font-weight:500;color:var(--ink)}
+input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:block;margin:14px auto 8px}
+.stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin:18px 0 6px;min-height:96px}
+.nami-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex:0 0 auto}
+.nami{display:block;width:88px;height:auto;transform-origin:50% 100%;flex:0 0 auto}
+.nami.hop{animation:hop .18s ease-out}
+.nami.hop.acc{animation:hopBig .22s ease-out}
+@keyframes hop{0%{transform:scale(1.08,.88)}60%{transform:scale(.96,1.06) translateY(-6px)}100%{transform:none}}
+@keyframes hopBig{0%{transform:scale(1.14,.8)}55%{transform:scale(.94,1.1) translateY(-14px)}100%{transform:none}}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:280px;padding-bottom:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--wash);border:2px solid var(--line);transition:background .06s,transform .06s}
+.dots i.acc{border-color:var(--sea)}
+.dots i.on{background:var(--sea);border-color:var(--sea);transform:scale(1.2)}
+.dots i.on.acc{background:var(--coral);border-color:var(--coral)}
+.dots i.mute{opacity:.35}
+@media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
+.kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
+.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+@media (hover:none){.kbd{display:none}}
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+/* コード表 */
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+.tabs.fam{margin-bottom:16px}
+@media (max-width:480px){.tabs.fam button{font-size:12px;padding:8px 2px}}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.ch-pick{display:flex;flex-direction:column;gap:8px;margin:14px 0 6px;align-items:center}
+.ch-pick .seg{justify-content:center}
+.ch-pick .roots button{min-width:44px}
+.ch-head{display:flex;flex-direction:column;align-items:center;gap:4px;margin:12px 0 6px;text-align:center}
+.ch-name{font-family:var(--f-display);font-size:clamp(40px,10vw,60px);line-height:1.1;min-height:1.1em}
+.ch-name .dim{font-size:15px;color:var(--ink-soft);font-family:var(--f-body)}
+.ch-sub{font-size:13px;color:var(--ink-soft);min-height:1.5em}
+.ch-sub b{color:var(--sea)}
+.seg.types button.fancy{border-color:var(--coral);color:var(--coral)}
+.seg.types button.fancy[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:#fff}
+.ch-desc{font-size:13px;color:var(--coral);min-height:1.4em;margin:0}
+.pg-wrap{margin-top:26px;border-top:1px dashed var(--line);padding-top:16px}
+.pg-wrap h2{font-size:16px;margin:0 0 4px;font-family:var(--f-display);font-weight:400}
+.pg-wrap .row{margin-bottom:10px}
+.pg-cat{margin:0 0 12px;display:flex;flex-wrap:wrap;gap:4px}
+.pg-list{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.pg{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--chip)}
+.pg h3{margin:0 0 2px;font-size:15px}
+.pg p{margin:0 0 8px;font-size:12px;color:var(--ink-soft)}
+.pg .pg-btns{float:right;display:flex;gap:6px;margin-left:8px}.pg .pg-btns .btn{font-size:12px;padding:3px 10px}
+.pg-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.pg-c{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--wash);color:var(--ink);cursor:pointer;font:500 14px var(--f-body)}
+.pg-c .cd{width:76px;height:auto}
+.pg-c small{font-size:11px;color:var(--ink-soft)}
+.pg-c.now{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral) inset}
+.pg-c.now b{color:var(--coral)}
+.vo{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.vo-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 8px 6px;border-radius:12px;border:1px solid var(--line);background:var(--chip);cursor:pointer;font:inherit;color:var(--ink)}
+.vo-c:hover{border-color:var(--sea)}
+.vo-c.main{border:2px solid var(--sea)}
+.vo-c small i.lib{font-style:normal;font-size:10px;color:#fff;background:var(--coral);border-radius:999px;padding:0 6px;margin-right:4px}
+.vo-c small{font-size:11px;color:var(--ink-soft)}
+.cd{width:120px;height:auto;display:block}
+.cd .st{stroke:var(--ink-soft);stroke-width:1}
+.cd .fr{stroke:var(--line);stroke-width:1.2}
+.cd .nut{stroke:var(--ink);stroke-width:4}
+.cd .dot{fill:var(--sea)}
+.cd .dot.r{fill:var(--coral)}
+.cd .bar{fill:var(--sea);opacity:.9}
+.cd .mk{font:11px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.cd .pos{font:10px var(--f-mono);fill:var(--ink-soft)}
+.fb-wrap{overflow-x:auto;margin-top:10px}
+.fb{min-width:640px}
+.fb svg{display:block;width:100%;height:auto}
+.fb .str{stroke:var(--ink-soft)}
+.fb .fw{stroke:var(--line);stroke-width:1.5}
+.fb .nutl{stroke:var(--ink);stroke-width:4}
+.fb .inl{fill:var(--wash)}
+.fb .nd{stroke:var(--panel);stroke-width:1.5}
+.fb .nt{font:10px var(--f-mono);fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.fb .fn{font:10px var(--f-mono);fill:var(--ink-soft);text-anchor:middle}
+.fb-leg{font-size:12px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
+.fb-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
+.rev-grid{display:flex;justify-content:center;margin:14px 0 4px}
+.rev-grid svg{width:min(100%,300px);max-height:none;height:auto;touch-action:manipulation;user-select:none}
+.rev-grid .cell{fill:transparent;cursor:pointer}
+.rev-grid .cell:hover{fill:var(--wash)}
+.rev-grid .om{font:16px var(--f-mono);fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;cursor:pointer}
+.rev-grid .omh{fill:transparent;cursor:pointer}
+/* 音数カウンター */
+.lyr{width:100%;box-sizing:border-box;font:16px/1.9 var(--f-body);padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--chip);color:var(--ink);resize:vertical}
+.lyr:focus{outline:2px solid var(--sea);outline-offset:1px}
+.mo-opts{justify-content:flex-start;margin-top:10px;gap:8px 16px}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
+.mo-sum{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:13px;color:var(--ink-soft);margin-bottom:10px}
+.mo-sum b{font:500 20px var(--f-mono);color:var(--ink);margin:0 2px}
+.mo-lines{list-style:none;margin:0 0 14px;padding:0;counter-reset:ln}
+.mo-lines li{display:grid;grid-template-columns:2.2em 3.4em 1fr;gap:8px;align-items:start;padding:8px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.mo-lines li:nth-child(even){background:var(--wash)}
+.mo-lines li .ln{font:12px var(--f-mono);color:var(--ink-soft);padding-top:4px}
+.mo-lines li .ct{font:500 20px var(--f-mono);text-align:right}
+.mo-lines li.over .ct{color:var(--warn)}.mo-lines li.under .ct{color:var(--sea)}.mo-lines li.just .ct{color:var(--ok)}
+.mo-lines li .tx{font-size:15px;word-break:break-all}
+.mo-lines li .mo{display:none;flex-wrap:wrap;gap:3px;margin-top:6px}
+.mo-lines li.open .mo{display:flex}
+.mo-lines li .mo span{font-size:13px;min-width:1.6em;text-align:center;padding:1px 4px;border-radius:6px;background:var(--panel);border:1px solid var(--line)}
+.mo-lines li .mo span.en{border-color:var(--sea)}
+.mo-lines li .warn{display:block;font-size:12px;color:var(--coral);margin-top:2px}
+.mo-lines li.empty{display:none}
+
+/* WAV→MP3 */
+.dz{display:flex;flex-direction:column;align-items:center;gap:6px;padding:28px 16px;border:2px dashed var(--line);border-radius:16px;background:var(--chip);text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.dz:hover,.dz.on{border-color:var(--sea);background:var(--wash)}
+.dz b{font-size:16px}.dz small{color:var(--ink-soft);font-size:12px}
+.dz:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.opts{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:center;margin:14px 0 0}
+.fl{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.fl li{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--chip)}
+.fl .nm{font-size:14px;word-break:break-all}
+.fl .st{font:12px var(--f-mono);color:var(--ink-soft)}
+.fl .bar{grid-column:1/-1;height:4px;border-radius:2px;background:var(--wash);overflow:hidden}
+.fl .bar i{display:block;height:100%;width:0;background:var(--sea);transition:width .1s}
+.fl li.done .st{color:var(--ok)}.fl li.err .st{color:var(--warn)}
+.fl a.btn{text-decoration:none;display:inline-block}
+.acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
+
+<style>
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:18px}
+.opts{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.ctl{font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px}
+.sel{font:inherit;font-size:14px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--chip);color:var(--ink);max-width:100%}
+.dz{display:flex;flex-direction:column;align-items:center;gap:4px;padding:28px 12px;border:2px dashed var(--line);border-radius:14px;cursor:pointer;text-align:center;background:var(--wash)}
+.dz.on,.dz:hover{border-color:var(--coral)}
+.dz small{color:var(--ink-soft)}
+.note-s{font-size:12px;color:var(--ink-soft);margin:10px 0 0;line-height:1.7}
+.st{margin:0 0 8px;font-size:14px}
+progress{width:100%;height:10px;accent-color:var(--sea)}
+.lg{font:12px/1.5 var(--f-mono);white-space:pre-wrap;color:var(--ink-soft);margin:10px 0;max-height:220px;overflow:auto;background:var(--wash);border-radius:10px;padding:8px 10px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.btn{font:500 14px var(--f-body);padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.btn.go{background:var(--sea);border-color:var(--sea);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.h2{font-family:var(--f-display);font-weight:400;font-size:20px;margin:0}
+.h3{font-size:14px;margin:18px 0 0;font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chips button{font:500 14px var(--f-body);padding:9px 16px;border-radius:999px;border:2px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.chips button[aria-pressed="true"]{border-color:var(--coral);background:var(--wash)}
+.tp{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px}
+.tp input[type=range]{flex:1;min-width:140px;accent-color:var(--sea)}
+.tm{font:12px var(--f-mono);color:var(--ink-soft)}
+.how{margin:28px 0}.how h2{font-family:var(--f-display);font-weight:400;font-size:18px}
+.how li{margin:8px 0;font-size:14px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html" translate="no">Works</a>
+      <a href="tools.html" translate="no">Tools</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links" class="opt">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="?lang=en" class="lang" id="toEN" data-lang translate="no">EN</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>ボーカル・インスト分離(測定中)</h1>
+    <p class="lead">曲を、ボーカルと、ボーカルなしのインストに分けます。AIのモデルをこの端末の中で動かすので、音源はどこにも送信されません。いま、どのくらいの端末で動くかを測っている段階の公開です。</p>
+  </div>
+
+  <section class="panel" aria-label="分離する曲を選ぶ">
+    <div class="opts">
+      <div class="ctl">モデル
+        <select id="model" class="sel" aria-label="モデル">
+          <option value="six" selected>GPU対応版(約285MB)</option>
+          <option value="four">軽い版(約166MB)</option>
+        </select>
+      </div>
+    </div>
+    <label class="dz" id="drop" tabindex="0" role="button" aria-label="音源を選ぶ、またはここにドロップ">
+      <b>音源を選ぶ</b>
+      <small>ここにドロップ、またはタップして選択(WAV・MP3・M4Aなど)</small>
+      <input id="file" type="file" accept="audio/*,.wav,.mp3,.flac,.m4a,.aac,.ogg,.opus" hidden>
+    </label>
+    <div class="acts"><button class="btn" type="button" id="benchBtn">速度だけ測る(曲なし)</button></div>
+    <p class="note-s" id="envMsg">最初の1回だけ、AIのモデルをダウンロードします。そのあとは、この端末に保存されます。GPUが使える、パソコンのChrome・Edgeで動きます。</p>
+  </section>
+
+  <section class="panel" id="runPanel" aria-live="polite" hidden>
+    <p class="st" id="stMsg"></p>
+    <progress id="prog" max="1" value="0"></progress>
+    <pre class="lg" id="log"></pre>
+    <div class="acts"><button class="btn" type="button" id="cancelBtn">やめる</button><button class="btn" type="button" id="copyLog">測定結果をコピー</button></div>
+  </section>
+
+  <section class="panel" id="resPanel" hidden>
+    <h2 class="h2">できあがり</h2>
+    <p class="note-s" id="resInfo"></p>
+    <div class="acts">
+      <button class="btn" type="button" id="pVocal">ボーカルだけ聴く</button>
+      <button class="btn" type="button" id="pInst">インストだけ聴く</button>
+      <button class="btn" type="button" id="pAll">両方いっしょに聴く</button>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="聴くパート"></div>
+    <div class="tp">
+      <button class="btn go" type="button" id="playBtn">▶ 再生</button>
+      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="再生位置">
+      <span class="tm" id="tm">0:00 / 0:00</span>
+    </div>
+    <h3 class="h3">保存(WAV・16bit)</h3>
+    <div class="acts" id="dl"></div>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>曲を選ぶと、分離が始まります。曲の長さの数分の1〜数倍の時間がかかります(GPUの性能で大きく変わります)。</li>
+      <li>できたら、ボーカル・インストを聴き比べて、WAVで保存できます。</li>
+      <li>分離にはAI(Demucs)を使っていて、完璧には分かれません。ボーカルの息づかいや、ドラムの余韻が、少し残ることがあります。</li>
+      <li>メモリを多く使います。長い曲(目安:7分以上)や、スマホでは、止まることがあります。</li>
+      <li>動いた・動かなかった端末の記録として、「測定結果をコピー」の内容を知らせてもらえると助かります。</li>
+    </ul>
+  </section>
+</main>
+
+
+<footer>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.webgpu.min.js"></script>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const SR=44100,SEG=343980,OVERLAP=0.25,STRIDE=Math.floor(SEG*(1-OVERLAP));
+const HF="https://huggingface.co/";
+const MODELS={
+  six:{url:HF+"kramp/htdemucs-6s-webgpu-onnx/resolve/main/htdemucs_6s.onnx",mb:285,key:"six-kramp",
+    st:[["drums","ドラム"],["bass","ベース"],["other","その他"],["vocals","ボーカル"],["guitar","ギター"],["piano","ピアノ"]]},
+  four:{url:HF+"adowu/htdemucs-onnx/resolve/main/htdemucs_fp16weights.onnx",mb:166,key:"four-adowu",
+    st:[["drums","ドラム"],["bass","ベース"],["other","その他"],["vocals","ボーカル"]]}
+};
+const CACHE="ng-stem-v1",CPUOK=/[?&]cpu=1/.test(location.search);
+let busy=false,cancel=false,ac=null,cur=null; /* cur:{names,ja,I16:[[L,R]..],N,vi} */
+const sessions={};
+
+function log(t){const l=$("log");l.textContent+=t+"\n";l.scrollTop=l.scrollHeight}
+function status(t){$("stMsg").textContent=t}
+const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
+const tick=()=>new Promise(r=>setTimeout(r,0));
+
+/* ---------- モデルの入手(端末に保存して、2回目からは読み込むだけ) ---------- */
+async function getModel(m){
+  let c=null;try{c=await caches.open(CACHE)}catch(e){}
+  if(c){try{const hit=await c.match(m.url);if(hit){log("保存済みのモデルを読み込みます");return new Uint8Array(await hit.arrayBuffer())}}catch(e){}}
+  status("モデルをダウンロード中(約"+m.mb+"MB・最初の1回だけ)…");
+  const r=await fetch(m.url);if(!r.ok)throw new Error("モデルをダウンロードできませんでした("+r.status+")");
+  const total=+r.headers.get("content-length")||m.mb*1048576,rd=r.body.getReader(),parts=[];let got=0,t0=performance.now();
+  for(;;){const {done,value}=await rd.read();if(done)break;parts.push(value);got+=value.length;
+    $("prog").value=Math.min(1,got/total);status("モデルをダウンロード中… "+Math.round(got/1048576)+" / "+Math.round(total/1048576)+" MB");if(cancel)throw new Error("cancel")}
+  const buf=new Uint8Array(got);let o=0;for(const p of parts){buf.set(p,o);o+=p.length}
+  log("ダウンロード "+((performance.now()-t0)/1000).toFixed(1)+"秒");
+  if(c){try{await c.put(m.url,new Response(buf,{headers:{"content-type":"application/octet-stream"}}));log("モデルをこの端末に保存しました")}catch(e){log("モデルの保存はできませんでした(毎回ダウンロードになります)")}}
+  return buf;
+}
+async function getSession(k){
+  if(sessions[k])return sessions[k];
+  const m=MODELS[k];ort.env.wasm.wasmPaths="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/";
+  const buf=await getModel(m);status("モデルを準備中…");$("prog").removeAttribute("value");await tick();
+  const t0=performance.now();let sess=null,ep="";
+  if(navigator.gpu){
+    try{const ad=await navigator.gpu.requestAdapter();if(ad){const i=ad.info||(ad.requestAdapterInfo&&await ad.requestAdapterInfo())||{};log("GPU: "+[i.vendor,i.architecture,i.description].filter(Boolean).join(" ")||"(情報なし)")}}catch(e){}
+    try{sess=await ort.InferenceSession.create(buf,{executionProviders:["webgpu"],graphOptimizationLevel:"all"});ep="GPU(WebGPU)"}
+    catch(e){log("GPUでの準備に失敗: "+(e.message||e));sess=null}
+  }else log("WebGPUが使えません(このブラウザ・端末)");
+  if(!sess&&!CPUOK){
+    throw new Error("GPU");
+  }
+  if(!sess){
+    log("CPU(WASM)で動かします。とても遅くなります");
+    sess=await ort.InferenceSession.create(buf,{executionProviders:["wasm"],graphOptimizationLevel:"all"});ep="CPU(WASM)";
+  }
+  log("準備 "+((performance.now()-t0)/1000).toFixed(1)+"秒 / "+ep);
+  sessions[k]={sess,ep};return sessions[k];
+}
+
+/* ---------- 音源の読み込み(44.1kHzのステレオにそろえる) ---------- */
+async function decode(file){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  const c=new AC({sampleRate:SR});
+  try{
+    const ab=await file.arrayBuffer();
+    const b=await new Promise((res,rej)=>c.decodeAudioData(ab,res,rej));
+    const L=b.getChannelData(0).slice(),R=b.numberOfChannels>1?b.getChannelData(1).slice():L.slice();
+    return {L,R,sr:b.sampleRate};
+  }finally{try{c.close()}catch(e){}}
+}
+
+/* ---------- 分離(7.8秒ずつ、少し重ねて、つなぎ目はなめらかに) ---------- */
+async function separate(k,L,R){
+  const {sess,ep}=await getSession(k),m=MODELS[k],K=m.st.length,N=L.length;
+  const W=new Float32Array(SEG);for(let i=0;i<SEG;i++)W[i]=Math.min(i+1,SEG-i);
+  const acc=[];for(let i=0;i<K*2;i++)acc.push(new Float32Array(SEG));const wacc=new Float32Array(SEG);
+  const vi=m.st.findIndex(s=>s[0]==="vocals");
+  const I16=[[new Int16Array(N),new Int16Array(N)],[new Int16Array(N),new Int16Array(N)]]; /* [ボーカル,インスト] */
+  const nch=Math.max(1,Math.ceil((N-SEG)/STRIDE)+1);let t0=performance.now(),inName=sess.inputNames[0];
+  const inp=new Float32Array(2*SEG);let base=0;
+  for(let ci=0;ci<nch;ci++){
+    if(cancel)throw new Error("cancel");
+    const st=ci*STRIDE;inp.fill(0);const n=Math.min(SEG,N-st);
+    inp.set(L.subarray(st,st+n),0);inp.set(R.subarray(st,st+n),SEG);
+    const tc=performance.now();const out=await sess.run({[inName]:new ort.Tensor("float32",inp,[1,2,SEG])});
+    const y=out[sess.outputNames[0]].data;const chunkT=(performance.now()-tc)/1000;
+    if(y.length!==K*2*SEG)throw new Error("モデルの出力の形が想定と違います("+y.length+")");
+    for(let s=0;s<K*2;s++){const a=acc[s],o=s*SEG;for(let i=0;i<SEG;i++)a[i]+=y[o+i]*W[i]}
+    for(let i=0;i<SEG;i++)wacc[i]+=W[i];
+    /* ここまでで確定した部分を書き出す */
+    const last=ci===nch-1,fl=last?Math.min(SEG,N-base):Math.min(STRIDE,N-base);
+    for(let c=0;c<2;c++){const av=acc[vi*2+c],dv=I16[0][c],di=I16[1][c];
+      for(let i=0;i<fl;i++){const w=wacc[i];let v=av[i]/w,sum=0;for(let s=0;s<K;s++)if(s!==vi)sum+=acc[s*2+c][i];let q=sum/w;
+        v=v>1?1:v<-1?-1:v;q=q>1?1:q<-1?-1:q;dv[base+i]=Math.round(v*32767);di[base+i]=Math.round(q*32767)}}
+    if(!last){for(let s=0;s<K*2;s++){const a=acc[s];a.copyWithin(0,STRIDE);a.fill(0,SEG-STRIDE)}wacc.copyWithin(0,STRIDE);wacc.fill(0,SEG-STRIDE);base+=STRIDE}
+    const el=(performance.now()-t0)/1000,per=el/(ci+1);
+    $("prog").value=(ci+1)/nch;
+    status("分離中… "+(ci+1)+" / "+nch+"(残り約"+fmt(per*(nch-ci-1))+")");
+    if(ci<3)log((ci+1)+"つめ(約"+(SEG/SR).toFixed(1)+"秒ぶん): "+chunkT.toFixed(1)+"秒");
+    if(ci===2||(nch<3&&ci===nch-1))log("1チャンクの平均 "+per.toFixed(1)+"秒 → 4分の曲なら約"+fmt(per*Math.ceil(240*SR/STRIDE))+"の見込み");
+    await tick();
+  }
+  log("分離 "+((performance.now()-t0)/1000).toFixed(1)+"秒 / 曲の長さ "+fmt(N/SR)+" / "+ep);
+  return {I16,N};
+}
+
+/* ---------- 再生・保存 ---------- */
+let on=[],src=null,t0=0,off=0,playing=false,raf=0,mixBuf=null;
+function chipsBuild(){
+  const w=$("chips");w.innerHTML="";on=cur.names.map(()=>true);
+  cur.ja.forEach((j,i)=>{const b=document.createElement("button");b.type="button";b.textContent=j;b.setAttribute("aria-pressed","true");
+    b.onclick=()=>{on[i]=!on[i];chipsView();remix()};w.appendChild(b)});
+}
+function chipsView(){[...$("chips").children].forEach((b,i)=>b.setAttribute("aria-pressed",on[i]?"true":"false"))}
+function setOn(f){on=cur.names.map((n,i)=>f(n,i));chipsView();remix()}
+function mixBuffer(){
+  if(!ac)ac=new (window.AudioContext||window.webkitAudioContext)({sampleRate:SR});
+  const N=cur.N,b=ac.createBuffer(2,N,SR),l=b.getChannelData(0),r=b.getChannelData(1);
+  cur.I16.forEach((p,s)=>{if(!on[s])return;const a=p[0],c=p[1];for(let i=0;i<N;i++){l[i]+=a[i]/32768;r[i]+=c[i]/32768}});
+  return b;
+}
+function pos(){return playing?off+(ac.currentTime-t0):off}
+function stopSrc(){if(src){try{src.onended=null;src.stop()}catch(e){}src=null}}
+function startAt(o){
+  stopSrc();mixBuf=mixBuffer();off=Math.max(0,Math.min(o,mixBuf.duration-0.01));
+  src=ac.createBufferSource();src.buffer=mixBuf;src.connect(ac.destination);t0=ac.currentTime;src.start(0,off);playing=true;
+  src.onended=()=>{if(playing&&pos()>=mixBuf.duration-0.3){playing=false;off=0;view()}};
+  $("playBtn").textContent="■ 止める";cancelAnimationFrame(raf);raf=requestAnimationFrame(view);
+}
+function remix(){if(playing)startAt(pos())}
+function view(){
+  if(!cur)return;const d=cur.N/SR,p=Math.min(pos(),d);
+  $("seek").value=Math.round(p/d*1000);$("tm").textContent=fmt(p)+" / "+fmt(d);
+  if(playing)raf=requestAnimationFrame(view);else $("playBtn").textContent="▶ 再生";
+}
+$("playBtn").onclick=()=>{if(!cur)return;if(ac&&ac.state==="suspended")ac.resume();if(playing){off=pos();playing=false;stopSrc();view()}else{if(!ac)ac=new (window.AudioContext||window.webkitAudioContext)({sampleRate:SR});startAt(off)}};
+$("seek").oninput=()=>{if(!cur)return;const o=$("seek").value/1000*cur.N/SR;if(playing)startAt(o);else{off=o;view()}};
+$("pVocal").onclick=()=>setOn(n=>n==="vocals");
+$("pInst").onclick=()=>setOn(n=>n==="inst");
+$("pAll").onclick=()=>setOn(()=>true);
+
+function wavBlob(l,r,n){
+  const buf=new ArrayBuffer(44+n*4),v=new DataView(buf);
+  const w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
+  w(0,"RIFF");v.setUint32(4,36+n*4,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,2,true);v.setUint32(24,SR,true);v.setUint32(28,SR*4,true);v.setUint16(32,4,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,n*4,true);
+  const o=new Int16Array(buf,44);for(let i=0;i<n;i++){o[i*2]=l[i];o[i*2+1]=r[i]}
+  return new Blob([buf],{type:"audio/wav"});
+}
+function sumI16(idx){
+  const N=cur.N,l=new Int16Array(N),r=new Int16Array(N);
+  for(let i=0;i<N;i++){let a=0,b=0;for(const s of idx){a+=cur.I16[s][0][i];b+=cur.I16[s][1][i]}l[i]=a>32767?32767:a<-32768?-32768:a;r[i]=b>32767?32767:b<-32768?-32768:b}
+  return [l,r];
+}
+function save(name,blobFn){
+  const b=blobFn(),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+function dlBuild(){
+  const w=$("dl");w.innerHTML="";const base=cur.base;
+  const add=(label,fn,fname)=>{const b=document.createElement("button");b.type="button";b.className="btn";b.textContent=label;b.onclick=()=>save(base+"_"+fname+".wav",()=>{const [l,r]=fn();return wavBlob(l,r,cur.N)});w.appendChild(b)};
+  add("ボーカルを保存",()=>cur.I16[0],"vocal");
+  add("インストを保存",()=>cur.I16[1],"inst");
+}
+
+/* ---------- 実行 ---------- */
+async function run(file){
+  if(busy)return;busy=true;cancel=false;stopSrc();playing=false;cur=null;
+  $("resPanel").hidden=true;$("runPanel").hidden=false;$("log").textContent="";$("cancelBtn").disabled=false;
+  const k=$("model").value,m=MODELS[k];
+  try{
+    log("ファイル: "+file.name+"("+(file.size/1048576).toFixed(1)+"MB)");
+    status("音源を読み込み中…");$("prog").removeAttribute("value");await tick();
+    const d=await decode(file);log("長さ "+fmt(d.L.length/SR)+(d.sr!==SR?"(変換 "+d.sr+"→"+SR+")":""));
+    if(d.L.length/SR>12*60)log("※とても長い曲です。メモリ不足で止まることがあります");
+    const {I16,N}=await separate(k,d.L,d.R);
+    cur={names:["vocals","inst"],ja:["ボーカル","インスト"],I16,N,base:file.name.replace(/\.[^.]+$/,"")||"stem"};
+    chipsBuild();dlBuild();setOn(()=>true);off=0;view();
+    $("resInfo").textContent=file.name+" を、ボーカルとインストに分けました。";
+    status("できました");$("prog").value=1;$("resPanel").hidden=false;
+  }catch(e){
+    if(String(e.message||e)==="cancel"){status("やめました")}
+    else if(String(e.message||e)==="GPU"){status("この端末(ブラウザ)では、GPUが使えないので動かせません");log("WebGPUが使えるChrome・Edge(パソコン)で試してください。使えない場合は、chrome://gpu で「WebGPU」が有効になっているか確認できます")}
+    else{status("うまくいきませんでした");log("エラー: "+(e.message||e));
+      if(/memory|alloc|OOM/i.test(String(e.message||e)))log("メモリが足りない可能性があります。短い曲か、4パートでためしてください")}
+  }finally{busy=false;$("cancelBtn").disabled=true}
+}
+$("cancelBtn").onclick=()=>{cancel=true};
+async function bench(){
+  if(busy)return;busy=true;cancel=false;stopSrc();playing=false;cur=null;
+  $("resPanel").hidden=true;$("runPanel").hidden=false;$("log").textContent="";$("cancelBtn").disabled=false;
+  try{
+    const n=SEG+STRIDE,L=new Float32Array(n),R=new Float32Array(n);
+    for(let i=0;i<n;i++){const t=i/SR,x=0.25*Math.sin(6.283*220*t)+0.15*Math.sin(6.283*1760*t)*(Math.sin(t*3)>0?1:0)+0.05*(Math.random()*2-1);L[i]=x;R[i]=x*0.9}
+    log("速度だけ測ります(曲は使いません)");
+    await separate($("model").value,L,R);status("測定できました");$("prog").value=1;
+  }catch(e){
+    if(String(e.message||e)==="cancel")status("やめました");
+    else if(String(e.message||e)==="GPU"){status("この端末(ブラウザ)では、GPUが使えないので動かせません");log("WebGPUが使えるChrome・Edge(パソコン)で試してください")}
+    else{status("うまくいきませんでした");log("エラー: "+(e.message||e))}
+  }finally{busy=false;$("cancelBtn").disabled=true}
+}
+$("benchBtn").onclick=bench;
+$("copyLog").onclick=async()=>{const t=$("log").textContent+"\n"+navigator.userAgent;try{await navigator.clipboard.writeText(t);$("copyLog").textContent="コピーしました"}catch(e){$("copyLog").textContent="コピーできませんでした"}setTimeout(()=>{$("copyLog").textContent="測定結果をコピー"},2000)};
+const dz=$("drop"),fi=$("file");
+fi.onchange=()=>{if(fi.files[0])run(fi.files[0]);fi.value=""};
+["dragenter","dragover"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add("on")}));
+["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("on")}));
+dz.addEventListener("drop",e=>{const f=e.dataTransfer.files[0];if(f)run(f)});
+dz.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fi.click()}});
+window.__stem={run,bench,SEG,STRIDE};
+})();
+</script>
+<script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
+(()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
+const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
+ ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
+ [".cp,.ro","copy_ms"],["#scSeg button","scale_select"],["#typeSeg button,#clType button","chord_select"],["#pgCat button,#clCat button","genre_select"],["#drop","file_pick"]];
+document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.target.closest(sel);if(!el)continue;
+  const h=el.closest(".pg,.cl-pg");const label=((h&&h.querySelector("h3")&&h.querySelector("h3").textContent)||el.dataset.g||el.textContent||"").trim().slice(0,60);
+  ngTrack(name,{label});break;}},true);})();
+</script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
+<script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
+<script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
+</body>
+</html>
