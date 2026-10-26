@@ -1,0 +1,13 @@
+---
+const { value } = Astro.props;
+const b = Astro.props.node ?? value ?? Astro.props;
+const kind = b.kind;
+const yt = b.id && kind === "youtube"
+  ? `https://www.youtube.com/embed/${b.id}` + ([b.start && `start=${b.start}`, b.list && `list=${b.list}`].filter(Boolean).length ? "?" + [b.start && `start=${b.start}`, b.list && `list=${b.list}`].filter(Boolean).join("&") : "")
+  : "";
+---
+{kind === "youtube" && <div class="embed yt"><iframe src={yt} title="YouTube" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>}
+{kind === "spotify" && <div class="embed sp"><iframe src={`https://open.spotify.com/embed/${b.id}`} title="Spotify" height={b.h || "152"} loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe></div>}
+{kind === "audio" && <audio class="embed-media" controls preload="none" src={b.src}></audio>}
+{kind === "video" && <video class="embed-media" controls preload="metadata" src={b.src}></video>}
+{kind === "embed" && <div class="embed"><iframe src={b.src} title={b.title || "埋め込み"} height={b.h || "400"} loading="lazy"></iframe></div>}

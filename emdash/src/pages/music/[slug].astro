@@ -1,0 +1,5 @@
+---
+import { decodeSlug } from "emdash"; import Article from "../../components/Article.astro";
+const slug = decodeSlug(Astro.params.slug);
+---
+<Article coll="music" slug={slug}/>

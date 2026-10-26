@@ -1,0 +1,21 @@
+---
+const { title, noindex = true } = Astro.props;
+---
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{title}</title>
+{noindex && <meta name="robots" content="noindex">}
+<style is:global>
+:root{color-scheme:light dark;--bg:#fff;--fg:#1b2733;--mut:#667;--ac:#0a7fb0;--line:#d9e2ea}
+@media (prefers-color-scheme:dark){:root{--bg:#10171d;--fg:#e6edf2;--mut:#9ab;--ac:#5ec4ee;--line:#26343f}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.8 system-ui,"Hiragino Sans","Noto Sans JP",sans-serif}
+header,main,footer{max-width:760px;margin:0 auto;padding:12px 16px}
+header a{color:var(--fg);text-decoration:none;font-weight:700;margin-right:14px}
+a{color:var(--ac)} img,video{max-width:100%;height:auto}
+.embed{margin:14px 0}.embed iframe{width:100%;border:0;border-radius:8px}.embed.yt iframe{aspect-ratio:16/9}
+.list{list-style:none;padding:0}.list li{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.list img{width:96px;height:54px;object-fit:cover;border-radius:6px}.mut{color:var(--mut);font-size:.85em}
+audio{width:100%}
+</style></head><body>
+<header><a href="/">なみぐる！(試験環境)</a><a href="/music/">Music</a><a href="/movie/">Movie</a><a href="/posts/">お知らせ</a></header>
+<main><slot/></main></body></html>

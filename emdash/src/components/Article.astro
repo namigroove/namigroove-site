@@ -1,0 +1,12 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Embed from "./Embed.astro";
+import Site from "../layouts/Site.astro";
+const { coll, slug } = Astro.props;
+const { entry } = await getEmDashEntry(coll, slug);
+if (!entry) return Astro.rewrite("/404");
+---
+<Site title={`${entry.data.title} | なみぐる！`}>
+<article><h1>{entry.data.title}</h1><div class="mut">{String(entry.data.orig_date||"").slice(0,10)}</div>
+<PortableText value={entry.data.content} components={{ type: { embed: Embed } }} /></article></Site>

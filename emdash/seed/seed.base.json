@@ -1,0 +1,163 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Blog Starter",
+  "description": "A blog with posts and pages",
+  "author": "EmDash"
+ },
+ "settings": {
+  "title": "なみぐる！",
+  "tagline": "いい波、起こします~(･ω･~)"
+ },
+ "collections": [
+  {
+   "slug": "music",
+   "label": "Music",
+   "labelSingular": "Music",
+   "urlPattern": "/music/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "タイトル",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "orig_date",
+     "label": "公開日時(元記事)",
+     "type": "string"
+    },
+    {
+     "slug": "legacy_url",
+     "label": "元のURL",
+     "type": "string"
+    },
+    {
+     "slug": "thumb",
+     "label": "サムネURL",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "本文",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "movie",
+   "label": "Movie",
+   "labelSingular": "Movie",
+   "urlPattern": "/movie/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "タイトル",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "orig_date",
+     "label": "公開日時(元記事)",
+     "type": "string"
+    },
+    {
+     "slug": "legacy_url",
+     "label": "元のURL",
+     "type": "string"
+    },
+    {
+     "slug": "thumb",
+     "label": "サムネURL",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "本文",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "posts",
+   "label": "お知らせ・ブログ",
+   "labelSingular": "お知らせ・ブログ",
+   "urlPattern": "/posts/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "タイトル",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "orig_date",
+     "label": "公開日時(元記事)",
+     "type": "string"
+    },
+    {
+     "slug": "legacy_url",
+     "label": "元のURL",
+     "type": "string"
+    },
+    {
+     "slug": "thumb",
+     "label": "サムネURL",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "本文",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  }
+ ],
+ "taxonomies": [
+  {
+   "name": "category",
+   "label": "カテゴリ",
+   "labelSingular": "カテゴリ",
+   "hierarchical": false,
+   "collections": [
+    "posts"
+   ],
+   "terms": []
+  }
+ ],
+ "bylines": [],
+ "menus": [],
+ "widgetAreas": [],
+ "sections": []
+}

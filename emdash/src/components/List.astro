@@ -1,0 +1,8 @@
+---
+import { getEmDashCollection } from "emdash";
+const { coll, title } = Astro.props;
+const { entries } = await getEmDashCollection(coll);
+const rows = entries.map(e=>({slug:e.id,title:e.data.title,d:String(e.data.orig_date||""),thumb:e.data.thumb,url:e.data.legacy_url||`/${coll}/${e.id}/`})).sort((a,b)=>b.d.localeCompare(a.d));
+---
+<h1>{title}</h1>
+<ul class="list">{rows.map(r=><li>{r.thumb?<img src={r.thumb} alt="" loading="lazy"/>:null}<div><a href={r.url}>{r.title}</a><div class="mut">{r.d.slice(0,10)}</div></div></li>)}</ul>
