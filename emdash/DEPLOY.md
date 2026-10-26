@@ -15,7 +15,6 @@
     pnpm install
     npx wrangler login
     npx wrangler d1 create namigroove-blog        # 出力された database_id を wrangler.jsonc に書く
-    npx wrangler r2 bucket create my-emdash-media
     pnpm deploy                                   # https://namigroove-blog.<サブドメイン>.workers.dev
     node tools/load.mjs https://namigroove-blog.<サブドメイン>.workers.dev   # 記事投入
 管理画面は `/_emdash/admin`(パスキーでログイン)。
@@ -27,3 +26,5 @@
 ## 本番のサブパス運用(後日)
 `router/worker.js` の考え方で、namigroove.com をCloudflareに置き、記事系パスだけEmDashへ振り分けます。
 `/music/works/` は今のサイトのままにする必要があります(ルーターで除外済み)。
+
+※ 試験環境は R2(画像保存)を使いません。管理画面からの画像アップロードは使えません(記事内の画像は今のサイトのURLを参照)。
