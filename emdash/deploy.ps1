@@ -1,10 +1,11 @@
-# EmDash 試験環境をCloudflareに載せる(PowerShellで実行)
+# Deploy EmDash trial to Cloudflare (run in PowerShell)
 $ErrorActionPreference = "Stop"
 $v = [version](node -v).TrimStart("v")
-if ($v -lt [version]"22.23.4") { Write-Host "Node.js 22.23.4以上が必要です(今: $v)。https://nodejs.org から入れ直してください"; exit 1 }
+if ($v -lt [version]"22.23.4") { Write-Host "Node.js 22.23.4 or newer is required (now: $v). Install the latest LTS from https://nodejs.org and reopen PowerShell."; exit 1 }
 if (-not (Get-Command pnpm -ErrorAction SilentlyContinue)) { npm i -g pnpm }
 pnpm install
 npx wrangler login
 pnpm deploy
-Write-Host "`n上に出た https://....workers.dev のURLを控えて、次を実行してください:"
-Write-Host "node tools/load.mjs https://(そのURL)"
+Write-Host ""
+Write-Host "Copy the https://....workers.dev URL above, then run:"
+Write-Host "node tools/load.mjs https://(that URL)"
