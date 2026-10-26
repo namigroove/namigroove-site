@@ -6,7 +6,12 @@ import Site from "../layouts/Site.astro";
 const { coll, slug } = Astro.props;
 const { entry } = await getEmDashEntry(coll, slug);
 if (!entry) return Astro.rewrite("/404");
+const d = String(entry.data.orig_date || "").slice(0, 10);
+const label = coll === "posts" ? "POSTS" : coll.toUpperCase();
 ---
-<Site title={`${entry.data.title} | なみぐる！`}>
-<article><h1>{entry.data.title}</h1><div class="mut">{String(entry.data.orig_date||"").slice(0,10)}</div>
-<PortableText value={entry.data.content} components={{ type: { embed: Embed } }} /></article></Site>
+<Site title={`${entry.data.title} – なみぐる！`} image={entry.data.thumb}>
+<main class="wrap post">
+<p class="meta">{label} · <time datetime={d}>{d.replaceAll("-", ".")}</time></p>
+<h1>{entry.data.title}</h1>
+<PortableText value={entry.data.content} components={{ type: { embed: Embed } }} />
+</main></Site>
