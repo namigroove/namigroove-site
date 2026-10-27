@@ -3,10 +3,10 @@
 	"main": "./worker.js",
 	"compatibility_date": "2026-02-24",
 	// EmDash 本体の Worker を直接呼ぶ(workers.dev を経由しない)
-	"services": [{ "binding": "BLOG", "service": "namigroove-blog" }]
-	// ↓ DNS を Cloudflare に移し終えてから有効にする(最後の手順)
-	// ,"routes": [
-	//   { "pattern": "www.namigroove.com/*", "zone_name": "namigroove.com" },
-	//   { "pattern": "namigroove.com/*", "zone_name": "namigroove.com" }
-	// ]
+	"services": [{ "binding": "BLOG", "service": "namigroove-blog" }],
+	// 本番ルート。戻すときはこの routes をコメントアウトして deploy する
+	"routes": [
+		{ "pattern": "www.namigroove.com/*", "zone_name": "namigroove.com" },
+		{ "pattern": "namigroove.com/*", "zone_name": "namigroove.com" }
+	]
 }
