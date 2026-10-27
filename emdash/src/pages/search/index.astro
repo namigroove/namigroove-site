@@ -1,0 +1,25 @@
+---
+import { search, getEmDashEntry } from "emdash";
+import Site from "../../layouts/Site.astro";
+const q = Astro.url.searchParams.get("q")?.trim() || "";
+const NAMES = { music: "MUSIC", movie: "MOVIE", posts: "お知らせ" };
+let rows = [];
+if (q) {
+  const { items } = await search(q, { collections: ["music", "movie", "posts"], limit: 30 });
+  rows = await Promise.all(items.map(async (r) => {
+    const slug = r.slug ?? r.id; const coll = r.collection;
+    let url = `/${coll}/${slug}/`;
+    if (coll === "posts") { const { entry } = await getEmDashEntry("posts", slug); url = entry?.data.legacy_url || url; }
+    return { url, title: r.title ?? slug, coll: NAMES[coll] ?? coll };
+  }));
+}
+---
+<Site title={q ? `検索: ${q} – なみぐる！` : "検索 – なみぐる！"}>
+<main class="wrap post">
+<p class="meta">NAMIGROOVE</p>
+<h1>記事を検索</h1>
+<form class="bsearch" method="get" action="/search/" role="search"><input type="search" name="q" value={q} placeholder="タイトル・本文から探す" aria-label="検索" autofocus={!q}><button type="submit">検索</button></form>
+{q && <p class="meta">{rows.length}件{rows.length >= 30 ? "(上位30件)" : ""}</p>}
+<ul class="list">{rows.map((r) => <li><a href={r.url}><span class="ph"></span><span><time>{r.coll}</time>{r.title}</span></a></li>)}</ul>
+{q && rows.length === 0 && <p>見つかりませんでした。別の言葉で試してください。</p>}
+</main></Site>

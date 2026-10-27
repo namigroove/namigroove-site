@@ -1,5 +1,5 @@
 ---
-import { getEmDashEntry } from "emdash";
+import { getEmDashEntry, getEmDashCollection, getEntryTerms } from "emdash";
 import { PortableText } from "emdash/ui";
 import Embed from "./Embed.astro";
 import Site from "../layouts/Site.astro";
@@ -8,10 +8,22 @@ const { entry } = await getEmDashEntry(coll, slug);
 if (!entry) return Astro.rewrite("/404");
 const d = String(entry.data.orig_date || "").slice(0, 10);
 const label = coll === "posts" ? "POSTS" : coll.toUpperCase();
+const cats = coll === "posts" ? await getEntryTerms("posts", entry.data.id, "category") : [];
+
+const { entries } = await getEmDashCollection(coll);
+const list = entries.map((e) => ({ id: e.id, t: e.data.title, d: String(e.data.orig_date || ""), url: e.data.legacy_url || `/${coll}/${e.id}/` })).sort((a, b) => b.d.localeCompare(a.d));
+const i = list.findIndex((x) => x.id === entry.id);
+const newer = i > 0 ? list[i - 1] : null;
+const older = i >= 0 && i < list.length - 1 ? list[i + 1] : null;
 ---
 <Site title={`${entry.data.title} – なみぐる！`} image={entry.data.thumb}>
 <main class="wrap post">
-<p class="meta">{label} · <time datetime={d}>{d.replaceAll("-", ".")}</time></p>
+<p class="meta">{label} · <time datetime={d}>{d.replaceAll("-", ".")}</time>{cats.length > 0 && <> · {cats.map((c) => c.label).join(" / ")}</>}</p>
 <h1>{entry.data.title}</h1>
 <PortableText value={entry.data.content} components={{ type: { embed: Embed } }} />
+<nav class="pn" aria-label="前後の記事">
+  {older ? <a href={older.url}>← {older.t}</a> : <span></span>}
+  {newer ? <a href={newer.url}>{newer.t} →</a> : <span></span>}
+</nav>
+<p class="pn-back"><a href={`/${coll}/`}>一覧へ戻る</a></p>
 </main></Site>

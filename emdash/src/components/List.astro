@@ -1,12 +1,45 @@
 ---
-import { getEmDashCollection } from "emdash";
+import { getEmDashCollection, getTermsForEntries } from "emdash";
 const { coll, title } = Astro.props;
+const PER = 30;
+const sp = Astro.url.searchParams;
+const page = Math.max(1, parseInt(sp.get("p") || "1", 10) || 1);
+const cat = sp.get("cat") || "";
 const { entries } = await getEmDashCollection(coll);
 const fmt = (d) => String(d || "").slice(0, 10).replaceAll("-", ".");
-const rows = entries.map(e=>({title:e.data.title,d:String(e.data.orig_date||""),thumb:e.data.thumb,url:e.data.legacy_url||`/${coll}/${e.id}/`})).sort((a,b)=>b.d.localeCompare(a.d));
+
+let terms = new Map();
+if (coll === "posts") terms = await getTermsForEntries("posts", entries.map((e) => e.data.id), "category");
+let rows = entries.map((e) => ({
+  title: e.data.title, d: String(e.data.orig_date || ""), thumb: e.data.thumb,
+  url: e.data.legacy_url || `/${coll}/${e.id}/`,
+  cats: (terms.get(e.data.id) ?? []).map((t) => ({ slug: t.slug, label: t.label })),
+})).sort((a, b) => b.d.localeCompare(a.d));
+
+const allCats = new Map();
+rows.forEach((r) => r.cats.forEach((c) => allCats.set(c.slug, c.label)));
+if (cat) rows = rows.filter((r) => r.cats.some((c) => c.slug === cat));
+
+const pages = Math.max(1, Math.ceil(rows.length / PER));
+const cur = Math.min(page, pages);
+const shown = rows.slice((cur - 1) * PER, cur * PER);
+const base = `/${coll}/`;
+const q = (o) => { const u = new URLSearchParams(); if (o.cat) u.set("cat", o.cat); if (o.p > 1) u.set("p", String(o.p)); const s = u.toString(); return base + (s ? "?" + s : ""); };
 ---
 <main class="wrap post">
 <p class="meta">NAMIGROOVE</p>
 <h1>{title}</h1>
-<ul class="list">{rows.map(r=><li><a href={r.url}>{r.thumb?<img src={r.thumb} alt="" loading="lazy"/>:<span class="ph"></span>}<span><time>{fmt(r.d)}</time>{r.title}</span></a></li>)}</ul>
+<form class="bsearch" method="get" action="/search/" role="search"><input type="search" name="q" placeholder="記事を検索" aria-label="記事を検索"><button type="submit">検索</button></form>
+{allCats.size > 0 && (
+  <p class="chips"><a href={base} class:list={["chip", { on: !cat }]}>すべて</a>
+  {[...allCats].map(([slug, label]) => <a href={q({ cat: slug, p: 1 })} class:list={["chip", { on: cat === slug }]}>{label}</a>)}</p>
+)}
+<ul class="list">{shown.map((r) => <li><a href={r.url}>{r.thumb ? <img src={r.thumb} alt="" loading="lazy"/> : <span class="ph"></span>}<span><time>{fmt(r.d)}</time>{r.title}{r.cats.length > 0 && <small class="cats">{r.cats.map((c) => c.label).join(" / ")}</small>}</span></a></li>)}</ul>
+{pages > 1 && (
+  <nav class="pager" aria-label="ページ送り">
+    {cur > 1 ? <a href={q({ cat, p: cur - 1 })}>← 前へ</a> : <span></span>}
+    <span>{cur} / {pages}</span>
+    {cur < pages ? <a href={q({ cat, p: cur + 1 })}>次へ →</a> : <span></span>}
+  </nav>
+)}
 </main>

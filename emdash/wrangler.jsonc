@@ -8,12 +8,19 @@
 		{
 			"binding": "DB",
 			"database_name": "my-emdash-site",
-		},
+			"database_id": "5e94b427-1854-4691-9f84-e50e49dd7d67"
+		}
 	],
-	// Sandboxed plugins require Worker Loader, available on Workers paid plans. Uncomment to enable:
-	// "worker_loaders": [{ "binding": "LOADER" }],
-	// General maintenance cron trigger
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "my-emdash-media"
+		}
+	],
+	"kv_namespaces": [
+		{ "binding": "SESSION", "id": "cfaf77a2bda84a5bbb18f8c1d8081063" }
+	],
 	"triggers": {
-		"crons": ["* * * * *"],
-	},
+		"crons": ["* * * * *"]
+	}
 }
