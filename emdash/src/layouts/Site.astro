@@ -1,6 +1,10 @@
 ---
 import css from "../styles/site.css?inline";
-const { title, noindex = true, image, desc } = Astro.props;
+const { title, image, desc } = Astro.props;
+// 試験用の workers.dev では検索に載せない。本番ドメイン(namigroove.com)では載せる。
+const host = new URL(Astro.request.url).hostname;
+const noindex = host.endsWith("workers.dev") || host === "localhost";
+const canonical = `https://www.namigroove.com${new URL(Astro.request.url).pathname}`;
 const B = "https://www.namigroove.com"; // 本番(同一ドメイン)でも同じ値でよい
 const styles = css.replaceAll('url("/fonts/', `url("${B}/fonts/`);
 ---
@@ -8,7 +12,7 @@ const styles = css.replaceAll('url("/fonts/', `url("${B}/fonts/`);
 <html lang="ja"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
-{noindex && <meta name="robots" content="noindex">}
+{noindex ? <meta name="robots" content="noindex"> : <link rel="canonical" href={canonical}>}
 <meta property="og:title" content={title}><meta property="og:type" content="article">
 {image && <meta property="og:image" content={image}>}
 <meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#396cdf">

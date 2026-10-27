@@ -28,3 +28,9 @@
 `/music/works/` は今のサイトのままにする必要があります(ルーターで除外済み)。
 
 ※ 試験環境は R2(画像保存)を使いません。管理画面からの画像アップロードは使えません(記事内の画像は今のサイトのURLを参照)。
+
+## 本番切り替え手順(DNSはCloudflare移管済み)
+1. `cd emdash && pnpm deploy`   (本体の更新。workers.dev では noindex のまま、本番ドメインでは noindex が外れて canonical が付く)
+2. `cd emdash/router && pnpm exec wrangler deploy`   (振り分けWorkerを公開。routes はまだコメントアウト = 影響なし)
+3. 動作確認: router/wrangler.jsonc の routes を有効にして再度 deploy
+4. 確認後に問題があれば routes を再びコメントアウトして deploy(= 即時に今の構成へ戻る)
