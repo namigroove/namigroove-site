@@ -23,7 +23,7 @@
 試験環境では画像を `https://www.namigroove.com/wp-content/...` の絶対URLで参照しています(今のサイトから配信)。
 本番(同一ドメイン)では `ASSET_BASE="" node tools/build-seed.mjs` で相対パスにできます。
 
-## 本番のサブパス運用(後日)
+## 本番のサブパス運用(準備済み: router/)
 `router/worker.js` の考え方で、namigroove.com をCloudflareに置き、記事系パスだけEmDashへ振り分けます。
 `/music/works/` は今のサイトのままにする必要があります(ルーターで除外済み)。
 
