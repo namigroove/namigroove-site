@@ -239,7 +239,7 @@ header.top .logo{flex:none}
     </div>
     <button class="puni" type="button" aria-label="なみぐるをぷにぷにする"><img src="img/namigroove-3d.webp" alt="なみぐる" width="640" height="565"><span class="bpm" aria-live="polite">タップでBPM計測</span></button>
   </div>
-  <nav class="hub-nav" aria-label="カテゴリ"><a href="#play">練習・演奏</a><a href="#write">曲づくり・作詞</a><a href="#convert">ファイル変換</a><a href="#reference">楽器のしらべもの</a><a href="#daw">DAWで使うスクリプト</a></nav>
+  <nav class="hub-nav" aria-label="カテゴリ"><a href="#play">練習・演奏</a><a href="#write">曲づくり・作詞</a><a href="#convert">ファイル変換</a><a href="#reference">楽器のしらべもの</a><a href="#daw">DAWで使うツール</a></nav>
   <div class="hub-sec" id="play">
     <p class="eyebrow">PLAY</p>
     <h2 class="hub-h">練習・演奏</h2>
@@ -290,18 +290,23 @@ header.top .logo{flex:none}
   </ul>
   <div class="hub-sec" id="daw">
     <p class="eyebrow">FOR DAW</p>
-    <h2 class="hub-h">DAWで使うスクリプト</h2>
-    <p class="hub-p">曲づくりやライブの準備に使っているスクリプトを配布しています。</p>
+    <h2 class="hub-h">DAWで使うツール</h2>
+    <p class="hub-p">曲づくりやライブの準備に使っているスクリプトやプラグインを配布しています。</p>
   </div>
   <ul class="cards">
     <li><a class="card" href="https://github.com/namigroove/reaper_export_item_length.lua" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M3 4v16M21 4v16M7 12h10"/><path d="m9 10-2 2 2 2M15 10l2 2-2 2"/></svg></span><div><h2>REAPER 選択アイテムの長さ表示</h2><p>REAPERで選んだアイテムの長さを一覧で表示し、合計時間も出すLuaスクリプト。ライブの尺確認などに。</p><span class="tags"><span>REAPER</span><span>Lua</span><span>GitHub</span></span></div><span class="go-ar" aria-hidden="true">↗</span></a></li>
     <li><a class="card" href="https://github.com/namigroove/pitch_relative_colorizer_daemon" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M3 4v16M21 4v16M7 12h10"/><path d="m9 10-2 2 2 2M15 10l2 2-2 2"/></svg></span><div><h2>REAPER アイテムのピッチ毎に色変換</h2><p>REAPERのアイテムのピッチ(半音)を読み取って、上げは暖色・下げは寒色に色を変えるLuaスクリプト。常駐して、ピッチを変えるとリアルタイムで色が変わります。</p><span class="tags"><span>REAPER</span><span>Lua</span><span>GitHub</span></span></div><span class="go-ar" aria-hidden="true">↗</span></a></li>
+    <li><a class="card" href="https://github.com/namigroove/midi-stack-lens" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M7 6v7M11 6v7M15 6v7M19 6v7"/><path class="f" d="M6 6h2v7H6zM14 6h2v7h-2z"/></svg></span><div><h2>MIDI Stack Lens</h2><p>MIDIの積み方(ボイシング)を鍵盤で見るVST3。押さえた音を光らせ、度数とコード名を小さく表示。音は出さず、MIDIはそのまま素通しします。</p><span class="tags"><span>VST3</span><span>Windows・Mac</span><span>GitHub</span></span></div><span class="go-ar" aria-hidden="true">↗</span></a></li>
   </ul>
   <div class="hub-sec" id="updates">
     <p class="eyebrow">UPDATES</p>
     <h2 class="hub-h">更新履歴</h2>
   </div>
   <div class="log">
+    <h3>2026.10.28</h3>
+    <ul>
+      <li>「DAWで使うツール」に、鍵盤でMIDIの積み方を見るVST3「MIDI Stack Lens」を追加</li>
+    </ul>
     <h3>2026.10.23</h3>
     <ul>
       <li>新ツール「音声→MP3コンバーター」「画像コンバーター」「アニメ画像メーカー」:ブラウザの中だけで変換・作成。画像コンバーターはPSD・AI・PDF・HEIC・TIFFも開けて、ICO・ファビコン作成、回転・切り抜き・背景透過、動画のGIF・APNG化もできます</li>
