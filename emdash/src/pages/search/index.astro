@@ -1,6 +1,7 @@
 ---
 import { search, getEmDashEntry } from "emdash";
 import Site from "../../layouts/Site.astro";
+import { entryUrl } from "../../lib/entry.js";
 const q = Astro.url.searchParams.get("q")?.trim() || "";
 const NAMES = { music: "MUSIC", movie: "MOVIE", posts: "お知らせ" };
 let rows = [];
@@ -9,7 +10,7 @@ if (q) {
   rows = await Promise.all(items.map(async (r) => {
     const slug = r.slug ?? r.id; const coll = r.collection;
     let url = `/${coll}/${slug}/`;
-    if (coll === "posts") { const { entry } = await getEmDashEntry("posts", slug); url = entry?.data.legacy_url || url; }
+    if (coll === "posts") { const { entry } = await getEmDashEntry("posts", slug); if (entry) url = entryUrl("posts", entry); }
     return { url, title: r.title ?? slug, coll: NAMES[coll] ?? coll };
   }));
 }

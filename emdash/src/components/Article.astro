@@ -3,15 +3,16 @@ import { getEmDashEntry, getEmDashCollection, getEntryTerms } from "emdash";
 import { PortableText } from "emdash/ui";
 import Embed from "./Embed.astro";
 import Site from "../layouts/Site.astro";
+import { entryDate, entryUrl } from "../lib/entry.js";
 const { coll, slug } = Astro.props;
 const { entry } = await getEmDashEntry(coll, slug);
 if (!entry) return Astro.rewrite("/404");
-const d = String(entry.data.orig_date || "").slice(0, 10);
+const d = entryDate(entry).slice(0, 10);
 const label = coll === "posts" ? "POSTS" : coll.toUpperCase();
 const cats = coll === "posts" ? await getEntryTerms("posts", entry.data.id, "category") : [];
 
 const { entries } = await getEmDashCollection(coll);
-const list = entries.map((e) => ({ id: e.id, t: e.data.title, d: String(e.data.orig_date || ""), url: e.data.legacy_url || `/${coll}/${e.id}/` })).sort((a, b) => b.d.localeCompare(a.d));
+const list = entries.map((e) => ({ id: e.id, t: e.data.title, d: entryDate(e), url: entryUrl(coll, e) })).sort((a, b) => b.d.localeCompare(a.d));
 const i = list.findIndex((x) => x.id === entry.id);
 const newer = i > 0 ? list[i - 1] : null;
 const older = i >= 0 && i < list.length - 1 ? list[i + 1] : null;

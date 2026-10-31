@@ -1,5 +1,6 @@
 ---
 import { getEmDashCollection, getTermsForEntries } from "emdash";
+import { entryDate, entryUrl } from "../lib/entry.js";
 const { coll, title } = Astro.props;
 const PER = 30;
 const sp = Astro.url.searchParams;
@@ -11,8 +12,8 @@ const fmt = (d) => String(d || "").slice(0, 10).replaceAll("-", ".");
 let terms = new Map();
 if (coll === "posts") terms = await getTermsForEntries("posts", entries.map((e) => e.data.id), "category");
 let rows = entries.map((e) => ({
-  title: e.data.title, d: String(e.data.orig_date || ""), thumb: e.data.thumb,
-  url: e.data.legacy_url || `/${coll}/${e.id}/`,
+  title: e.data.title, d: entryDate(e), thumb: e.data.thumb,
+  url: entryUrl(coll, e),
   cats: (terms.get(e.data.id) ?? []).map((t) => ({ slug: t.slug, label: t.label })),
 })).sort((a, b) => b.d.localeCompare(a.d));
 
