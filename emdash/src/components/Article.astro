@@ -3,7 +3,7 @@ import { getEmDashEntry, getEmDashCollection, getEntryTerms } from "emdash";
 import { PortableText } from "emdash/ui";
 import Embed from "./Embed.astro";
 import Site from "../layouts/Site.astro";
-import { entryDate, entryUrl } from "../lib/entry.js";
+import { entryDate, entryUrl, entryThumb } from "../lib/entry.js";
 const { coll, slug } = Astro.props;
 const { entry } = await getEmDashEntry(coll, slug);
 if (!entry) return Astro.rewrite("/404");
@@ -17,7 +17,7 @@ const i = list.findIndex((x) => x.id === entry.id);
 const newer = i > 0 ? list[i - 1] : null;
 const older = i >= 0 && i < list.length - 1 ? list[i + 1] : null;
 ---
-<Site title={`${entry.data.title} – なみぐる！`} image={entry.data.thumb}>
+<Site title={`${entry.data.title} – なみぐる！`} image={entryThumb(entry)}>
 <main class="wrap post">
 <p class="meta">{label} · <time datetime={d}>{d.replaceAll("-", ".")}</time>{cats.length > 0 && <> · {cats.map((c) => c.label).join(" / ")}</>}</p>
 <h1>{entry.data.title}</h1>

@@ -15,3 +15,20 @@ export function entryUrl(coll, e) {
   }
   return `/${coll}/${e.id}/`;
 }
+
+// サムネ: thumb欄 → アイキャッチ → 本文の最初の画像 → 本文のYouTube動画のサムネ(管理画面で新しく書いた記事用)
+export function entryThumb(e) {
+  const d = e.data;
+  if (d.thumb) return d.thumb;
+  const f = d.featured_image;
+  if (f) {
+    const u = typeof f === "string" ? f : f.src || f.url || f.asset?.url;
+    if (u) return u;
+  }
+  let s = "";
+  try { s = JSON.stringify(d.content ?? ""); } catch { return ""; }
+  const img = s.match(/"(?:url|src)":"(https?:[^"]+\.(?:webp|png|jpe?g|gif)(?:\?[^"]*)?|\/_emdash\/api\/media\/file\/[^"]+)"/i);
+  if (img) return img[1];
+  const yt = s.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/|shorts\/)|"kind":"youtube","id":")([\w-]{11})/) || s.match(/"id":"([\w-]{11})","kind":"youtube"/);
+  return yt ? `https://i.ytimg.com/vi/${yt[1]}/hqdefault.jpg` : "";
+}
