@@ -845,7 +845,7 @@ glitch:{anim:1,name:"グリッチ",desc:"横にずれたブロックと、赤青
  }},
 puni:{anim:1,name:"ぷにぷに",desc:"画像がゼリーみたいにぷにぷに揺れる、つなぎ目のないループにします。GIF・APNG・動画で保存すると、そのまま繰り返し再生できます。",
  params:[{k:"mode",l:"動き",type:"select",opts:[["jelly","ぷるぷる(つぶれて伸びる)"],["bulge","ふくらむ(中心がふくらむ)"],["wave","とろとろ(波うつ)"]],def:"jelly"},
-  {k:"st",l:"強さ",min:0,max:100,def:50},{k:"n",l:"揺れる回数(1ループ)",min:1,max:4,def:2}],
+  {k:"st",l:"強さ",min:0,max:100,def:50},{k:"n",l:"速さ",min:1,max:8,def:2}],
  run(src,p,R,u,ctx){
   const W=src.width,H=src.height,ph=ctx&&ctx.ph!=null?ctx.ph:0.25,A=p.st/100,T=Math.PI*2*p.n*ph;
   const sd=getD(src).data,o=mk(W,H),ox=cx(o),od=ox.createImageData(W,H),d=od.data;
