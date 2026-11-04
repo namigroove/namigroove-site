@@ -352,7 +352,7 @@ header.top .logo{flex:none}
   <section class="how">
     <h2>使い方のメモ</h2>
     <ul>
-      <li>VHS・グリッチ・ドリームコア・バックルームと、動画を読み込んだときは、プレビューが動きます。止めたいときは「動きを止める」を押してください。</li>
+      <li>VHS・グリッチ・ぷにぷに・ドリームコア・バックルームと、動画を読み込んだときは、プレビューが動きます。止めたいときは「動きを止める」を押してください。</li>
       <li>エフェクトを選んで、スライダーで強さを調整します。「別のパターン」で、ランダムな部分(ローポリの点の位置、グリッチのずれ方など)が変わります。</li>
       <li>ドット絵: ドットの大きさと色数を選べます。ファミコン風・ゲームボーイ風・PICO-8風・白黒のパレットにも切り替えられ、ディザ(網点でなめらかに見せる処理)も使えます。</li>
       <li>ローポリ: 画像の輪郭に点を集めて三角形に分け、三角形ごとに色を塗ります。細かさと、輪郭に寄せる強さを選べます。</li>
@@ -843,6 +843,33 @@ glitch:{anim:1,name:"グリッチ",desc:"横にずれたブロックと、赤青
   x.fillStyle="rgba(255,255,255,.35)";for(let i=0;i<p.sl;i++){x.fillRect(R()*W,R()*H,(R()*0.3)*W,Math.max(1,u))}
   return o;
  }},
+puni:{anim:1,name:"ぷにぷに",desc:"画像がゼリーみたいにぷにぷに揺れる、つなぎ目のないループにします。GIF・APNG・動画で保存すると、そのまま繰り返し再生できます。",
+ params:[{k:"mode",l:"動き",type:"select",opts:[["jelly","ぷるぷる(つぶれて伸びる)"],["bulge","ふくらむ(中心がふくらむ)"],["wave","とろとろ(波うつ)"]],def:"jelly"},
+  {k:"st",l:"強さ",min:0,max:100,def:50},{k:"n",l:"揺れる回数(1ループ)",min:1,max:4,def:2}],
+ run(src,p,R,u,ctx){
+  const W=src.width,H=src.height,ph=ctx&&ctx.ph!=null?ctx.ph:0.25,A=p.st/100,T=Math.PI*2*p.n*ph;
+  const sd=getD(src).data,o=mk(W,H),ox=cx(o),od=ox.createImageData(W,H),d=od.data;
+  const cxx=W/2,cyy=H/2,rad=Math.hypot(W,H)/2,zm=1+A*0.1; /* 端の引き伸ばしが見えないよう、少し拡大 */
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    let sx=x,sy=y;
+    if(p.mode==="jelly"){
+      const s=A*0.22*Math.sin(T),k=1+s,top=1-y/H;
+      sx=(x-cxx)*k+cxx+W*A*0.035*Math.sin(T*1+top*5)*top;
+      sy=H-(H-y)/k;
+    }else if(p.mode==="bulge"){
+      const dx=x-cxx,dy=y-cyy,r=Math.hypot(dx,dy)/rad,g=1-A*0.55*Math.sin(T)*Math.exp(-r*r*3.5);
+      sx=cxx+dx*g;sy=cyy+dy*g;
+    }else{
+      const a=A*0.035;
+      sx=x+W*a*Math.sin(T+y/H*Math.PI*4);sy=y+H*a*Math.sin(T+x/W*Math.PI*4);
+    }
+    sx=cxx+(sx-cxx)/zm;sy=cyy+(sy-cyy)/zm;
+    sx=sx<0?0:sx>W-1.001?W-1.001:sx;sy=sy<0?0:sy>H-1.001?H-1.001:sy;
+    const x0=sx|0,y0=sy|0,fx=sx-x0,fy=sy-y0,i00=(y0*W+x0)*4,i10=i00+4,i01=i00+W*4,i11=i01+4,o4=(y*W+x)*4;
+    for(let c=0;c<4;c++)d[o4+c]=(sd[i00+c]*(1-fx)+sd[i10+c]*fx)*(1-fy)+(sd[i01+c]*(1-fx)+sd[i11+c]*fx)*fy;
+  }
+  ox.putImageData(od,0,0);return o;
+ }},
 halftone:{name:"ハーフトーン",desc:"新聞やポップアートのような、網点の絵にします。CMYKの4色の網点も選べます。",
  params:[{k:"size",l:"ドットの間隔",min:4,max:30,def:10},{k:"mode",l:"色",type:"select",opts:[["cmyk","カラー(CMYK)"],["bw","白地に黒"],["col","元の色(黒地)"]],def:"cmyk"}],
  run(src,p,R,u){
@@ -888,7 +915,7 @@ mirror:{name:"対称(ミラー)",desc:"半分を鏡のように写して、左�
   return o;
  }}
 };
-const ORDER=["pixel","lowpoly","vapor","vhs","aero","dream","backrooms","webcore","glitch","halftone","mirror"];
+const ORDER=["pixel","lowpoly","vapor","vhs","aero","dream","backrooms","webcore","glitch","puni","halftone","mirror"];
 
 /* ---------- APNG ---------- */
 const CRCT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
@@ -963,7 +990,7 @@ async function loop(my){
         const k=Math.min(1,LONG/Math.max(v.videoWidth,v.videoHeight));src=mk(v.videoWidth*k,v.videoHeight*k);const x=src.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,src.width,src.height);x.imageSmoothingQuality="high";if(vid.mirror){x.translate(src.width,0);x.scale(-1,1)}x.drawImage(v,0,0,src.width,src.height);
       }else src=fitCanvas(orig,LONG);
       const R=rng(seed*7919+cur.length*31+(FX[cur].anim?(i+1)*977:0));
-      const c=await FX[cur].run(src,params(),R,src.width/800);
+      const nn=Math.max(2,Math.round((+$("alen").value||3)*(+$("afps").value||10))),c=await FX[cur].run(src,params(),R,src.width/800,{ph:(i%nn)/nn});
       if(my!==playTok)return;
       if(!showOrig)show(c);
       bad=0;
@@ -1023,7 +1050,7 @@ async function frames(onp){
       src=mk(W,v.videoHeight*W/v.videoWidth);const x=src.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,src.width,src.height);x.imageSmoothingQuality="high";x.drawImage(v,0,0,src.width,src.height);
     }else src=fitCanvas(orig,W);
     const R=rng(seed*7919+cur.length*31+(FX[cur].anim?(i+1)*977:0));
-    out.push(await FX[cur].run(src,params(),R,src.width/800));
+    out.push(await FX[cur].run(src,params(),R,src.width/800,{ph:i/n}));
     onp(i+1,n);await new Promise(r=>setTimeout(r,0));
   }
   return {out,fps};
