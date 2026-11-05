@@ -152,11 +152,7 @@ footer a{color:var(--sea)}
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');/* 出演マップ:県を選ぶと、イベント名を下に出す */
-(()=>{const n=document.getElementById("pmapNote"),all=[...document.querySelectorAll("#stagemap path.on")];
-const sh=p=>{all.forEach(q=>q.classList.toggle("sel",q===p));n.textContent=p.dataset.t};
-all.forEach(p=>{p.addEventListener("click",()=>sh(p));p.addEventListener("mouseenter",()=>sh(p));p.addEventListener("focus",()=>sh(p))})})();
-</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
 <style id="hdr-fit">
 /* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
 header.top .logo{flex:none}
@@ -308,6 +304,10 @@ document.getElementById("shareBtn").addEventListener("click",()=>{
 });
 if(/translate\.goog$/.test(location.hostname)) document.querySelectorAll(".mochi").forEach(e=>e.textContent="mochinfo");
 /* EN:Google翻訳で英語表示 */
+/* 出演マップ:県を選ぶと、イベント名を下に出す */
+(()=>{const n=document.getElementById("pmapNote"),all=[...document.querySelectorAll("#stagemap path.on")];
+const sh=p=>{all.forEach(q=>q.classList.toggle("sel",q===p));n.textContent=p.dataset.t};
+all.forEach(p=>{p.addEventListener("click",()=>sh(p));p.addEventListener("mouseenter",()=>sh(p));p.addEventListener("focus",()=>sh(p))})})();
 </script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
 </body>
