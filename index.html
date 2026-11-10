@@ -337,24 +337,27 @@ footer .mono{font-family:var(--f-mono)}
 .foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
 .lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
 /* icon links(アイコン+吹き出し) */
-.icon-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 32px}
-@media (min-width:1000px){.icon-links{grid-template-columns:3fr 3fr 5fr 2fr}}
-@media (max-width:560px){.icon-links{grid-template-columns:1fr}}
-.icon-links .link-group h3{margin:0 0 12px;display:flex;align-items:center;gap:8px}
-.icon-links .link-group h3::after{content:"";flex:1;height:1.5px;background:var(--line)}
+.icon-links{grid-template-columns:1fr;gap:30px 22px;margin-top:6px}
+@media (min-width:640px){.icon-links{grid-template-columns:1fr 1fr;grid-template-areas:"goods listen" "sns sns" "support support"}}
+@media (min-width:1000px){.icon-links{grid-template-columns:3fr 3fr 2fr;grid-template-areas:"goods listen support" "sns sns sns"}}
+@media (min-width:640px){.lg-goods{grid-area:goods}.lg-listen{grid-area:listen}.lg-sns{grid-area:sns}.lg-support{grid-area:support}}
+.icon-links .link-group{position:relative;padding:34px 20px 20px;border-radius:20px;background:color-mix(in srgb,var(--g) 8%,var(--paper))}
+.icon-links .link-group h3{position:absolute;top:-17px;left:16px;margin:0;display:inline-flex;align-items:center;gap:7px;padding:6px 16px 6px 8px;border-radius:999px;background:var(--g);color:#fff;font-size:14px;letter-spacing:.04em;}
+.icon-links .link-group h3 i{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;color:var(--g)}
+.icon-links .link-group h3 svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.icon-links .lg-support h3 svg{fill:currentColor;stroke:none}
 .ilinks{display:flex;flex-wrap:wrap;gap:12px}
-.ilinks a{--sz:58px;position:relative;width:var(--sz);height:var(--sz);border-radius:30%;background:var(--c);display:grid;place-items:center;color:#fff;text-decoration:none;box-shadow:0 4px 0 rgba(16,31,69,.13),inset 0 -3px 0 rgba(0,0,0,.12);-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .18s cubic-bezier(.3,1.6,.5,1)}
-.ilinks a::before{content:"";position:absolute;left:14%;top:10%;width:36%;height:22%;border-radius:50%;background:rgba(255,255,255,.38);transform:rotate(-18deg);pointer-events:none}
-.ilinks a:hover,.ilinks a.on{transform:translateY(-4px);animation:puniBoing .5s ease-out}
+.ilinks a{--sz:58px;position:relative;width:var(--sz);height:var(--sz);border-radius:16px;background:var(--c);display:grid;place-items:center;color:#fff;text-decoration:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .18s cubic-bezier(.3,1.6,.5,1)}
+.ilinks a:hover,.ilinks a.on{transform:translateY(-3px);filter:brightness(1.06)}
 .ilinks a:focus-visible{outline:3px solid var(--zunda);outline-offset:3px}
 .ilinks .ico{width:28px;height:28px;display:block;color:#fff}
 .ilinks .ico.brand{background:#fff;-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
 .ilinks .ico svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.ilinks-tip{margin:22px 0 0;text-align:center}
-.ilinks-tip span{display:inline-block;padding:5px 16px;font-size:12px;font-weight:700;color:var(--zunda);border-radius:4px;background:repeating-linear-gradient(-45deg,var(--zunda-wash) 0 8px,var(--paper) 8px 16px);transform:rotate(-1.5deg)}
+.ilinks-tip{margin:0 0 30px;text-align:center}
+.ilinks-tip span{display:inline-block;padding:5px 16px;font-size:12px;font-weight:700;color:var(--zunda);border-radius:4px;background:var(--zunda-wash);border-radius:999px}
 .ilinks-tip .tip-sp{display:none}
 @media (hover:none){.ilinks-tip .tip-pc{display:none}.ilinks-tip .tip-sp{display:inline-block}}
-.ilink-bubble{position:absolute;z-index:60;max-width:min(260px,calc(100vw - 24px));padding:9px 14px 10px;border-radius:14px;background:var(--ink);color:var(--paper);box-shadow:0 8px 22px rgba(8,20,70,.22);pointer-events:none;text-align:center;line-height:1.4;animation:bubIn .16s ease-out}
+.ilink-bubble{position:absolute;z-index:60;max-width:min(260px,calc(100vw - 24px));padding:9px 14px 10px;border-radius:14px;background:var(--ink);color:var(--paper);pointer-events:none;text-align:center;line-height:1.4;animation:bubIn .16s ease-out}
 .ilink-bubble b{display:block;font-size:14px}
 .ilink-bubble small{display:block;font-size:11.5px;opacity:.8;margin-top:2px}
 .ilink-bubble small:empty{display:none}
@@ -511,8 +514,9 @@ header.top .logo{flex:none}
           <a href="https://store.line.me/emojishop/product/665533fe22d33233cb37c327/ja" target="_blank" rel="noopener"><img src="img/line-emoji-card.webp" alt="ずんだパーリナイ LINE絵文字 40種" loading="lazy" width="440" height="440"></a>
         </div>
       </div>
+      <p class="ilinks-tip"><span class="tip-pc">アイコンにカーソルを合わせると説明が出ます</span><span class="tip-sp">長押しして指をすべらせると説明が出ます</span></p>
       <div class="link-groups icon-links">
-        <div class="link-group"><h3>グッズ・CD</h3><div class="ilinks">
+        <div class="link-group lg-goods" style="--g:#f0627a"><h3><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i>グッズ・CD</h3><div class="ilinks">
           <a href="https://namigroove.booth.pm/" target="_blank" rel="noopener" style="--c:#fc4d50" aria-label="BOOTH：同人グッズ・CD・音源" data-name="BOOTH" data-desc="同人グッズ・CD・音源"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i></a>
           <a href="https://ctctyo.com/collections/ctcrecored" target="_blank" rel="noopener" style="--c:#e9546b" aria-label="CTC RECORDS：グッズ・CD" data-name="CTC RECORDS" data-desc="グッズ・CD"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i></a>
           <a href="https://shop.zunko.jp/" target="_blank" rel="noopener" style="--c:#7cc242" aria-label="ずん子・ずんだもん公式ショップ：ずんだパーリナイTシャツ・CD" data-name="ずん子・ずんだもん公式ショップ" data-desc="ずんだパーリナイTシャツ・CD"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i></a>
@@ -520,7 +524,7 @@ header.top .logo{flex:none}
           <a href="https://namigroove.bandcamp.com/" target="_blank" rel="noopener" style="--c:#1da0c3" aria-label="Bandcamp：音源" data-name="Bandcamp" data-desc="音源"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/bandcamp.svg)"></i></a>
           <a href="https://suzuri.jp/namigroove" target="_blank" rel="noopener" style="--c:#f08300" aria-label="SUZURI：オリジナルデザイン服" data-name="SUZURI" data-desc="オリジナルデザイン服"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 4 4 6.5 5.5 10 7 9.5V20h10V9.5l1.5.5L20 6.5 16 4a4 4 0 0 1-8 0z"/></svg></i></a>
         </div></div>
-        <div class="link-group"><h3>音楽を聴く</h3><div class="ilinks">
+        <div class="link-group lg-listen" style="--g:#1fae6a"><h3><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg></i>音楽を聴く</h3><div class="ilinks">
           <a href="https://open.spotify.com/artist/32ljht9dPnlZACgqyVTn6c" target="_blank" rel="noopener" style="--c:#1db954" aria-label="Spotify" data-name="Spotify" data-desc=""><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/spotify.svg);--c:#1DB954"></i></a>
           <a href="https://music.apple.com/us/artist/namigroove/1594555837" target="_blank" rel="noopener" style="--c:#fa243c" aria-label="Apple Music" data-name="Apple Music" data-desc=""><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/apple.svg);--c:#FA243C"></i></a>
           <a href="https://www.amazon.co.jp/music/player/artists/B09LSVRXM2/" target="_blank" rel="noopener" style="--c:#1fc6d4" aria-label="Amazon Music" data-name="Amazon Music" data-desc=""><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/amazonmusic.svg);--c:#25D1DA;width:30px;height:22px"></i></a>
@@ -528,7 +532,7 @@ header.top .logo{flex:none}
           <a href="https://piapro.jp/namigroove" target="_blank" rel="noopener" style="--c:#e4007f" aria-label="piapro：Off Vocal・歌詞" data-name="piapro" data-desc="Off Vocal・歌詞"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/piapro.svg);--c:#111111"></i></a>
           <a href="https://namigroove.fanbox.cc/" target="_blank" rel="noopener" style="--c:#0096fa" aria-label="pixivFANBOX：STEM配布" data-name="pixivFANBOX" data-desc="STEM配布"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/pixiv.svg)"></i></a>
         </div></div>
-        <div class="link-group"><h3>SNS・予定</h3><div class="ilinks">
+        <div class="link-group lg-sns" style="--g:#3a6fe0"><h3><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></i>SNS・予定</h3><div class="ilinks">
           <a href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener" style="--c:#ff0033" aria-label="YouTube：@namigroove" data-name="YouTube" data-desc="@namigroove"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/youtube.svg)"></i></a>
           <a href="https://www.nicovideo.jp/user/120201228" target="_blank" rel="noopener" style="--c:#252525" aria-label="ニコニコ動画：なみぐる" data-name="ニコニコ動画" data-desc="なみぐる"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/niconico.svg)"></i></a>
           <a href="https://www.tiktok.com/@namigroove" target="_blank" rel="noopener" style="--c:#111" aria-label="TikTok：@namigroove" data-name="TikTok" data-desc="@namigroove"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/tiktok.svg)"></i></a>
@@ -541,12 +545,11 @@ header.top .logo{flex:none}
           <a href="https://www.bandsintown.com/a/15592125-_namigroove" target="_blank" rel="noopener" style="--c:#00b4b3" aria-label="Bandsintown：出演予定" data-name="Bandsintown" data-desc="出演予定"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 0 4v0a2 2 0 0 1 0 4v2h18v-2a2 2 0 0 1 0-4 2 2 0 0 1 0-4V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg></i></a>
           <a href="https://lit.link/namigroove" target="_blank" rel="noopener" style="--c:#ff7a8a" aria-label="lit.link：SNS用プロフィール" data-name="lit.link" data-desc="SNS用プロフィール"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg></i></a>
         </div></div>
-        <div class="link-group"><h3>応援</h3><div class="ilinks">
+        <div class="link-group lg-support" style="--g:#f08a24"><h3><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></i>応援</h3><div class="ilinks">
           <a href="https://ouen55.com/namigroove" target="_blank" rel="noopener" style="--c:#f37aa8" aria-label="ファンレター・プレゼント：宛先はこちら" data-name="ファンレター・プレゼント" data-desc="宛先はこちら"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i></a>
           <a href="https://bit.ly/3O1mSgc" target="_blank" rel="noopener" style="--c:#ff9900" aria-label="ほしい物リスト：Amazonのほしい物リスト" data-name="ほしい物リスト" data-desc="Amazonのほしい物リスト"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12"/><path d="M12 9S10.5 4 8 4.5 7 9 12 9zm0 0s1.5-5 4-4.5S17 9 12 9z"/></svg></i></a>
         </div></div>
       </div>
-      <p class="ilinks-tip"><span class="tip-pc">アイコンにカーソルを合わせると説明が出ます</span><span class="tip-sp">長押しして指をすべらせると説明が出ます</span></p>
       <div class="ilink-bubble" id="ilinkBubble" role="tooltip" hidden><b></b><small></small></div>
     </div>
   </section>
