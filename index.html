@@ -336,6 +336,33 @@ footer .mono{font-family:var(--f-mono)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 .foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
 .lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+/* icon links(アイコン+吹き出し) */
+.icon-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 32px}
+@media (min-width:1000px){.icon-links{grid-template-columns:3fr 3fr 5fr 2fr}}
+@media (max-width:560px){.icon-links{grid-template-columns:1fr}}
+.icon-links .link-group h3{margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.icon-links .link-group h3::after{content:"";flex:1;height:1.5px;background:var(--line)}
+.ilinks{display:flex;flex-wrap:wrap;gap:12px}
+.ilinks a{--sz:58px;position:relative;width:var(--sz);height:var(--sz);border-radius:30%;background:var(--c);display:grid;place-items:center;color:#fff;text-decoration:none;box-shadow:0 4px 0 rgba(16,31,69,.13),inset 0 -3px 0 rgba(0,0,0,.12);-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .18s cubic-bezier(.3,1.6,.5,1)}
+.ilinks a::before{content:"";position:absolute;left:14%;top:10%;width:36%;height:22%;border-radius:50%;background:rgba(255,255,255,.38);transform:rotate(-18deg);pointer-events:none}
+.ilinks a:hover,.ilinks a.on{transform:translateY(-4px);animation:puniBoing .5s ease-out}
+.ilinks a:focus-visible{outline:3px solid var(--zunda);outline-offset:3px}
+.ilinks .ico{width:28px;height:28px;display:block;color:#fff}
+.ilinks .ico.brand{background:#fff;-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
+.ilinks .ico svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ilinks-tip{margin:22px 0 0;text-align:center}
+.ilinks-tip span{display:inline-block;padding:5px 16px;font-size:12px;font-weight:700;color:var(--zunda);border-radius:4px;background:repeating-linear-gradient(-45deg,var(--zunda-wash) 0 8px,var(--paper) 8px 16px);transform:rotate(-1.5deg)}
+.ilinks-tip .tip-sp{display:none}
+@media (hover:none){.ilinks-tip .tip-pc{display:none}.ilinks-tip .tip-sp{display:inline-block}}
+.ilink-bubble{position:absolute;z-index:60;max-width:min(260px,calc(100vw - 24px));padding:9px 14px 10px;border-radius:14px;background:var(--ink);color:var(--paper);box-shadow:0 8px 22px rgba(8,20,70,.22);pointer-events:none;text-align:center;line-height:1.4;animation:bubIn .16s ease-out}
+.ilink-bubble b{display:block;font-size:14px}
+.ilink-bubble small{display:block;font-size:11.5px;opacity:.8;margin-top:2px}
+.ilink-bubble small:empty{display:none}
+.ilink-bubble::after{content:"";position:absolute;left:var(--tx,50%);top:100%;margin-left:-7px;border:7px solid transparent;border-top-color:var(--ink)}
+.ilink-bubble.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--ink)}
+@keyframes bubIn{from{opacity:0;transform:translateY(4px) scale(.96)}}
+@media (prefers-reduced-motion:reduce){.ilinks a:hover,.ilinks a.on{animation:none}.ilink-bubble{animation:none}}
+@media (max-width:480px){.ilinks{gap:10px}.ilinks a{--sz:54px}}
 </style>
 <!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
@@ -376,8 +403,8 @@ header.top .logo{flex:none}
       <p class="lead">ずんだもんとR&amp;Bを愛する、ボカロP兼サックスDJ。楽曲提供から映像・演奏まで手がけています。</p>
       <div class="cta">
         <a class="btn primary" href="#contact">お問い合わせ</a>
-        <a class="btn ghost" href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener"><i class="bico" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/youtube.svg)"></i>YouTube</a>
-        <a class="btn ghost" href="https://open.spotify.com/playlist/12Zt9i2yqbJyd22ppUAHLg" target="_blank" rel="noopener"><i class="bico" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/spotify.svg)"></i>Spotify</a>
+        <a class="btn ghost" href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener"><i class="bico" aria-hidden="true" style="--logo:url(img/si/youtube.svg)"></i>YouTube</a>
+        <a class="btn ghost" href="https://open.spotify.com/playlist/12Zt9i2yqbJyd22ppUAHLg" target="_blank" rel="noopener"><i class="bico" aria-hidden="true" style="--logo:url(img/si/spotify.svg)"></i>Spotify</a>
       </div>
       <p class="tide"><span><b>SINCE</b> 2021</span><span>VOCALOID / R&amp;B / Electro Swing / Funk / Sax</span><span>いい波、起こします~(･ω･~)</span></p>
     </div>
@@ -484,41 +511,43 @@ header.top .logo{flex:none}
           <a href="https://store.line.me/emojishop/product/665533fe22d33233cb37c327/ja" target="_blank" rel="noopener"><img src="img/line-emoji-card.webp" alt="ずんだパーリナイ LINE絵文字 40種" loading="lazy" width="440" height="440"></a>
         </div>
       </div>
-      <div class="link-groups">
-        <div class="link-group"><h3>グッズ・CD</h3><div class="links">
-          <a href="https://namigroove.booth.pm/" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i><span>BOOTH</span><small>同人グッズ・CD・音源</small></a>
-          <a href="https://ctctyo.com/collections/ctcrecored" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i><span>CTC RECORDS</span><small>グッズ・CD</small></a>
-          <a href="https://shop.zunko.jp/" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i><span style="white-space:normal">東北ずん子・ずんだもん公式ショップ</span><small>ずんだパーリナイTシャツ・CD</small></a>
-          <a href="https://diskunion.net/gamemusic/ct/list/0/0/132064" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg></i><span>ディスクユニオン</span><small>フィジカルCD(公式・委託)</small></a>
-          <a href="https://namigroove.bandcamp.com/" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/bandcamp.svg)"></i><span>Bandcamp</span><small>音源</small></a>
-          <a href="https://suzuri.jp/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 4 4 6.5 5.5 10 7 9.5V20h10V9.5l1.5.5L20 6.5 16 4a4 4 0 0 1-8 0z"/></svg></i><span>SUZURI</span><small>オリジナルデザイン服</small></a>
+      <div class="link-groups icon-links">
+        <div class="link-group"><h3>グッズ・CD</h3><div class="ilinks">
+          <a href="https://namigroove.booth.pm/" target="_blank" rel="noopener" style="--c:#fc4d50" aria-label="BOOTH：同人グッズ・CD・音源" data-name="BOOTH" data-desc="同人グッズ・CD・音源"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i></a>
+          <a href="https://ctctyo.com/collections/ctcrecored" target="_blank" rel="noopener" style="--c:#e9546b" aria-label="CTC RECORDS：グッズ・CD" data-name="CTC RECORDS" data-desc="グッズ・CD"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i></a>
+          <a href="https://shop.zunko.jp/" target="_blank" rel="noopener" style="--c:#7cc242" aria-label="ずん子・ずんだもん公式ショップ：ずんだパーリナイTシャツ・CD" data-name="ずん子・ずんだもん公式ショップ" data-desc="ずんだパーリナイTシャツ・CD"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></i></a>
+          <a href="https://diskunion.net/gamemusic/ct/list/0/0/132064" target="_blank" rel="noopener" style="--c:#2b2b2b" aria-label="ディスクユニオン：フィジカルCD(公式・委託)" data-name="ディスクユニオン" data-desc="フィジカルCD(公式・委託)"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg></i></a>
+          <a href="https://namigroove.bandcamp.com/" target="_blank" rel="noopener" style="--c:#1da0c3" aria-label="Bandcamp：音源" data-name="Bandcamp" data-desc="音源"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/bandcamp.svg)"></i></a>
+          <a href="https://suzuri.jp/namigroove" target="_blank" rel="noopener" style="--c:#f08300" aria-label="SUZURI：オリジナルデザイン服" data-name="SUZURI" data-desc="オリジナルデザイン服"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 4 4 6.5 5.5 10 7 9.5V20h10V9.5l1.5.5L20 6.5 16 4a4 4 0 0 1-8 0z"/></svg></i></a>
         </div></div>
-        <div class="link-group"><h3>音楽を聴く</h3><div class="links">
-          <a href="https://open.spotify.com/artist/32ljht9dPnlZACgqyVTn6c" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/spotify.svg);--c:#1DB954"></i><span>Spotify</span><small></small></a>
-          <a href="https://music.apple.com/us/artist/namigroove/1594555837" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/apple.svg);--c:#FA243C"></i><span>Apple Music</span><small></small></a>
-          <a href="https://www.amazon.co.jp/music/player/artists/B09LSVRXM2/" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/amazonmusic.svg);--c:#25D1DA;width:30px;height:22px"></i><span>Amazon Music</span><small></small></a>
-          <a href="https://soundcloud.com/namigroove" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/soundcloud.svg);--c:#FF5500"></i><span>SoundCloud</span><small></small></a>
-          <a href="https://piapro.jp/namigroove" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/piapro.svg);--c:#111111"></i><span>piapro</span><small>Off Vocal・歌詞</small></a>
-          <a href="https://namigroove.fanbox.cc/" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/pixiv.svg)"></i><span>pixivFANBOX</span><small>STEM配布</small></a>
+        <div class="link-group"><h3>音楽を聴く</h3><div class="ilinks">
+          <a href="https://open.spotify.com/artist/32ljht9dPnlZACgqyVTn6c" target="_blank" rel="noopener" style="--c:#1db954" aria-label="Spotify" data-name="Spotify" data-desc=""><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/spotify.svg);--c:#1DB954"></i></a>
+          <a href="https://music.apple.com/us/artist/namigroove/1594555837" target="_blank" rel="noopener" style="--c:#fa243c" aria-label="Apple Music" data-name="Apple Music" data-desc=""><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/apple.svg);--c:#FA243C"></i></a>
+          <a href="https://www.amazon.co.jp/music/player/artists/B09LSVRXM2/" target="_blank" rel="noopener" style="--c:#1fc6d4" aria-label="Amazon Music" data-name="Amazon Music" data-desc=""><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/amazonmusic.svg);--c:#25D1DA;width:30px;height:22px"></i></a>
+          <a href="https://soundcloud.com/namigroove" target="_blank" rel="noopener" style="--c:#ff5500" aria-label="SoundCloud" data-name="SoundCloud" data-desc=""><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/soundcloud.svg);--c:#FF5500"></i></a>
+          <a href="https://piapro.jp/namigroove" target="_blank" rel="noopener" style="--c:#e4007f" aria-label="piapro：Off Vocal・歌詞" data-name="piapro" data-desc="Off Vocal・歌詞"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/piapro.svg);--c:#111111"></i></a>
+          <a href="https://namigroove.fanbox.cc/" target="_blank" rel="noopener" style="--c:#0096fa" aria-label="pixivFANBOX：STEM配布" data-name="pixivFANBOX" data-desc="STEM配布"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/pixiv.svg)"></i></a>
         </div></div>
-        <div class="link-group"><h3>SNS・予定</h3><div class="links">
-          <a href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/youtube.svg)"></i><span>YouTube</span><small>@namigroove</small></a>
-          <a href="https://www.nicovideo.jp/user/120201228" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/niconico.svg)"></i><span>ニコニコ動画</span><small>なみぐる</small></a>
-          <a href="https://www.tiktok.com/@namigroove" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/tiktok.svg)"></i><span>TikTok</span><small>@namigroove</small></a>
-          <a href="https://space.bilibili.com/3546647380363709" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/bilibili.svg)"></i><span>bilibili</span><small></small></a>
-          <a href="https://x.com/namigroove" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/x.svg)"></i><span>X</span><small>@namigroove</small></a>
-          <a href="https://www.instagram.com/namigroove_music/" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/instagram.svg)"></i><span>Instagram</span><small>@namigroove_music</small></a>
-          <a href="https://x.com/CDs_inter" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://namigroove.github.io/namigroove-site/img/cds-logo.png)"></i><span>CDs</span><small>所属レーベル</small></a>
-          <a href="https://x.com/zundaband0823" target="_blank" rel="noopener"><i class="ico brand" aria-hidden="true" style="--logo:url(https://namigroove.github.io/namigroove-site/img/zundaband-logo.png)"></i><span>ずんだバンド</span><small>主催バンド</small></a>
-          <a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4m8-4v4"/></svg></i><span>TimeTree</span><small>DJ出演・即売会の予定</small></a>
-          <a href="https://www.bandsintown.com/a/15592125-_namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 0 4v0a2 2 0 0 1 0 4v2h18v-2a2 2 0 0 1 0-4 2 2 0 0 1 0-4V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg></i><span>Bandsintown</span><small>出演予定</small></a>
-          <a href="https://lit.link/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg></i><span>lit.link</span><small>SNS用プロフィール</small></a>
+        <div class="link-group"><h3>SNS・予定</h3><div class="ilinks">
+          <a href="https://www.youtube.com/@namigroove" target="_blank" rel="noopener" style="--c:#ff0033" aria-label="YouTube：@namigroove" data-name="YouTube" data-desc="@namigroove"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/youtube.svg)"></i></a>
+          <a href="https://www.nicovideo.jp/user/120201228" target="_blank" rel="noopener" style="--c:#252525" aria-label="ニコニコ動画：なみぐる" data-name="ニコニコ動画" data-desc="なみぐる"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/niconico.svg)"></i></a>
+          <a href="https://www.tiktok.com/@namigroove" target="_blank" rel="noopener" style="--c:#111" aria-label="TikTok：@namigroove" data-name="TikTok" data-desc="@namigroove"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/tiktok.svg)"></i></a>
+          <a href="https://space.bilibili.com/3546647380363709" target="_blank" rel="noopener" style="--c:#fb7299" aria-label="bilibili" data-name="bilibili" data-desc=""><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/bilibili.svg)"></i></a>
+          <a href="https://x.com/namigroove" target="_blank" rel="noopener" style="--c:#111" aria-label="X：@namigroove" data-name="X" data-desc="@namigroove"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/x.svg)"></i></a>
+          <a href="https://www.instagram.com/namigroove_music/" target="_blank" rel="noopener" style="--c:linear-gradient(45deg,#f9a33b,#ee2a7b 50%,#6228d7)" aria-label="Instagram：@namigroove_music" data-name="Instagram" data-desc="@namigroove_music"><i class="ico brand" aria-hidden="true" style="--logo:url(img/si/instagram.svg)"></i></a>
+          <a href="https://x.com/CDs_inter" target="_blank" rel="noopener" style="--c:#111" aria-label="CDs：所属レーベル" data-name="CDs" data-desc="所属レーベル"><i class="ico brand" aria-hidden="true" style="--logo:url(img/cds-logo.png)"></i></a>
+          <a href="https://x.com/zundaband0823" target="_blank" rel="noopener" style="--c:#7cc242" aria-label="ずんだバンド：主催バンド" data-name="ずんだバンド" data-desc="主催バンド"><i class="ico brand" aria-hidden="true" style="--logo:url(img/zundaband-logo.png)"></i></a>
+          <a href="https://timetr.ee/p/namigroove" target="_blank" rel="noopener" style="--c:#3cb371" aria-label="TimeTree：DJ出演・即売会の予定" data-name="TimeTree" data-desc="DJ出演・即売会の予定"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4m8-4v4"/></svg></i></a>
+          <a href="https://www.bandsintown.com/a/15592125-_namigroove" target="_blank" rel="noopener" style="--c:#00b4b3" aria-label="Bandsintown：出演予定" data-name="Bandsintown" data-desc="出演予定"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 0 4v0a2 2 0 0 1 0 4v2h18v-2a2 2 0 0 1 0-4 2 2 0 0 1 0-4V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg></i></a>
+          <a href="https://lit.link/namigroove" target="_blank" rel="noopener" style="--c:#ff7a8a" aria-label="lit.link：SNS用プロフィール" data-name="lit.link" data-desc="SNS用プロフィール"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg></i></a>
         </div></div>
-        <div class="link-group"><h3>応援</h3><div class="links">
-          <a href="https://ouen55.com/namigroove" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i><span>ファンレター・プレゼント</span><small>宛先はこちら</small></a>
-          <a href="https://bit.ly/3O1mSgc" target="_blank" rel="noopener"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12"/><path d="M12 9S10.5 4 8 4.5 7 9 12 9zm0 0s1.5-5 4-4.5S17 9 12 9z"/></svg></i><span>ほしい物リストを開く</span></a>
+        <div class="link-group"><h3>応援</h3><div class="ilinks">
+          <a href="https://ouen55.com/namigroove" target="_blank" rel="noopener" style="--c:#f37aa8" aria-label="ファンレター・プレゼント：宛先はこちら" data-name="ファンレター・プレゼント" data-desc="宛先はこちら"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i></a>
+          <a href="https://bit.ly/3O1mSgc" target="_blank" rel="noopener" style="--c:#ff9900" aria-label="ほしい物リスト：Amazonのほしい物リスト" data-name="ほしい物リスト" data-desc="Amazonのほしい物リスト"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12"/><path d="M12 9S10.5 4 8 4.5 7 9 12 9zm0 0s1.5-5 4-4.5S17 9 12 9z"/></svg></i></a>
         </div></div>
       </div>
+      <p class="ilinks-tip"><span class="tip-pc">アイコンにカーソルを合わせると説明が出ます</span><span class="tip-sp">長押しして指をすべらせると説明が出ます</span></p>
+      <div class="ilink-bubble" id="ilinkBubble" role="tooltip" hidden><b></b><small></small></div>
     </div>
   </section>
 
@@ -790,5 +819,23 @@ function namiBell(){try{if(!namiAC){var AC=window.AudioContext||window.webkitAud
 document.querySelectorAll(".puni").forEach(function(b){b.addEventListener("click",function(){namiBell();tapBpm();b.classList.remove("boing");void b.offsetWidth;b.classList.add("boing");});b.addEventListener("animationend",function(e){if(e.animationName==="puniBoing")b.classList.remove("boing");});});
 </script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
+<script>
+(()=>{const box=document.querySelector('.icon-links'),B=document.getElementById('ilinkBubble');if(!box||!B)return;document.body.appendChild(B);
+let cur=null,peek=false,t=0,sx=0,sy=0,hideT=0;
+function show(a){if(cur===a&&!B.hidden)return;if(cur)cur.classList.remove('on');cur=a;a.classList.add('on');clearTimeout(hideT);
+B.querySelector('b').textContent=a.dataset.name;B.querySelector('small').textContent=a.dataset.desc||'';B.hidden=false;B.style.animation='none';B.offsetWidth;B.style.animation='';
+const r=a.getBoundingClientRect(),bw=B.offsetWidth,bh=B.offsetHeight,cx=r.left+r.width/2;
+let x=Math.max(12,Math.min(innerWidth-bw-12,cx-bw/2));const below=r.top-bh-12<8;
+B.classList.toggle('below',below);B.style.left=(x+scrollX)+'px';B.style.top=((below?r.bottom+12:r.top-bh-12)+scrollY)+'px';B.style.setProperty('--tx',(cx-x)+'px')}
+function hide(d){clearTimeout(hideT);hideT=setTimeout(()=>{B.hidden=true;if(cur)cur.classList.remove('on');cur=null},d||0)}
+box.querySelectorAll('.ilinks a').forEach(a=>{a.addEventListener('mouseenter',()=>show(a));a.addEventListener('mouseleave',()=>hide(80));a.addEventListener('focus',()=>show(a));a.addEventListener('blur',()=>hide());a.addEventListener('contextmenu',e=>e.preventDefault())});
+box.addEventListener('touchstart',e=>{const a=e.target.closest('.ilinks a');if(!a)return;const p=e.touches[0];sx=p.clientX;sy=p.clientY;peek=false;clearTimeout(t);t=setTimeout(()=>{peek=true;show(a);navigator.vibrate&&navigator.vibrate(8)},260)},{passive:true});
+box.addEventListener('touchmove',e=>{const p=e.touches[0];if(!peek){if(Math.hypot(p.clientX-sx,p.clientY-sy)>10)clearTimeout(t);return}
+e.preventDefault();const el=document.elementFromPoint(p.clientX,p.clientY),a=el&&el.closest('.ilinks a');if(a)show(a)},{passive:false});
+box.addEventListener('touchend',e=>{clearTimeout(t);if(peek){e.preventDefault();peek=false;hide(1400)}});
+box.addEventListener('touchcancel',()=>{clearTimeout(t);peek=false;hide(600)});
+addEventListener('scroll',()=>{if(!peek&&!B.hidden)hide()},{passive:true});
+})();
+</script>
 </body>
 </html>
