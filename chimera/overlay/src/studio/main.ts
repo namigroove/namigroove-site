@@ -53,12 +53,18 @@ function parsePitch(tok: string): number | null {
   return base + acc + (parseInt(m[3], 10) + 1) * 12;
 }
 
+/** "2" "0.5" "1/3" → 拍の長さ。読めなければ NaN。 */
+function parseBeats(s: string): number {
+  const f = /^(\d+)\/(\d+)$/.exec(s);
+  return f ? parseInt(f[1], 10) / parseInt(f[2], 10) : parseFloat(s);
+}
+
 function parseNotes(text: string): ParsedNote[] {
   const out: ParsedNote[] = [];
   for (const tok of text.split(/[\s,、]+/).filter(Boolean)) {
     const [p, b] = tok.split(":");
     const midi = parsePitch(p);
-    const beats = b === undefined ? 1 : parseFloat(b);
+    const beats = b === undefined ? 1 : parseBeats(b);
     if (midi === null || !(midi >= 24 && midi <= 108)) throw new Error(`読めない音符があります: ${tok}`);
     if (!(beats > 0 && beats <= 32)) throw new Error(`拍の長さが正しくありません: ${tok}`);
     out.push({ midi, beats });
@@ -166,7 +172,15 @@ async function main(): Promise<void> {
   const NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   const GUTTER = 34, PADY = 14;
   const pitchName = (m: number) => (Number.isInteger(m) ? NAMES[((m % 12) + 12) % 12] + (Math.floor(m / 12) - 1) : String(m));
-  const fmtBeats = (b: number) => String(Math.round(b * 100) / 100);
+  const fmtBeats = (b: number) => {
+    if (Math.abs(b * 100 - Math.round(b * 100)) < 1e-6) return String(Math.round(b * 100) / 100);
+    for (const d of [3, 6, 12]) if (Math.abs(b * d - Math.round(b * d)) < 1e-6) return `${Math.round(b * d)}/${d}`;
+    return String(Math.round(b * 1000) / 1000);
+  };
+  // グリッド: 1拍を div 等分。音符は前から順に並ぶので、「吸着」は音符の長さ(拍)をグリッドの倍数にすること
+  let gridOn = true;
+  const divNow = () => parseInt($<HTMLSelectElement>("gridDiv").value, 10) || 4;
+  const snapBeats = (b: number, div: number) => Math.max(1 / div, Math.round(b * div) / div);
   const writeNotes = (ns: ParsedNote[]) => {
     $<HTMLTextAreaElement>("notes").value = ns.map((n) => pitchName(n.midi) + (n.beats === 1 ? "" : ":" + fmtBeats(n.beats))).join(" ");
   };
@@ -226,6 +240,8 @@ async function main(): Promise<void> {
     };
   };
 
+  const span0 = () => rollCanvas.clientWidth - GUTTER - 6;
+
   function drawRoll(playT: number | null): void {
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const { w, h, rh, yOf, xOf, bodyH } = geom();
@@ -249,6 +265,18 @@ async function main(): Promise<void> {
     const sec = Math.ceil(view.end);
     c.font = "10px ui-monospace, Consolas, monospace"; c.textAlign = "left"; c.textBaseline = "top";
     for (let s = 0; s <= sec; s++) { const x = xOf(s); c.fillStyle = "rgba(29,36,51,.06)"; c.fillRect(x, PADY, 1, h - PADY * 2); if (s < sec) { c.fillStyle = "#76829a"; c.fillText(String(s), x + 2, 1); } }
+    if (gridOn) {
+      const div = divNow(), beat = 60 / bpmNow(), step = beat / div, o = T0 + LEAD;
+      if ((step / view.end) * span0() >= 5) {
+        const perBar = div * 4, n = Math.floor((view.end - o) / step);
+        for (let k = 0; k <= n; k++) {
+          const x = Math.round(xOf(o + k * step)) + 0.5;
+          const bar = k % perBar === 0, bt = k % div === 0;
+          c.fillStyle = bar ? "rgba(57,108,223,.38)" : bt ? "rgba(57,108,223,.2)" : "rgba(57,108,223,.08)";
+          c.fillRect(x - 0.5, PADY, 1, h - PADY * 2);
+        }
+      }
+    }
     if (!rollNotes.length) {
       c.fillStyle = "#76829a"; c.font = "13px sans-serif"; c.textAlign = "center"; c.textBaseline = "middle";
       c.fillText("音符を入れると、ここに並びます", (w + GUTTER) / 2, h / 2);
@@ -311,7 +339,8 @@ async function main(): Promise<void> {
     } else {
       const secPerBeat = 60 / bpmNow();
       const dBeats = ((x - drag.x) / span) * view.end / secPerBeat;
-      const b = Math.max(0.25, Math.min(32, Math.round((drag.beats + dBeats) * 4) / 4));
+      const raw = drag.beats + dBeats;
+      const b = Math.min(32, gridOn && !e.altKey ? snapBeats(raw, divNow()) : Math.max(0.05, Math.round(raw * 20) / 20));
       if (b === n.beats) return;
       n.beats = b;
     }
@@ -491,8 +520,21 @@ async function main(): Promise<void> {
     setTimeout(() => URL.revokeObjectURL(a.href), 10000);
   });
 
+  const setGrid = () => { $("btnGrid").setAttribute("aria-pressed", String(gridOn)); drawRoll(null); };
+  $("btnGrid").addEventListener("click", () => { gridOn = !gridOn; setGrid(); });
+  $("gridDiv").addEventListener("change", () => drawRoll(null));
+  $("btnSnapLen").addEventListener("click", () => {
+    let ns: ParsedNote[];
+    try { ns = parseNotes($<HTMLTextAreaElement>("notes").value); } catch { return; }
+    const div = divNow();
+    for (const n of ns) n.beats = Math.min(32, snapBeats(n.beats, div));
+    writeNotes(ns);
+    layoutNotes();
+    drawRoll(null);
+  });
+
   const refresh = () => { layoutNotes(); if (!playCtx) drawRoll(null); };
-  for (const id of ["lyrics", "notes", "bpm"]) $(id).addEventListener("input", refresh);
+  for (const id of ["lyrics", "notes", "bpm", "gridDiv"]) $(id).addEventListener("input", refresh);
   $("body").addEventListener("change", () => { if (!playCtx) setBody(); });
   new ResizeObserver(() => { resizeMouth(); if (!playCtx) { drawMouth(null); drawRoll(null); } }).observe($("screen"));
   window.addEventListener("resize", () => { if (!playCtx) drawRoll(null); });
