@@ -826,13 +826,24 @@
       const ver = await (await fetch(state.base + '/version')).json();
       const speakers = await (await fetch(state.base + '/speakers')).json();
       const sel = $('speaker'); sel.innerHTML = '';
-      speakers.forEach((sp) => {
-        const styles = (sp.styles || []).filter((st) => !st.type || st.type === 'talk');
-        if (!styles.length) return;
-        const og = document.createElement('optgroup'); og.label = sp.name;
-        styles.forEach((st) => { const o = document.createElement('option'); o.value = st.id; o.textContent = sp.name + '(' + st.name + ')'; og.appendChild(o); });
-        sel.appendChild(og);
-      });
+      const list = Array.isArray(speakers) ? speakers : [];
+      const fill = (ok) => {
+        list.forEach((sp) => {
+          const styles = (sp.styles || []).filter(ok);
+          if (!styles.length) return;
+          const og = document.createElement('optgroup'); og.label = sp.name;
+          styles.forEach((st) => { const o = document.createElement('option'); o.value = st.id; o.textContent = sp.name + '(' + st.name + ')'; og.appendChild(o); });
+          sel.appendChild(og);
+        });
+      };
+      // トーク用のスタイルだけを並べる。typeが無い・不明な場合も取りこぼさない
+      fill((st) => !st.type || st.type === 'talk');
+      if (!sel.options.length) fill((st) => !/^(sing|singing_teacher|frame_decode)$/.test(st.type || ''));
+      if (!sel.options.length) fill(() => true);
+      if (!sel.options.length) {
+        const o = document.createElement('option'); o.textContent = 'キャラが見つかりません'; o.value = ''; sel.appendChild(o);
+        throw new Error('speakers empty: ' + JSON.stringify(list).slice(0, 300));
+      }
       const saved = store.get('speaker', '');
       if (saved && [...sel.options].some((o) => o.value === saved)) sel.value = saved;
       sel.disabled = false;
@@ -842,7 +853,8 @@
       $('connHelp').classList.remove('show');
     } catch (e) {
       state.connected = false;
-      setConn('つながりません', 'ng');
+      console.warn('VOICEVOX connect:', e);
+      setConn(/speakers empty/.test(String(e && e.message)) ? 'キャラ一覧が空でした' : 'つながりません', 'ng');
       showHelp();
     }
     updateButtons();
