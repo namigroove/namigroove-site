@@ -119,8 +119,8 @@
         <button id="btnSnapLen" class="quiet" title="すべての音符の長さをグリッドの倍数に丸める">長さをグリッドに揃える</button>
         <span class="hint" style="margin:0">BPM は上の欄。グリッドの 0 は最初の音符の頭</span>
       </div>
-      <div class="rollwrap"><canvas id="roll" aria-label="音符と歌詞のピアノロール。音符をドラッグして高さと長さを変える"></canvas></div>
-      <div class="hint">音符を上下にドラッグすると高さ、右端を左右にドラッグすると長さが変わります(上の「音符」欄にも反映されます)。</div>
+      <div class="rollwrap"><canvas id="roll" tabindex="0" aria-label="音符と歌詞のピアノロール。音符をドラッグして高さと長さを変える"></canvas></div>
+      <div class="hint">音符を上下にドラッグすると高さ、右端を左右にドラッグすると長さが変わります(上の「音符」欄にも反映されます)。何もない所からドラッグで範囲選択(Shift で追加)、Shift+クリックで1つずつ追加、Ctrl+A で全選択、選択中は まとめて動きます。↑↓ で半音(Shift で1オクターブ)、Esc で選択解除。</div>
       <div class="gap"></div>
       <div class="row" style="align-items:center">
         <button id="btnPlay" class="primary">試し聞き</button>
