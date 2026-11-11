@@ -156,11 +156,37 @@ async function main(): Promise<void> {
   const bodyMix = () => BODIES[$<HTMLSelectElement>("body").value] ?? BODIES.child;
   const bpmNow = () => { const v = parseFloat($<HTMLInputElement>("bpm").value); return v >= 30 && v <= 240 ? v : 100; };
 
-  // ---------------------------------------------------------------- ピアノロール
+  // ---------------------------------------------------------------- ピアノロール(ドラッグで音の高さと長さを編集)
   const rollCanvas = $<HTMLCanvasElement>("roll");
   const rollCtx = rollCanvas.getContext("2d")!;
-  let rollNotes: { midi: number; t0: number; t1: number; text: string }[] = [];
-  let rollEnd = 1;
+  interface RollNote { midi: number; beats: number; t0: number; t1: number; text: string }
+  let rollNotes: RollNote[] = [];
+  let view = { lo: 55, hi: 79, end: 1 };
+  let dragging = false;
+  const NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  const GUTTER = 34, PADY = 14;
+  const pitchName = (m: number) => (Number.isInteger(m) ? NAMES[((m % 12) + 12) % 12] + (Math.floor(m / 12) - 1) : String(m));
+  const fmtBeats = (b: number) => String(Math.round(b * 100) / 100);
+  const writeNotes = (ns: ParsedNote[]) => {
+    $<HTMLTextAreaElement>("notes").value = ns.map((n) => pitchName(n.midi) + (n.beats === 1 ? "" : ":" + fmtBeats(n.beats))).join(" ");
+  };
+
+  let beepCtx: AudioContext | null = null;
+  function beep(m: number): void {
+    try {
+      beepCtx ??= new AudioContext();
+      const t = beepCtx.currentTime;
+      const o = beepCtx.createOscillator(), g = beepCtx.createGain();
+      o.type = "triangle";
+      o.frequency.value = 440 * 2 ** ((m - 69) / 12);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+      o.connect(g).connect(beepCtx.destination);
+      o.start(t);
+      o.stop(t + 0.25);
+    } catch { /* 音が出なくても編集はできる */ }
+  }
 
   function layoutNotes(): void {
     rollNotes = [];
@@ -173,19 +199,36 @@ async function main(): Promise<void> {
     notes.forEach((n, i) => {
       const s = sylList[i];
       const text = s ? (s.melisma ? "–" : s.text) : "";
-      rollNotes.push({ midi: n.midi, t0: t, t1: t + n.beats * beat, text });
+      rollNotes.push({ midi: n.midi, beats: n.beats, t0: t, t1: t + n.beats * beat, text });
       t += n.beats * beat;
     });
-    rollEnd = Math.max(1, t + 0.4);
-    const syl = sylList.length;
-    $("sylCount").textContent = `歌詞 ${syl} 音節 / 音符 ${notes.length} 個`;
+    if (!dragging) {
+      const ms = rollNotes.map((n) => n.midi);
+      let lo = (ms.length ? Math.min(...ms) : 63) - 4, hi = (ms.length ? Math.max(...ms) : 71) + 4;
+      while (hi - lo < 15) { lo--; hi++; }
+      view = { lo: Math.max(24, lo), hi: Math.min(108, hi), end: Math.max(1, t + 0.4) };
+    }
+    $("sylCount").textContent = `歌詞 ${sylList.length} 音節 / 音符 ${notes.length} 個`;
     $("sylInfo").textContent = sylList.map((s) => s.text + (s.wordEnd ? " " : "-")).join("").trim();
-    $("rollInfo").textContent = notes.length ? `${rollEnd.toFixed(1)} 秒` : "";
+    $("rollInfo").textContent = notes.length ? `${(t + 0.4).toFixed(1)} 秒` : "";
   }
+
+  const geom = () => {
+    const w = rollCanvas.clientWidth, h = rollCanvas.clientHeight;
+    const rows = view.hi - view.lo + 1;
+    const rh = (h - PADY * 2) / rows;
+    const span = w - GUTTER - 6;
+    return {
+      w, h, rh, span,
+      yOf: (m: number) => PADY + (view.hi - m + 0.5) * rh,
+      xOf: (t: number) => GUTTER + (t / view.end) * span,
+      bodyH: Math.max(12, Math.min(24, rh)),
+    };
+  };
 
   function drawRoll(playT: number | null): void {
     const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const w = rollCanvas.clientWidth, h = rollCanvas.clientHeight;
+    const { w, h, rh, yOf, xOf, bodyH } = geom();
     if (rollCanvas.width !== Math.round(w * dpr) || rollCanvas.height !== Math.round(h * dpr)) {
       rollCanvas.width = Math.round(w * dpr);
       rollCanvas.height = Math.round(h * dpr);
@@ -194,42 +237,97 @@ async function main(): Promise<void> {
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
     c.clearRect(0, 0, w, h);
     c.fillStyle = "#fafbfe"; c.fillRect(0, 0, w, h);
-    const G = 34, PADY = 14;
-    const ms = rollNotes.map((n) => n.midi);
-    const lo = (ms.length ? Math.min(...ms) : 60) - 3, hi = (ms.length ? Math.max(...ms) : 72) + 3;
-    const rows = Math.max(8, hi - lo + 1);
-    const rh = (h - PADY * 2) / rows;
-    const yOf = (m: number) => PADY + (hi - m + 0.5) * rh;
-    const xOf = (t: number) => G + (t / rollEnd) * (w - G - 6);
-    const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
     c.font = "10px ui-monospace, Consolas, monospace"; c.textBaseline = "middle"; c.textAlign = "right";
-    for (let m = Math.floor(lo); m <= Math.ceil(hi); m++) {
+    for (let m = view.lo; m <= view.hi; m++) {
       const pc = ((m % 12) + 12) % 12;
       const y = yOf(m);
-      if ([1, 3, 6, 8, 10].includes(pc)) { c.fillStyle = "rgba(29,36,51,.045)"; c.fillRect(G, y - rh / 2, w - G, rh); }
+      if ([1, 3, 6, 8, 10].includes(pc)) { c.fillStyle = "rgba(29,36,51,.045)"; c.fillRect(GUTTER, y - rh / 2, w - GUTTER, rh); }
       c.fillStyle = pc === 0 ? "rgba(29,36,51,.22)" : "rgba(29,36,51,.07)";
-      c.fillRect(G, Math.round(y + rh / 2), w - G, 1);
-      if (pc === 0 || pc === 4 || pc === 7) { c.fillStyle = "#76829a"; c.fillText(names[pc] + (Math.floor(m / 12) - 1), G - 5, y); }
+      c.fillRect(GUTTER, Math.round(y + rh / 2), w - GUTTER, 1);
+      if (pc === 0 || pc === 4 || pc === 7) { c.fillStyle = "#76829a"; c.fillText(NAMES[pc] + (Math.floor(m / 12) - 1), GUTTER - 5, y); }
     }
+    const sec = Math.ceil(view.end);
+    c.font = "10px ui-monospace, Consolas, monospace"; c.textAlign = "left"; c.textBaseline = "top";
+    for (let s = 0; s <= sec; s++) { const x = xOf(s); c.fillStyle = "rgba(29,36,51,.06)"; c.fillRect(x, PADY, 1, h - PADY * 2); if (s < sec) { c.fillStyle = "#76829a"; c.fillText(String(s), x + 2, 1); } }
     if (!rollNotes.length) {
-      c.fillStyle = "#76829a"; c.font = "13px sans-serif"; c.textAlign = "center";
-      c.fillText("音符を入れると、ここに並びます", (w + G) / 2, h / 2);
+      c.fillStyle = "#76829a"; c.font = "13px sans-serif"; c.textAlign = "center"; c.textBaseline = "middle";
+      c.fillText("音符を入れると、ここに並びます", (w + GUTTER) / 2, h / 2);
       return;
     }
-    const sec = Math.ceil(rollEnd);
-    c.fillStyle = "#76829a"; c.font = "10px ui-monospace, Consolas, monospace"; c.textAlign = "left"; c.textBaseline = "top";
-    for (let s = 0; s <= sec; s++) { const x = xOf(s); c.fillStyle = "rgba(29,36,51,.06)"; c.fillRect(x, PADY, 1, h - PADY * 2); if (s < sec) { c.fillStyle = "#76829a"; c.fillText(String(s), x + 2, 1); } }
-    const bodyH = Math.max(12, Math.min(22, rh));
     c.textBaseline = "middle"; c.textAlign = "center";
-    for (const n of rollNotes) {
+    rollNotes.forEach((n, i) => {
       const x0 = xOf(n.t0), x1 = xOf(n.t1), y = yOf(n.midi) - bodyH / 2;
       const on = playT !== null && playT >= n.t0 && playT < n.t1;
+      const grab = drag !== null && drag.i === i;
       c.beginPath(); c.roundRect(x0 + 0.5, y, Math.max(3, x1 - x0 - 1.5), bodyH, 7);
-      c.fillStyle = on ? "#e8792f" : "#396cdf"; c.fill();
+      c.fillStyle = on || grab ? "#e8792f" : "#396cdf"; c.fill();
       if (x1 - x0 > 22 && n.text) { c.fillStyle = "#fff"; c.font = "600 12px sans-serif"; c.fillText(n.text, (x0 + x1) / 2, y + bodyH / 2 + 0.5); }
-    }
+      if (grab) { c.fillStyle = "#1d2433"; c.font = "600 11px ui-monospace, Consolas, monospace"; c.fillText(pitchName(n.midi), (x0 + x1) / 2, y - 8); }
+    });
     if (playT !== null) { const x = xOf(playT); c.fillStyle = "#1d2433"; c.fillRect(Math.round(x), PADY - 6, 1.5, h - PADY * 2 + 12); }
   }
+
+  interface Drag { i: number; mode: "pitch" | "len"; x: number; y: number; midi: number; beats: number; notes: ParsedNote[] }
+  let drag: Drag | null = null;
+
+  function hitNote(px: number, py: number): { i: number; mode: "pitch" | "len" } | null {
+    const { yOf, xOf, bodyH } = geom();
+    for (let i = rollNotes.length - 1; i >= 0; i--) {
+      const n = rollNotes[i];
+      const x0 = xOf(n.t0), x1 = xOf(n.t1), y = yOf(n.midi) - bodyH / 2;
+      if (px >= x0 && px <= x1 && py >= y - 3 && py <= y + bodyH + 3) return { i, mode: px > x1 - 8 && x1 - x0 > 20 ? "len" : "pitch" };
+    }
+    return null;
+  }
+  const rollPos = (e: PointerEvent) => { const r = rollCanvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+
+  rollCanvas.addEventListener("pointerdown", (e) => {
+    if (busy || playCtx) return;
+    const { x, y } = rollPos(e);
+    const hit = hitNote(x, y);
+    if (!hit) return;
+    let notes: ParsedNote[];
+    try { notes = parseNotes($<HTMLTextAreaElement>("notes").value); } catch { return; }
+    drag = { i: hit.i, mode: hit.mode, x, y, midi: notes[hit.i].midi, beats: notes[hit.i].beats, notes };
+    dragging = true;
+    rollCanvas.setPointerCapture(e.pointerId);
+    if (hit.mode === "pitch") beep(drag.midi);
+    drawRoll(null);
+  });
+  rollCanvas.addEventListener("pointermove", (e) => {
+    const { x, y } = rollPos(e);
+    if (!drag) {
+      const hit = busy || playCtx ? null : hitNote(x, y);
+      rollCanvas.style.cursor = hit ? (hit.mode === "len" ? "ew-resize" : "ns-resize") : "default";
+      return;
+    }
+    const { rh, span } = geom();
+    const n = drag.notes[drag.i];
+    if (drag.mode === "pitch") {
+      const m = Math.max(view.lo, Math.min(view.hi, Math.round(drag.midi + (drag.y - y) / rh)));
+      if (m === n.midi) return;
+      n.midi = m;
+      beep(m);
+    } else {
+      const secPerBeat = 60 / bpmNow();
+      const dBeats = ((x - drag.x) / span) * view.end / secPerBeat;
+      const b = Math.max(0.25, Math.min(32, Math.round((drag.beats + dBeats) * 4) / 4));
+      if (b === n.beats) return;
+      n.beats = b;
+    }
+    writeNotes(drag.notes);
+    layoutNotes();
+    drawRoll(null);
+  });
+  const endDrag = () => {
+    if (!drag) return;
+    drag = null;
+    dragging = false;
+    layoutNotes();
+    drawRoll(null);
+  };
+  rollCanvas.addEventListener("pointerup", endDrag);
+  rollCanvas.addEventListener("pointercancel", endDrag);
 
   // ---------------------------------------------------------------- 口の断面(CHIMERA 本体と同じ描画)
   const mouthCanvas = $<HTMLCanvasElement>("mouth");
