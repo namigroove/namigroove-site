@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>動画圧縮(目標サイズに合わせて小さくする・無料) – なみぐる！</title>
+<meta name="description" content="動画を、指定したサイズ(MB)に収まるように小さくする無料ツール。メールやチャットに載せられない大きさの動画を、MP4に圧縮します。必要な部分だけ切り出しもできます。ブラウザの中だけで処理するので、動画はどこにも送信されません。">
+<meta property="og:title" content="動画圧縮(目標サイズに合わせて小さくする) – なみぐる！">
+<meta property="og:description" content="動画を、指定したサイズ(MB)に収まるように小さくする無料ツール。メールやチャットに載せられない大きさの動画を、MP4に圧縮します。必要な部分だけ切り出しもできます。ブラウザの中だけで処理するので、動画はどこにも送信されません。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/vidcompress/">
+<meta property="og:image" content="https://namigroove.github.io/namigroove-site/img/ogp-tools-2.jpg">
+<link rel="canonical" href="https://www.namigroove.com/tools/vidcompress/">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://namigroove.github.io/namigroove-site/nami-cursor.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.namigroove.com/wp-content/uploads/2021/05/cropped-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88-2021-05-08-191247-192x192.png" sizes="192x192">
+<meta name="theme-color" content="#396cdf">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}img{max-width:100%}
+@font-face{font-family:"MaruMinyaM";src:url("fonts/x12y12pxMaruMinyaM.woff2") format("woff2");font-display:swap}
+:root{
+  --paper:#f5f8fe;--ink:#101f45;--ink-soft:#4a5a80;--line:#d5e0f5;
+  --sea:#2c5ccc;--wash:#e3ebfb;--coral:#a2511f;--chip:#ffffff;--head:#396cdf;
+  --ok:#0e8a6c;--warn:#d0436b;--panel:#ffffff;
+  --f-display:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"MaruMinyaM","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --f-mono:"MaruMinyaM","DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1430;--ink:#e6ecfb;--ink-soft:#9fb0d6;--line:#22305a;--sea:#7fa3f5;--wash:#142350;--coral:#f0a36b;--chip:#121d40;--head:#396cdf;
+  --ok:#4fd1ac;--warn:#f48aa6;--panel:#101b3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;font-synthesis:none}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--head);color:#fff}
+header.top .wrap{max-width:1080px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:flex;align-items:center;text-decoration:none;color:#fff;font-family:var(--f-display);font-size:20px}
+.logo img{display:block;height:40px;width:auto}
+header.top nav.main{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:500}
+header.top nav a{color:rgba(255,255,255,.82);text-decoration:none}
+header.top nav a:hover,header.top nav a[aria-current]{color:#fff}
+@media (max-width:640px){header.top nav.main{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}}
+.lang{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:0 8px;line-height:1.6;font-family:"DM Mono",ui-monospace,monospace;font-size:11px!important;letter-spacing:.05em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--sea);margin:0}
+h1,h2{margin:0;text-wrap:balance}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
+.intro{padding-block:40px 20px}
+.intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+
+/* タブ */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
+.tabs button{font:500 15px var(--f-body);border:0;border-radius:999px;padding:10px 0;background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px rgba(16,31,69,.12)}
+.tabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#resPanel{scroll-margin-top:80px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 20px 20px;margin-bottom:24px}
+@media (max-width:480px){.panel{padding:20px 14px 16px}}
+
+/* 共通の操作部品 */
+.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center}
+.ctl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:500 13px var(--f-body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.round{width:44px;height:44px;padding:0;font-size:22px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono)}
+.go{font:700 16px var(--f-body);border:0;border-radius:999px;padding:12px 32px;background:var(--head);color:#fff;cursor:pointer;min-width:180px;display:inline-flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent}
+.go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.go svg{width:18px;height:18px;fill:currentColor}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
+.err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
+details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
+details.opts summary{cursor:pointer;font-size:13px;color:var(--sea);list-style:none;text-align:center;padding:6px}
+details.opts summary::-webkit-details-marker{display:none}
+details.opts[open] summary{margin-bottom:8px}
+.opts .row{margin-top:10px}
+
+.how{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
+.how ul{margin:0;padding-left:1.2em}
+.how a{color:var(--sea)}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--sea)}
+.share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 24px;flex-wrap:wrap}
+.share-label{font-size:12px;color:var(--ink-soft);width:100%;text-align:center;margin-bottom:2px}
+.sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+.sh:hover{transform:translateY(-2px)}
+.sh svg{width:20px;height:20px}
+.sh-x{background:#000}.sh-line{background:#06c755}.sh-line svg{width:26px;height:26px}.sh-share{background:#396cdf}
+.ng-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+.ng-toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{display:inline-flex;align-items:center;gap:4px}.foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.foot-links .fi .fill{fill:currentColor;stroke:none}
+
+.eb-link{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor}
+.eb-link:hover{border-bottom-style:solid}
+.sel{font:500 14px var(--f-mono);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
+/* WAV→MP3 */
+.dz{display:flex;flex-direction:column;align-items:center;gap:6px;padding:28px 16px;border:2px dashed var(--line);border-radius:16px;background:var(--chip);text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.dz:hover,.dz.on{border-color:var(--sea);background:var(--wash)}
+.dz b{font-size:16px}.dz small{color:var(--ink-soft);font-size:12px}
+.dz:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.opts{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:center;margin:14px 0 0}
+.fl{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.fl li{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--chip)}
+.fl .nm{font-size:14px;word-break:break-all}
+.fl .st{font:12px var(--f-mono);color:var(--ink-soft)}
+.fl .bar{grid-column:1/-1;height:4px;border-radius:2px;background:var(--wash);overflow:hidden}
+.fl .bar i{display:block;height:100%;width:0;background:var(--sea);transition:width .1s}
+.fl li.done .st{color:var(--ok)}.fl li.err .st{color:var(--warn)}
+.fl a.btn{text-decoration:none;display:inline-block}
+.acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+
+/* 動画圧縮 */
+input[type=range]{margin:0;max-width:none}
+.fchip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--chip);margin-bottom:14px}
+.fchip .fn{flex:1 1 160px;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fchip .fs{font-size:12px;color:var(--ink-soft)}
+.pv{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9;max-height:56vh}
+.pv video,#rv{display:block;width:100%;height:100%;background:#000;object-fit:contain}
+#rv{height:auto;max-height:56vh;border-radius:12px;aspect-ratio:16/9;margin-top:14px}
+.pv-msg{position:absolute;inset:0;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;color:#fff;font-size:13px;background:rgba(0,0,0,.72)}
+.eng{margin:10px 0 4px;font-size:12px;color:var(--ink-soft);display:flex;flex-direction:column;gap:6px}
+.eng .eb{display:block;height:4px;border-radius:2px;background:var(--wash);overflow:hidden}
+.eng .eb b{display:block;height:100%;width:0;background:var(--sea);transition:width .15s}
+.eng.ok .eb{display:none}
+.eng.ok{color:var(--ok)}
+.eng.ng{color:var(--warn)}
+.eng.ng .eb{display:none}
+.eng .btn{align-self:flex-start}
+.grp{margin-top:20px;padding-top:16px;border-top:1px dashed var(--line)}
+.grp h2{font:400 16px var(--f-display);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.grp .hint{font:400 12px var(--f-body);color:var(--ink-soft)}
+.row.l{justify-content:flex-start}
+.trim{display:grid;grid-template-columns:auto 1fr 9ch;gap:8px 10px;align-items:center;margin-bottom:12px}
+.trim label{font-size:13px;color:var(--ink-soft)}
+.tm,.inp{font-size:14px;padding:5px 8px;border-radius:10px;border:1px solid var(--line);background:var(--chip);color:var(--ink);width:100%;min-width:0;text-align:center}
+.inp{width:5.5em}
+.tm:focus,.inp:focus{outline:2px solid var(--sea);outline-offset:1px}
+.opts2{margin-top:16px}
+.opts2 summary{cursor:pointer;font-size:13px;color:var(--sea);padding:6px 0}
+.opts2 .row{margin-top:10px;gap:12px 20px}
+.est{margin-top:18px;padding:12px 14px;border-radius:12px;background:var(--wash);display:grid;gap:4px}
+.est-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--ink-soft)}
+.est-row b{font-weight:500;color:var(--ink);text-align:right}
+.est-note{margin:6px 0 0;font-size:12px;color:var(--coral)}
+.act{display:flex;justify-content:center;margin-top:18px}
+.go[disabled]{opacity:.45;cursor:default}
+a.go{text-decoration:none}
+.prog{margin-top:16px;display:grid;gap:8px;justify-items:center}
+.pbar{width:100%;height:8px;border-radius:4px;background:var(--wash);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:var(--head);transition:width .2s}
+.pinfo{width:100%;display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft)}
+.rh{font:400 22px var(--f-display);text-align:center;margin-bottom:14px}
+.rsum{display:flex;align-items:center;justify-content:center;gap:12px 16px;flex-wrap:wrap;text-align:center}
+.rsum small{display:block;font-size:12px;color:var(--ink-soft)}
+.rsum b{font-weight:500;font-size:22px}
+.rsum .arr{color:var(--ink-soft);font-size:20px}
+.rsum .cut b{color:var(--ok)}
+.rnote{text-align:center;font-size:13px;color:var(--ink-soft);margin:10px 0 0;min-height:1em}
+.rnote.w{color:var(--coral)}
+@media (max-width:480px){.trim{grid-template-columns:auto 1fr 8.4ch}.rsum b{font-size:19px}}
+</style>
+<!-- アクセス解析(旧WordPressのSite Kitと同じタグ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZKLX0PTPC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("set","linker",{"domains":["www.namigroove.com"]});gtag("js",new Date());gtag("config","G-PZKLX0PTPC");</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PTZ6VW4');</script>
+<style id="hdr-fit">
+/* ヘッダー:スマホではロゴを少し小さくしてメニューと並べる */
+header.top .logo{flex:none}
+@media (max-width:640px){header.top .wrap{gap:10px}header.top .logo img{height:30px}header.top nav.main{gap:9px}}
+@media (max-width:430px){header.top .logo img{height:24px}header.top nav.main{gap:8px;font-size:11.5px}}
+@media (max-width:374px){header.top nav.main .opt{display:none}}
+@media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"動画圧縮(目標サイズ指定)","url":"https://www.namigroove.com/tools/vidcompress/","description":"動画を、指定したサイズ(MB)に収まるように小さくする無料ツール。メールやチャットに載せられない大きさの動画を、MP4に圧縮します。必要な部分だけ切り出しもできます。ブラウザの中だけで処理するので、動画はどこにも送信されません。","applicationCategory":"MultimediaApplication","operatingSystem":"Any","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"author":{"@type":"Person","name":"なみぐる","url":"https://www.namigroove.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"動画圧縮","item":"https://www.namigroove.com/tools/vidcompress/"}]}]}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav class="main" aria-label="メインメニュー">
+      <a href="works.html" translate="no">Works</a>
+      <a href="tools.html" translate="no">Tools</a>
+      <a href="index.html#notes"><span class="mochi" translate="no">₺ƾらせ</span></a>
+      <a href="index.html#links" class="opt">リンク</a>
+      <a href="index.html#contact">依頼</a>
+      <a href="?lang=en" class="lang" id="toEN" data-lang translate="no">EN</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
+    <h1>動画圧縮</h1>
+    <p class="lead">動画を、指定したサイズ(MB)に収まるように小さくします。送れない大きさの動画を、メールやチャットに載せたいときに。必要な部分だけ切り出すこともできます。ブラウザの中だけで処理するので、動画はどこにも送信されません。</p>
+  </div>
+
+  <section class="panel" id="pickPanel" aria-label="動画を選ぶ">
+    <label class="dz" id="drop" tabindex="0" role="button" aria-label="動画を選ぶ、またはここにドロップ">
+      <b>動画を選ぶ</b>
+      <small>ここにドロップ、またはタップして選択(MP4・MOV・WebM・MKV・AVIなど)</small>
+      <input id="file" type="file" accept="video/*,.mp4,.m4v,.mov,.webm,.mkv,.avi,.mts,.m2ts,.wmv,.flv,.3gp" hidden>
+    </label>
+    <p class="note-s">初めて使うときだけ、圧縮のエンジン(約31MB)を読み込みます。2回目からは保存された分を使います。</p>
+  </section>
+
+  <section class="panel" id="editPanel" aria-label="圧縮の設定" hidden>
+    <div class="fchip"><span class="fn" id="fName"></span><span class="fs num" id="fSize"></span><button class="btn" type="button" id="swapBtn">別の動画にする</button></div>
+
+    <div class="pv" id="pvBox">
+      <video id="pv" controls playsinline preload="metadata"></video>
+      <p class="pv-msg" id="pvMsg" hidden></p>
+    </div>
+    <div class="eng" id="eng" aria-live="polite"><span id="engTxt">エンジンを準備しています…</span><i class="eb"><b id="engBar"></b></i></div>
+
+    <div class="grp">
+      <h2>使う部分(切り出し)<span class="hint" id="trimInfo"></span></h2>
+      <div class="trim">
+        <label for="rS">開始</label>
+        <input type="range" id="rS" min="0" max="1" step="0.1" value="0" aria-label="開始位置">
+        <input type="text" id="tS" class="tm num" inputmode="decimal" value="0:00.0" aria-label="開始の時間">
+        <label for="rE">終了</label>
+        <input type="range" id="rE" min="0" max="1" step="0.1" value="1" aria-label="終了位置">
+        <input type="text" id="tE" class="tm num" inputmode="decimal" value="0:00.0" aria-label="終了の時間">
+      </div>
+      <div class="row l">
+        <button class="btn" type="button" id="setS">いまの位置を開始に</button>
+        <button class="btn" type="button" id="setE">いまの位置を終了に</button>
+        <button class="btn" type="button" id="playR">選んだ範囲を再生</button>
+      </div>
+    </div>
+
+    <div class="grp">
+      <h2>目標サイズ<span class="hint">この大きさ以下に収めます</span></h2>
+      <div class="row l">
+        <div class="seg" id="sizeSeg" role="group" aria-label="目標サイズ">
+          <button type="button" data-mb="3">3MB</button>
+          <button type="button" data-mb="10">10MB</button>
+          <button type="button" data-mb="25">25MB</button>
+          <button type="button" data-mb="50">50MB</button>
+          <button type="button" data-mb="100">100MB</button>
+        </div>
+        <label class="ctl">自分で決める <input type="number" id="mbIn" class="num inp" min="0.5" max="500" step="0.5" inputmode="decimal" aria-label="目標サイズ(MB)"> MB</label>
+      </div>
+    </div>
+
+    <details class="opts2">
+      <summary>くわしい設定(解像度・音声)</summary>
+      <div class="row l">
+        <label class="ctl">解像度
+          <select id="res" class="sel" aria-label="解像度">
+            <option value="auto" selected>おまかせ(サイズに合わせる)</option>
+            <option value="orig">元のまま</option>
+            <option value="1080">1080p</option>
+            <option value="720">720p</option>
+            <option value="480">480p</option>
+            <option value="360">360p</option>
+            <option value="240">240p</option>
+          </select>
+        </label>
+        <label class="ctl">音声
+          <select id="aud" class="sel" aria-label="音声">
+            <option value="96" selected>AAC 96kbps</option>
+            <option value="128">AAC 128kbps</option>
+            <option value="64">AAC 64kbps(小さめ)</option>
+            <option value="0">音声なし</option>
+          </select>
+        </label>
+        <label class="chk" id="fpsRow" hidden><input type="checkbox" id="fps30" checked> 60fpsを30fpsに下げる</label>
+      </div>
+    </details>
+
+    <div class="est" id="est" aria-live="polite">
+      <div class="est-row"><span>出力の目安</span><b id="eRes" class="num">—</b></div>
+      <div class="est-row"><span>映像 / 音声</span><b id="eBr" class="num">—</b></div>
+      <div class="est-row"><span>画質の目安</span><b id="eQ">—</b></div>
+      <p class="est-note" id="eNote" hidden></p>
+    </div>
+
+    <div class="act">
+      <button class="go" type="button" id="go" disabled>圧縮する</button>
+    </div>
+
+    <div class="prog" id="prog" hidden aria-live="polite">
+      <div class="pbar"><i id="pFill"></i></div>
+      <div class="pinfo"><span id="pTxt">圧縮しています…</span><span class="num" id="pPct">0%</span></div>
+      <button class="btn" type="button" id="cancel">キャンセル</button>
+    </div>
+    <p class="err" id="err" role="alert" hidden></p>
+    <p class="note-s">処理はこの端末の中で行います。長い動画や大きいサイズは時間がかかるので、スマホではなくPCがおすすめです。</p>
+  </section>
+
+  <section class="panel" id="resPanel" aria-label="圧縮の結果" hidden>
+    <h2 class="rh">できました</h2>
+    <div class="rsum">
+      <div><small>元の動画</small><b class="num" id="rBefore">—</b></div>
+      <div class="arr" aria-hidden="true">→</div>
+      <div><small>圧縮後</small><b class="num" id="rAfter">—</b></div>
+      <div class="cut"><small>削減</small><b class="num" id="rCut">—</b></div>
+    </div>
+    <p class="rnote" id="rNote"></p>
+    <video id="rv" controls playsinline preload="metadata"></video>
+    <div class="acts">
+      <a class="go" id="dl" href="#" download="compressed.mp4">MP4を保存</a>
+      <button class="btn" type="button" id="again">設定を変えてもう一度</button>
+      <button class="btn" type="button" id="reset">新しい動画</button>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>使い方のメモ</h2>
+    <ul>
+      <li>動画を選ぶと、プレビューと設定が出ます。目標サイズを選んで「圧縮する」を押すと、そのサイズ以下のMP4(H.264 + AAC)を作ります。</li>
+      <li>目標サイズから逆算して、映像のビットレートを決めます。動きの少ない動画は、目標より小さく仕上がることがあります。目標をこえてしまったときは、ビットレートを下げて1回だけ自動でやり直します。</li>
+      <li>解像度は「おまかせ」だと、サイズに合わせて画面の大きさも自動で調整します(元より大きくはしません)。サイズが小さすぎるときは、荒くなるので、切り出しを短くするか、目標サイズを上げてください。</li>
+      <li>1MBは1,000,000バイトで数えています。送り先の上限ぎりぎりのときは、少し小さめにしておくと安心です。</li>
+      <li>位置情報などのメタデータは、圧縮した動画には引き継ぎません。</li>
+      <li>ブラウザ版の目安は1GBまでです。それより大きい動画は、先に切り出してから試してください。Safariやスマホはメモリが少なく、大きい動画は途中で止まることがあります。</li>
+      <li>圧縮には <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a>(<a href="https://ffmpeg.org/" target="_blank" rel="noopener">FFmpeg</a> をブラウザで動かせるようにしたもの)を使っています。映像の圧縮にはx264が含まれ、<a href="https://ffmpeg.org/legal.html" target="_blank" rel="noopener">GPLライセンス</a>で配布されています。エンジンは <a href="https://www.jsdelivr.com/" target="_blank" rel="noopener">jsDelivr</a> から読み込みます。</li>
+    </ul>
+  </section>
+</main>
+
+
+
+<footer>
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=%E5%8B%95%E7%94%BB%E5%9C%A7%E7%B8%AE%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fvidcompress%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fvidcompress%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="wrap foot"><a href="tools.html">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div></footer>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const FF_VER="0.12.15",CORE_VER="0.12.10";
+const CDN="https://cdn.jsdelivr.net/npm/";
+const URLS={
+  ffmpeg:CDN+"@ffmpeg/ffmpeg@"+FF_VER+"/dist/umd/ffmpeg.js",
+  worker:CDN+"@ffmpeg/ffmpeg@"+FF_VER+"/dist/umd/814.ffmpeg.js",
+  core:CDN+"@ffmpeg/core@"+CORE_VER+"/dist/umd/ffmpeg-core.js",
+  wasm:CDN+"@ffmpeg/core@"+CORE_VER+"/dist/umd/ffmpeg-core.wasm"
+};
+const WASM_BYTES=32232419;
+const MAX_BYTES=1024*1024*1024,WARN_BYTES=500*1024*1024;
+const MARGIN=0.94;           // コンテナの分などの余裕
+const MIN_VK=30;
+
+const drop=$("drop"),fileIn=$("file");
+const pickPanel=$("pickPanel"),editPanel=$("editPanel"),resPanel=$("resPanel");
+const pv=$("pv"),pvMsg=$("pvMsg"),rv=$("rv");
+const eng=$("eng"),engTxt=$("engTxt"),engBar=$("engBar");
+const rS=$("rS"),rE=$("rE"),tS=$("tS"),tE=$("tE");
+const mbIn=$("mbIn"),res=$("res"),aud=$("aud"),fps30=$("fps30");
+const goBtn=$("go"),prog=$("prog"),pFill=$("pFill"),pTxt=$("pTxt"),pPct=$("pPct"),errEl=$("err");
+
+const S={file:null,url:null,dur:0,w:0,h:0,fps:30,hasAudio:true,probed:false,
+  s:0,e:0,mb:25,busy:false,cancelled:false,outUrl:null};
+let ff=null,ffLoading=null,blobs=null,mountedFor=null,loadFail=false;
+
+/* ---------- 表示用の整形 ---------- */
+const fmtB=n=>n>=1e9?(n/1e9).toFixed(2)+" GB":n>=1e6?(n/1e6).toFixed(n>=1e8?0:1)+" MB":Math.max(1,Math.round(n/1e3))+" KB";
+const fmtT=t=>{t=Math.max(0,t);const h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;
+  const ss=(s<10?"0":"")+s.toFixed(1);return h?h+":"+(m<10?"0":"")+m+":"+ss:m+":"+ss};
+const parseT=str=>{str=String(str).trim().replace(/：/g,":").replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-65248)).replace(/．/g,".");
+  if(!/^\d+(:\d{1,2}){0,2}(\.\d*)?$/.test(str))return NaN;
+  const p=str.split(":").map(Number);let t=0;for(const v of p)t=t*60+v;return t};
+const show=(el,on)=>{el.hidden=!on};
+const err=m=>{errEl.textContent=m||"";errEl.hidden=!m};
+
+/* ---------- 計算(目標サイズ → 画質の設定) ---------- */
+function plan(){
+  const dur=Math.max(0.1,S.e-S.s);
+  const aK=S.hasAudio?+aud.value:0;
+  const totalKbps=S.mb*1e6*8*MARGIN/dur/1000;
+  const vk=Math.max(0,totalKbps-aK);
+  const srcShort=Math.min(S.w,S.h)||720,srcLong=Math.max(S.w,S.h)||1280;
+  const portrait=S.h>S.w;
+  const capF=Math.min(1,1920/srcLong);
+  const origShort=Math.max(2,Math.round(srcShort*capF/2)*2);
+  const fpsOut=(S.fps>35&&fps30.checked)?30:S.fps;
+  const dimsFor=short=>{const f=short/srcShort;
+    return [Math.max(2,Math.round(S.w*f/2)*2),Math.max(2,Math.round(S.h*f/2)*2)]};
+  const bpp=(short)=>{const [w,h]=dimsFor(short);return vk*1000/(w*h*fpsOut)};
+  let short;
+  if(res.value==="orig")short=origShort;
+  else if(res.value==="auto"){
+    const cands=[origShort,1080,720,480,360,240].filter(v=>v<=origShort).filter((v,i,a)=>a.indexOf(v)===i);
+    short=cands[cands.length-1];
+    for(const c of cands){if(bpp(c)>=0.05){short=c;break}}
+  }else short=Math.min(+res.value,origShort);
+  const [w,h]=short===srcShort?[S.w,S.h]:dimsFor(short);
+  return {dur,aK,vk,short,w,h,fpsOut,bpp:vk>0?vk*1000/(w*h*fpsOut):0,portrait,scale:short<srcShort?short:0};
+}
+function quality(b){return b>=0.12?"きれい":b>=0.07?"ふつう":b>=0.04?"ちょっと荒め":"かなり荒い"}
+
+function refresh(){
+  if(!S.file)return;
+  $("trimInfo").textContent="長さ "+fmtT(S.e-S.s)+(S.dur?" / 全体 "+fmtT(S.dur):"");
+  [...$("sizeSeg").children].forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.mb===S.mb)));
+  const eRes=$("eRes"),eBr=$("eBr"),eQ=$("eQ"),eNote=$("eNote");
+  const notes=[];
+  if(!S.probed||!S.dur||!(S.mb>0)){eRes.textContent=eBr.textContent=eQ.textContent="—";show(eNote,false);syncGo();return}
+  const p=plan();
+  eRes.textContent=p.w+"×"+p.h+" · "+(Math.round(p.fpsOut*10)/10)+"fps";
+  eBr.textContent=Math.round(p.vk).toLocaleString()+" kbps / "+(p.aK?p.aK+" kbps":"音声なし");
+  eQ.textContent=p.vk<MIN_VK?"作れません":quality(p.bpp);
+  const shareOfSrc=S.file.size*(p.dur/S.dur);
+  if(p.vk<MIN_VK)notes.push("目標サイズが小さすぎます。切り出しを短くするか、サイズを上げてください。");
+  else if(p.vk<400)notes.push("ビットレートが低いので、かなり荒くなります。サイズを上げるか、短く切り出すのがおすすめです。");
+  if(shareOfSrc>0&&shareOfSrc<=S.mb*1e6)notes.push("選んだ部分は、元の動画のままでもすでに目標サイズ以下の見込みです。");
+  if(S.file.size>WARN_BYTES)notes.push("ファイルが大きいので、時間がかかったり、途中で止まったりすることがあります。");
+  eNote.textContent=notes.join(" ");show(eNote,notes.length>0);
+  syncGo(p);
+}
+function syncGo(p){
+  const ready=!!(ff&&mountedFor===S.file&&S.probed&&S.dur>0&&S.mb>0&&!S.busy);
+  const ok=ready&&(!p||p.vk>=MIN_VK);
+  goBtn.disabled=!ok&&!(loadFail&&!S.busy);
+  goBtn.textContent=loadFail&&!ready?"エンジンを読み込み直す":"圧縮する";
+}
+
+/* ---------- 切り出し ---------- */
+function setTrim(s,e,from){
+  const d=S.dur;if(!d)return;
+  s=Math.min(Math.max(0,s),d);e=Math.min(Math.max(0,e),d);
+  const gap=Math.min(0.5,d/2);
+  if(from==="s"&&s>e-gap)s=Math.max(0,e-gap);
+  if(from==="e"&&e<s+gap)e=Math.min(d,s+gap);
+  S.s=Math.round(s*10)/10;S.e=Math.round(e*10)/10;
+  rS.value=S.s;rE.value=S.e;tS.value=fmtT(S.s);tE.value=fmtT(S.e);
+  refresh();
+}
+rS.addEventListener("input",()=>setTrim(+rS.value,S.e,"s"));
+rE.addEventListener("input",()=>setTrim(S.s,+rE.value,"e"));
+const txtTrim=(inp,from)=>{inp.addEventListener("change",()=>{const t=parseT(inp.value);
+  if(isNaN(t)){inp.value=fmtT(from==="s"?S.s:S.e);return}
+  from==="s"?setTrim(t,S.e,"s"):setTrim(S.s,t,"e")})};
+txtTrim(tS,"s");txtTrim(tE,"e");
+$("setS").addEventListener("click",()=>{if(pv.duration)setTrim(pv.currentTime,S.e,"s")});
+$("setE").addEventListener("click",()=>{if(pv.duration)setTrim(S.s,pv.currentTime,"e")});
+$("playR").addEventListener("click",()=>{if(!S.dur)return;pv.currentTime=S.s;pv.play().catch(()=>{})});
+pv.addEventListener("timeupdate",()=>{if(S.dur&&!pv.paused&&pv.currentTime>=S.e-0.05&&S.e<S.dur-0.05)pv.pause()});
+
+/* ---------- 目標サイズなど ---------- */
+$("sizeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  S.mb=+b.dataset.mb;mbIn.value=S.mb;refresh()});
+mbIn.addEventListener("input",()=>{const v=parseFloat(mbIn.value);S.mb=v>0?Math.min(v,500):0;refresh()});
+[res,aud,fps30].forEach(el=>el.addEventListener("change",refresh));
+
+/* ---------- ファイルの受け取り ---------- */
+function pick(f){
+  if(!f)return;
+  err("");
+  if(f.size>MAX_BYTES){showPickErr("1GBをこえる動画は、ブラウザでは扱えません。先に短く切り出してから試してください。");return}
+  if(f.type&&!/^video\//.test(f.type)&&!/\.(mp4|m4v|mov|webm|mkv|avi|mts|m2ts|wmv|flv|3gp)$/i.test(f.name)){showPickErr("動画ファイルを選んでください。");return}
+  resetAll(true);
+  S.file=f;S.url=URL.createObjectURL(f);S.probed=false;S.dur=0;
+  $("fName").textContent=f.name;$("fSize").textContent=fmtB(f.size);
+  show(pickPanel,false);show(editPanel,true);show(resPanel,false);
+  show(pvMsg,false);pv.src=S.url;
+  $("trimInfo").textContent="";
+  ["eRes","eBr","eQ"].forEach(i=>$(i).textContent="—");
+  syncGo();
+  if(window.ngTrack)ngTrack("vid_loaded",{label:Math.round(f.size/1e6)+"MB"});
+  startEngine();
+}
+let pickErrEl=null;
+function showPickErr(m){if(!pickErrEl){pickErrEl=document.createElement("p");pickErrEl.className="err";pickErrEl.setAttribute("role","alert");pickPanel.appendChild(pickErrEl)}pickErrEl.textContent=m}
+pv.addEventListener("loadedmetadata",()=>{
+  if(!isFinite(pv.duration)||pv.duration<=0)return;
+  if(!S.dur)initDur(pv.duration);
+  if(pv.videoWidth){S.w=pv.videoWidth;S.h=pv.videoHeight}
+  refresh();
+});
+pv.addEventListener("error",()=>{
+  pvMsg.textContent="この動画は、このブラウザではプレビューできません。そのままでも圧縮はできます(切り出しは時間を入力してください)。";
+  show(pvMsg,true);
+});
+function initDur(d){
+  S.dur=d;
+  rS.max=rE.max=d;
+  setTrim(0,d);
+}
+
+/* ---------- ffmpeg.wasm ---------- */
+function loadScript(src,integrity){
+  return new Promise((ok,ng)=>{
+    if(window.FFmpegWASM)return ok();
+    const s=document.createElement("script");s.src=src;s.async=true;
+    if(integrity){s.integrity=integrity;s.crossOrigin="anonymous"}
+    s.onload=ok;s.onerror=()=>ng(new Error("script"));document.head.appendChild(s);
+  });
+}
+async function fetchBlob(url,type,onProg){
+  const r=await fetch(url);
+  if(!r.ok)throw new Error("http "+r.status);
+  const total=+r.headers.get("content-length")||0;
+  if(!r.body||!onProg){const b=await r.blob();return URL.createObjectURL(new Blob([b],{type}))}
+  const rd=r.body.getReader(),parts=[];let got=0;
+  for(;;){const {done,value}=await rd.read();if(done)break;parts.push(value);got+=value.length;onProg(got,total)}
+  return URL.createObjectURL(new Blob(parts,{type}));
+}
+async function loadBlobs(){
+  if(blobs)return blobs;
+  engTxt.textContent="エンジンを読み込んでいます…";engBar.style.width="2%";
+  await loadScript(URLS.ffmpeg,"sha384-6gtICseWoSfROfflbGSkg1kwPTH+2SxMvyn0e3THJbNoyPxx5tzNk4EXfLIHD2iD");
+  const core=await fetchBlob(URLS.core,"text/javascript");
+  const worker=await fetchBlob(URLS.worker,"text/javascript");
+  const wasm=await fetchBlob(URLS.wasm,"application/wasm",(got,total)=>{
+    const t=total>WASM_BYTES*0.5&&total<WASM_BYTES*1.6?total:WASM_BYTES;
+    const p=Math.min(1,got/t);
+    engBar.style.width=Math.max(2,Math.round(p*100))+"%";
+    engTxt.textContent="エンジンを読み込んでいます… "+(got/1e6).toFixed(1)+" / "+(t/1e6).toFixed(1)+"MB";
+  });
+  blobs={core,worker,wasm};
+  return blobs;
+}
+async function newFF(){
+  const b=await loadBlobs();
+  const inst=new FFmpegWASM.FFmpeg();
+  /* 別サイト(CDN)にあるワーカーは直接は起動できないので、
+     読み込み済みのコピー(同じサイトのblob)に差し替えて起動する */
+  const RealWorker=window.Worker;
+  window.Worker=function(u,o){return new RealWorker(/814\.ffmpeg\.js/.test(String(u))?b.worker:u,o)};
+  try{await inst.load({coreURL:b.core,wasmURL:b.wasm})}
+  finally{window.Worker=RealWorker}
+  return inst;
+}
+async function mountFile(inst,file){
+  mountedFor=null;
+  let path;
+  try{
+    try{await inst.createDir("/in")}catch(e){}
+    await inst.mount("WORKERFS",{files:[file]},"/in");
+    path="/in/"+file.name;
+  }catch(e){
+    const ext=(file.name.match(/\.[A-Za-z0-9]{1,5}$/)||[".mp4"])[0];
+    path="input"+ext;
+    await inst.writeFile(path,new Uint8Array(await file.arrayBuffer()));
+  }
+  inst._inPath=path;
+  mountedFor=file;
+}
+async function probe(inst){
+  const lines=[];
+  const h=({message})=>lines.push(message);
+  inst.on("log",h);
+  try{await inst.exec(["-hide_banner","-i",inst._inPath],15000)}catch(e){}
+  inst.off("log",h);
+  const t=lines.join("\n");
+  const d=t.match(/Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)/);
+  if(d)S.logDur=(+d[1])*3600+(+d[2])*60+parseFloat(d[3]);
+  const v=t.match(/Stream #\d+:\d+[^\n]*Video:[^\n]*?,\s*(\d{2,5})x(\d{2,5})/);
+  if(v){let w=+v[1],h2=+v[2];
+    const rot=t.match(/rotation of (-?[\d.]+) degrees/);
+    if(rot&&Math.abs(Math.round(Math.abs(+rot[1])/90))%2===1){[w,h2]=[h2,w]}
+    if(!S.w||!pv.videoWidth){S.w=w;S.h=h2}
+  }
+  const f=t.match(/Stream #\d+:\d+[^\n]*Video:[^\n]*?,\s*([\d.]+)\s*fps/);
+  if(f&&+f[1]>0&&+f[1]<250)S.fps=+f[1];
+  S.hasAudio=/Stream #\d+:\d+[^\n]*Audio:/.test(t);
+  if(!S.dur&&S.logDur)initDur(S.logDur);
+  if(!S.w){S.w=1280;S.h=720}
+  S.probed=!!(v||S.dur);
+  if(!S.hasAudio){aud.value="0"}
+  else if(aud.value==="0"&&!aud._user){aud.value="96"}
+  $("fpsRow").hidden=!(S.fps>35);
+}
+async function startEngine(){
+  const file=S.file;
+  loadFail=false;
+  eng.className="eng";show(eng,true);engTxt.textContent="エンジンを準備しています…";
+  [...eng.querySelectorAll(".btn")].forEach(b=>b.remove());
+  try{
+    if(!ffLoading){ffLoading=newFF().then(i=>{ff=i;return i})}
+    const inst=await ffLoading;
+    if(S.file!==file)return;
+    engTxt.textContent="動画を調べています…";engBar.style.width="100%";
+    await mountFile(inst,file);
+    await probe(inst);
+    if(S.file!==file)return;
+    if(!S.probed){throw new Error("probe")}
+    eng.className="eng ok";engTxt.textContent="準備できました";
+    refresh();
+  }catch(e){
+    console.error(e);
+    ffLoading=null;ff=null;loadFail=true;mountedFor=null;
+    eng.className="eng ng";
+    engTxt.textContent=e&&e.message==="probe"?"この動画の情報を読み取れませんでした。壊れているか、対応していない形式かもしれません。":"エンジンを読み込めませんでした。通信状況を確認して、もう一度ためしてください。";
+    syncGo();
+  }
+}
+aud.addEventListener("change",()=>{aud._user=true});
+
+/* ---------- 圧縮 ---------- */
+function setProg(frac,txt){
+  const p=Math.max(0,Math.min(1,frac));
+  pFill.style.width=(p*100).toFixed(1)+"%";pPct.textContent=Math.floor(p*100)+"%";
+  if(txt)pTxt.textContent=txt;
+}
+async function encode(vk,p,label){
+  const inst=ff;
+  const args=["-ss",String(S.s),"-i",inst._inPath,"-t",String(p.dur),"-map","0:v:0"];
+  if(p.aK)args.push("-map","0:a:0?");
+  const vf=[];
+  if(p.scale)vf.push(p.portrait?"scale="+p.scale+":-2":"scale=-2:"+p.scale);
+  else if(S.w%2||S.h%2)vf.push("scale=trunc(iw/2)*2:trunc(ih/2)*2");
+  if(S.fps>35&&fps30.checked)vf.push("fps=30");
+  if(vf.length)args.push("-vf",vf.join(","));
+  const k=Math.max(MIN_VK,Math.floor(vk));
+  args.push("-c:v","libx264","-preset","veryfast","-b:v",k+"k","-maxrate",Math.ceil(k*1.4)+"k","-bufsize",Math.ceil(k*2)+"k",
+    "-pix_fmt","yuv420p","-map_metadata","-1");
+  if(p.aK)args.push("-c:a","aac","-b:a",p.aK+"k","-ac","2");
+  else args.push("-an");
+  args.push("-movflags","+faststart","-y","out.mp4");
+  const onP=({time})=>{if(time>0)setProg(time/1e6/p.dur*0.99,label)};
+  inst.on("progress",onP);
+  setProg(0,label);
+  let code;
+  try{code=await inst.exec(args)}finally{inst.off("progress",onP)}
+  if(S.cancelled)throw new Error("cancel");
+  if(code!==0)throw new Error("exit "+code);
+  const data=await inst.readFile("out.mp4");
+  try{await inst.deleteFile("out.mp4")}catch(e){}
+  return data;
+}
+async function run(){
+  if(S.busy)return;
+  err("");
+  if(loadFail||!ff||mountedFor!==S.file){await startEngine();if(!ff)return;if(!S.probed)return}
+  const p=plan();
+  if(p.vk<MIN_VK){err("目標サイズが小さすぎます。切り出しを短くするか、サイズを上げてください。");return}
+  S.busy=true;S.cancelled=false;
+  show(prog,true);goBtn.disabled=true;
+  $("cancel").disabled=false;
+  if(window.ngTrack)ngTrack("vid_compress",{label:S.mb+"MB"});
+  addEventListener("beforeunload",warnLeave);
+  const t0=Date.now();
+  let data=null,retried=false,msg="";
+  try{
+    data=await encode(p.vk,p,"圧縮しています…");
+    const target=S.mb*1e6;
+    if(data.length>target){
+      retried=true;
+      const vk2=Math.max(MIN_VK,p.vk*(target*0.93/data.length));
+      data=await encode(vk2,p,"サイズをこえたので、やり直しています…");
+    }
+  }catch(e){
+    if(S.cancelled||(e&&e.message==="cancel")){
+      return; /* キャンセルのボタン側で後始末済み */
+    }else{
+      console.error(e);
+      err("圧縮できませんでした。"+(S.file.size>WARN_BYTES?"ファイルが大きすぎて、メモリが足りなかったのかもしれません。切り出しを短くして試してください。":"形式が対応していないか、ブラウザのメモリが足りなかったのかもしれません。"));
+      ff=null;ffLoading=null;mountedFor=null;loadFail=true;
+      startEngine();
+    }
+    finishRun();return;
+  }
+  finishRun();
+  showResult(data,p,retried,Date.now()-t0);
+}
+const warnLeave=e=>{e.preventDefault();e.returnValue=""};
+function finishRun(){
+  S.busy=false;show(prog,false);removeEventListener("beforeunload",warnLeave);refresh();
+}
+$("cancel").addEventListener("click",()=>{if(!S.busy)return;S.cancelled=true;$("cancel").disabled=true;pTxt.textContent="止めています…";
+  try{ff.terminate()}catch(e){}
+  ff=null;ffLoading=null;mountedFor=null;
+  // exec() が返ってこないので、ここで後始末する
+  S.busy=false;show(prog,false);removeEventListener("beforeunload",warnLeave);
+  err("キャンセルしました。");startEngine();
+});
+
+function showResult(data,p,retried,ms){
+  if(S.outUrl)URL.revokeObjectURL(S.outUrl);
+  const blob=new Blob([data.buffer],{type:"video/mp4"});
+  S.outUrl=URL.createObjectURL(blob);
+  const target=S.mb*1e6;
+  $("rBefore").textContent=fmtB(S.file.size);
+  $("rAfter").textContent=fmtB(blob.size);
+  const cut=Math.round((1-blob.size/S.file.size)*100);
+  $("rCut").textContent=cut>0?"-"+cut+"%":"+"+Math.abs(cut)+"%";
+  const notes=[];let warn=false;
+  if(blob.size>target){notes.push("目標の"+S.mb+"MBを少しこえました。サイズをもう少し小さくして、もう一度ためしてください。");warn=true}
+  else if(retried)notes.push("1回目が目標をこえたので、画質を下げてやり直しました。");
+  if(blob.size>=S.file.size){notes.push("元の動画より大きくなりました。元の動画をそのまま使うほうが良いかもしれません。");warn=true}
+  notes.push(p.w+"×"+p.h+" · "+(Math.round(p.fpsOut*10)/10)+"fps · 約"+Math.max(1,Math.round(ms/1000))+"秒かかりました");
+  const rn=$("rNote");rn.textContent=notes.join(" ");rn.className="rnote"+(warn?" w":"");
+  rv.src=S.outUrl;
+  const base=S.file.name.replace(/\.[^.]+$/,"")||"video";
+  const dl=$("dl");dl.href=S.outUrl;dl.download=base+"_"+(Math.round(S.mb*10)/10)+"MB.mp4";
+  show(editPanel,false);show(resPanel,true);
+  resPanel.scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("dl").addEventListener("click",()=>{if(window.ngTrack)ngTrack("vid_download",{label:S.mb+"MB"})});
+goBtn.addEventListener("click",run);
+$("again").addEventListener("click",()=>{show(resPanel,false);show(editPanel,true);rv.pause();window.scrollTo({top:0,behavior:"smooth"})});
+
+/* ---------- リセット ---------- */
+function resetAll(keepEngine){
+  try{pv.pause()}catch(e){}
+  if(S.url)URL.revokeObjectURL(S.url);
+  if(S.outUrl)URL.revokeObjectURL(S.outUrl);
+  S.url=S.outUrl=null;S.file=null;S.dur=0;S.w=S.h=0;S.fps=30;S.hasAudio=true;S.probed=false;S.s=S.e=0;
+  pv.removeAttribute("src");pv.load();rv.removeAttribute("src");rv.load();
+  err("");if(pickErrEl)pickErrEl.textContent="";
+  if(!keepEngine)mountedFor=null;
+}
+function toStart(){
+  resetAll(true);
+  show(editPanel,false);show(resPanel,false);show(pickPanel,true);fileIn.value="";
+}
+$("swapBtn").addEventListener("click",()=>{if(S.busy)return;toStart()});
+$("reset").addEventListener("click",toStart);
+
+/* ---------- ドロップ・選択 ---------- */
+fileIn.addEventListener("change",()=>{pick(fileIn.files[0]);});
+drop.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fileIn.click()}});
+["dragenter","dragover"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add("on")}));
+["dragleave","drop"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove("on")}));
+drop.addEventListener("drop",e=>{const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];pick(f)});
+// ページのどこにドロップしても開くのを防ぐ
+addEventListener("dragover",e=>{if(!e.target.closest||!e.target.closest("#drop"))e.preventDefault()});
+addEventListener("drop",e=>{if(!e.target.closest||!e.target.closest("#drop"))e.preventDefault()});
+
+mbIn.value=S.mb;
+$("sizeSeg").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed","false"));
+
+$("shareBtn").addEventListener("click",()=>{
+  const url="https://www.namigroove.com/tools/vidcompress/";
+  if(navigator.share){navigator.share({title:document.title,url}).catch(()=>{});return}
+  const toast=m=>{const t=document.createElement("div");t.className="ng-toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.classList.add("show"),10);setTimeout(()=>{t.classList.remove("show");setTimeout(()=>t.remove(),300)},2400)};
+  if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>toast("リンクをコピーしました"),()=>prompt("このURLをコピーしてね",url));else prompt("このURLをコピーしてね",url);
+});
+})();
+</script>
+<script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
+(()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
+const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
+ ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
+ [".cp,.ro","copy_ms"],["#scSeg button","scale_select"],["#typeSeg button,#clType button","chord_select"],["#pgCat button,#clCat button","genre_select"],["#drop","file_pick"]];
+document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.target.closest(sel);if(!el)continue;
+  const h=el.closest(".pg,.cl-pg");const label=((h&&h.querySelector("h3")&&h.querySelector("h3").textContent)||el.dataset.g||el.textContent||"").trim().slice(0,60);
+  ngTrack(name,{label});break;}},true);})();
+</script>
+<script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
+if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
+</script>
+<script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
+<script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
+</body>
+</html>
