@@ -10,8 +10,8 @@
 - `bpmms.html` BPMmsCalculator(元は namigroove/BPMmsCalculator)※namigroove.com/tools/bpmms/ で表示
 - `brass.html` / `brass-fingering.js` 金管楽器運指表(トランペット・ホルン・トロンボーン・ユーフォニアム・チューバ)※namigroove.com/tools/brass/
 - `gacha.html` / `gacha-words.js` お題ガチャ(言葉のリストは gacha-words.js。すべてオリジナル)※namigroove.com/tools/gacha/
-- `voicevox-pitch.html` VOICEVOXトーク音程エディタ(VOICEVOXエンジンにつないで、モーラごとの音程・長さをピアノロールで編集して合成。1ファイル完結)※tools.html への掲載・多言語化はこれから
-- `contact.html` 制作依頼ページの試作(本番は WordPress の /contact/ を Contact Form 7 で運用)
+- `voicevox-pitch.html` VOICEVOXトーク音程エディタ(VOICEVOXエンジンにつないで、モーラごとの音程・長さをピアノロールで編集して合成。1ファイル完結)※namigroove.com/tools/voicevox-pitch/ で表示(tools.html に掲載済み。多言語化はこれから)
+- `contact.html` 制作依頼ページの試作(本番の問い合わせフォームは Tally を /contact/ に埋め込んで運用)
 - `data/works.json` 作品一覧。1作品=1行。手で足すときもこのファイルに1行追加
 - `scripts/sync-youtube.mjs` YouTube の新着を works.json に追加するスクリプト
 - `.github/workflows/sync-youtube.yml` 毎朝6時ごろに上のスクリプトを自動実行
