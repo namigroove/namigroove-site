@@ -57,8 +57,8 @@
   .status.ok{color:#1f8a5b}.status.ng{color:var(--warn)}
   progress{width:100%;height:6px;margin-top:8px}
   .rollwrap{border:1px solid rgba(29,36,51,.16);border-radius:8px;overflow:hidden;background:#fafbfe}
-  canvas#roll{display:block;width:100%;height:260px}
-  .screen{background:#000;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:4/3;max-height:430px}
+  canvas#roll{display:block;width:100%;height:340px;touch-action:none}
+  .screen{background:#000;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:16/9;max-height:72vh;width:100%}
   .screen canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
   .check{display:flex;gap:7px;align-items:center;font-size:13px}
   footer{font-size:12px;color:var(--dim);margin-top:6px}
@@ -99,27 +99,27 @@
     </div>
   </div>
 
-  <div class="cols">
-    <div class="panel">
-      <div class="head"><span class="badge">B</span><span class="title">PIANO ROLL</span><span class="meta" id="rollInfo"></span></div>
-      <div class="body">
-        <div class="rollwrap"><canvas id="roll" aria-label="入力した音符と歌詞のピアノロール"></canvas></div>
-        <div class="gap"></div>
-        <div class="row" style="align-items:center">
-          <button id="btnPlay" class="primary">試し聞き</button>
-          <button id="btnStop" class="quiet" disabled>停止</button>
-          <button id="btnSave" class="quiet" disabled>WAVを保存</button>
-          <div class="grow" style="flex:1 1 170px"><label class="f" for="fname">ファイル名(半角英数字)</label><input type="text" id="fname" value="chimera_song"></div>
-        </div>
-        <progress id="prog" value="0" max="1" hidden></progress>
-        <div class="status" id="status"></div>
-      </div>
+  <div class="panel">
+    <div class="head"><span class="badge">B</span><span class="title">VOCAL TRACT</span><span class="meta">口の断面(試し聞きに合わせて動きます)</span></div>
+    <div class="body">
+      <div class="screen" id="screen"><canvas id="mouth" aria-label="声道の断面。試し聞きに合わせて舌・唇・あごが動く"></canvas></div>
     </div>
-    <div class="panel">
-      <div class="head"><span class="badge">C</span><span class="title">VOCAL TRACT</span><span class="meta">口の断面(試し聞きに合わせて動きます)</span></div>
-      <div class="body">
-        <div class="screen" id="screen"><canvas id="mouth" aria-label="声道の断面。試し聞きに合わせて舌・唇・あごが動く"></canvas></div>
+  </div>
+
+  <div class="panel">
+    <div class="head"><span class="badge">C</span><span class="title">PIANO ROLL</span><span class="meta" id="rollInfo"></span></div>
+    <div class="body">
+      <div class="rollwrap"><canvas id="roll" aria-label="音符と歌詞のピアノロール。音符をドラッグして高さと長さを変える"></canvas></div>
+      <div class="hint">音符を上下にドラッグすると高さ、右端を左右にドラッグすると長さが変わります(上の「音符」欄にも反映されます)。</div>
+      <div class="gap"></div>
+      <div class="row" style="align-items:center">
+        <button id="btnPlay" class="primary">試し聞き</button>
+        <button id="btnStop" class="quiet" disabled>停止</button>
+        <button id="btnSave" class="quiet" disabled>WAVを保存</button>
+        <div class="grow" style="flex:1 1 170px"><label class="f" for="fname">ファイル名(半角英数字)</label><input type="text" id="fname" value="chimera_song"></div>
       </div>
+      <progress id="prog" value="0" max="1" hidden></progress>
+      <div class="status" id="status"></div>
     </div>
   </div>
 
