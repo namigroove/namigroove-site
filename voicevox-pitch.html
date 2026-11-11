@@ -190,7 +190,7 @@
         <button id="btnRedo" class="quiet" disabled>やり直す</button>
       </div>
       <div class="rollwrap" id="rollWrap"><canvas id="roll" tabindex="0" aria-label="モーラごとの音程。上下ドラッグで音程、右端ドラッグで長さ"></canvas></div>
-      <div class="hint">上下ドラッグで音程、右端ドラッグで長さ。Shift+クリックで複数選択、Ctrl+A で全選択、↑↓ で半音(Shift で1オクターブ、Alt で10セント)。ボタンは選択中のモーラに、何も選んでいなければ全体にかかります。点線は元の音程。</div>
+      <div class="hint">上下ドラッグで音程、右端ドラッグで長さ。何もない所からドラッグで範囲選択(Shift で追加)、Shift+クリックで1つずつ追加、Ctrl+A で全選択、↑↓ で半音(Shift で1オクターブ、Alt で10セント)。ボタンは選択中のモーラに、何も選んでいなければ全体にかかります。点線は元の音程。</div>
     </div>
   </section>
 
@@ -507,6 +507,14 @@
       ctx.beginPath(); ctx.arc(x + .75, TOP - 2, 4, 0, Math.PI * 2); ctx.fillStyle = '#396cdf'; ctx.fill();
     }
 
+    // 範囲選択の枠
+    if (state.drag && state.drag.mode === 'box' && state.drag.moved) {
+      const b = state.drag.box;
+      const bx = Math.min(b.x0, b.x1), by = Math.min(b.y0, b.y1), bw = Math.abs(b.x1 - b.x0), bh = Math.abs(b.y1 - b.y0);
+      ctx.fillStyle = 'rgba(232,121,47,.12)'; ctx.fillRect(bx, by, bw, bh);
+      ctx.setLineDash([4, 3]); ctx.strokeStyle = '#e8792f'; ctx.lineWidth = 1.2; ctx.strokeRect(bx + .5, by + .5, bw, bh); ctx.setLineDash([]);
+    }
+
     drawGutter(W, rh);
   }
 
@@ -589,6 +597,23 @@
     return { i: -1, edge: false, x, y };
   }
 
+  // 枠(キャンバス上の座標)に触れているモーラの番号
+  function itemsInBox(b) {
+    const bx0 = Math.min(b.x0, b.x1), bx1 = Math.max(b.x0, b.x1), by0 = Math.min(b.y0, b.y1), by1 = Math.max(b.y0, b.y1);
+    const stripY = TOP + PLOT_H + 4, out = [];
+    state.items.forEach((it, i) => {
+      if (it.kind !== 'mora') return;
+      const x0 = xOf(it.start), x1 = xOf(it.end);
+      if (x1 < bx0 || x0 > bx1) return;
+      let y0, y1;
+      if (isVoiced(it.m)) { const h = Math.max(13, Math.min(22, rowH())), yc = yOf(pitchToMidi(it.m.pitch)); y0 = yc - h / 2; y1 = yc + h / 2; }
+      else { y0 = stripY; y1 = stripY + STRIP; }
+      if (y1 < by0 || y0 > by1) return;
+      out.push(i);
+    });
+    return out;
+  }
+
   function showTip(ev, i) {
     const it = state.items[i];
     if (!it) { tip.style.display = 'none'; return; }
@@ -614,7 +639,14 @@
     if (!state.q) return;
     canvas.focus({ preventScroll: true });
     const h = hit(ev);
-    if (h.i < 0) { if (!ev.shiftKey && state.sel.size) { state.sel.clear(); updateReadouts(); draw(); } return; }
+    if (h.i < 0) {
+      // 何もない所からドラッグすると範囲選択(Shift で今の選択に足す)
+      const keep = ev.shiftKey ? new Set(state.sel) : new Set();
+      state.drag = { mode: 'box', keep, box: { x0: h.x, y0: h.y, x1: h.x, y1: h.y }, moved: false, startX: ev.clientX, startY: ev.clientY, hadSel: state.sel.size > 0 };
+      canvas.setPointerCapture(ev.pointerId);
+      ev.preventDefault();
+      return;
+    }
 
     if (ev.shiftKey) { if (state.sel.has(h.i)) state.sel.delete(h.i); else state.sel.add(h.i); }
     else if (!state.sel.has(h.i)) { state.sel.clear(); state.sel.add(h.i); }
@@ -640,6 +672,17 @@
       showTip(ev, h.i);
       return;
     }
+    if (d.mode === 'box') {
+      if (!d.moved && Math.hypot(ev.clientX - d.startX, ev.clientY - d.startY) < 4) return;
+      d.moved = true;
+      const r = canvas.getBoundingClientRect();
+      d.box.x1 = Math.max(0, Math.min(r.width, ev.clientX - r.left));
+      d.box.y1 = Math.max(0, Math.min(r.height, ev.clientY - r.top));
+      state.sel = new Set(d.keep); for (const i of itemsInBox(d.box)) state.sel.add(i);
+      state.hover = -1; tip.style.display = 'none';
+      updateReadouts(); draw();
+      return;
+    }
     d.moved = true;
     const it = state.items[d.i];
     if (d.mode === 'pitch') {
@@ -661,6 +704,12 @@
     if (!d) return;
     state.drag = null;
     try { canvas.releasePointerCapture(ev.pointerId); } catch (e) { /* すでに離れている */ }
+    if (d.mode === 'box') {
+      // ドラッグせずにクリックしただけなら、従来どおり選択を解除
+      if (!d.moved && !ev.shiftKey && d.hadSel) { state.sel.clear(); }
+      updateReadouts(); draw();
+      return;
+    }
     if (d.moved) { ensureInView(); pushUndo(d.before); }
   }
   canvas.addEventListener('pointerup', endDrag);
