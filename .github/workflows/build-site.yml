@@ -39,6 +39,14 @@ jobs:
           # 記事側は、既存のファイルを上書きしない
           rsync -a --ignore-existing hugo-out/ _site/
           touch _site/.nojekyll
+      - uses: oven-sh/setup-bun@v2
+        continue-on-error: true
+      - name: CHIMERA(歌声レンダラー)を /tools/chimera/ にビルド
+        # 失敗してもサイト全体の公開は止めない(固定したコミットのCHIMERAを、リポジトリの chimera/ の上書きでビルド)
+        continue-on-error: true
+        run: |
+          rustup target add wasm32-unknown-unknown
+          site/chimera/build.sh "$GITHUB_WORKSPACE/_site/tools/chimera"
       - name: 確認
         run: |
           test -f _site/index.html
