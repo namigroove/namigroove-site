@@ -836,9 +836,8 @@
           sel.appendChild(og);
         });
       };
-      // トーク用のスタイルだけを並べる。typeが無い・不明な場合も取りこぼさない
-      fill((st) => !st.type || st.type === 'talk');
-      if (!sel.options.length) fill((st) => !/^(sing|singing_teacher|frame_decode)$/.test(st.type || ''));
+            // 新しいエンジンは通常のスタイルに type: "streaming_talk" を付ける。歌用(sing・frame_decode・singing_teacher)だけ除く
+      fill((st) => !/^(sing|singing_teacher|frame_decode)$/.test(st.type || ''));
       if (!sel.options.length) fill(() => true);
       if (!sel.options.length) {
         const o = document.createElement('option'); o.textContent = 'キャラが見つかりません'; o.value = ''; sel.appendChild(o);
