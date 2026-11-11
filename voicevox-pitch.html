@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VOICEVOX トーク音程エディタ</title>
+<style>
+  :root {
+    --bg-top: #e6ecf5; --bg-bottom: #dbe3f0; --grid: rgba(57,108,223,.05);
+    --panel: #f6f8fc; --border: #3d5fd6; --shadow: rgba(57,108,223,.55);
+    --ink: #1d2433; --dim: #76829a; --faint: rgba(29,36,51,.09);
+    --accent: #396cdf; --accent-soft: rgba(57,108,223,.14); --warn: #e8792f;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "Roboto Mono", monospace;
+    --sans: "Hiragino Sans", "Yu Gothic UI", "Meiryo", "Noto Sans JP", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: var(--sans); color: var(--ink); font-size: 14px; line-height: 1.5;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 24px 24px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 24px 24px,
+      linear-gradient(var(--bg-top), var(--bg-bottom)) fixed;
+    min-height: 100vh; padding: 16px 16px 40px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  /* 上の帯 */
+  .top { display: flex; align-items: flex-end; gap: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--faint); margin-bottom: 14px; flex-wrap: wrap; }
+  .top h1 { font-weight: 400; font-size: 30px; margin: 0; letter-spacing: .01em; flex: 1 1 280px; line-height: 1.2; }
+  .readouts { display: flex; gap: 18px; }
+  .readout .k { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: .08em; }
+  .readout .v { font-family: var(--mono); font-size: 22px; line-height: 1.15; white-space: nowrap; }
+
+  /* パネル */
+  .panel {
+    background: var(--panel); border: 1.5px solid var(--border); border-radius: 11px;
+    box-shadow: 3px 3px 0 var(--shadow); margin-bottom: 14px; min-width: 0;
+  }
+  .panel > .head {
+    display: flex; align-items: center; gap: 10px; padding: 7px 12px; min-height: 34px;
+    border-bottom: 1px dotted rgba(29,36,51,.22);
+  }
+  .badge {
+    width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff;
+    font: 700 11px/18px var(--mono); text-align: center; flex: none;
+  }
+  .head .title { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; white-space: nowrap; }
+  .head .meta { margin-left: auto; color: var(--dim); font-size: 11.5px; text-align: right; }
+  .panel > .body { padding: 12px 14px 14px; }
+  .cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 14px; }
+  .cols > .panel { margin-bottom: 14px; }
+  @media (max-width: 860px) { .cols { grid-template-columns: 1fr; gap: 0; } }
+
+  /* 部品 */
+  label.f { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; color: var(--accent); margin-bottom: 3px; }
+  input[type=text], input[type=number], select, textarea {
+    font: inherit; color: var(--ink); background: #fff; border: 1px solid rgba(61,95,214,.5);
+    border-radius: 7px; padding: 6px 9px; width: 100%; min-width: 0;
+  }
+  textarea { resize: vertical; min-height: 62px; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, canvas:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 1px;
+  }
+  button {
+    font: 600 13px var(--sans); color: var(--accent); background: transparent; cursor: pointer;
+    border: 1px solid var(--accent); border-radius: 999px; padding: 5px 13px; white-space: nowrap;
+  }
+  button:hover { background: var(--accent-soft); }
+  button.primary { background: var(--accent); color: #fff; }
+  button.primary:hover { background: #2f5cc6; }
+  button.quiet { border-color: rgba(118,130,154,.6); color: var(--dim); }
+  button[aria-pressed=true] { background: var(--accent); color: #fff; }
+  button:disabled { opacity: .4; cursor: default; background: transparent; }
+  button.primary:disabled { background: var(--accent); }
+  .row { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+  .row > .grow { flex: 1 1 160px; min-width: 0; }
+  .gap { height: 10px; }
+  .status { font-size: 12.5px; color: var(--dim); }
+  .status.ok { color: #1f8a5b; } .status.ng { color: var(--warn); }
+  .kana { font-family: var(--mono); font-size: 12px; color: var(--dim); word-break: break-all; margin-top: 6px; min-height: 18px; }
+
+  .help {
+    display: none; margin-top: 10px; padding: 10px 12px; border: 1px dashed var(--warn); border-radius: 8px;
+    font-size: 12.5px; background: rgba(232,121,47,.06);
+  }
+  .help.show { display: block; }
+  .help ol { margin: 6px 0 0; padding-left: 20px; }
+  .help code { font-family: var(--mono); background: rgba(29,36,51,.07); padding: 1px 5px; border-radius: 4px; user-select: all; }
+
+  /* ロール */
+  .tools { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+  .tools .sep { width: 1px; height: 22px; background: var(--faint); margin: 0 4px; }
+  .tools select { width: auto; padding: 4px 8px; border-radius: 999px; font-size: 13px; }
+  .rollwrap { position: relative; border: 1px solid rgba(29,36,51,.16); border-radius: 8px; overflow-x: auto; overflow-y: hidden; background: #fafbfe; }
+  canvas#roll { display: block; touch-action: none; cursor: default; }
+  .tip {
+    position: fixed; pointer-events: none; z-index: 5; display: none; background: var(--ink); color: #fff;
+    font: 11.5px/1.45 var(--mono); padding: 5px 8px; border-radius: 6px; white-space: pre;
+  }
+  .hint { font-size: 12px; color: var(--dim); margin-top: 8px; }
+  .warnchip {
+    display: none; align-items: center; gap: 8px; margin-top: 8px; padding: 5px 10px; border-radius: 8px;
+    background: rgba(232,121,47,.1); color: #a8521a; font-size: 12.5px;
+  }
+  .warnchip.show { display: flex; }
+  .warnchip button { padding: 2px 10px; font-size: 12px; border-color: #c96a25; color: #a8521a; }
+
+  /* スライダー */
+  .sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; }
+  @media (max-width: 520px) { .sliders { grid-template-columns: 1fr; } }
+  .slider .line { display: flex; justify-content: space-between; align-items: baseline; }
+  .slider .name { font-size: 12.5px; }
+  .slider .val { font-family: var(--mono); font-size: 12.5px; color: var(--accent); }
+  input[type=range] { width: 100%; accent-color: var(--accent); margin: 2px 0 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <h1>VOICEVOX トーク音程エディタ</h1>
+    <div class="readouts">
+      <div class="readout"><div class="k">MORA</div><div class="v" id="roMora">—</div></div>
+      <div class="readout"><div class="k">LENGTH</div><div class="v" id="roLen">—</div></div>
+      <div class="readout"><div class="k">RANGE</div><div class="v" id="roRange">—</div></div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <section class="panel">
+      <div class="head"><span class="badge">A</span><span class="title">TEXT / VOICE</span><span class="meta status" id="connStatus">未接続</span></div>
+      <div class="body">
+        <div class="row">
+          <div class="grow"><label class="f" for="engineUrl">ENGINE</label><input type="text" id="engineUrl" value="http://127.0.0.1:50021" spellcheck="false"></div>
+          <button id="btnConnect">接続</button>
+          <div class="grow"><label class="f" for="speaker">VOICE</label><select id="speaker" disabled><option>接続すると選べます</option></select></div>
+        </div>
+        <div class="help" id="connHelp"></div>
+        <div class="gap"></div>
+        <label class="f" for="text">TEXT</label>
+        <textarea id="text" placeholder="しゃべらせたい文章">こんにちは、なみぐるです</textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="primary" id="btnQuery" disabled>音程を読み込む</button>
+          <button class="quiet" id="btnDemo">サンプルで試す</button>
+        </div>
+        <div class="kana" id="kana"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head"><span class="badge">B</span><span class="title">GLOBAL</span><span class="meta">全体にかかる設定</span></div>
+      <div class="body">
+        <div class="sliders" id="sliders"></div>
+        <div class="warnchip" id="scaleWarn"><span>高さ・抑揚を動かしているので、実際の音程はロールの表示とずれます</span><button id="btnScaleReset">0 / 1.00 に戻す</button></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="head"><span class="badge">C</span><span class="title">PITCH / ROLL</span><span class="meta" id="rollMeta"></span></div>
+    <div class="body">
+      <div class="tools">
+        <button id="btnSnap" aria-pressed="true" title="ドラッグを音階に吸着(Alt を押している間は吸着しない)">スナップ</button>
+        <select id="scaleKey" aria-label="スナップするスケールの主音"></select>
+        <select id="scaleType" aria-label="スナップするスケール">
+          <option value="chromatic">半音</option><option value="major">メジャー</option><option value="minor">マイナー</option><option value="penta">メジャーペンタ</option>
+        </select>
+        <span class="sep"></span>
+        <button id="btnDown12" title="1オクターブ下げる">−12</button>
+        <button id="btnDown1" title="半音下げる">−1</button>
+        <button id="btnUp1" title="半音上げる">+1</button>
+        <button id="btnUp12" title="1オクターブ上げる">+12</button>
+        <span class="sep"></span>
+        <button id="btnQuantize" title="いちばん近い音階の音に揃える">音階に揃える</button>
+        <button id="btnFlat" title="平均の高さに揃える">平らに</button>
+        <button id="btnOrig" class="quiet" title="エンジンが出した元の音程に戻す">元の音程</button>
+        <span class="sep"></span>
+        <button id="btnUndo" class="quiet" disabled>戻す</button>
+        <button id="btnRedo" class="quiet" disabled>やり直す</button>
+      </div>
+      <div class="rollwrap" id="rollWrap"><canvas id="roll" tabindex="0" aria-label="モーラごとの音程。上下ドラッグで音程、右端ドラッグで長さ"></canvas></div>
+      <div class="hint">上下ドラッグで音程、右端ドラッグで長さ。Shift+クリックで複数選択、Ctrl+A で全選択、↑↓ で半音(Shift で1オクターブ、Alt で10セント)。ボタンは選択中のモーラに、何も選んでいなければ全体にかかります。点線は元の音程。</div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <section class="panel">
+      <div class="head"><span class="badge">D</span><span class="title">MELODY</span><span class="meta">音名でまとめて指定</span></div>
+      <div class="body">
+        <label class="f" for="melody">NOTES</label>
+        <input type="text" id="melody" placeholder="C3 D3 E3 - G3(- はそのまま、数字はMIDIノート番号)" spellcheck="false">
+        <div class="row" style="margin-top:8px">
+          <button id="btnMelodyApply">声のあるモーラに順に当てる</button>
+          <button class="quiet" id="btnMelodyRead">今の音程を書き出す</button>
+        </div>
+        <div class="gap"></div>
+        <div class="row">
+          <div class="grow"><label class="f" for="a4">A = (Hz)</label><input type="number" id="a4" value="440" min="400" max="480" step="0.1"></div>
+          <div class="grow"><label class="f" for="octave">OCTAVE</label>
+            <select id="octave"><option value="3">C3 = 60(ヤマハ式)</option><option value="4">C4 = 60(国際式)</option></select></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head"><span class="badge">E</span><span class="title">OUTPUT</span><span class="meta status" id="outStatus"></span></div>
+      <div class="body">
+        <div class="row">
+          <button class="primary" id="btnPlay" disabled>再生</button>
+          <button id="btnStop" disabled>停止</button>
+          <button id="btnGuide" disabled title="サイン波で音程だけ確かめる">ガイド音</button>
+        </div>
+        <div class="gap"></div>
+        <div class="row">
+          <button id="btnWav" disabled>WAV を保存</button>
+          <button id="btnJsonSave" disabled>クエリ(JSON)を保存</button>
+          <button class="quiet" id="btnJsonLoad">JSON を開く</button>
+          <input type="file" id="jsonFile" accept=".json,application/json" hidden>
+        </div>
+        <div class="hint">Space で再生 / 停止。合成は VOICEVOX が行います。ガイド音はブラウザだけで鳴ります。</div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const LN2 = Math.LN2;
+  const NAMES = ['C', 'C♯', 'D', 'E♭', 'E', 'F', 'F♯', 'G', 'A♭', 'A', 'B♭', 'B'];
+  const SCALES = { chromatic: [0,1,2,3,4,5,6,7,8,9,10,11], major: [0,2,4,5,7,9,11], minor: [0,2,3,5,7,8,10], penta: [0,2,4,7,9] };
+  const RANK = ['#3b63e0', '#1c9ec4', '#2fa37a', '#c79a1e', '#e8792f', '#e0524d', '#c0489b'];
+
+  const state = {
+    base: '', connected: false, demo: false,
+    q: null, orig: null, speakerId: null,
+    items: [], sel: new Set(),
+    view: { lo: 48, hi: 72 }, pps: 260,
+    snap: true, a4: 440, octaveBase: 3,
+    undo: [], redo: [],
+    wavUrl: null, wavBlob: null, wavDirty: true,
+    audio: null, playing: false, guide: null, guideStart: 0, guideLen: 0,
+    hover: -1, drag: null,
+  };
+
+  // ---- 保存しておく設定 ----------------------------------------------------------
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem('vvpe.' + k); return v === null ? d : v; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem('vvpe.' + k, v); } catch (e) { /* 保存できなくても動く */ } },
+  };
+
+  // ---- 音程の換算 ---------------------------------------------------------------
+  // VOICEVOX のモーラの pitch は基本周波数(Hz)の自然対数。0 は無声。
+  const pitchToMidi = (p) => 69 + 12 * Math.log2(Math.exp(p) / state.a4);
+  const midiToPitch = (n) => Math.log(state.a4 * Math.pow(2, (n - 69) / 12));
+  const noteName = (midi) => {
+    const r = Math.round(midi);
+    return NAMES[((r % 12) + 12) % 12] + (Math.floor(r / 12) - (state.octaveBase === 3 ? 2 : 1));
+  };
+  const noteWithCents = (midi) => {
+    const r = Math.round(midi);
+    const cents = Math.round((midi - r) * 100);
+    return noteName(r) + (cents === 0 ? '' : (cents > 0 ? ' +' : ' ') + cents + '¢');
+  };
+  const isVoiced = (m) => m && m.pitch > 0;
+
+  function snapNote(n) {
+    const type = $('scaleType').value;
+    const key = parseInt($('scaleKey').value, 10) || 0;
+    const allowed = SCALES[type] || SCALES.chromatic;
+    let best = Math.round(n), bestD = Infinity;
+    for (let c = Math.floor(n) - 6; c <= Math.ceil(n) + 6; c++) {
+      if (!allowed.includes((((c - key) % 12) + 12) % 12)) continue;
+      const d = Math.abs(c - n);
+      if (d < bestD - 1e-9) { bestD = d; best = c; }
+    }
+    return best;
+  }
+
+  function parseNote(tok) {
+    const t = tok.trim();
+    if (/^\d+(\.\d+)?$/.test(t)) return parseFloat(t);
+    const m = /^([A-Ga-g])([#♯b♭]?)(-?\d)$/.exec(t);
+    if (!m) return null;
+    const base = { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 }[m[1].toLowerCase()];
+    const acc = m[2] === '#' || m[2] === '♯' ? 1 : (m[2] === 'b' || m[2] === '♭' ? -1 : 0);
+    const oct = parseInt(m[3], 10);
+    return base + acc + (oct + (state.octaveBase === 3 ? 2 : 1)) * 12;
+  }
+
+  // ---- クエリを時間順に並べる -----------------------------------------------------
+  function flatten() {
+    const items = [];
+    const q = state.q;
+    if (!q) { state.items = items; return; }
+    let t = q.prePhonemeLength || 0;
+    q.accent_phrases.forEach((ap, ai) => {
+      ap.moras.forEach((m, mi) => {
+        const c = m.consonant_length || 0, v = m.vowel_length || 0;
+        items.push({ m, kind: 'mora', ap: ai, first: mi === 0, start: t, c, v, end: t + c + v });
+        t += c + v;
+      });
+      if (ap.pause_mora) {
+        const v = ap.pause_mora.vowel_length || 0;
+        items.push({ m: ap.pause_mora, kind: 'pause', ap: ai, first: false, start: t, c: 0, v, end: t + v });
+        t += v;
+      }
+    });
+    state.items = items;
+    state.total = t + (q.postPhonemeLength || 0);
+  }
+
+  // エンジンと同じ順で 高さ → 抑揚 をかけたあとの周波数(目安)
+  function effectiveHz() {
+    const q = state.q;
+    const out = new Map();
+    if (!q) return out;
+    let sum = 0, w = 0;
+    for (const it of state.items) {
+      if (it.kind !== 'mora' || !isVoiced(it.m)) continue;
+      const f = Math.exp(it.m.pitch) * Math.pow(2, q.pitchScale || 0);
+      out.set(it.m, f);
+      sum += f * (it.c + it.v); w += it.c + it.v;
+    }
+    const mean = w > 0 ? sum / w : 0;
+    const k = q.intonationScale == null ? 1 : q.intonationScale;
+    for (const [m, f] of out) out.set(m, Math.max(20, (f - mean) * k + mean));
+    return out;
+  }
+
+  // ---- 履歴 ---------------------------------------------------------------------
+  const snapshot = () => JSON.stringify(state.q);
+  function pushUndo(before) {
+    if (before === snapshot()) return;
+    state.undo.push(before);
+    if (state.undo.length > 100) state.undo.shift();
+    state.redo.length = 0;
+    changed();
+  }
+  function changed() {
+    state.wavDirty = true;
+    flatten();
+    updateReadouts();
+    updateButtons();
+    draw();
+  }
+  function undo() {
+    if (!state.undo.length) return;
+    state.redo.push(snapshot());
+    state.q = JSON.parse(state.undo.pop());
+    state.sel.clear(); syncSliders(); changed();
+  }
+  function redo() {
+    if (!state.redo.length) return;
+    state.undo.push(snapshot());
+    state.q = JSON.parse(state.redo.pop());
+    state.sel.clear(); syncSliders(); changed();
+  }
+  function edit(fn) { if (!state.q) return; const before = snapshot(); fn(); pushUndo(before); }
+
+  // 選択中のモーラ(なければ全部)のうち、声のあるもの
+  function targets() {
+    const all = state.items.map((it, i) => ({ it, i })).filter((x) => x.it.kind === 'mora' && isVoiced(x.it.m));
+    if (!state.sel.size) return all;
+    return all.filter((x) => state.sel.has(x.i));
+  }
+
+  // ---- 表示 ---------------------------------------------------------------------
+  const canvas = $('roll'), ctx = canvas.getContext('2d'), wrap = $('rollWrap'), tip = $('tip');
+  const GUTTER = 46, TOP = 8, PLOT_H = 330, STRIP = 26, HEIGHT = TOP + PLOT_H + STRIP + 6;
+
+  function fitView() {
+    const ns = state.items.filter((it) => it.kind === 'mora' && isVoiced(it.m)).map((it) => pitchToMidi(it.m.pitch));
+    if (!ns.length) { state.view = { lo: 48, hi: 72 }; return; }
+    let lo = Math.floor(Math.min(...ns)) - 4, hi = Math.ceil(Math.max(...ns)) + 4;
+    while (hi - lo < 18) { lo -= 1; hi += 1; }
+    state.view = { lo, hi };
+  }
+  const rowH = () => PLOT_H / (state.view.hi - state.view.lo);
+  const yOf = (midi) => TOP + (state.view.hi - midi) * rowH();
+  const xOf = (t) => GUTTER + t * state.pps;
+
+  function layout() {
+    const w = Math.max(320, wrap.clientWidth);
+    const total = state.total || 2;
+    state.pps = Math.max(240, (w - GUTTER - 16) / total);
+    const cssW = Math.max(w, Math.ceil(GUTTER + total * state.pps + 16));
+    const dpr = window.devicePixelRatio || 1;
+    canvas.style.width = cssW + 'px'; canvas.style.height = HEIGHT + 'px';
+    canvas.width = Math.round(cssW * dpr); canvas.height = Math.round(HEIGHT * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    state.cssW = cssW;
+  }
+
+  function pill(x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+
+  function draw() {
+    layout();
+    const W = state.cssW, rh = rowH(), { lo, hi } = state.view;
+    ctx.clearRect(0, 0, W, HEIGHT);
+    ctx.fillStyle = '#fafbfe'; ctx.fillRect(0, 0, W, HEIGHT);
+
+    // 行(黒鍵の行は少し暗く、C の行に線)
+    for (let n = lo; n <= hi; n++) {
+      const y = yOf(n + 0.5);
+      const pc = ((n % 12) + 12) % 12;
+      if ([1, 3, 6, 8, 10].includes(pc)) { ctx.fillStyle = 'rgba(29,36,51,.045)'; ctx.fillRect(GUTTER, y, W - GUTTER, rh); }
+      ctx.fillStyle = pc === 0 ? 'rgba(29,36,51,.2)' : 'rgba(29,36,51,.06)';
+      ctx.fillRect(GUTTER, Math.round(y + rh), W - GUTTER, 1);
+    }
+
+    // 下の帯: 声のないモーラと間(ま)
+    const stripY = TOP + PLOT_H + 4;
+    ctx.fillStyle = 'rgba(29,36,51,.05)'; ctx.fillRect(GUTTER, stripY, W - GUTTER, STRIP - 4);
+
+    if (!state.q) {
+      ctx.fillStyle = '#76829a'; ctx.font = '13px ' + getComputedStyle(document.body).fontFamily;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('文章を読み込むと、モーラごとの音程がここに並びます', GUTTER + (W - GUTTER) / 2, TOP + PLOT_H / 2);
+      drawGutter(W, rh);
+      return;
+    }
+
+    const origItems = flattenOrig();
+    const sans = getComputedStyle(document.body).fontFamily;
+
+    state.items.forEach((it, i) => {
+      const x0 = xOf(it.start), x1 = xOf(it.end), w = Math.max(3, x1 - x0 - 1.5);
+
+      // アクセント句の区切り
+      if (it.first && i > 0) {
+        ctx.setLineDash([2, 3]); ctx.strokeStyle = 'rgba(61,95,214,.5)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x0 + .5, TOP); ctx.lineTo(x0 + .5, TOP + PLOT_H); ctx.stroke(); ctx.setLineDash([]);
+      }
+
+      const selected = state.sel.has(i), hovered = state.hover === i;
+
+      if (it.kind === 'pause') {
+        ctx.fillStyle = 'rgba(29,36,51,.07)'; ctx.fillRect(x0, TOP, x1 - x0, PLOT_H);
+        ctx.fillStyle = '#76829a'; ctx.font = '11px ' + sans; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('間', (x0 + x1) / 2, stripY + (STRIP - 4) / 2);
+        return;
+      }
+
+      if (!isVoiced(it.m)) {
+        pill(x0 + .5, stripY + 2, w, STRIP - 8, 6);
+        ctx.fillStyle = selected ? 'rgba(232,121,47,.25)' : '#fff'; ctx.fill();
+        ctx.setLineDash([3, 2]); ctx.strokeStyle = '#76829a'; ctx.lineWidth = 1; ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = '#76829a'; ctx.font = '11px ' + sans; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(it.m.text, x0 + w / 2, stripY + (STRIP - 4) / 2);
+        return;
+      }
+
+      // 元の音程(点線)
+      const o = origItems[i];
+      if (o && isVoiced(o) && Math.abs(o.pitch - it.m.pitch) > 1e-6) {
+        const oy = yOf(pitchToMidi(o.pitch));
+        ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(29,36,51,.35)'; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(x0 + 2, oy); ctx.lineTo(x1 - 2, oy); ctx.stroke(); ctx.setLineDash([]);
+      }
+
+      const midi = pitchToMidi(it.m.pitch);
+      const h = Math.max(13, Math.min(22, rh));
+      const y = yOf(midi) - h / 2;
+      const col = RANK[it.ap % RANK.length];
+
+      pill(x0 + .5, y, w, h, 7);
+      ctx.globalAlpha = hovered || selected ? 1 : .9; ctx.fillStyle = col; ctx.fill(); ctx.globalAlpha = 1;
+      // 子音の部分は少し暗く
+      if (it.c > 0) {
+        ctx.save(); pill(x0 + .5, y, w, h, 7); ctx.clip();
+        ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.fillRect(x0, y, it.c * state.pps, h); ctx.restore();
+      }
+      if (selected) { pill(x0 - 1, y - 1.5, w + 3, h + 3, 8.5); ctx.strokeStyle = '#e8792f'; ctx.lineWidth = 2; ctx.stroke(); }
+
+      ctx.fillStyle = '#fff'; ctx.font = '600 12px ' + sans; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      if (w >= 18) ctx.fillText(it.m.text, x0 + w / 2, y + h / 2 + .5);
+
+      // 上に音名
+      ctx.fillStyle = selected || hovered ? '#1d2433' : '#76829a'; ctx.font = '10px ' + getComputedStyle(tip).fontFamily;
+      if (w >= 26) ctx.fillText(noteWithCents(midi).replace('¢', ''), x0 + w / 2, y - 7);
+    });
+
+    // 再生位置
+    const ph = playheadTime();
+    if (ph != null) {
+      const x = xOf(ph);
+      ctx.fillStyle = '#1d2433'; ctx.fillRect(Math.round(x), TOP - 4, 1.5, PLOT_H + STRIP + 6);
+      ctx.beginPath(); ctx.arc(x + .75, TOP - 2, 4, 0, Math.PI * 2); ctx.fillStyle = '#396cdf'; ctx.fill();
+    }
+
+    drawGutter(W, rh);
+  }
+
+  // 左の音名の列(横スクロールしても左に貼り付く)
+  function drawGutter(W, rh) {
+    const sx = wrap.scrollLeft, { lo, hi } = state.view;
+    ctx.fillStyle = '#f0f3f9'; ctx.fillRect(sx, 0, GUTTER, HEIGHT);
+    ctx.fillStyle = 'rgba(29,36,51,.16)'; ctx.fillRect(sx + GUTTER - 1, 0, 1, HEIGHT);
+    ctx.font = '10px ' + getComputedStyle(tip).fontFamily; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    for (let n = lo; n <= hi; n++) {
+      const pc = ((n % 12) + 12) % 12;
+      const black = [1, 3, 6, 8, 10].includes(pc);
+      if (rh < 11 && pc !== 0 && pc !== 5 && pc !== 9) continue;
+      if (rh < 14 && black) continue;
+      ctx.fillStyle = pc === 0 ? '#1d2433' : '#76829a';
+      ctx.fillText(noteName(n), sx + GUTTER - 6, yOf(n));
+    }
+    ctx.fillStyle = '#76829a'; ctx.fillText('無声', sx + GUTTER - 6, TOP + PLOT_H + 4 + (STRIP - 4) / 2);
+  }
+
+  let origCache = null, origCacheFor = null;
+  function flattenOrig() {
+    if (origCacheFor === state.orig && origCache) return origCache;
+    const out = [];
+    if (state.orig) state.orig.accent_phrases.forEach((ap) => { ap.moras.forEach((m) => out.push(m)); if (ap.pause_mora) out.push(ap.pause_mora); });
+    origCache = out; origCacheFor = state.orig;
+    return out;
+  }
+
+  function updateReadouts() {
+    const voiced = state.items.filter((it) => it.kind === 'mora' && isVoiced(it.m));
+    const moras = state.items.filter((it) => it.kind === 'mora').length;
+    $('roMora').textContent = state.q ? String(moras) : '—';
+    const speed = state.q ? (state.q.speedScale || 1) : 1;
+    $('roLen').textContent = state.q ? (state.total / speed).toFixed(2) + 's' : '—';
+    if (voiced.length) {
+      const ns = voiced.map((it) => pitchToMidi(it.m.pitch));
+      $('roRange').textContent = noteName(Math.min(...ns)) + '–' + noteName(Math.max(...ns));
+    } else $('roRange').textContent = '—';
+    $('rollMeta').textContent = state.q
+      ? (state.sel.size ? state.sel.size + ' モーラを選択中' : '選択なし(ボタンは全体にかかります)') : '';
+    const q = state.q;
+    $('scaleWarn').classList.toggle('show', !!q && (Math.abs(q.pitchScale || 0) > 1e-9 || Math.abs((q.intonationScale == null ? 1 : q.intonationScale) - 1) > 1e-9));
+    $('kana').textContent = q && q.kana ? q.kana : '';
+  }
+
+  function updateButtons() {
+    const has = !!state.q;
+    $('btnPlay').disabled = !has || state.demo || !state.connected;
+    $('btnWav').disabled = !has || state.demo || !state.connected;
+    $('btnGuide').disabled = !has;
+    $('btnJsonSave').disabled = !has;
+    $('btnStop').disabled = !state.playing && !state.guide;
+    $('btnUndo').disabled = !state.undo.length;
+    $('btnRedo').disabled = !state.redo.length;
+    $('btnQuery').disabled = !state.connected;
+    for (const id of ['btnDown12', 'btnDown1', 'btnUp1', 'btnUp12', 'btnQuantize', 'btnFlat', 'btnOrig', 'btnMelodyApply', 'btnMelodyRead']) $(id).disabled = !has;
+  }
+
+  // ---- ロールの操作 -------------------------------------------------------------
+  function hit(ev) {
+    const r = canvas.getBoundingClientRect();
+    const x = ev.clientX - r.left, y = ev.clientY - r.top;
+    const stripY = TOP + PLOT_H + 4;
+    for (let i = state.items.length - 1; i >= 0; i--) {
+      const it = state.items[i];
+      const x0 = xOf(it.start), x1 = xOf(it.end);
+      if (x < x0 - 1 || x > x1 + 3) continue;
+      let inside;
+      if (it.kind === 'pause') inside = y >= TOP;
+      else if (!isVoiced(it.m)) inside = y >= stripY;
+      else {
+        const h = Math.max(13, Math.min(22, rowH()));
+        inside = Math.abs(y - yOf(pitchToMidi(it.m.pitch))) <= h / 2 + 2;
+      }
+      if (!inside) continue;
+      const edge = x >= x1 - 7 && (x1 - x0) > 12;
+      return { i, edge, x, y };
+    }
+    return { i: -1, edge: false, x, y };
+  }
+
+  function showTip(ev, i) {
+    const it = state.items[i];
+    if (!it) { tip.style.display = 'none'; return; }
+    const lines = [];
+    if (it.kind === 'pause') lines.push('間  ' + Math.round(it.v * 1000) + ' ms');
+    else {
+      lines.push(it.m.text + '  ' + (it.m.consonant || '') + it.m.vowel);
+      if (isVoiced(it.m)) {
+        const midi = pitchToMidi(it.m.pitch);
+        lines.push(noteWithCents(midi) + '  ' + Math.exp(it.m.pitch).toFixed(1) + ' Hz');
+        const eff = effectiveHz().get(it.m);
+        if (eff && Math.abs(eff - Math.exp(it.m.pitch)) > 0.05) lines.push('実際は約 ' + noteWithCents(69 + 12 * Math.log2(eff / state.a4)));
+      } else lines.push('無声');
+      lines.push('子音 ' + Math.round(it.c * 1000) + ' ms / 母音 ' + Math.round(it.v * 1000) + ' ms');
+    }
+    tip.textContent = lines.join('\n');
+    tip.style.display = 'block';
+    tip.style.left = Math.min(window.innerWidth - tip.offsetWidth - 8, ev.clientX + 14) + 'px';
+    tip.style.top = Math.max(8, ev.clientY - tip.offsetHeight - 10) + 'px';
+  }
+
+  canvas.addEventListener('pointerdown', (ev) => {
+    if (!state.q) return;
+    canvas.focus({ preventScroll: true });
+    const h = hit(ev);
+    if (h.i < 0) { if (!ev.shiftKey && state.sel.size) { state.sel.clear(); updateReadouts(); draw(); } return; }
+
+    if (ev.shiftKey) { if (state.sel.has(h.i)) state.sel.delete(h.i); else state.sel.add(h.i); }
+    else if (!state.sel.has(h.i)) { state.sel.clear(); state.sel.add(h.i); }
+
+    const it = state.items[h.i];
+    const mode = h.edge ? 'length' : (it.kind === 'mora' && isVoiced(it.m) ? 'pitch' : null);
+    updateReadouts(); draw();
+    if (!mode) return;
+
+    const starts = new Map();
+    for (const i of state.sel) { const s = state.items[i]; if (s && s.kind === 'mora' && isVoiced(s.m)) starts.set(i, pitchToMidi(s.m.pitch)); }
+    state.drag = { mode, i: h.i, y: ev.clientY, x: ev.clientX, before: snapshot(), starts, startMidi: mode === 'pitch' ? pitchToMidi(it.m.pitch) : 0, startLen: it.m.vowel_length || 0, moved: false };
+    canvas.setPointerCapture(ev.pointerId);
+    ev.preventDefault();
+  });
+
+  canvas.addEventListener('pointermove', (ev) => {
+    const d = state.drag;
+    if (!d) {
+      const h = hit(ev);
+      if (h.i !== state.hover) { state.hover = h.i; draw(); }
+      canvas.style.cursor = h.i < 0 ? 'default' : (h.edge ? 'ew-resize' : (state.items[h.i].kind === 'mora' && isVoiced(state.items[h.i].m) ? 'ns-resize' : 'default'));
+      showTip(ev, h.i);
+      return;
+    }
+    d.moved = true;
+    const it = state.items[d.i];
+    if (d.mode === 'pitch') {
+      let target = d.startMidi - (ev.clientY - d.y) / rowH();
+      if (state.snap && !ev.altKey) target = snapNote(target);
+      target = Math.max(24, Math.min(108, target));
+      const delta = target - d.startMidi;
+      for (const [i, s] of d.starts) state.items[i].m.pitch = midiToPitch(Math.max(24, Math.min(108, s + delta)));
+    } else {
+      const len = Math.max(0.02, d.startLen + (ev.clientX - d.x) / state.pps);
+      it.m.vowel_length = Math.round(len * 1000) / 1000;
+    }
+    state.wavDirty = true;
+    flatten(); updateReadouts(); draw(); showTip(ev, d.i);
+  });
+
+  function endDrag(ev) {
+    const d = state.drag;
+    if (!d) return;
+    state.drag = null;
+    try { canvas.releasePointerCapture(ev.pointerId); } catch (e) { /* すでに離れている */ }
+    if (d.moved) { ensureInView(); pushUndo(d.before); }
+  }
+  canvas.addEventListener('pointerup', endDrag);
+  canvas.addEventListener('pointercancel', endDrag);
+  canvas.addEventListener('pointerleave', () => { if (!state.drag) { state.hover = -1; tip.style.display = 'none'; draw(); } });
+
+  function ensureInView() {
+    const ns = state.items.filter((it) => it.kind === 'mora' && isVoiced(it.m)).map((it) => pitchToMidi(it.m.pitch));
+    if (!ns.length) return;
+    if (Math.min(...ns) < state.view.lo + 1.5 || Math.max(...ns) > state.view.hi - 1.5) fitView();
+  }
+
+  function shiftPitch(semi) {
+    edit(() => { for (const { it } of targets()) it.m.pitch = midiToPitch(Math.max(24, Math.min(108, pitchToMidi(it.m.pitch) + semi))); });
+    ensureInView(); draw();
+  }
+
+  canvas.addEventListener('keydown', (ev) => {
+    if (!state.q) return;
+    if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'a') {
+      state.sel = new Set(state.items.map((it, i) => i).filter((i) => state.items[i].kind === 'mora'));
+      updateReadouts(); draw(); ev.preventDefault(); return;
+    }
+    if (ev.key === 'Escape') { state.sel.clear(); updateReadouts(); draw(); return; }
+    if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown') {
+      const dir = ev.key === 'ArrowUp' ? 1 : -1;
+      shiftPitch(dir * (ev.shiftKey ? 12 : (ev.altKey ? 0.1 : 1)));
+      ev.preventDefault();
+    }
+  });
+
+  document.addEventListener('keydown', (ev) => {
+    const tag = (ev.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea' || tag === 'select';
+    if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z' && !typing) { ev.shiftKey ? redo() : undo(); ev.preventDefault(); }
+    else if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'y' && !typing) { redo(); ev.preventDefault(); }
+    else if (ev.code === 'Space' && !typing && tag !== 'button') {
+      ev.preventDefault();
+      if (state.playing || state.guide) stopAll(); else if (!$('btnPlay').disabled) play(); else if (state.q) playGuide();
+    }
+  });
+
+  // ---- ツールバー ---------------------------------------------------------------
+  $('btnSnap').addEventListener('click', () => {
+    state.snap = !state.snap; $('btnSnap').setAttribute('aria-pressed', String(state.snap)); store.set('snap', state.snap ? '1' : '0');
+  });
+  $('btnDown12').addEventListener('click', () => shiftPitch(-12));
+  $('btnDown1').addEventListener('click', () => shiftPitch(-1));
+  $('btnUp1').addEventListener('click', () => shiftPitch(1));
+  $('btnUp12').addEventListener('click', () => shiftPitch(12));
+  $('btnQuantize').addEventListener('click', () => edit(() => { for (const { it } of targets()) it.m.pitch = midiToPitch(snapNote(pitchToMidi(it.m.pitch))); }));
+  $('btnFlat').addEventListener('click', () => edit(() => {
+    const ts = targets(); if (!ts.length) return;
+    let avg = ts.reduce((s, { it }) => s + pitchToMidi(it.m.pitch), 0) / ts.length;
+    if (state.snap) avg = snapNote(avg);
+    for (const { it } of ts) it.m.pitch = midiToPitch(avg);
+  }));
+  $('btnOrig').addEventListener('click', () => edit(() => {
+    const orig = flattenOrig();
+    const only = state.sel.size ? state.sel : null;
+    state.items.forEach((it, i) => {
+      if (only && !only.has(i)) return;
+      const o = orig[i]; if (!o) return;
+      it.m.pitch = o.pitch; it.m.vowel_length = o.vowel_length; it.m.consonant_length = o.consonant_length;
+    });
+  }));
+  $('btnUndo').addEventListener('click', undo);
+  $('btnRedo').addEventListener('click', redo);
+  $('scaleKey').addEventListener('change', () => store.set('scaleKey', $('scaleKey').value));
+  $('scaleType').addEventListener('change', () => store.set('scaleType', $('scaleType').value));
+
+  // ---- 音名でまとめて指定 --------------------------------------------------------
+  $('btnMelodyApply').addEventListener('click', () => {
+    const toks = $('melody').value.split(/[\s,、]+/).filter(Boolean);
+    if (!toks.length) return;
+    const bad = toks.filter((t) => t !== '-' && t !== '_' && parseNote(t) === null);
+    if (bad.length) { setOut('読めない音名があります: ' + bad.slice(0, 3).join(' '), 'ng'); return; }
+    edit(() => {
+      const ts = targets();
+      ts.forEach(({ it }, k) => {
+        if (k >= toks.length) return;
+        if (toks[k] === '-' || toks[k] === '_') return;
+        it.m.pitch = midiToPitch(Math.max(24, Math.min(108, parseNote(toks[k]))));
+      });
+      setOut(Math.min(ts.length, toks.length) + ' モーラに当てました' + (toks.length > ts.length ? '(音名が ' + (toks.length - ts.length) + ' 個余りました)' : ''), '');
+    });
+    fitView(); draw();
+  });
+  $('btnMelodyRead').addEventListener('click', () => {
+    $('melody').value = targets().map(({ it }) => noteName(pitchToMidi(it.m.pitch)).replace('♯', '#').replace('♭', 'b')).join(' ');
+  });
+  $('a4').addEventListener('change', () => {
+    const v = parseFloat($('a4').value);
+    if (v >= 400 && v <= 480) { state.a4 = v; store.set('a4', String(v)); if (state.q) fitView(); updateReadouts(); draw(); }
+  });
+  $('octave').addEventListener('change', () => { state.octaveBase = parseInt($('octave').value, 10); store.set('octave', $('octave').value); updateReadouts(); draw(); });
+
+  // ---- 全体の設定 ---------------------------------------------------------------
+  const SLIDERS = [
+    { key: 'speedScale', name: '話速', min: 0.5, max: 2, step: 0.01, def: 1, fmt: (v) => v.toFixed(2) },
+    { key: 'pitchScale', name: '高さ', min: -0.15, max: 0.15, step: 0.01, def: 0, fmt: (v) => v.toFixed(2) },
+    { key: 'intonationScale', name: '抑揚', min: 0, max: 2, step: 0.01, def: 1, fmt: (v) => v.toFixed(2) },
+    { key: 'volumeScale', name: '音量', min: 0, max: 2, step: 0.01, def: 1, fmt: (v) => v.toFixed(2) },
+    { key: 'prePhonemeLength', name: '開始の無音', min: 0, max: 1.5, step: 0.01, def: 0.1, fmt: (v) => v.toFixed(2) + ' s' },
+    { key: 'postPhonemeLength', name: '終了の無音', min: 0, max: 1.5, step: 0.01, def: 0.1, fmt: (v) => v.toFixed(2) + ' s' },
+  ];
+  function buildSliders() {
+    const box = $('sliders');
+    SLIDERS.forEach((s) => {
+      const el = document.createElement('div'); el.className = 'slider';
+      el.innerHTML = '<div class="line"><label class="name" for="sl_' + s.key + '">' + s.name + '</label><span class="val" id="sv_' + s.key + '"></span></div>'
+        + '<input type="range" id="sl_' + s.key + '" min="' + s.min + '" max="' + s.max + '" step="' + s.step + '" value="' + s.def + '" disabled>';
+      box.appendChild(el);
+      const input = el.querySelector('input');
+      let before = null;
+      input.addEventListener('pointerdown', () => { before = state.q ? snapshot() : null; });
+      input.addEventListener('input', () => {
+        if (!state.q) return;
+        if (before === null) before = snapshot();
+        state.q[s.key] = parseFloat(input.value);
+        $('sv_' + s.key).textContent = s.fmt(state.q[s.key]);
+        state.wavDirty = true; flatten(); updateReadouts(); draw();
+      });
+      input.addEventListener('change', () => { if (before !== null) { pushUndo(before); before = null; } });
+    });
+  }
+  function syncSliders() {
+    SLIDERS.forEach((s) => {
+      const input = $('sl_' + s.key);
+      input.disabled = !state.q;
+      const v = state.q && typeof state.q[s.key] === 'number' ? state.q[s.key] : s.def;
+      input.value = v; $('sv_' + s.key).textContent = s.fmt(v);
+    });
+  }
+  $('btnScaleReset').addEventListener('click', () => edit(() => { state.q.pitchScale = 0; state.q.intonationScale = 1; syncSliders(); }));
+
+  // ---- エンジンとの通信 ----------------------------------------------------------
+  function setConn(text, cls) { const el = $('connStatus'); el.textContent = text; el.className = 'meta status ' + (cls || ''); }
+  function setOut(text, cls) { const el = $('outStatus'); el.textContent = text; el.className = 'meta status ' + (cls || ''); }
+
+  function showHelp() {
+    const origin = location.origin;
+    const local = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+    const base = state.base || $('engineUrl').value.trim();
+    let html = '<b>VOICEVOX につながりません。</b><ol><li>VOICEVOX を起動しているか確かめてください(エンジンだけでも動きます)。</li>';
+    if (!local) {
+      if (origin && origin !== 'null') {
+        html += '<li><a href="' + base + '/setting" target="_blank" rel="noopener">' + base + '/setting</a> を開き、<b>Allow Origin</b> に <code>' + origin + '</code> を足して、VOICEVOX を起動し直してください。</li>';
+      } else {
+        html += '<li>このページはファイルを直接開いています。この開き方だと VOICEVOX が通信を受け付けません。<code>http://localhost</code> で配信するか、公開したURLを VOICEVOX の設定(<a href="' + base + '/setting" target="_blank" rel="noopener">' + base + '/setting</a>)の <b>Allow Origin</b> に足してください。</li>';
+      }
+    }
+    html += '<li>ブラウザが「ローカルネットワークへのアクセス」を聞いてきたら許可してください。</li></ol>';
+    $('connHelp').innerHTML = html;
+    $('connHelp').classList.add('show');
+  }
+
+  async function connect() {
+    state.base = $('engineUrl').value.trim().replace(/\/+$/, '');
+    store.set('engine', state.base);
+    setConn('接続中…', '');
+    try {
+      const ver = await (await fetch(state.base + '/version')).json();
+      const speakers = await (await fetch(state.base + '/speakers')).json();
+      const sel = $('speaker'); sel.innerHTML = '';
+      speakers.forEach((sp) => {
+        const styles = (sp.styles || []).filter((st) => !st.type || st.type === 'talk');
+        if (!styles.length) return;
+        const og = document.createElement('optgroup'); og.label = sp.name;
+        styles.forEach((st) => { const o = document.createElement('option'); o.value = st.id; o.textContent = sp.name + '(' + st.name + ')'; og.appendChild(o); });
+        sel.appendChild(og);
+      });
+      const saved = store.get('speaker', '');
+      if (saved && [...sel.options].some((o) => o.value === saved)) sel.value = saved;
+      sel.disabled = false;
+      state.connected = true;
+      state.speakerId = sel.value;
+      setConn('接続中: VOICEVOX ' + ver, 'ok');
+      $('connHelp').classList.remove('show');
+    } catch (e) {
+      state.connected = false;
+      setConn('つながりません', 'ng');
+      showHelp();
+    }
+    updateButtons();
+  }
+  $('btnConnect').addEventListener('click', connect);
+  $('speaker').addEventListener('change', () => { state.speakerId = $('speaker').value; store.set('speaker', state.speakerId); state.wavDirty = true; });
+
+  function loadQuery(q, demo) {
+    state.q = q; state.orig = JSON.parse(JSON.stringify(q)); state.demo = !!demo;
+    state.sel.clear(); state.undo.length = 0; state.redo.length = 0; state.wavDirty = true;
+    stopAll();
+    flatten(); fitView(); syncSliders(); updateReadouts(); updateButtons(); draw();
+    wrap.scrollLeft = 0;
+  }
+
+  $('btnQuery').addEventListener('click', async () => {
+    const text = $('text').value.trim();
+    if (!text) return;
+    setOut('読み込み中…', '');
+    try {
+      const res = await fetch(state.base + '/audio_query?speaker=' + encodeURIComponent(state.speakerId) + '&text=' + encodeURIComponent(text), { method: 'POST' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      loadQuery(await res.json(), false);
+      store.set('text', text);
+      setOut('', '');
+    } catch (e) {
+      setOut('読み込めませんでした(' + e.message + ')', 'ng');
+    }
+  });
+
+  // 接続なしで触れるサンプル(値は実際のエンジンの出力に近い形のダミー)
+  $('btnDemo').addEventListener('click', () => {
+    const mk = (text, c, cl, v, vl, p) => ({ text, consonant: c, consonant_length: c ? cl : null, vowel: v, vowel_length: vl, pitch: p });
+    loadQuery({
+      accent_phrases: [
+        { moras: [mk('コ', 'k', .06, 'o', .08, 5.62), mk('ン', null, 0, 'N', .07, 5.78), mk('ニ', 'n', .04, 'i', .07, 5.86), mk('チ', 'ch', .08, 'i', .07, 5.84), mk('ワ', 'w', .05, 'a', .14, 5.76)],
+          accent: 5, pause_mora: mk('、', null, 0, 'pau', .32, 0), is_interrogative: false },
+        { moras: [mk('ナ', 'n', .05, 'a', .08, 5.68), mk('ミ', 'm', .05, 'i', .07, 5.9), mk('グ', 'g', .04, 'u', .07, 5.88), mk('ル', 'r', .03, 'u', .08, 5.8), mk('デ', 'd', .04, 'e', .09, 5.66), mk('ス', 's', .09, 'U', .1, 0)],
+          accent: 2, pause_mora: null, is_interrogative: false },
+      ],
+      speedScale: 1, pitchScale: 0, intonationScale: 1, volumeScale: 1, prePhonemeLength: .1, postPhonemeLength: .1,
+      outputSamplingRate: 24000, outputStereo: false, kana: "コンニチワ'、ナミ'グルデ_ス",
+    }, true);
+    setOut('サンプルです。声の再生には VOICEVOX への接続が要ります(ガイド音は鳴ります)', '');
+  });
+
+  async function synth() {
+    if (!state.wavDirty && state.wavBlob) return state.wavBlob;
+    setOut('合成中…', '');
+    const res = await fetch(state.base + '/synthesis?speaker=' + encodeURIComponent(state.speakerId), {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.q),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const blob = await res.blob();
+    if (state.wavUrl) URL.revokeObjectURL(state.wavUrl);
+    state.wavBlob = blob; state.wavUrl = URL.createObjectURL(blob); state.wavDirty = false;
+    setOut('', '');
+    return blob;
+  }
+
+  // ---- 再生 ---------------------------------------------------------------------
+  function playheadTime() {
+    const speed = state.q ? (state.q.speedScale || 1) : 1;
+    if (state.playing && state.audio) return state.audio.currentTime * speed;
+    if (state.guide) { const t = state.guide.ctx.currentTime - state.guideStart; return t <= state.guideLen ? t * speed : null; }
+    return null;
+  }
+  function tick() {
+    if (!state.playing && !state.guide) return;
+    if (state.guide && state.guide.ctx.currentTime - state.guideStart > state.guideLen + 0.05) { stopAll(); return; }
+    const ph = playheadTime();
+    if (ph != null) {
+      const x = xOf(ph);
+      if (x > wrap.scrollLeft + wrap.clientWidth - 40 || x < wrap.scrollLeft + GUTTER) wrap.scrollLeft = Math.max(0, x - GUTTER - 20);
+    }
+    draw();
+    requestAnimationFrame(tick);
+  }
+  function stopAll() {
+    if (state.audio) { state.audio.pause(); state.audio = null; }
+    if (state.guide) { try { state.guide.ctx.close(); } catch (e) { /* 閉じ済み */ } state.guide = null; }
+    state.playing = false;
+    updateButtons(); draw();
+  }
+  async function play() {
+    stopAll();
+    try {
+      await synth();
+      const a = new Audio(state.wavUrl);
+      state.audio = a; state.playing = true;
+      a.addEventListener('ended', () => { if (state.audio === a) stopAll(); });
+      await a.play();
+      updateButtons(); requestAnimationFrame(tick);
+    } catch (e) {
+      state.playing = false; state.audio = null; updateButtons();
+      setOut('合成できませんでした(' + e.message + ')', 'ng');
+    }
+  }
+  function playGuide() {
+    stopAll();
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC || !state.q) return;
+    const ac = new AC();
+    const speed = state.q.speedScale || 1;
+    const eff = effectiveHz();
+    const t0 = ac.currentTime + 0.05;
+    const master = ac.createGain(); master.gain.value = 0.18; master.connect(ac.destination);
+    for (const it of state.items) {
+      if (it.kind !== 'mora' || !isVoiced(it.m)) continue;
+      const osc = ac.createOscillator(); osc.type = 'triangle'; osc.frequency.value = eff.get(it.m) || Math.exp(it.m.pitch);
+      const g = ac.createGain();
+      const s = t0 + it.start / speed, e = t0 + it.end / speed;
+      g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(1, s + 0.008);
+      g.gain.setValueAtTime(1, Math.max(s + 0.01, e - 0.012)); g.gain.linearRampToValueAtTime(0, e);
+      osc.connect(g); g.connect(master); osc.start(s); osc.stop(e + 0.01);
+    }
+    state.guide = { ctx: ac }; state.guideStart = t0; state.guideLen = state.total / speed;
+    updateButtons(); requestAnimationFrame(tick);
+  }
+  $('btnPlay').addEventListener('click', play);
+  $('btnStop').addEventListener('click', stopAll);
+  $('btnGuide').addEventListener('click', playGuide);
+
+  // ---- 保存と読み込み ------------------------------------------------------------
+  function download(blob, name) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+  const stamp = () => { const d = new Date(), p = (n) => String(n).padStart(2, '0'); return d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '_' + p(d.getHours()) + p(d.getMinutes()) + p(d.getSeconds()); };
+  $('btnWav').addEventListener('click', async () => {
+    try { download(await synth(), 'voicevox_pitch_' + stamp() + '.wav'); }
+    catch (e) { setOut('合成できませんでした(' + e.message + ')', 'ng'); }
+  });
+  $('btnJsonSave').addEventListener('click', () => download(new Blob([JSON.stringify(state.q, null, 2)], { type: 'application/json' }), 'voicevox_query_' + stamp() + '.json'));
+  $('btnJsonLoad').addEventListener('click', () => $('jsonFile').click());
+  $('jsonFile').addEventListener('change', async () => {
+    const f = $('jsonFile').files[0]; if (!f) return;
+    try {
+      const q = JSON.parse(await f.text());
+      if (!q || !Array.isArray(q.accent_phrases)) throw new Error('accent_phrases がありません');
+      loadQuery(q, !state.connected);
+      setOut('開きました: ' + f.name, '');
+    } catch (e) { setOut('開けませんでした(' + e.message + ')', 'ng'); }
+    $('jsonFile').value = '';
+  });
+
+  // ---- 起動 ---------------------------------------------------------------------
+  NAMES.forEach((n, i) => { const o = document.createElement('option'); o.value = i; o.textContent = n; $('scaleKey').appendChild(o); });
+  $('engineUrl').value = store.get('engine', $('engineUrl').value);
+  $('text').value = store.get('text', $('text').value);
+  $('scaleKey').value = store.get('scaleKey', '0');
+  $('scaleType').value = store.get('scaleType', 'chromatic');
+  state.snap = store.get('snap', '1') === '1'; $('btnSnap').setAttribute('aria-pressed', String(state.snap));
+  state.a4 = parseFloat(store.get('a4', '440')) || 440; $('a4').value = state.a4;
+  state.octaveBase = parseInt(store.get('octave', '3'), 10) === 4 ? 4 : 3; $('octave').value = String(state.octaveBase);
+
+  buildSliders(); syncSliders(); updateReadouts(); updateButtons(); draw();
+  window.addEventListener('resize', draw);
+  wrap.addEventListener('scroll', draw);
+  connect();
+
+  // 動作確認用
+  window.__vvpe = { state, pitchToMidi, midiToPitch, noteName, snapNote, parseNote, effectiveHz };
+})();
+</script>
+</body>
+</html>
