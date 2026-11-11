@@ -196,13 +196,15 @@
 
   <div class="cols">
     <section class="panel">
-      <div class="head"><span class="badge">D</span><span class="title">MELODY</span><span class="meta">音名でまとめて指定</span></div>
+      <div class="head"><span class="badge">D</span><span class="title">MELODY</span><span class="meta">音名・ファイルでまとめて指定</span></div>
       <div class="body">
         <label class="f" for="melody">NOTES</label>
         <input type="text" id="melody" placeholder="C3 D3 E3 - G3(- はそのまま、数字はMIDIノート番号)" spellcheck="false">
         <div class="row" style="margin-top:8px">
           <button id="btnMelodyApply">声のあるモーラに順に当てる</button>
           <button class="quiet" id="btnMelodyRead">今の音程を書き出す</button>
+          <button class="quiet" id="btnMelodyFile">MIDI・UST・MusicXMLから読む</button>
+          <input type="file" id="melodyFile" accept=".mid,.midi,.ust,.musicxml,.xml,audio/midi" hidden>
         </div>
         <div class="gap"></div>
         <div class="row">
@@ -800,6 +802,97 @@
   });
   $('btnMelodyRead').addEventListener('click', () => {
     $('melody').value = targets().map(({ it }) => noteName(pitchToMidi(it.m.pitch)).replace('♯', '#').replace('♭', 'b')).join(' ');
+  });
+  // ---- MIDI / UST / MusicXML からメロディの音を読む --------------------------------
+  // 読むのは「音の高さの並び」だけ。休符・タイでつながった音・和音の下の音は数えない。
+  function parseMidiNotes(buf) {
+    const d = new DataView(buf); let p = 0;
+    const u32 = () => { const v = d.getUint32(p); p += 4; return v; };
+    const u16 = () => { const v = d.getUint16(p); p += 2; return v; };
+    if (u32() !== 0x4d546864) throw new Error('MIDIファイルではありません');
+    u32(); u16(); const ntrk = u16(); u16();
+    const tracks = [];
+    for (let t = 0; t < ntrk && p + 8 <= d.byteLength; t++) {
+      if (u32() !== 0x4d54726b) break;
+      const len = u32(), end = p + len;
+      let tick = 0, status = 0; const notes = [];
+      const vlq = () => { let v = 0, b; do { b = d.getUint8(p++); v = (v << 7) | (b & 0x7f); } while (b & 0x80 && p < end); return v; };
+      while (p < end) {
+        tick += vlq();
+        let b = d.getUint8(p);
+        if (b === 0xff) { p += 2; const l = vlq(); p += l; status = 0; continue; }
+        if (b === 0xf0 || b === 0xf7) { p++; const l = vlq(); p += l; status = 0; continue; }
+        if (b & 0x80) { status = b; p++; }
+        const type = status & 0xf0, ch = status & 0x0f;
+        if (type === 0xc0 || type === 0xd0) { p += 1; continue; }
+        const a = d.getUint8(p++), v = d.getUint8(p++);
+        if (type === 0x90 && v > 0 && ch !== 9) notes.push({ tick, n: a });
+      }
+      p = end;
+      if (notes.length) tracks.push(notes);
+    }
+    if (!tracks.length) throw new Error('音符が見つかりませんでした');
+    tracks.sort((x, y) => y.length - x.length);
+    // 同じ位置に重なった音(和音)は、いちばん高い音を残す
+    const top = new Map();
+    for (const n of tracks[0]) if (!top.has(n.tick) || top.get(n.tick) < n.n) top.set(n.tick, n.n);
+    return [...top.entries()].sort((x, y) => x[0] - y[0]).map((e) => e[1]);
+  }
+
+  function parseUstNotes(buf) {
+    let text = new TextDecoder('utf-8').decode(buf);
+    if (!/Charset=UTF-?8/i.test(text) && text.includes('�')) text = new TextDecoder('shift_jis').decode(buf);
+    const out = []; let cur = null;
+    for (const line of text.split(/\r?\n/)) {
+      if (/^\[#\d+\]/.test(line)) { if (cur && cur.n != null && !/^R$/i.test(cur.l || '')) out.push(cur.n); cur = { n: null, l: '' }; continue; }
+      if (/^\[#(PREV|NEXT|INSERT|DELETE|VERSION|SETTING|TRACKEND)/i.test(line)) { if (cur && cur.n != null && !/^R$/i.test(cur.l || '')) out.push(cur.n); cur = null; continue; }
+      if (!cur) continue;
+      const m = line.match(/^(NoteNum|Lyric)=(.*)$/);
+      if (m) { if (m[1] === 'NoteNum') cur.n = parseInt(m[2], 10); else cur.l = m[2].trim(); }
+    }
+    if (cur && cur.n != null && !/^R$/i.test(cur.l || '')) out.push(cur.n);
+    const ns = out.filter((n) => Number.isFinite(n));
+    if (!ns.length) throw new Error('音符が見つかりませんでした');
+    return ns;
+  }
+
+  function parseMusicXmlNotes(buf) {
+    const doc = new DOMParser().parseFromString(new TextDecoder('utf-8').decode(buf), 'application/xml');
+    if (doc.querySelector('parsererror')) throw new Error('MusicXMLとして読めませんでした');
+    const part = doc.querySelector('part'); if (!part) throw new Error('パートが見つかりませんでした');
+    const step = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+    const out = []; let voice = null;
+    for (const nt of part.querySelectorAll('note')) {
+      if (nt.querySelector('rest') || nt.querySelector('chord') || nt.querySelector('grace')) continue;
+      if (nt.querySelector('tie[type="stop"]')) continue;
+      const v = (nt.querySelector('voice') || {}).textContent || '1';
+      if (voice === null) voice = v; if (v !== voice) continue;
+      const st = nt.querySelector('pitch > step'), oc = nt.querySelector('pitch > octave'); if (!st || !oc) continue;
+      const al = nt.querySelector('pitch > alter');
+      out.push((parseInt(oc.textContent, 10) + 1) * 12 + step[st.textContent.trim()] + (al ? Math.round(parseFloat(al.textContent)) : 0));
+    }
+    if (!out.length) throw new Error('音符が見つかりませんでした');
+    return out;
+  }
+
+  $('btnMelodyFile').addEventListener('click', () => $('melodyFile').click());
+  $('melodyFile').addEventListener('change', async () => {
+    const f = $('melodyFile').files[0]; $('melodyFile').value = '';
+    if (!f) return;
+    try {
+      const buf = await f.arrayBuffer(), name = f.name.toLowerCase();
+      let ns;
+      if (/\.mxl$/.test(name)) throw new Error('圧縮された .mxl は読めません。.musicxml(または .xml)で書き出してください');
+      if (/\.midi?$/.test(name)) ns = parseMidiNotes(buf);
+      else if (/\.ust$/.test(name)) ns = parseUstNotes(buf);
+      else ns = parseMusicXmlNotes(buf);
+      const toks = ns.map((n) => noteName(Math.max(24, Math.min(108, n))).replace('♯', '#').replace('♭', 'b'));
+      $('melody').value = toks.join(' ');
+      const voiced = state.q ? targets().length : 0;
+      setOut(ns.length + ' 音を読み込みました。' + (state.q ? '声のあるモーラは ' + voiced + ' 個です。「声のあるモーラに順に当てる」で反映します' : '文章を読み込んだあと「声のあるモーラに順に当てる」で反映します'), '');
+    } catch (e) {
+      setOut('読み込めませんでした: ' + (e && e.message ? e.message : e), 'ng');
+    }
   });
   $('a4').addEventListener('change', () => {
     const v = parseFloat($('a4').value);
