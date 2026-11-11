@@ -101,6 +101,8 @@
   /* ロール */
   .tools { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
   .tools .sep { width: 1px; height: 22px; background: var(--faint); margin: 0 4px; }
+  .tools label.inl { display: flex; gap: 5px; align-items: center; font-size: 13px; color: var(--dim); }
+  .tools input[type=number] { padding: 4px 8px; border-radius: 999px; font-size: 13px; width: auto; }
   .tools select { width: auto; padding: 4px 8px; border-radius: 999px; font-size: 13px; }
   .rollwrap { position: relative; border: 1px solid rgba(29,36,51,.16); border-radius: 8px; overflow-x: auto; overflow-y: hidden; background: #fafbfe; }
   canvas#roll { display: block; touch-action: none; cursor: default; }
@@ -189,8 +191,17 @@
         <button id="btnUndo" class="quiet" disabled>戻す</button>
         <button id="btnRedo" class="quiet" disabled>やり直す</button>
       </div>
+      <div class="tools" id="gridTools">
+        <button id="btnGrid" aria-pressed="true" title="長さのドラッグをテンポのグリッドに吸着し、グリッド線を表示(Alt を押している間は吸着しない)">グリッド吸着</button>
+        <label class="inl">BPM <input type="number" id="bpm" value="120" min="30" max="300" step="1" style="width:76px"></label>
+        <select id="gridDiv" aria-label="グリッドの細かさ">
+          <option value="1">1/4(4分)</option><option value="2">1/8(8分)</option><option value="3">3連(8分3連)</option><option value="4" selected>1/16(16分)</option><option value="6">6連(16分3連)</option><option value="8">1/32(32分)</option>
+        </select>
+        <button id="btnSnapLen" title="選択中のモーラ(なければ全部)の終わりをグリッドに揃える。全体の長さは前から順にずれていく">長さをグリッドに揃える</button>
+        <span class="hint" style="margin:0">グリッドの 0 は「開始の無音」の終わり(最初のモーラの頭)。話速を変えても、実際の音で BPM に合う</span>
+      </div>
       <div class="rollwrap" id="rollWrap"><canvas id="roll" tabindex="0" aria-label="モーラごとの音程。上下ドラッグで音程、右端ドラッグで長さ"></canvas></div>
-      <div class="hint">上下ドラッグで音程、右端ドラッグで長さ。何もない所からドラッグで範囲選択(Shift で追加)、Shift+クリックで1つずつ追加、Ctrl+A で全選択、↑↓ で半音(Shift で1オクターブ、Alt で10セント)。ボタンは選択中のモーラに、何も選んでいなければ全体にかかります。点線は元の音程。</div>
+      <div class="hint">上下ドラッグで音程、右端ドラッグで長さ。何もない所からドラッグで範囲選択(Shift で追加)、Shift+クリックで1つずつ追加、Ctrl+A で全選択、↑↓ で半音(Shift で1オクターブ、Alt で10セント)。ボタンは選択中のモーラに、何も選んでいなければ全体にかかります。点線は元の音程。長さのドラッグはグリッドに吸着します(Alt で吸着なし)。</div>
     </div>
   </section>
 
@@ -252,6 +263,7 @@
     items: [], sel: new Set(),
     view: { lo: 48, hi: 72 }, pps: 260,
     snap: true, a4: 440, octaveBase: 3,
+    grid: true, bpm: 120, div: 4,
     undo: [], redo: [],
     wavUrl: null, wavBlob: null, wavDirty: true,
     audio: null, playing: false, guide: null, guideStart: 0, guideLen: 0,
@@ -380,6 +392,41 @@
     return all.filter((x) => state.sel.has(x.i));
   }
 
+  // ---- テンポのグリッド ---------------------------------------------------------
+  // モーラの長さは「エンジンの内部の秒」で、実際の音は 話速(speedScale)で割った長さになる。
+  // だから、実際の音で 1拍 = 60/BPM 秒にするには、内部の 1拍 = 60/BPM × 話速。
+  function gridInfo() {
+    const speed = (state.q && state.q.speedScale) || 1;
+    const beat = (60 / state.bpm) * speed;
+    return { beat, step: beat / state.div, origin: (state.q && state.q.prePhonemeLength) || 0 };
+  }
+  function snapTime(t) {
+    const g = gridInfo();
+    return Math.round((t - g.origin) / g.step) * g.step + g.origin;
+  }
+  // 終わりの時刻 end を、頭 from から最短 0.02 秒の長さを残してグリッドに合わせた長さ
+  function snappedLen(from, end) {
+    const g = gridInfo();
+    let e = snapTime(end);
+    while (e - from < 0.02) e += g.step;
+    return Math.round((e - from) * 1000) / 1000;
+  }
+  function quantizeLengths() {
+    if (!state.q) return;
+    const chosen = new Set();
+    for (const i of state.sel) { const s = state.items[i]; if (s) chosen.add(s.m); }
+    let t = state.q.prePhonemeLength || 0;
+    const one = (m, c) => {
+      const v = m.vowel_length || 0;
+      if (!chosen.size || chosen.has(m)) m.vowel_length = snappedLen(t + c, t + c + v);
+      t += c + (m.vowel_length || 0);
+    };
+    for (const ap of state.q.accent_phrases) {
+      for (const m of ap.moras) one(m, m.consonant_length || 0);
+      if (ap.pause_mora) one(ap.pause_mora, 0);
+    }
+  }
+
   // ---- 表示 ---------------------------------------------------------------------
   const canvas = $('roll'), ctx = canvas.getContext('2d'), wrap = $('rollWrap'), tip = $('tip');
   const GUTTER = 46, TOP = 8, PLOT_H = 330, STRIP = 26, HEIGHT = TOP + PLOT_H + STRIP + 6;
@@ -427,6 +474,22 @@
       if ([1, 3, 6, 8, 10].includes(pc)) { ctx.fillStyle = 'rgba(29,36,51,.045)'; ctx.fillRect(GUTTER, y, W - GUTTER, rh); }
       ctx.fillStyle = pc === 0 ? 'rgba(29,36,51,.2)' : 'rgba(29,36,51,.06)';
       ctx.fillRect(GUTTER, Math.round(y + rh), W - GUTTER, 1);
+    }
+
+    // テンポのグリッド(拍は濃く、小節の頭は一番濃く)
+    if (state.grid && state.q) {
+      const g = gridInfo(), total = state.total || 2;
+      if (g.step * state.pps >= 5) {
+        const perBar = state.div * 4;
+        const n = Math.floor((total - g.origin) / g.step);
+        for (let k = 0; k <= n; k++) {
+          const x = Math.round(xOf(g.origin + k * g.step)) + .5;
+          const beat = k % state.div === 0, bar = k % perBar === 0;
+          ctx.fillStyle = bar ? 'rgba(61,95,214,.38)' : (beat ? 'rgba(61,95,214,.2)' : 'rgba(61,95,214,.08)');
+          ctx.fillRect(x - .5, TOP, 1, PLOT_H);
+          if (bar) { ctx.fillStyle = 'rgba(61,95,214,.8)'; ctx.font = '10px ' + getComputedStyle(document.body).fontFamily; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(String(k / perBar + 1), x + 3, TOP + 1); }
+        }
+      }
     }
 
     // 下の帯: 声のないモーラと間(ま)
@@ -694,8 +757,9 @@
       const delta = target - d.startMidi;
       for (const [i, s] of d.starts) state.items[i].m.pitch = midiToPitch(Math.max(24, Math.min(108, s + delta)));
     } else {
-      const len = Math.max(0.02, d.startLen + (ev.clientX - d.x) / state.pps);
-      it.m.vowel_length = Math.round(len * 1000) / 1000;
+      const raw = d.startLen + (ev.clientX - d.x) / state.pps;
+      if (state.grid && !ev.altKey) it.m.vowel_length = snappedLen(it.start + it.c, it.start + it.c + raw);
+      else it.m.vowel_length = Math.round(Math.max(0.02, raw) * 1000) / 1000;
     }
     state.wavDirty = true;
     flatten(); updateReadouts(); draw(); showTip(ev, d.i);
@@ -757,6 +821,18 @@
   // ---- ツールバー ---------------------------------------------------------------
   $('btnSnap').addEventListener('click', () => {
     state.snap = !state.snap; $('btnSnap').setAttribute('aria-pressed', String(state.snap)); store.set('snap', state.snap ? '1' : '0');
+  });
+  function applyGrid() {
+    $('btnGrid').setAttribute('aria-pressed', String(state.grid));
+    store.set('grid', state.grid ? '1' : '0'); store.set('bpm', String(state.bpm)); store.set('div', String(state.div));
+    draw();
+  }
+  $('btnGrid').addEventListener('click', () => { state.grid = !state.grid; applyGrid(); });
+  $('bpm').addEventListener('input', () => { const v = parseFloat($('bpm').value); if (v >= 30 && v <= 300) { state.bpm = v; applyGrid(); } });
+  $('gridDiv').addEventListener('change', () => { state.div = parseInt($('gridDiv').value, 10) || 4; applyGrid(); });
+  $('btnSnapLen').addEventListener('click', () => {
+    edit(() => { quantizeLengths(); state.wavDirty = true; flatten(); });
+    updateReadouts(); draw();
   });
   $('btnDown12').addEventListener('click', () => shiftPitch(-12));
   $('btnDown1').addEventListener('click', () => shiftPitch(-1));
@@ -1150,6 +1226,9 @@
   $('scaleKey').value = store.get('scaleKey', '0');
   $('scaleType').value = store.get('scaleType', 'chromatic');
   state.snap = store.get('snap', '1') === '1'; $('btnSnap').setAttribute('aria-pressed', String(state.snap));
+  state.grid = store.get('grid', '1') === '1'; $('btnGrid').setAttribute('aria-pressed', String(state.grid));
+  state.bpm = parseFloat(store.get('bpm', '120')) || 120; $('bpm').value = state.bpm;
+  state.div = parseInt(store.get('div', '4'), 10) || 4; $('gridDiv').value = String(state.div);
   state.a4 = parseFloat(store.get('a4', '440')) || 440; $('a4').value = state.a4;
   state.octaveBase = parseInt(store.get('octave', '3'), 10) === 4 ? 4 : 3; $('octave').value = String(state.octaveBase);
 
