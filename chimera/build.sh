@@ -15,7 +15,7 @@ git checkout --quiet "$SHA"
 cp index.html app.html
 cp "$HERE/overlay/studio.html" index.html
 mkdir -p src/studio
-cp "$HERE/overlay/src/studio/main.ts" src/studio/main.ts
+cp "$HERE"/overlay/src/studio/* src/studio/
 cp "$HERE/overlay/vite.config.ts" vite.config.ts
 # 辞書の場所をサブパスに合わせる
 sed -i 's#url = "/data/cmudict.txt.gz"#url = import.meta.env.BASE_URL + "data/cmudict.txt.gz"#' src/wasm/engine.ts
