@@ -169,6 +169,8 @@ async function main(): Promise<void> {
   let rollNotes: RollNote[] = [];
   let view = { lo: 55, hi: 79, end: 1 };
   let dragging = false;
+  let sel = new Set<number>();
+  let box: { x0: number; y0: number; x1: number; y1: number } | null = null;
   const NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   const GUTTER = 34, PADY = 14;
   const pitchName = (m: number) => (Number.isInteger(m) ? NAMES[((m % 12) + 12) % 12] + (Math.floor(m / 12) - 1) : String(m));
@@ -289,14 +291,21 @@ async function main(): Promise<void> {
       const grab = drag !== null && drag.i === i;
       c.beginPath(); c.roundRect(x0 + 0.5, y, Math.max(3, x1 - x0 - 1.5), bodyH, 7);
       c.fillStyle = on || grab ? "#e8792f" : "#396cdf"; c.fill();
+      if (sel.has(i)) { c.lineWidth = 2; c.strokeStyle = "#1d2433"; c.stroke(); }
       if (x1 - x0 > 22 && n.text) { c.fillStyle = "#fff"; c.font = "600 12px sans-serif"; c.fillText(n.text, (x0 + x1) / 2, y + bodyH / 2 + 0.5); }
       if (grab) { c.fillStyle = "#1d2433"; c.font = "600 11px ui-monospace, Consolas, monospace"; c.fillText(pitchName(n.midi), (x0 + x1) / 2, y - 8); }
     });
+    if (box) {
+      const bx = Math.min(box.x0, box.x1), by = Math.min(box.y0, box.y1), bw = Math.abs(box.x1 - box.x0), bh = Math.abs(box.y1 - box.y0);
+      c.fillStyle = "rgba(57,108,223,.12)"; c.fillRect(bx, by, bw, bh);
+      c.strokeStyle = "rgba(57,108,223,.8)"; c.lineWidth = 1; c.setLineDash([4, 3]); c.strokeRect(bx + 0.5, by + 0.5, bw, bh); c.setLineDash([]);
+    }
     if (playT !== null) { const x = xOf(playT); c.fillStyle = "#1d2433"; c.fillRect(Math.round(x), PADY - 6, 1.5, h - PADY * 2 + 12); }
   }
 
-  interface Drag { i: number; mode: "pitch" | "len"; x: number; y: number; midi: number; beats: number; notes: ParsedNote[] }
+  interface Drag { i: number; mode: "pitch" | "len"; x: number; y: number; notes: ParsedNote[]; starts: Map<number, { midi: number; beats: number }>; lastDelta: number }
   let drag: Drag | null = null;
+  let boxDrag: { keep: Set<number>; sx: number; sy: number; moved: boolean; hadSel: boolean } | null = null;
 
   function hitNote(px: number, py: number): { i: number; mode: "pitch" | "len" } | null {
     const { yOf, xOf, bodyH } = geom();
@@ -308,55 +317,134 @@ async function main(): Promise<void> {
     return null;
   }
   const rollPos = (e: PointerEvent) => { const r = rollCanvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+  const notesInBox = (b: { x0: number; y0: number; x1: number; y1: number }): number[] => {
+    const { yOf, xOf, bodyH } = geom();
+    const lx = Math.min(b.x0, b.x1), hx = Math.max(b.x0, b.x1), ly = Math.min(b.y0, b.y1), hy = Math.max(b.y0, b.y1);
+    const out: number[] = [];
+    rollNotes.forEach((n, i) => {
+      const x0 = xOf(n.t0), x1 = xOf(n.t1), y = yOf(n.midi) - bodyH / 2;
+      if (x1 >= lx && x0 <= hx && y + bodyH >= ly && y <= hy) out.push(i);
+    });
+    return out;
+  };
+  const selInfo = () => { $("rollInfo").textContent = sel.size ? `${sel.size} 個選択中` : rollNotes.length ? `${(rollNotes[rollNotes.length - 1].t1 + 0.4).toFixed(1)} 秒` : ""; };
 
   rollCanvas.addEventListener("pointerdown", (e) => {
     if (busy || playCtx) return;
+    rollCanvas.focus({ preventScroll: true });
     const { x, y } = rollPos(e);
     const hit = hitNote(x, y);
-    if (!hit) return;
+    if (!hit) {
+      // 何もない所からドラッグすると範囲選択(Shift で今の選択に足す)
+      boxDrag = { keep: e.shiftKey ? new Set(sel) : new Set(), sx: x, sy: y, moved: false, hadSel: sel.size > 0 };
+      box = { x0: x, y0: y, x1: x, y1: y };
+      dragging = true;
+      rollCanvas.setPointerCapture(e.pointerId);
+      e.preventDefault();
+      return;
+    }
+    if (e.shiftKey) { if (sel.has(hit.i)) sel.delete(hit.i); else sel.add(hit.i); }
+    else if (!sel.has(hit.i)) { sel.clear(); sel.add(hit.i); }
+    selInfo();
+    if (!sel.has(hit.i)) { drawRoll(null); return; }
     let notes: ParsedNote[];
     try { notes = parseNotes($<HTMLTextAreaElement>("notes").value); } catch { return; }
-    drag = { i: hit.i, mode: hit.mode, x, y, midi: notes[hit.i].midi, beats: notes[hit.i].beats, notes };
+    const starts = new Map<number, { midi: number; beats: number }>();
+    for (const i of sel) if (notes[i]) starts.set(i, { midi: notes[i].midi, beats: notes[i].beats });
+    drag = { i: hit.i, mode: hit.mode, x, y, notes, starts, lastDelta: 0 };
     dragging = true;
     rollCanvas.setPointerCapture(e.pointerId);
-    if (hit.mode === "pitch") beep(drag.midi);
+    if (hit.mode === "pitch") beep(notes[hit.i].midi);
     drawRoll(null);
+    e.preventDefault();
   });
   rollCanvas.addEventListener("pointermove", (e) => {
     const { x, y } = rollPos(e);
+    if (boxDrag && box) {
+      if (!boxDrag.moved && Math.hypot(x - boxDrag.sx, y - boxDrag.sy) < 4) return;
+      boxDrag.moved = true;
+      box.x1 = Math.max(0, Math.min(rollCanvas.clientWidth, x));
+      box.y1 = Math.max(0, Math.min(rollCanvas.clientHeight, y));
+      sel = new Set(boxDrag.keep);
+      for (const i of notesInBox(box)) sel.add(i);
+      selInfo();
+      drawRoll(null);
+      return;
+    }
     if (!drag) {
       const hit = busy || playCtx ? null : hitNote(x, y);
       rollCanvas.style.cursor = hit ? (hit.mode === "len" ? "ew-resize" : "ns-resize") : "default";
       return;
     }
     const { rh, span } = geom();
-    const n = drag.notes[drag.i];
     if (drag.mode === "pitch") {
-      const m = Math.max(view.lo, Math.min(view.hi, Math.round(drag.midi + (drag.y - y) / rh)));
-      if (m === n.midi) return;
-      n.midi = m;
-      beep(m);
+      let delta = Math.round((drag.y - y) / rh);
+      const ms = [...drag.starts.values()].map((v) => v.midi);
+      delta = Math.max(view.lo - Math.min(...ms), Math.min(view.hi - Math.max(...ms), delta));
+      if (delta === drag.lastDelta) return;
+      drag.lastDelta = delta;
+      for (const [i, st] of drag.starts) drag.notes[i].midi = st.midi + delta;
+      beep(drag.notes[drag.i].midi);
     } else {
       const secPerBeat = 60 / bpmNow();
       const dBeats = ((x - drag.x) / span) * view.end / secPerBeat;
-      const raw = drag.beats + dBeats;
-      const b = Math.min(32, gridOn && !e.altKey ? snapBeats(raw, divNow()) : Math.max(0.05, Math.round(raw * 20) / 20));
-      if (b === n.beats) return;
-      n.beats = b;
+      let changed = false;
+      for (const [i, st] of drag.starts) {
+        const raw = st.beats + dBeats;
+        const b = Math.min(32, gridOn && !e.altKey ? snapBeats(raw, divNow()) : Math.max(0.05, Math.round(raw * 20) / 20));
+        if (b !== drag.notes[i].beats) { drag.notes[i].beats = b; changed = true; }
+      }
+      if (!changed) return;
     }
     writeNotes(drag.notes);
     layoutNotes();
+    selInfo();
     drawRoll(null);
   });
   const endDrag = () => {
-    if (!drag) return;
+    if (boxDrag) {
+      // ドラッグせずにクリックしただけなら、選択を解除
+      if (!boxDrag.moved && boxDrag.keep.size === 0 && boxDrag.hadSel) sel.clear();
+      boxDrag = null;
+      box = null;
+    }
     drag = null;
     dragging = false;
     layoutNotes();
+    selInfo();
     drawRoll(null);
   };
   rollCanvas.addEventListener("pointerup", endDrag);
   rollCanvas.addEventListener("pointercancel", endDrag);
+
+  function shiftSel(semi: number): void {
+    let ns: ParsedNote[];
+    try { ns = parseNotes($<HTMLTextAreaElement>("notes").value); } catch { return; }
+    const idx = [...sel].filter((i) => ns[i]);
+    if (!idx.length) return;
+    const ms = idx.map((i) => ns[i].midi);
+    const d = Math.max(24 - Math.min(...ms), Math.min(108 - Math.max(...ms), semi));
+    if (!d) return;
+    for (const i of idx) ns[i].midi += d;
+    writeNotes(ns);
+    layoutNotes();
+    drawRoll(null);
+    beep(ns[idx[0]].midi);
+  }
+  rollCanvas.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a") {
+      sel = new Set(rollNotes.map((_, i) => i));
+      selInfo(); drawRoll(null); e.preventDefault();
+    } else if (e.key === "Escape") {
+      sel.clear(); selInfo(); drawRoll(null);
+    } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+      if (busy || playCtx) return;
+      shiftSel((e.key === "ArrowUp" ? 1 : -1) * (e.shiftKey ? 12 : 1));
+      e.preventDefault();
+    }
+  });
+  // 音符の欄を書き換えたら、選択は外す(音符の並びが変わるため)
+  $("notes").addEventListener("input", () => { if (!dragging) { sel.clear(); selInfo(); } });
 
   // ---------------------------------------------------------------- 口の断面(CHIMERA 本体と同じ描画)
   const mouthCanvas = $<HTMLCanvasElement>("mouth");
