@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHIMERA 歌声レンダラー(英語の歌をWAVにする・無料) – なみぐる！</title>
+<meta name="description" content="物理モデリング歌声シンセ CHIMERA に英語の歌詞と音符を渡して、ブラウザの中でWAVに書き出す無料ツール。">
+<meta property="og:title" content="CHIMERA 歌声レンダラー – なみぐる！">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.namigroove.com/tools/chimera/">
+<link rel="canonical" href="https://www.namigroove.com/tools/chimera/">
+<meta name="theme-color" content="#396cdf">
+<style>
+  :root{--ink:#1d2433;--dim:#6b7690;--line:#cfd8ea;--bg:#eef2fa;--panel:#fff;--accent:#396cdf;--warn:#d4631c;--ok:#1d8a52}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 "Hiragino Sans","Yu Gothic UI","Meiryo","Noto Sans JP",system-ui,sans-serif}
+  main{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+  h1{font-size:22px;margin:0 0 4px}
+  .lead{color:var(--dim);margin:0 0 22px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+  label{display:block;font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.04em;margin:0 0 4px}
+  textarea,input[type=text],input[type=number],select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fafbfe;color:var(--ink)}
+  textarea{min-height:64px;resize:vertical;font-family:ui-monospace,"Cascadia Mono",Consolas,monospace}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .row>div{flex:1 1 150px}
+  .gap{height:12px}
+  button{font:inherit;font-weight:700;padding:9px 16px;border-radius:999px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer}
+  button.quiet{background:#fff;color:var(--accent)}
+  button:disabled{opacity:.45;cursor:default}
+  .status{min-height:1.6em;margin-top:10px;font-size:14px}
+  .status.ng{color:var(--warn)} .status.ok{color:var(--ok)}
+  .hint{font-size:13px;color:var(--dim);margin-top:6px}
+  .syl{font-size:13px;color:var(--dim);margin-top:6px;word-break:break-word}
+  progress{width:100%;height:8px;margin-top:8px}
+  footer{font-size:12px;color:var(--dim)}
+  a{color:var(--accent)}
+  code{background:#eef2fa;padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<main>
+  <h1>CHIMERA 歌声レンダラー</h1>
+  <p class="lead">英語の歌詞と音符を入れると、物理モデリング歌声シンセ CHIMERA が歌って、WAV に書き出します。インストール不要、ブラウザの中だけで動きます。</p>
+
+  <div class="panel">
+    <label for="lyrics">歌詞(英語)</label>
+    <textarea id="lyrics" spellcheck="false">Twinkle twinkle little star</textarea>
+    <div class="syl" id="sylInfo"></div>
+    <div class="hint">1つの音で音を伸ばして音程だけ変えたいときは、歌詞に <code>-</code> を置きます(例: <code>Hel-lo - there</code>)。</div>
+    <div class="gap"></div>
+    <label for="notes">音符(音名:拍の長さ)</label>
+    <textarea id="notes" spellcheck="false">C5 C5 G5 G5 A5 A5 G5:2</textarea>
+    <div class="hint">空白で区切ります。<code>C5</code> は1拍、<code>G5:2</code> は2拍。<code>C#4</code>・<code>Bb3</code> や、MIDIノート番号(<code>72</code>)も使えます。C4 = 60(国際式)。休符はありません。音符の数は歌詞の音節の数と同じにしてください。</div>
+    <div class="gap"></div>
+    <div class="row">
+      <div><label for="bpm">テンポ(BPM)</label><input type="number" id="bpm" value="100" min="30" max="240"></div>
+      <div><label for="body">ボイス</label>
+        <select id="body"><option value="child">子ども(child)</option><option value="female">女性(female)</option><option value="male">男性(male)</option></select></div>
+      <div><label for="vib">ビブラート(cent)</label><input type="number" id="vib" value="35" min="0" max="100"></div>
+    </div>
+    <div class="gap"></div>
+    <label><input type="checkbox" id="mic" checked> マイク処理をかける(アプリで聞こえる音と同じ。外すと素の出力)</label>
+    <div class="gap"></div>
+    <div class="row" style="align-items:center">
+      <div style="flex:0 0 auto"><button id="btnPlay">試し聞き</button> <button id="btnStop" class="quiet" disabled>停止</button> <button id="btnSave" class="quiet" disabled>WAVを保存</button></div>
+      <div><label for="fname" style="margin:0">ファイル名(半角英数字)</label><input type="text" id="fname" value="chimera_song"></div>
+    </div>
+    <progress id="prog" value="0" max="1" hidden></progress>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="panel">
+    <b>使い方のヒント</b>
+    <ul class="hint" style="padding-left:20px;margin:6px 0 0">
+      <li>書き出す WAV は 48kHz・16bit・モノラルです。ファイル名は半角英数字にしておくと、他のツールに渡すときにトラブルになりにくいです。</li>
+      <li>曲の長さは数十秒までを目安にしてください(長すぎるとエラーになります)。</li>
+      <li>声を自分で弾いたり、口の形を動かして遊びたいときは <a href="app.html">CHIMERA 本体のアプリ</a> へ。</li>
+    </ul>
+  </div>
+
+  <footer>
+    CHIMERA は <a href="https://github.com/jamesondh/chimera-vocal-synth" target="_blank" rel="noopener">jamesondh/chimera-vocal-synth</a>(MIT License)。このページはその声のエンジンをそのまま使い、なみぐるが書き出しの画面を足したものです。
+    <a href="LICENSE.txt">ライセンス全文</a> / <a href="../">ツール一覧へ</a>
+  </footer>
+</main>
+<script type="module" src="/src/studio/main.ts"></script>
+</body>
+</html>
