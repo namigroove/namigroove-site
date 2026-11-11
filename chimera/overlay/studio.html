@@ -65,9 +65,47 @@
   .check{display:flex;gap:7px;align-items:center;font-size:13px}
   footer{font-size:12px;color:var(--dim);margin-top:6px}
   a{color:var(--accent)}
+
+  /* サイト共通のヘッダー・フッター(他のツールページと同じ見た目) */
+  .sitehd{position:sticky;top:0;z-index:50;margin:-16px -16px 16px;padding:0 16px;background:#396cdf;color:#fff;font-family:var(--sans)}
+  .sitehd .in{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}
+  .sitehd .logo{display:flex;align-items:center;color:#fff;text-decoration:none;font-size:20px}
+  .sitehd .logo img{display:block;height:40px;width:auto}
+  .sitehd .logo img[hidden]{display:none}
+  .sitehd nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+  .sitehd nav a{color:rgba(255,255,255,.82);text-decoration:none}
+  .sitehd nav a:hover{color:#fff}
+  @media (max-width:640px){.sitehd .in{padding:8px 0}.sitehd .logo img{height:34px}.sitehd nav{gap:10px;font-size:12px;flex-wrap:nowrap;white-space:nowrap}.sitehd nav .opt{display:none}}
+  .sitefoot{max-width:1180px;margin:28px auto 0;font-size:12px;color:var(--dim)}
+  .sitefoot a{color:var(--accent)}
+  .sitefoot .share-row{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 16px 20px;flex-wrap:wrap}
+  .sitefoot .share-label{font-size:12px;color:var(--dim);width:100%;text-align:center;margin-bottom:2px}
+  .sitefoot .sh{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;text-decoration:none;transition:transform .15s}
+  .sitefoot .sh:hover{transform:translateY(-2px)}
+  .sitefoot .sh svg{width:20px;height:20px}
+  .sitefoot .sh-x{background:#000}.sitefoot .sh-line{background:#06c755}.sitefoot .sh-line svg{width:26px;height:26px}.sitefoot .sh-share{background:#396cdf}
+  .sitefoot .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .sitefoot .foot-links{display:flex;gap:16px;flex-wrap:wrap}
+  .sitefoot .foot-links a{display:inline-flex;align-items:center;gap:4px}
+  .sitefoot .foot-links .fi{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .sitefoot .foot-links .fi .fill{fill:currentColor;stroke:none}
+  .sitefoot-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#101f45;color:#fff;font-size:13px;padding:10px 16px;border-radius:999px;z-index:99;transition:all .25s}
+  .sitefoot-toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
+<header class="sitehd">
+  <div class="in">
+    <a class="logo" href="/"><img src="https://www.namigroove.com/img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <nav aria-label="メインメニュー">
+      <a href="/works/" translate="no">Works</a>
+      <a href="/tools/" translate="no">Tools</a>
+      <a href="/#notes"><span translate="no">₺ƾらせ</span></a>
+      <a href="/#links" class="opt">リンク</a>
+      <a href="/#contact">依頼</a>
+    </nav>
+  </div>
+</header>
 <div class="wrap">
   <div class="top">
     <h1>CHIMERA 歌声レンダラー</h1>
@@ -140,6 +178,21 @@
     <a href="LICENSE.txt">ライセンス全文</a>(同梱: <a href="data/CMUDICT-LICENSE.txt">CMU発音辞書</a> / <a href="fonts/AVHERSHEY-LICENSE.txt">Hersheyフォント</a>)。非公式の派生ページで、本家とは関係ありません / <a href="../">ツール一覧へ</a>
   </footer>
 </div>
+<footer class="sitefoot">
+<div class="share-row">
+  <span class="share-label">このページをシェア</span>
+  <a class="sh sh-x" href="https://x.com/intent/post?text=CHIMERA%20%E6%AD%8C%E5%A3%B0%E3%83%AC%E3%83%B3%E3%83%80%E3%83%A9%E3%83%BC%20%E2%80%93%20%E3%81%AA%E3%81%BF%E3%81%90%E3%82%8B%EF%BC%81%20%23namigroovetools&amp;url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fchimera%2F" target="_blank" rel="noopener" aria-label="Xでシェア"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  <a class="sh sh-line" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.namigroove.com%2Ftools%2Fchimera%2F" target="_blank" rel="noopener" aria-label="LINEで送る"><svg viewBox="2.2 3 19.6 19" aria-hidden="true"><path fill="#fff" d="M12 3.5c-5.2 0-9.3 3.4-9.3 7.6 0 3.8 3.3 6.9 7.7 7.5.4.1.6.3.6.6l-.1 2.1c0 .4.3.6.7.4 2.4-1.4 7.7-4.6 9.3-7.7.6-1 .9-1.9.9-2.9 0-4.2-4.2-7.6-9.8-7.6z"/><text x="12" y="13.6" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="6.2" fill="#06c755">LINE</text></svg></a>
+  <button class="sh sh-share" type="button" id="shareBtn" aria-label="リンクを共有"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
+</div>
+<div class="foot"><a href="/tools/">← ツール一覧</a><nav class="foot-links" aria-label="サイト情報"><a href="https://www.namigroove.com/privacy-policy/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="M12 16.2s-3.2-2-3.2-4.2a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.2-3.2 4.2-3.2 4.2z" class="fill"/></svg>プライバシーポリシー</a><a href="https://www.namigroove.com/links/"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></svg>相互リンク</a></nav></div>
+</footer>
+<script>
+(function(){var b=document.getElementById("shareBtn");if(!b)return;
+b.addEventListener("click",async function(){var d={title:document.title,text:document.title+" #namigroovetools",url:"https://www.namigroove.com/tools/chimera/"};
+try{if(navigator.share){await navigator.share(d);return}await navigator.clipboard.writeText(d.url);
+var t=document.createElement("div");t.className="sitefoot-toast";t.textContent="リンクをコピーしました";document.body.appendChild(t);requestAnimationFrame(function(){t.classList.add("show")});setTimeout(function(){t.classList.remove("show");setTimeout(function(){t.remove()},300)},1800)}catch(e){}})})();
+</script>
 <script type="module" src="/src/studio/main.ts"></script>
 </body>
 </html>
