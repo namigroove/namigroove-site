@@ -138,12 +138,13 @@ input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:bl
 .dots i.mute{opacity:.35}
 @media (prefers-reduced-motion:reduce){.nami.hop,.nami.hop.acc{animation:none}#needle{transition:none}}
 .kbd{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px}
-.kbd kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
+.kbd kbd,.how kbd{font:11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;margin:0 2px}
 @media (hover:none){.kbd{display:none}}
 .how{font-size:13px;color:var(--ink-soft);line-height:1.8}
 .how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
 .how ul{margin:0;padding-left:1.2em}
 .how a{color:var(--sea)}
+.how+.how{margin-top:22px}
 
 footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
 footer a{color:var(--sea)}
@@ -323,6 +324,17 @@ header.top .logo{flex:none}
     <p class="kbd"><kbd>Space</kbd>スタート/ストップ <kbd>←</kbd><kbd>→</kbd>BPM±1 <kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd>±10 <kbd>T</kbd>タップ</p>
   </section>
 
+  <section class="how" id="metronome-howto">
+    <h2>メトロノームの使い方</h2>
+    <ul>
+      <li>上の「メトロノーム」タブを開いて、スタートを押すとすぐ鳴ります。テンポ(BPM)は30〜300で、「−」「＋」かスライダーで変えられます。</li>
+      <li>テンポを曲に合わせたいときは、「タップ」を曲のリズムに合わせて数回たたくと、BPMを計れます。キーボードなら <kbd>T</kbd> でもOKです。</li>
+      <li>拍子は拍数で決めます(4拍、3拍、7拍など)。1拍を「♪♪」「3連」「16分」に分けると、細かいリズムの練習ができます。「♪♪」と「16分」では、スウィング(ハネ)の幅も選べます。</li>
+      <li>音色は「ピッ」「ウッド」「カウベル」から選べます。「1拍目を強く」で、小節の頭だけ強調できます。音量もここで調整してください。</li>
+      <li>丸をタップすると、その拍だけミュートできます。拍の頭を抜いて、感覚で数える練習に向いています。</li>
+      <li>楽器の練習、曲づくりのテンポ決め、バンドのリハーサルなどに。無料で、登録も要りません。</li>
+    </ul>
+  </section>
   <section class="how">
     <h2>使い方のメモ</h2>
     <ul>
