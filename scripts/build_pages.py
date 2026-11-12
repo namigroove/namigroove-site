@@ -44,7 +44,14 @@ if "profile.html" in pages and "works.html" in pages and pages["profile.html"] =
 
 ROOT_DIRS = ("img/", "data/", "fonts/", "audio/", "i18n/")
 
+ABS = "https://" + HOST + "/"
+
 def fix(text, is_page):
+    if is_page:
+        # SNSの共有画像(og:image / twitter:image)と構造化データの画像は、絶対URLでないと読まれない。
+        # 先に絶対URLにしておいて、残りの github.io を "/" に直す
+        text = re.sub(r'((?:og:image|twitter:image)"[^>]*?content=")' + re.escape(GH), r"\1" + ABS, text)
+        text = re.sub(r'("(?:image|logo|thumbnailUrl|contentUrl)":")' + re.escape(GH), r"\1" + ABS, text)
     text = text.replace(GH, "/")
     if not is_page:
         return text
