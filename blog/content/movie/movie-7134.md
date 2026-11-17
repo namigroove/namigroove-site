@@ -13,11 +13,7 @@ image: "/wp-content/uploads/2025/02/jct_ptn2.webp"
 
 {{% youtube id="Un-WmFb3xvM" %}}
 
-[
-
-![](/wp-content/uploads/2025/02/jct_ptn2.webp)
-
-](https://www.nicovideo.jp/watch/sm44637918)
+[![](/wp-content/uploads/2025/02/jct_ptn2.webp)](https://www.nicovideo.jp/watch/sm44637918)
 
 ## テーマ
 
@@ -325,7 +321,7 @@ nekomo先生のFANBOX記事
 
 戦隊モノは東映(豆映)の方が圧倒的に作品数が多いのだが、後光がどうしてもヒーロー達と相性が良くて結局こちらを採用
 
-手前のずんだもんたちはAviutlのその他>動画ファイル合成で虹色のグラデーションを入れている(今回動画ファイル合成を多様している)
+手前のずんだもんたちはAviutlのその他>動画ファイル合成で虹色のグラデーションを入れている(今回動画ファイル合成を多用している)
 
 ![](/wp-content/uploads/2025/02/image-13.webp)
 

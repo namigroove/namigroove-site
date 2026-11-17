@@ -103,7 +103,7 @@ Blender、Aviutlで作成。
 -   配信先一覧にないカスタムリンクも作成可能。
 -   アルバム名を入れると、自動で各種サブスクのリンクを作ってくれる。(似たアルバム名を掘ってくるので、精度は悪め)
 -   リンクの分析、追跡が可能。
--   GoogleAnalitics Twitter広告のタグ埋め込みが無料。
+-   GoogleAnalytics Twitter広告のタグ埋め込みが無料。
 
 ![](/wp-content/uploads/2021/11/image.webp)
 

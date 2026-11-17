@@ -33,7 +33,7 @@ birdにハマっていたのと、TEMPLIME、電音部の影響でどうして�
 
 *かっけ～2*
 
-流行は20年毎に繰り返すらしい\[要出展\]し、一作目の戻るボタンに「リズムが面白い」というコメントを貰ったのでもしかしたら今の時代に刺さるのでは！という淡い期待もあり。。
+流行は20年毎に繰り返すらしい\[要出典\]し、一作目の戻るボタンに「リズムが面白い」というコメントを貰ったのでもしかしたら今の時代に刺さるのでは！という淡い期待もあり。。
 
 いくつかメロディを試作して、最初に今のサビ2(Swing)の部分が出来上がった。
 
@@ -85,7 +85,7 @@ Intensity高めのパキパキクラブサウンド
 
 ### 竿物
 
-**ギター:宅録(Fender mex Thinrine)**
+**ギター:宅録(Fender mex Thinline)**
 
 ギターは味付け程度にカッティングを入れた。
 
@@ -184,11 +184,7 @@ Camelliaを曲名に使うと、同人作曲家のかめりあさんを連想し
 
 [](https://rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=namigroove-22&language=ja_JP&o=9&p=8&l=as4&m=amazon&f=ifr&ref=as_ss_li_til&asins=B06XCR2J4J&linkId=f88eb01bdaa846f7a05c64cac26ded5c)[](https://www.amazon.co.jp/LIU-BAO-LBTOEM-%E3%80%90%E3%83%8E%E3%83%BC%E3%83%96%E3%83%A9%E3%83%B3%E3%83%89%E5%93%81%E3%80%91-%E3%82%BD%E3%83%BC%E3%83%A9%E3%83%BC%E5%9B%9E%E8%BB%A2%E5%8F%B0-360%E5%BA%A6-%E9%9B%BB%E8%A9%B1-%E5%AE%9D%E7%9F%B3-%E8%A1%A8%E7%A4%BA%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89-%E3%82%BF%E3%83%BC%E3%83%B3%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB-%E3%83%87%E3%82%A3%E3%82%B9%E3%83%97%E3%83%AC%E3%82%A4%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89-%E5%85%A84%E8%89%B2/dp/B06XCR2J4J?__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&crid=2RMCXRJ1ZKV8Z&keywords=%E3%83%95%E3%82%A3%E3%82%AE%E3%83%A5%E3%82%A2+%E5%9B%9E%E8%BB%A2&qid=1641211698&sprefix=%E3%83%95%E3%82%A3%E3%82%AE%E3%83%A5%E3%82%A2+%E5%9B%9E%E8%BB%A2%2Caps%2C184&sr=8-21&linkCode=li2&tag=namigroove-22&linkId=831658745eb7d13b409354a28aa7c37a&language=ja_JP&ref_=as_li_ss_il)![](https://ir-jp.amazon-adsystem.com/e/ir?t=namigroove-22&language=ja_JP&l=li2&o=9&a=B06XCR2J4J)
 
-[
-
-![](//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B06XCR2J4J&Format=_SL160_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=namigroove-22&language=ja_JP)
-
-](https://www.amazon.co.jp/LIU-BAO-LBTOEM-%E3%80%90%E3%83%8E%E3%83%BC%E3%83%96%E3%83%A9%E3%83%B3%E3%83%89%E5%93%81%E3%80%91-%E3%82%BD%E3%83%BC%E3%83%A9%E3%83%BC%E5%9B%9E%E8%BB%A2%E5%8F%B0-360%E5%BA%A6-%E9%9B%BB%E8%A9%B1-%E5%AE%9D%E7%9F%B3-%E8%A1%A8%E7%A4%BA%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89-%E3%82%BF%E3%83%BC%E3%83%B3%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB-%E3%83%87%E3%82%A3%E3%82%B9%E3%83%97%E3%83%AC%E3%82%A4%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89-%E5%85%A84%E8%89%B2/dp/B06XCR2J4J?__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&crid=2RMCXRJ1ZKV8Z&keywords=%E3%83%95%E3%82%A3%E3%82%AE%E3%83%A5%E3%82%A2+%E5%9B%9E%E8%BB%A2&qid=1641211698&sprefix=%E3%83%95%E3%82%A3%E3%82%AE%E3%83%A5%E3%82%A2+%E5%9B%9E%E8%BB%A2%2Caps%2C184&sr=8-21&linkCode=li2&tag=namigroove-22&linkId=9194b54e07911dae2be0d0671693aacf&language=ja_JP&ref_=as_li_ss_il)![](https://ir-jp.amazon-adsystem.com/e/ir?t=namigroove-22&language=ja_JP&l=li2&o=9&a=B06XCR2J4J)
+[![](//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B06XCR2J4J&Format=_SL160_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=namigroove-22&language=ja_JP)](https://www.amazon.co.jp/LIU-BAO-LBTOEM-%E3%80%90%E3%83%8E%E3%83%BC%E3%83%96%E3%83%A9%E3%83%B3%E3%83%89%E5%93%81%E3%80%91-%E3%82%BD%E3%83%BC%E3%83%A9%E3%83%BC%E5%9B%9E%E8%BB%A2%E5%8F%B0-360%E5%BA%A6-%E9%9B%BB%E8%A9%B1-%E5%AE%9D%E7%9F%B3-%E8%A1%A8%E7%A4%BA%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89-%E3%82%BF%E3%83%BC%E3%83%B3%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB-%E3%83%87%E3%82%A3%E3%82%B9%E3%83%97%E3%83%AC%E3%82%A4%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89-%E5%85%A84%E8%89%B2/dp/B06XCR2J4J?__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&crid=2RMCXRJ1ZKV8Z&keywords=%E3%83%95%E3%82%A3%E3%82%AE%E3%83%A5%E3%82%A2+%E5%9B%9E%E8%BB%A2&qid=1641211698&sprefix=%E3%83%95%E3%82%A3%E3%82%AE%E3%83%A5%E3%82%A2+%E5%9B%9E%E8%BB%A2%2Caps%2C184&sr=8-21&linkCode=li2&tag=namigroove-22&linkId=9194b54e07911dae2be0d0671693aacf&language=ja_JP&ref_=as_li_ss_il)![](https://ir-jp.amazon-adsystem.com/e/ir?t=namigroove-22&language=ja_JP&l=li2&o=9&a=B06XCR2J4J)
 
 [https://amzn.to/3mNRuW4](https://amzn.to/3mNRuW4)
 

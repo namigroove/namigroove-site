@@ -62,11 +62,7 @@ temu(中華ECサイト)で買ったよ～
 **キャンディー・パープル の設定画や没案など**  
 [https://kotobacchi.fanbox.cc/posts/5249149](https://kotobacchi.fanbox.cc/posts/5249149)
 
-[
-
-![](/wp-content/uploads/2023/02/image-2.webp)
-
-](https://kotobacchi.fanbox.cc/posts/5249149)
+[![](/wp-content/uploads/2023/02/image-2.webp)](https://kotobacchi.fanbox.cc/posts/5249149)
 
 頂いた初案デザインにAmazon風のヘッドホンをオーダーし、耳飾りをヘッドホンにマウントしてデザインが完成。
 

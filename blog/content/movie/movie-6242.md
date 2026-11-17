@@ -51,7 +51,7 @@ YoutubeMusicWeekend 8.0にてデビュー
 
 ![](/wp-content/uploads/2024/10/00c274a737e08ad893959eccc3b3ecd1.webp)
 
-### Digital Downlad
+### Digital Download
 
 **Booth**  
 [https://namigroove.booth.pm/](https://namigroove.booth.pm/)
@@ -235,7 +235,7 @@ Windows98　個人サイトモチーフ
 
 右のセトリは[AzPainter2](https://azpainter2.softonic.jp/)といういにしえお絵かきソフトのUIを切り貼りして作った。
 
-顔隠しはフレーム単位で治す手作業で、しんどかった涙
+顔隠しはフレーム単位で直す手作業で、しんどかった涙
 
 ![](/wp-content/uploads/2024/08/image-6.webp)
 

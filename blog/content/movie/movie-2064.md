@@ -115,7 +115,7 @@ Little Alter BoyというZedd御用達のケロケロボイスメーカーを黒
 
 追記:これ作った後に、Little Alter boyは飛び道具で一般的なピッチ修正に向かないということを知ったので、
 
-Twinfiledさんに[Waves Tune Real-Time](https://wavesjapan.jp/plugins/waves-tune-real-time) をおすすめしてもらい、即購入した。
+Twinfieldさんに[Waves Tune Real-Time](https://wavesjapan.jp/plugins/waves-tune-real-time) をおすすめしてもらい、即購入した。
 
 →次以降の作品はちょっと人力ボーカルの質が良くなるかも。
 
@@ -145,7 +145,7 @@ NEUTRINO
 
 泡オブジェクトを浮かせて油の海にしているのもポイント。
 
-カウンタやプログレスバーはの演出は、るはしさんの映像をみていつかやりたいなあと思っていたもの。
+カウンタやプログレスバーの演出は、るはしさんの映像をみていつかやりたいなあと思っていたもの。
 
 短い楽曲で試せてよかった。
 

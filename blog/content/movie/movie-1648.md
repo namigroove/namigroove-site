@@ -121,7 +121,7 @@ NEUTRINOずんだもんだと歌がうますぎてミクにちょっかいかけ
 
 ご協力：antigraph / Shunta Iizuka([@sunguitar711](https://twitter.com/sunguitar711?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1578340009417281537%7Ctwgr%5E6531526eac9152df09a98608b9287dffeac785cb%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fwww.namigroove.com%2Fwp-admin%2Fpost.php%3Fpost%3D1648action%3Dedit))
 
-撮り音が良なので、あとはかいりきベア式タイム調整(波形を切り貼りして好みのタイミングで並べていく)だけでギターラインが完成した🎸
+撮り音が良いので、あとはかいりきベア式タイム調整(波形を切り貼りして好みのタイミングで並べていく)だけでギターラインが完成した🎸
 
 {{% youtube id="pnOR6NkpnDw" start="611" %}}
 

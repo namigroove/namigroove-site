@@ -86,7 +86,7 @@ image: "/wp-content/uploads/2022/11/maxresdefault.webp"
 
 ドンクベース：2step /garageの要　phaseplantのプリセットを少し歪ませて使用。
 
-生ベース：スラップ要因。EXボイスと掛け合いつつ美味しいところに差し込んだ。
+生ベース：スラップ要員。EXボイスと掛け合いつつ美味しいところに差し込んだ。
 
 > [【My new gear…】万能ベース　Momose　MJ2-STD](https://www.namigroove.com/2021/02/11/post-1110/)
 

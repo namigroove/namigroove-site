@@ -9,11 +9,7 @@ wp_id: 3218
 draft: false
 image: "/wp-content/uploads/2023/04/20375ced40379f1e8ea26f8e6c287f04.webp"
 ---
-[
-
-![](/wp-content/uploads/2023/04/20375ced40379f1e8ea26f8e6c287f04.webp)
-
-](https://www.youtube.com/watch?v=OYPi_8ZFwNs)
+[![](/wp-content/uploads/2023/04/20375ced40379f1e8ea26f8e6c287f04.webp)](https://www.youtube.com/watch?v=OYPi_8ZFwNs)
 
 ## 1st Album「ずんだもんがいっぱい」XFD
 

@@ -73,7 +73,7 @@ EP:Wurly Premier G
 
 ### 竿物
 
-ギター:宅録(Fender mex Thinrine)
+ギター:宅録(Fender mex Thinline)
 
 ベース:宅録(Momose Jazz Bass)
 
@@ -125,7 +125,7 @@ soul部分の落ち着きとの対比でtrap、DnB要素を織り交ぜた。
 
 ### 英語歌詞
 
-*I can’t stop licking candy sugar coted.*
+*I can’t stop licking candy sugar coated.*
 
 最初candyをdrugでおいてたけど、以下の理由でcandyに変更した。
 
@@ -137,7 +137,7 @@ soul部分の落ち着きとの対比でtrap、DnB要素を織り交ぜた。
 
 ミク英語音源は声質が一つしかないので、しっとり歌わせる時は日本語から作ったほうが音色があってよい。
 
-人力VOCAROIDの実施経験が生きた。
+人力VOCALOIDの実施経験が生きた。
 
 ## 映像
 

@@ -63,7 +63,7 @@ image: "/wp-content/uploads/2022/08/maxresdefault.webp"
 
 ### 笙記譜法
 
-円形が円環を表すのと、見慣れない漢字が動画栄えする()ので直接記譜法を示してみた。
+円形が円環を表すのと、見慣れない漢字が動画栄えするので直接記譜法を示してみた。
 
 ![](/wp-content/uploads/2022/08/289696b7c15a7cdfce3d81f9cb2c966d.webp)
 

@@ -121,7 +121,7 @@ FUNK×REGGAE×EUROBEAT　まとめて復権
 
 2.「今夜　一皮むけなきゃ　変われない / ちょいと　素材の味で勝負したい」
 
-→無理に繕わずありのままの姿で勝負したいという心の成長・心境の変化をで表す。
+→無理に繕わずありのままの姿で勝負したいという心の成長・心境の変化を表す。
 
 ちょっとくさくてバブリーな感じも出しつつ…
 
@@ -364,7 +364,7 @@ ZUNDA PARTY NIGHTやカルダモンソロの文字アニメは
 
 時計はきゅうくらりんの時計を数式で書いたものからアラーム部をトリミングして持ってきた。　  
 いよわさんごめんなさい　  
-時計を踊らせる方法が思いつかず、[BigBrother✰](https://www.nicovideo.jp/watch/sm33175756?panel=share)見たいな過剰ラスターをかけて踊ってる体にした。
+時計を踊らせる方法が思いつかず、[BigBrother✰](https://www.nicovideo.jp/watch/sm33175756?panel=share)みたいな過剰ラスターをかけて踊ってる体にした。
 
 きゅうくらりん時計（数式)[https://www.desmos.com/calculator/vivtrcczot?lang=ja](https://www.desmos.com/calculator/vivtrcczot?lang=ja)
 
