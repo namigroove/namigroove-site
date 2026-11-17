@@ -4,6 +4,8 @@
 	"compatibility_date": "2026-02-24",
 	// EmDash 本体の Worker を直接呼ぶ(workers.dev を経由しない)
 	"services": [{ "binding": "BLOG", "service": "namigroove-blog" }],
+	// 5分おきに記事の更新を調べて、あれば作品一覧の更新をGitHubに頼む
+	"triggers": { "crons": ["*/5 * * * *"] },
 	// 本番ルート。戻すときはこの routes をコメントアウトして deploy する
 	"routes": [
 		{ "pattern": "www.namigroove.com/*", "zone_name": "namigroove.com" },

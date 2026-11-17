@@ -17,11 +17,8 @@ const TO_EMDASH = [
 // EmDashで記事を公開・保存したときに呼ばれる受け口。GitHubに「作品一覧を作り直して」と知らせる。
 //  呼び出し: POST https://www.namigroove.com/hooks/works-sync?key=<HOOK_KEY>
 //  必要な秘密の値(wrangler secret put): HOOK_KEY(受け口の合言葉)、GH_TOKEN(GitHubの細かい権限のトークン。Contents: Read and write)
-async function worksSync(request, env) {
-  const url = new URL(request.url);
-  if (!env.HOOK_KEY || url.searchParams.get("key") !== env.HOOK_KEY) return new Response("forbidden", { status: 403 });
-  if (!env.GH_TOKEN) return new Response("GH_TOKEN が未設定です", { status: 500 });
-  const res = await fetch("https://api.github.com/repos/namigroove/namigroove-site/dispatches", {
+async function dispatchWorksSync(env) {
+  return fetch("https://api.github.com/repos/namigroove/namigroove-site/dispatches", {
     method: "POST",
     headers: {
       authorization: `Bearer ${env.GH_TOKEN}`,
@@ -31,10 +28,32 @@ async function worksSync(request, env) {
     },
     body: JSON.stringify({ event_type: "works-sync" }),
   });
+}
+
+async function worksSync(request, env) {
+  const url = new URL(request.url);
+  if (!env.HOOK_KEY || url.searchParams.get("key") !== env.HOOK_KEY) return new Response("forbidden", { status: 403 });
+  if (!env.GH_TOKEN) return new Response("GH_TOKEN が未設定です", { status: 500 });
+  const res = await dispatchWorksSync(env);
   return new Response(res.ok ? "ok" : `github ${res.status}`, { status: res.ok ? 202 : 502 });
 }
 
+// 5分おきに記事リストを見て、直近(7分以内)に更新された記事があれば、GitHubに作品一覧の更新を頼む。
+// (EmDashに公開の通知を出す仕組みを入れなくても、公開から最大5分ほどで反映される)
+const WINDOW_MS = 7 * 60 * 1000;
+async function checkFeed(env) {
+  if (!env.GH_TOKEN) return;
+  const res = await env.BLOG.fetch(new Request("https://www.namigroove.com/works-feed.json"));
+  if (!res.ok) return;
+  const { items } = await res.json();
+  const latest = Math.max(0, ...items.map((i) => (i.modified ? Date.parse(i.modified) : 0)).filter(Number.isFinite));
+  if (Date.now() - latest <= WINDOW_MS) await dispatchWorksSync(env);
+}
+
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(checkFeed(env));
+  },
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method === "POST" && url.pathname === "/hooks/works-sync") return worksSync(request, env);

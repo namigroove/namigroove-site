@@ -12,6 +12,13 @@ function ytId(e) {
   return m ? m[1] : "";
 }
 
+// 記事の最終更新(公開・編集)の日時。振り分けWorkerが「直近で更新があったか」を調べるのに使う
+function modified(e) {
+  const c = [e.data.updatedAt, e.data.updated_at, e.updatedAt, e.data.publishedAt, e.data.published_at, e.publishedAt, e.data.createdAt, e.data.created_at, e.createdAt]
+    .map((v) => (v ? new Date(v).getTime() : 0)).filter((n) => Number.isFinite(n) && n > 0);
+  return c.length ? new Date(Math.max(...c)).toISOString() : "";
+}
+
 export async function GET() {
   const items = [];
   for (const coll of ["music", "movie"]) {
@@ -27,6 +34,7 @@ export async function GET() {
         url: entryUrl(coll, e),
         thumb: entryThumb(e) || "",
         yt: ytId(e),
+        modified: modified(e),
       });
     }
   }
