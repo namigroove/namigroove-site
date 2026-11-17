@@ -7,6 +7,12 @@ on:
   schedule:
     - cron: "17 21 * * *"   # 毎日 朝6:17(日本時間)
   workflow_dispatch:         # GitHubの画面から手動でも実行できる
+  repository_dispatch:       # EmDashで記事を公開したときに呼ばれる(EmDash側のWebhook通知 → router/worker.js の /hooks/works-sync)
+    types: [works-sync]
+
+concurrency:
+  group: works-sync
+  cancel-in-progress: false
 
 permissions:
   contents: write

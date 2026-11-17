@@ -41,7 +41,36 @@ function readPosts(type) {
   return out;
 }
 
-const posts = [...readPosts("music"), ...readPosts("movie")];
+// Cloudflare(EmDash)の管理画面で書いた記事は、公開中の記事リスト(works-feed.json)から取り込む。
+// 取れなかったとき(通信エラーなど)は、Markdownの記事だけで続ける。
+async function readFeed() {
+  const url = process.env.WORKS_FEED_URL || SITE + "/works-feed.json";
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(20000) });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const j = await res.json();
+    if (!Array.isArray(j.items)) throw new Error("形式が違います");
+    return j.items.map((it) => {
+      const link = it.url.startsWith("http") ? it.url : SITE + encodeURI(decodeURI(it.url));
+      return {
+        id: it.wp || it.id,
+        title: { rendered: it.title },
+        date: it.date || "",
+        link,
+        _embedded: it.thumb ? { "wp:featuredmedia": [{ source_url: it.thumb.startsWith("http") ? it.thumb : SITE + it.thumb }] } : {},
+        content: { rendered: it.yt ? `https://www.youtube.com/watch?v=${it.yt}` : "" },
+        _yt: it.yt || "",
+      };
+    });
+  } catch (e) {
+    console.log("記事リスト(works-feed.json)を取れませんでした。Markdownの記事だけで続けます:", e.message);
+    return [];
+  }
+}
+
+const mdPosts = [...readPosts("music"), ...readPosts("movie")];
+const seen = new Set(mdPosts.map((p) => p.link));
+const posts = [...mdPosts, ...(await readFeed()).filter((p) => !seen.has(p.link))];
 
 const decode = (s) => s
   .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
@@ -136,6 +165,7 @@ for (const p of posts) {
     wp: p.id,
     auto: true,
   };
+  if (p._yt) item.yt = p._yt; // YouTube取り込みで同じ動画が二重に載らないように
   const t = thumb(p);
   if (t) item.img = t;
   works.push(item);
