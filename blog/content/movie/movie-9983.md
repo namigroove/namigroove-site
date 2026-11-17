@@ -26,10 +26,10 @@ image: "/wp-content/uploads/2026/10/maxresdefault-1.webp"
 / @pochikorone
 
 norimaro  
-[https://www.youtube.com/channel/@nori](https://www.youtube.com/channel/@nori)…
+[https://www.youtube.com/@norimaro](https://www.youtube.com/@norimaro)
 
 らぶてん loveten  
-[https://www.youtube.com/channel/@love](https://www.youtube.com/channel/@love)…
+[https://www.youtube.com/@loveten_10](https://www.youtube.com/@loveten_10)
 
 WADAI!!FES!!一同  
 湯毛  
