@@ -42,12 +42,22 @@ async function worksSync(request, env) {
 // (EmDashに公開の通知を出す仕組みを入れなくても、公開から最大5分ほどで反映される)
 const WINDOW_MS = 7 * 60 * 1000;
 async function checkFeed(env) {
-  if (!env.GH_TOKEN) return;
-  const res = await env.BLOG.fetch(new Request("https://www.namigroove.com/works-feed.json"));
-  if (!res.ok) return;
-  const { items } = await res.json();
-  const latest = Math.max(0, ...items.map((i) => (i.modified ? Date.parse(i.modified) : 0)).filter(Number.isFinite));
-  if (Date.now() - latest <= WINDOW_MS) await dispatchWorksSync(env);
+  try {
+    if (!env.GH_TOKEN) { console.log("works-sync: GH_TOKEN が未設定"); return; }
+    const res = await env.BLOG.fetch(new Request("https://www.namigroove.com/works-feed.json"));
+    if (!res.ok) { console.log("works-sync: 記事リストが取れません HTTP", res.status); return; }
+    const { items } = await res.json();
+    const latest = Math.max(0, ...items.map((i) => (i.modified ? Date.parse(i.modified) : 0)).filter(Number.isFinite));
+    const ageMin = (Date.now() - latest) / 60000;
+    if (Date.now() - latest <= WINDOW_MS) {
+      const g = await dispatchWorksSync(env);
+      console.log(`works-sync: 更新あり(${ageMin.toFixed(1)}分前) → GitHubへ通知 HTTP ${g.status}`);
+    } else {
+      console.log(`works-sync: 更新なし(最新は${ageMin.toFixed(1)}分前)`);
+    }
+  } catch (e) {
+    console.log("works-sync: エラー", String(e && e.message || e));
+  }
 }
 
 export default {
