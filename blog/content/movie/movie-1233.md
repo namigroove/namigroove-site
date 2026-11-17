@@ -22,14 +22,13 @@ image: "/wp-content/uploads/2022/07/zundanex.gif"
 🐫BOOTH  
 [https://namigroove.booth.pm/items/4012449](https://namigroove.booth.pm/items/4012449)
 
-[](<https://namigroove.booth.pm/items/4012449 >)  
 🔷Bandcamp  
 [https://namigroove.bandcamp.com/album/–2](https://namigroove.bandcamp.com/album/--2)
 
 ▋Music Streaming
 
 ▼各種配信リンク  
-[https://big-up.style/F](https://big-up.style/FosOPcF7Yl\</a\>\</p\>)[o](https://big-up.style/FosOPcF7Yl)[sOPcF7Yl](https://big-up.style/FosOPcF7Yl\</a\>\</p\>)
+[https://big-up.style/FosOPcF7Yl](https://big-up.style/FosOPcF7Yl)
 
 ## IPPUNグランプリ
 
