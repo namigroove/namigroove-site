@@ -39,7 +39,7 @@ YUBINOWA
 式羽★愛及虚空ノ団
 
 ✦Footage 二次創作素材  
-[https://namigroove.fanbox.cc/posts/11](https://namigroove.fanbox.cc/posts/11)…
+[https://namigroove.fanbox.cc/posts/11849702](https://namigroove.fanbox.cc/posts/11849702)
 
 ✦Vocal  
 重音テトSV (カル・テト)  

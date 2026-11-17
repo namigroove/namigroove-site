@@ -49,7 +49,7 @@ Gを基調にベースの赴くままにアレンジ + それにクラリネッ�
 
 ## サンプリングネタ
 
-Run-DMC「Here We Go（Live at the Funhouse）
+Run-DMC「Here We Go（Live at the Funhouse）」
 
 「Ah Yeah」の音がよく使われるが、その後のドンディリドン～もカッコいいからまるごと投入
 
