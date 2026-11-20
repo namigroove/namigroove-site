@@ -57,6 +57,7 @@ h1,h2{margin:0;text-wrap:balance}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
 .intro{padding-block:40px 20px}
 .intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+.howto{margin:12px 0 0;padding:10px 14px 10px 34px;background:var(--wash);border-radius:10px;color:var(--ink-soft);font-size:13px;line-height:1.7}.howto b{color:var(--ink);font-weight:inherit;margin-left:-20px;margin-right:6px}
 
 /* タブ */
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
@@ -293,6 +294,11 @@ header.top .logo{flex:none}
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>アニメ画像メーカー</h1>
     <p class="lead">画像を並べて、パラパラ動くGIFやAPNGを作ります。コマごとに表示時間を変えられて、順番の入れ替えや往復再生もできます。ブラウザの中だけで作るので、画像は送信されません。</p>
+    <ol class="howto" aria-label="使い方" style="list-style:none">
+      <li><b>1.</b>画像を並べる。複数まとめて選べます</li>
+      <li><b>2.</b>コマごとの表示時間と順番を整える</li>
+      <li><b>3.</b>「アニメを作る」を押して、GIF・APNGを保存</li>
+    </ol>
   </div>
 
   <section class="panel" aria-label="画像を選ぶ">
@@ -479,7 +485,7 @@ function compose(f,W,H,fit,bg,transparent){
   return c;
 }
 $("make").addEventListener("click",async()=>{
-  if(busy||fr.length<2)return;busy=true;
+  if(busy||fr.length<2)return;busy=true;window.ngPromo&&ngPromo.start();
   const btn=$("make");btn.disabled=true;
   try{
     const fmt=$("fmt").value,W=+$("w").value,first=fr[0],H=Math.max(1,Math.round(W*first.h/first.w)),tr=$("tr").checked,bg=$("bg").value,fit=$("fitm").value;
@@ -515,7 +521,7 @@ $("make").addEventListener("click",async()=>{
     $("mbar").hidden=true;
     window.ngDone&&ngDone.notify();
   }catch(e){console.error(e);$("outInfo").textContent="作れませんでした。画像が大きすぎるか、枚数が多すぎるかもしれません。";$("mbar").hidden=true}
-  busy=false;btn.disabled=false;
+  busy=false;window.ngPromo&&ngPromo.stop();btn.disabled=false;
 });
 $("clear").addEventListener("click",()=>{fr=[];render();$("outPanel").hidden=true;if(url){URL.revokeObjectURL(url);url=null}});
 drop.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();file.click()}});
@@ -565,6 +571,7 @@ if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){ad
 </script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script src="https://namigroove.github.io/namigroove-site/doneSound.js?v=2"></script>
+<script src="https://namigroove.github.io/namigroove-site/linePromo.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
 <script>addEventListener("load",function(){setTimeout(function(){var i=document.querySelector(".logo img[data-anim]");if(!i)return;var a=new Image();a.onload=function(){i.src=a.src};a.src=i.getAttribute("data-anim")},600)})</script>
 </body>

@@ -57,6 +57,7 @@ h1,h2{margin:0;text-wrap:balance}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
 .intro{padding-block:40px 20px}
 .intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+.howto{margin:12px 0 0;padding:10px 14px 10px 34px;background:var(--wash);border-radius:10px;color:var(--ink-soft);font-size:13px;line-height:1.7}.howto b{color:var(--ink);font-weight:inherit;margin-left:-20px;margin-right:6px}
 
 /* タブ */
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
@@ -297,6 +298,11 @@ header.top .logo{flex:none}
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>画像コンバーター</h1>
     <p class="lead">PNG・JPG・WebP を相互に変換します。PSD・AI・PDF・HEIC・TIFF も開いて、PNGなどに書き出せます。ICO・ファビコン作成、回転・切り抜き・背景透過、短い動画のGIF・APNG化にも使えます。ブラウザの中だけで変換するので、ファイルは送信されません。</p>
+    <ol class="howto" aria-label="使い方" style="list-style:none">
+      <li><b>1.</b>画像を選ぶ。ドラッグ&ドロップや貼り付けでもOK</li>
+      <li><b>2.</b>書き出す形式を選ぶ。回転・切り抜き・背景透過もここで</li>
+      <li><b>3.</b>変換して、画像を保存</li>
+    </ol>
   </div>
 
   <section class="panel" aria-label="ファイルを選ぶ">
@@ -520,14 +526,14 @@ function add(files,keep){
   run();
 }
 async function run(){
-  if(running)return;running=true;
+  if(running)return;running=true;window.ngPromo&&ngPromo.start();
   while(true){
     const r=jobs.find(j=>!j.started);if(!r)break;
     r.started=true;
     try{await convert(r)}catch(e){console.error(e);r.li.classList.add("err");r.st.textContent=(e&&e.userMsg)||"変換できませんでした(この形式は読み込めません)"}
     await new Promise(x=>setTimeout(x,0));
   }
-  running=false;
+  running=false;window.ngPromo&&ngPromo.stop();
   if(jobs.some(x=>x.done&&!x.noted)){jobs.forEach(x=>{if(x.done)x.noted=true});window.ngDone&&ngDone.notify()}
 }
 /* ---------- 加工 ---------- */
@@ -858,6 +864,7 @@ if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){ad
 </script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script src="https://namigroove.github.io/namigroove-site/doneSound.js?v=2"></script>
+<script src="https://namigroove.github.io/namigroove-site/linePromo.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
 <script>addEventListener("load",function(){setTimeout(function(){var i=document.querySelector(".logo img[data-anim]");if(!i)return;var a=new Image();a.onload=function(){i.src=a.src};a.src=i.getAttribute("data-anim")},600)})</script>
 </body>

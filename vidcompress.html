@@ -57,6 +57,7 @@ h1,h2{margin:0;text-wrap:balance}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.25;margin-top:8px}
 .intro{padding-block:40px 20px}
 .intro p.lead{margin:12px 0 0;color:var(--ink-soft);font-size:14px}
+.howto{margin:12px 0 0;padding:10px 14px 10px 34px;background:var(--wash);border-radius:10px;color:var(--ink-soft);font-size:13px;line-height:1.7}.howto b{color:var(--ink);font-weight:inherit;margin-left:-20px;margin-right:6px}
 
 /* タブ */
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--wash);margin-bottom:20px}
@@ -211,6 +212,11 @@ header.top .logo{flex:none}
     <p class="eyebrow"><a class="eb-link" href="tools.html" title="ツール一覧へ">TOOLS ›</a></p>
     <h1>動画圧縮</h1>
     <p class="lead">動画を、指定したサイズ(MB)に収まるように小さくします。送れない大きさの動画を、メールやチャットに載せたいときに。必要な部分だけ切り出すこともできます。ブラウザの中だけで処理するので、動画はどこにも送信されません。</p>
+    <ol class="howto" aria-label="使い方" style="list-style:none">
+      <li><b>1.</b>動画を選ぶ。必要なら範囲を切り出す</li>
+      <li><b>2.</b>目標サイズ(MB)を選ぶ</li>
+      <li><b>3.</b>「圧縮する」を押して、MP4を保存</li>
+    </ol>
   </div>
 
   <section class="panel" id="pickPanel" aria-label="動画を選ぶ">
@@ -652,7 +658,7 @@ async function run(){
   if(loadFail||!ff||mountedFor!==S.file){await startEngine();if(!ff)return;if(!S.probed)return}
   const p=plan();
   if(p.vk<MIN_VK){err("目標サイズが小さすぎます。切り出しを短くするか、サイズを上げてください。");return}
-  S.busy=true;S.cancelled=false;
+  S.busy=true;S.cancelled=false;window.ngPromo&&ngPromo.start();
   show(prog,true);goBtn.disabled=true;
   $("cancel").disabled=false;
   if(window.ngTrack)ngTrack("vid_compress",{label:S.mb+"MB"});
@@ -683,13 +689,13 @@ async function run(){
 }
 const warnLeave=e=>{e.preventDefault();e.returnValue=""};
 function finishRun(){
-  S.busy=false;show(prog,false);removeEventListener("beforeunload",warnLeave);refresh();
+  S.busy=false;window.ngPromo&&ngPromo.stop();show(prog,false);removeEventListener("beforeunload",warnLeave);refresh();
 }
 $("cancel").addEventListener("click",()=>{if(!S.busy)return;S.cancelled=true;$("cancel").disabled=true;pTxt.textContent="止めています…";
   try{ff.terminate()}catch(e){}
   ff=null;ffLoading=null;mountedFor=null;
   // exec() が返ってこないので、ここで後始末する
-  S.busy=false;show(prog,false);removeEventListener("beforeunload",warnLeave);
+  S.busy=false;window.ngPromo&&ngPromo.stop();show(prog,false);removeEventListener("beforeunload",warnLeave);
   err("キャンセルしました。");startEngine();
 });
 
@@ -773,6 +779,7 @@ if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){ad
 </script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script src="https://namigroove.github.io/namigroove-site/doneSound.js?v=2"></script>
+<script src="https://namigroove.github.io/namigroove-site/linePromo.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
 <script>addEventListener("load",function(){setTimeout(function(){var i=document.querySelector(".logo img[data-anim]");if(!i)return;var a=new Image();a.onload=function(){i.src=a.src};a.src=i.getAttribute("data-anim")},600)})</script>
 </body>
