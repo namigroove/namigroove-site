@@ -285,6 +285,16 @@ footer a{color:var(--sea)}
 .cl-mini .mw.on{fill:#ffc79a}
 .cl-mini .mb.on{fill:#e07b3a}
 .cl-mini .ml{font:9px var(--f-mono);fill:#7a87a8;text-anchor:middle}
+.cl-mini .mw.on.t3{fill:#bcd0fb}.cl-mini .mb.on.t3{fill:#396cdf}
+.cl-mini .mw.on.t5{fill:#d3d9e6}.cl-mini .mb.on.t5{fill:#5f6f93}
+.cl-mini .mw.on.t7{fill:#bfe5cf}.cl-mini .mb.on.t7{fill:#2f8a5b}
+.cl-mini .mw.on.tn{fill:#efc3e0}.cl-mini .mb.on.tn{fill:#a8408c}
+.cl-tones .tc{display:inline-block;margin:2px 4px;padding:0 6px 0 7px;border-left:4px solid #e07b3a}.cl-tones .tc i{font-style:normal;color:var(--ink-soft);margin-left:3px}
+.cl-tones .tc.t3,.cl-legend .t3{border-color:#396cdf;background:#396cdf}.cl-tones .tc.t5,.cl-legend .t5{border-color:#5f6f93;background:#5f6f93}.cl-tones .tc.t7,.cl-legend .t7{border-color:#2f8a5b;background:#2f8a5b}.cl-tones .tc.tn,.cl-legend .tn{border-color:#a8408c;background:#a8408c}
+.cl-tones .tc{background:none!important}
+.cl-legend{font-size:11px;color:var(--ink-soft);margin:2px 0 6px}.cl-legend span{display:inline-block;margin:0 6px;white-space:nowrap}.cl-legend span:before{content:"";display:inline-block;width:9px;height:9px;margin-right:4px;background:#e07b3a}
+.cl-legend .t3:before{background:#396cdf}.cl-legend .t5:before{background:#5f6f93}.cl-legend .t7:before{background:#2f8a5b}.cl-legend .tn:before{background:#a8408c}.cl-legend span{background:none!important}
+.cl-alias,.cl-cmp{font-size:12px;color:var(--ink-soft);margin:2px 0}.cl-cmp{color:var(--sea)}
 .kb .w.hint{background:linear-gradient(#ffe7d1,#ffc79a)}
 .kb .b.hint{background:linear-gradient(#f0a36b,#d9783a)}
 .midi-st{font-size:12px;color:var(--ink-soft)}
@@ -504,8 +514,11 @@ header.top .logo{flex:none}
       <div class="cl-out" aria-live="polite">
         <div class="cl-big" id="clBig">C</div>
         <div class="cl-tones" id="clTones"></div>
+        <div class="cl-legend" id="clLegend"><span class="r">ルート</span><span class="t3">3度</span><span class="t5">5度</span><span class="t7">6・7度</span><span class="tn">テンション</span></div>
+        <p class="cl-alias" id="clAlias"></p>
         <p class="cl-desc" id="clDesc"></p>
-        <div class="row"><button class="btn" type="button" id="clPlay">♪ 鍵盤に出して鳴らす</button><button class="btn" type="button" id="clShare" title="このコードのリンクを共有">🔗 共有</button>
+        <p class="cl-cmp" id="clCmpTxt" aria-live="polite"></p>
+        <div class="row"><button class="btn" type="button" id="clPlay">♪ 鍵盤に出して鳴らす</button><button class="btn" type="button" id="clArp">♪ 1音ずつ</button><button class="btn" type="button" id="clCmp" disabled>⇄ ひとつ前と聴き比べ</button><button class="btn" type="button" id="clShare" title="このコードのリンクを共有">🔗 共有</button>
           <span class="seg" id="clVo" role="group" aria-label="ボイシング"><button type="button" data-v="0" aria-pressed="true">基本形</button><button type="button" data-v="1" aria-pressed="false">第1転回</button><button type="button" data-v="2" aria-pressed="false">第2転回</button></span></div>
       </div>
     </div>
@@ -527,6 +540,7 @@ header.top .logo{flex:none}
       <li>「● 演奏を録音」を押して弾くと、演奏を録音できます。止めると試聴でき、MP3かWAVで保存できます(前後の無音は自動でカット)。録音はこの端末の中だけで処理します。弾いた鍵盤はMIDIファイルでも保存できます(強さ・長さ・ペダル・ピッチベンドつき。テンポは120で記録)。</li>
       <li>「♩ メトロノーム」でクリックを鳴らせます(BPM・拍子つき)。「録音とMIDIにクリックも入れる」にチェックすると、録音にクリックが入り、MIDIにもクリックのトラックが付きます。メトロノームを鳴らしながら録音すると、MIDIはそのテンポで、小節の頭にそろえて保存します。</li>
       <li>「コードを調べる」では、コード名を選ぶと鍵盤にオレンジで押さえる場所を出して鳴らします。オレンジの枠のボタンはおしゃれ系のコードです。「おしゃれ進行」では定番進行をテンション入りのボイシングで聴けます(キーも変えられます)。</li>
+      <li>「コードを調べる」の鍵盤は、ルート・3度・5度・6/7度・テンションで色分けされます。「1音ずつ」で構成音を順に聴けて、「ひとつ前と聴き比べ」で、直前に選んだコードとの違い(増えた音・なくなった音)を確かめられます。</li>
       <li>鍵盤の左のホイールを上下にドラッグするとピッチベンド。離すと元の高さに戻ります。幅は設定で±1・±2・±12半音から選べます。</li>
       <li>MIDIキーボードはChrome・Edgeで使えます(Safariは非対応)。ベロシティ、サステインペダル、ピッチベンドにも対応しています。</li>
       <li>iPhoneで音が出ないときは、本体のマナーモードを解除してみてください。</li>
@@ -1406,16 +1420,16 @@ const CLR=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 let clRoot=store.get("clRoot",0), clType=store.get("clType",12), clVo=0;
 if(!CL_TYPES[clType])clType=0;
 let hintKeys=[];
-function mini(ms){
+function mini(ms,roles){
   const lo=ms.length?Math.min(...ms):48,hi=ms.length?Math.max(...ms):72;
   let a=12*Math.floor(lo/12),b=12*Math.ceil((hi+1)/12);if(b-a<24)b=a+24;
   const wh=[];for(let m=a;m<b;m++)if(![1,3,6,8,10].includes(pc(m)))wh.push(m);
   const W=wh.length*20,on=new Set(ms);let sv=`<svg viewBox="0 0 ${W} 74">`;
-  wh.forEach((m,i)=>{sv+=`<rect class="mw${on.has(m)?" on":""}" x="${i*20}" y="0" width="20" height="70" rx="2"/>`;if(pc(m)===0)sv+=`<text class="ml" x="${i*20+10}" y="64">C${Math.floor(m/12)-1}</text>`;});
-  for(let m=a;m<b;m++)if([1,3,6,8,10].includes(pc(m))){const i=wh.indexOf(m-1);sv+=`<rect class="mb${on.has(m)?" on":""}" x="${i*20+13}" y="0" width="14" height="42" rx="2"/>`;}
+  wh.forEach((m,i)=>{sv+=`<rect class="mw${on.has(m)?" on "+((roles&&roles.get(m))||""):""}" x="${i*20}" y="0" width="20" height="70" rx="2"/>`;if(pc(m)===0)sv+=`<text class="ml" x="${i*20+10}" y="64">C${Math.floor(m/12)-1}</text>`;});
+  for(let m=a;m<b;m++)if([1,3,6,8,10].includes(pc(m))){const i=wh.indexOf(m-1);sv+=`<rect class="mb${on.has(m)?" on "+((roles&&roles.get(m))||""):""}" x="${i*20+13}" y="0" width="14" height="42" rx="2"/>`;}
   $("clMini").innerHTML=sv+"</svg>";
 }
-function hint(ms){mini(ms);
+function hint(ms,roles){mini(ms,roles);
   hintKeys.forEach(k=>k.classList.remove("hint"));hintKeys=[];
   if(!ms.length)return;
   const lo=Math.min(...ms),hi=Math.max(...ms),kLo=12*(startOct+1),kHi=kLo+12*octaves();
@@ -1423,21 +1437,54 @@ function hint(ms){mini(ms);
   ms.forEach(m=>{const k=keyEl.get(m);if(k){k.classList.add("hint");hintKeys.push(k);}});
 }
 function sound(ms,dur){ms.forEach(m=>noteOn(m,0.7));setTimeout(()=>ms.forEach(m=>release(m,true)),dur||1100);}
-function clNotes(){const iv=CL_TYPES[clType][1];let ms=iv.map(x=>48+clRoot+x);
-  for(let i=0;i<clVo;i++){const a=ms.shift();ms.push(a+12);}return ms;}
+/* 構成音の役割(ルート/3度/5度/6・7度/テンション)。鍵盤の色分けに使う */
+const clRoleOf=x=>x===0?"r":x<12?(x<6?"t3":x<9?"t5":"t7"):"tn";
+function clNotesR(){const iv=CL_TYPES[clType][1];let ps=iv.map(x=>[48+clRoot+x,clRoleOf(x)]);
+  for(let i=0;i<clVo;i++){const a=ps.shift();ps.push([a[0]+12,a[1]]);}return ps;}
+function clNotes(){return clNotesR().map(p=>p[0]);}
+const clRoles=()=>new Map(clNotesR());
+/* 別の書き方(表記ゆれ) */
+const CL_ALIAS={"":["M","maj"],"m":["min","−"],"M7":["maj7","△7","7M"],"m7":["min7","−7"],"M9":["maj9","△9"],"mM7":["m(maj7)","m△7"],"m7(♭5)":["ø","m7(-5)"],"dim7":["°7"],"aug":["+","(♯5)"],"6/9":["6(9)"],"add9":["(add9)","2"],"sus4":["sus"],"7(♯9)":["7(+9)"],"7(♭9)":["7(-9)"],"M7(♯11)":["maj7(♯11)","△7(♯11)"],"7":["dom7"],"m11":["min11","−11"],"m9":["min9","−9"]};
+/* 同じ音の集まりに付く別名(C6 = Am7/C など) */
+function clSame(){
+  const pcs=new Set(CL_TYPES[clType][1].map(x=>(clRoot+x)%12)),out=[];
+  CL_TYPES.forEach((u,j)=>{for(let r=0;r<12;r++){
+    if(r===clRoot&&j===clType)continue;
+    const s=new Set(u[1].map(x=>(r+x)%12));
+    if(s.size===pcs.size&&[...s].every(v=>pcs.has(v)))out.push(CLR[r]+u[0]+(r!==clRoot?"/"+CLR[clRoot]:""));
+  }});
+  return out.filter((v,i)=>out.indexOf(v)===i).slice(0,3);
+}
+let clLast=null,clPrev=null;
+function clTrack(){const k=clRoot+","+clType;if(!clLast||clLast.k!==k){if(clLast)clPrev=clLast;clLast={k,r:clRoot,t:clType};}$("clCmp").disabled=!clPrev;}
 function clRender(){
   [...$("clRoot").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===clRoot));
   [...$("clType").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===clType));
   [...$("clVo").children].forEach((b,i)=>b.setAttribute("aria-pressed",i===clVo));
   const t=CL_TYPES[clType],DG={0:"R",2:"9",3:"♭3",4:"3",5:"4",6:"♭5",7:"5",8:"♯5",9:"6",10:"♭7",11:"7",13:"♭9",14:"9",15:"♯9",17:"11",18:"♯11",21:"13"};
   $("clBig").textContent=CLR[clRoot]+t[0];
-  $("clTones").textContent=t[1].map(x=>CLR[(clRoot+x)%12]+"("+(DG[x]||x)+")").join("  ");
+  $("clTones").innerHTML=t[1].map(x=>`<span class="tc ${clRoleOf(x)}">${CLR[(clRoot+x)%12]}<i>${DG[x]||x}</i></span>`).join("");
+  const al=(CL_ALIAS[t[0]]||[]).map(a=>CLR[clRoot]+a),sm=clSame();
+  $("clAlias").textContent=[al.length?"別の書き方:"+al.join("、"):"",sm.length?"同じ音の別名:"+sm.join("、"):""].filter(Boolean).join("　/　");
   $("clDesc").textContent=t[2];
   store.set("clRoot",clRoot);store.set("clType",clType);
 }
 $("clRoot").innerHTML=CLR.map((n,i)=>`<button type="button" data-r="${i}">${n}</button>`).join("");
 $("clType").innerHTML=CL_TYPES.map((t,i)=>`<button type="button" data-t="${i}" class="${t[1].length>4||/[♯♭]|11|13|6\/9|M9|m9|sus|add|mM7/.test(t[0])?"fancy":""}" title="${t[2]}">${t[0]||"M"}</button>`).join("");
-const clGo=()=>{audio();const ms=clNotes();hint(ms);sound(ms);};
+const clGo=()=>{audio();clTrack();$("clCmpTxt").textContent="";const ms=clNotes();hint(ms,clRoles());sound(ms);};
+let clArpT=[];
+$("clArp").onclick=()=>{audio();clTrack();clArpT.forEach(clearTimeout);clArpT=[];$("clCmpTxt").textContent="";
+  const ps=clNotesR(),ms=ps.map(p=>p[0]);hint(ms,clRoles());
+  ps.forEach((p,i)=>{clArpT.push(setTimeout(()=>{noteOn(p[0],0.7);setTimeout(()=>release(p[0],true),1200)},i*380))});};
+$("clCmp").onclick=()=>{if(!clPrev)return;audio();clArpT.forEach(clearTimeout);clArpT=[];
+  const pv=CL_TYPES[clPrev.t][1],cu=CL_TYPES[clType][1],nm=n=>CLR[n.r]+CL_TYPES[n.t][0];
+  sound(pv.map(x=>48+clPrev.r+x),1000);
+  clArpT.push(setTimeout(()=>{const ms=clNotes();hint(ms,clRoles());sound(ms,1300)},1200));
+  const DG2={0:"R",2:"9",3:"♭3",4:"3",5:"4",6:"♭5",7:"5",8:"♯5",9:"6",10:"♭7",11:"7",13:"♭9",14:"9",15:"♯9",17:"11",18:"♯11",21:"13"};
+  let txt=nm(clPrev)+" → "+CLR[clRoot]+CL_TYPES[clType][0];
+  if(clPrev.r===clRoot){const ad=cu.filter(x=>!pv.includes(x)).map(x=>DG2[x]||x),rm=pv.filter(x=>!cu.includes(x)).map(x=>DG2[x]||x);
+    txt+=":"+(ad.length?"増えた音 "+ad.join("・"):"")+(ad.length&&rm.length?"、":"")+(rm.length?"なくなった音 "+rm.join("・"):"")+(!ad.length&&!rm.length?"音は同じ":"");}
+  $("clCmpTxt").textContent=txt;};
 $("clRoot").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clRoot=+b.dataset.r;clRender();clGo();});
 $("clType").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clType=+b.dataset.t;clVo=0;clRender();clGo();});
 $("clVo").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clVo=+b.dataset.v;clRender();clGo();});
