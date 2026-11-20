@@ -292,6 +292,8 @@ header.top .logo{flex:none}
       <p class="est-note" id="eNote" hidden></p>
     </div>
 
+    <div class="row l" id="doneSnd"></div>
+
     <div class="act">
       <button class="go" type="button" id="go" disabled>圧縮する</button>
     </div>
@@ -707,6 +709,7 @@ function showResult(data,p,retried,ms){
   const base=S.file.name.replace(/\.[^.]+$/,"")||"video";
   const dl=$("dl");dl.href=S.outUrl;dl.download=base+"_"+(Math.round(S.mb*10)/10)+"MB.mp4";
   show(editPanel,false);show(resPanel,true);
+  window.ngDone&&ngDone.notify();
   resPanel.scrollIntoView({behavior:"smooth",block:"start"});
 }
 $("dl").addEventListener("click",()=>{if(window.ngTrack)ngTrack("vid_download",{label:S.mb+"MB"})});
@@ -753,6 +756,7 @@ $("shareBtn").addEventListener("click",()=>{
 </script>
 <script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
 (()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.addEventListener("load",()=>{if(window.ngDone)ngDone.mount(document.getElementById("doneSnd"))});
 window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
 const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
  ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
@@ -765,6 +769,7 @@ document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.targ
 if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
+<script src="https://namigroove.github.io/namigroove-site/doneSound.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
 </body>
 </html>

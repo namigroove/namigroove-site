@@ -525,6 +525,7 @@ async function run(){
     await new Promise(x=>setTimeout(x,0));
   }
   running=false;
+  if(jobs.some(x=>x.done&&!x.noted)){jobs.forEach(x=>{if(x.done)x.noted=true});window.ngDone&&ngDone.notify()}
 }
 /* ---------- 加工 ---------- */
 function mk(w,h){const c=document.createElement("canvas");c.width=Math.max(1,Math.round(w));c.height=Math.max(1,Math.round(h));return c}
@@ -840,6 +841,7 @@ $("shareBtn").addEventListener("click",()=>{
 
 <script>/* 使われ方の計測(Googleアナリティクスのイベント)。どのボタンが使われたかだけを記録します */
 (()=>{const tool=(location.pathname.match(/\/tools\/([^/]+)/)||location.pathname.match(/([a-z]+)\.html$/)||[,"tools"])[1];
+window.addEventListener("load",()=>{if(window.ngDone)ngDone.mount(document.querySelector(".opts"))});
 window.ngTrack=(name,p)=>{try{if(window.gtag)gtag("event",name,Object.assign({tool},p||{}));}catch(e){}};
 const T=[["[data-mid],#midiBtn","midi_export"],["[data-shr],#chShare,#clShare,#scShare","share_link"],["#shareBtn,.sh","share_page"],["[data-play],#clProgPlay,#playUp","progression_play"],
  ["#recBtn","record"],["#smpRec","sampler_record"],["#stepRecBtn","step_record"],["#micBtn","tuner_mic"],["#playBtn","play"],["#tapBtn,#tap,#namiBtn","tap_tempo"],["#toneBtn","reference_tone"],
@@ -852,6 +854,7 @@ document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.targ
 if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
+<script src="https://namigroove.github.io/namigroove-site/doneSound.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
 </body>
 </html>
