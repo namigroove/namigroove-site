@@ -1,0 +1,31 @@
+{
+ "name": "音声→MP3コンバーター – なみぐる！TOOLS",
+ "short_name": "音声→MP3",
+ "lang": "ja",
+ "id": "https://www.namigroove.com/tools/audio2mp3/",
+ "start_url": "https://www.namigroove.com/tools/audio2mp3/",
+ "scope": "https://www.namigroove.com/tools/audio2mp3/",
+ "display": "standalone",
+ "background_color": "#f5f8fe",
+ "theme_color": "#396cdf",
+ "icons": [
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/audio2mp3-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/audio2mp3-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/audio2mp3-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

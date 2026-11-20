@@ -1,0 +1,31 @@
+{
+ "name": "画像コンバーター – なみぐる！TOOLS",
+ "short_name": "画像変換",
+ "lang": "ja",
+ "id": "https://www.namigroove.com/tools/imgconv/",
+ "start_url": "https://www.namigroove.com/tools/imgconv/",
+ "scope": "https://www.namigroove.com/tools/imgconv/",
+ "display": "standalone",
+ "background_color": "#f5f8fe",
+ "theme_color": "#396cdf",
+ "icons": [
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/imgconv-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/imgconv-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/imgconv-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

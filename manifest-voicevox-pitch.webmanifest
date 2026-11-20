@@ -1,0 +1,31 @@
+{
+ "name": "VOICEVOX トーク音程エディタ – なみぐる！TOOLS",
+ "short_name": "VOICEVOX音程",
+ "lang": "ja",
+ "id": "https://www.namigroove.com/tools/voicevox-pitch/",
+ "start_url": "https://www.namigroove.com/tools/voicevox-pitch/",
+ "scope": "https://www.namigroove.com/tools/voicevox-pitch/",
+ "display": "standalone",
+ "background_color": "#f5f8fe",
+ "theme_color": "#396cdf",
+ "icons": [
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/voicevox-pitch-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/voicevox-pitch-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "https://namigroove.github.io/namigroove-site/img/icons/voicevox-pitch-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
