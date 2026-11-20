@@ -309,7 +309,7 @@ header.top .logo{flex:none}
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="index.html"><img src="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <a class="logo" href="index.html"><img src="img/logo-still.webp?v=1" data-anim="img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
     <nav class="main" aria-label="メインメニュー">
       <a href="works.html" translate="no">Works</a>
       <a href="tools.html" translate="no">Tools</a>
@@ -1616,5 +1616,6 @@ document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.targ
 if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
+<script>addEventListener("load",function(){setTimeout(function(){var i=document.querySelector(".logo img[data-anim]");if(!i)return;var a=new Image();a.onload=function(){i.src=a.src};a.src=i.getAttribute("data-anim")},600)})</script>
 </body>
 </html>

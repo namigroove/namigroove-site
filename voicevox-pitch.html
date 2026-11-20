@@ -160,7 +160,7 @@
 <body>
 <header class="sitehd">
   <div class="in">
-    <a class="logo" href="/"><img src="https://www.namigroove.com/img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <a class="logo" href="/"><img src="https://namigroove.github.io/namigroove-site/img/logo-still.webp?v=1" data-anim="https://www.namigroove.com/img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
     <nav aria-label="メインメニュー">
       <a href="/works/" translate="no">Works</a>
       <a href="/tools/" translate="no">Tools</a>
@@ -1299,5 +1299,6 @@ var t=document.createElement("div");t.className="sitefoot-toast";t.textContent="
   window.__vvpe = { state, pitchToMidi, midiToPitch, noteName, snapNote, parseNote, effectiveHz };
 })();
 </script>
+<script>addEventListener("load",function(){setTimeout(function(){var i=document.querySelector(".logo img[data-anim]");if(!i)return;var a=new Image();a.onload=function(){i.src=a.src};a.src=i.getAttribute("data-anim")},600)})</script>
 </body>
 </html>

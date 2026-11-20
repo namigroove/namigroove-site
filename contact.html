@@ -114,7 +114,7 @@ footer a{color:var(--sea)}
 <body>
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="https://www.namigroove.com/"><img src="https://www.namigroove.com/img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
+    <a class="logo" href="https://www.namigroove.com/"><img src="https://namigroove.github.io/namigroove-site/img/logo-still.webp?v=1" data-anim="https://www.namigroove.com/img/logo.webp?v=2" alt="なみぐる！" width="180" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>なみぐる！</span></a>
     <nav class="main" aria-label="メインメニュー">
       <a href="https://www.namigroove.com/works/" translate="no">Works</a>
       <a href="https://www.namigroove.com/tools/" translate="no">Tools</a>
@@ -276,5 +276,6 @@ document.getElementById("shareBtn").addEventListener("click",()=>{
 });
 </script>
 <script src="https://www.namigroove.com/nami-i18n.js?v=6"></script>
+<script>addEventListener("load",function(){setTimeout(function(){var i=document.querySelector(".logo img[data-anim]");if(!i)return;var a=new Image();a.onload=function(){i.src=a.src};a.src=i.getAttribute("data-anim")},600)})</script>
 </body>
 </html>
