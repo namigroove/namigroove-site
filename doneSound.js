@@ -32,7 +32,7 @@
       var l=document.createElement("label");l.className="ctl chk ng-done-snd";
       var i=document.createElement("input");i.type="checkbox";i.checked=on();
       i.addEventListener("change",function(){save(i.checked);if(i.checked)chime()});
-      l.appendChild(i);l.appendChild(document.createTextNode(" 終わったら小さく音を鳴らす"));
+      l.appendChild(i);l.appendChild(document.createTextNode(" 終わったら音を鳴らす"));
       el.appendChild(l);
     }
   };
