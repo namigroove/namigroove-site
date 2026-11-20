@@ -142,6 +142,7 @@ input[type=range]{width:100%;max-width:420px;accent-color:var(--head);display:bl
 .how h2{font-size:15px;color:var(--ink);margin:0 0 8px}
 .how ul{margin:0;padding-left:1.2em}
 .how a{color:var(--sea)}
+.faq{margin:18px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.8}.faq h2{font-size:15px;color:var(--ink);margin:0 0 8px}.faq dt{color:var(--ink);margin:12px 0 2px}.faq dd{margin:0}.faq table{border-collapse:collapse;margin:6px 0 4px;width:100%}.faq th,.faq td{border-bottom:1px solid var(--line,#d6def0);padding:4px 8px;text-align:left;vertical-align:top}.faq th{color:var(--ink);font-weight:inherit;white-space:nowrap}
 
 footer{padding-block:28px 40px;font-size:12px;color:var(--ink-soft)}
 footer a{color:var(--sea)}
@@ -271,7 +272,7 @@ header.top .logo{flex:none}
 @media (max-width:374px){header.top nav.main .opt{display:none}}
 @media (max-width:340px){header.top .logo img{height:20px}header.top nav.main{gap:7px}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"アニメ画像メーカー","url":"https://www.namigroove.com/tools/gifmaker/","description":"画像を並べて、GIFやAPNGのアニメを作れる無料ツール。コマごとに表示時間を変えられ、順番の入れ替え・往復再生・透明にも対応。ブラウザの中だけで作るので、画像はどこにも送信されません。","applicationCategory":"MultimediaApplication","operatingSystem":"Any","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"author":{"@type":"Person","name":"なみぐる","url":"https://www.namigroove.com/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"アニメ画像メーカー","item":"https://www.namigroove.com/tools/gifmaker/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"アニメ画像メーカー","url":"https://www.namigroove.com/tools/gifmaker/","description":"画像を並べて、GIFやAPNGのアニメを作れる無料ツール。コマごとに表示時間を変えられ、順番の入れ替え・往復再生・透明にも対応。ブラウザの中だけで作るので、画像はどこにも送信されません。","applicationCategory":"MultimediaApplication","operatingSystem":"Any","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"author":{"@type":"Person","name":"なみぐる","url":"https://www.namigroove.com/"},"featureList":["画像をつないでGIF・APNGを作成","コマごとの表示時間・順番の入れ替え","往復再生","背景透過","サイズのちがう画像の自動調整","ブラウザ内だけで処理(画像を送信しない)"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"なみぐる！","item":"https://www.namigroove.com/"},{"@type":"ListItem","position":2,"name":"ツール","item":"https://www.namigroove.com/tools/"},{"@type":"ListItem","position":3,"name":"アニメ画像メーカー","item":"https://www.namigroove.com/tools/gifmaker/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"画像をつないでGIFアニメを作るには?","acceptedAnswer":{"@type":"Answer","text":"画像(PNG・JPG・WebP・GIF・PSDなど)を選ぶと、ファイル名の順に並びます。↑↓で順番を変えて、「アニメを作る」を押すと、GIFかAPNGで保存できます。"}},{"@type":"Question","name":"コマごとに表示時間を変えられますか?","acceptedAnswer":{"@type":"Answer","text":"変えられます。各コマの「秒」を変えるだけです。「全部に反映」を使うと、すべてのコマの時間をそろえられます。"}},{"@type":"Question","name":"GIFとAPNGはどう違いますか?","acceptedAnswer":{"@type":"Answer","text":"APNGは色がきれいで、半透明も使えますが、GIFより容量が大きくなります。古いソフトでは動かないこともあります。迷ったら、どこでも動くGIFがおすすめです。"}},{"@type":"Question","name":"背景を透明にしたGIFは作れますか?","acceptedAnswer":{"@type":"Answer","text":"作れます。「透明にする」をオンにすると、余白や透明な部分を透かしたままにできます。GIFの透明は「あり・なし」の2段階なので、ふちがギザギザになることがあります。きれいに透かしたいときは、APNGを選んでください。"}},{"@type":"Question","name":"大きさのちがう画像でも使えますか?","acceptedAnswer":{"@type":"Answer","text":"使えます。いちばん上の画像の比率に合わせます。「全体を収める」は余白を背景色で埋め、「切り抜いて埋める」ははみ出た部分を切ります。"}},{"@type":"Question","name":"枚数や大きさに制限はありますか?","acceptedAnswer":{"@type":"Answer","text":"コマは200枚まで、幅は1024pxまでです。"}},{"@type":"Question","name":"無料ですか? 画像はどこかに送られますか?","acceptedAnswer":{"@type":"Answer","text":"無料で、登録もインストールもいりません。アニメはすべてブラウザの中だけで作るので、画像はどこにも送信されません。"}}]}]}</script>
 </head>
 <body>
 
@@ -357,6 +358,26 @@ header.top .logo{flex:none}
   <section class="panel" id="outPanel" aria-live="polite" hidden>
     <div class="result"><img id="outImg" alt="できあがったアニメ"><p id="outInfo"></p><a class="btn go" id="outDl" href="#">保存</a></div>
     <div class="bar" id="mbar" hidden><i></i></div>
+  </section>
+
+  <section class="faq">
+    <h2>よくある質問</h2>
+    <dl>
+      <dt>画像をつないでGIFアニメを作るには?</dt>
+      <dd>画像(PNG・JPG・WebP・GIF・PSDなど)を選ぶと、ファイル名の順に並びます。↑↓で順番を変えて、「アニメを作る」を押すと、GIFかAPNGで保存できます。</dd>
+      <dt>コマごとに表示時間を変えられますか?</dt>
+      <dd>変えられます。各コマの「秒」を変えるだけです。「全部に反映」を使うと、すべてのコマの時間をそろえられます。</dd>
+      <dt>GIFとAPNGはどう違いますか?</dt>
+      <dd>APNGは色がきれいで、半透明も使えますが、GIFより容量が大きくなります。古いソフトでは動かないこともあります。迷ったら、どこでも動くGIFがおすすめです。</dd>
+      <dt>背景を透明にしたGIFは作れますか?</dt>
+      <dd>作れます。「透明にする」をオンにすると、余白や透明な部分を透かしたままにできます。GIFの透明は「あり・なし」の2段階なので、ふちがギザギザになることがあります。きれいに透かしたいときは、APNGを選んでください。</dd>
+      <dt>大きさのちがう画像でも使えますか?</dt>
+      <dd>使えます。いちばん上の画像の比率に合わせます。「全体を収める」は余白を背景色で埋め、「切り抜いて埋める」ははみ出た部分を切ります。</dd>
+      <dt>枚数や大きさに制限はありますか?</dt>
+      <dd>コマは200枚まで、幅は1024pxまでです。</dd>
+      <dt>無料ですか? 画像はどこかに送られますか?</dt>
+      <dd>無料で、登録もインストールもいりません。アニメはすべてブラウザの中だけで作るので、画像はどこにも送信されません。</dd>
+    </dl>
   </section>
 
   <section class="how">
