@@ -429,7 +429,8 @@ function fromCam(n,l){n=((n-1)%12+12)%12+1;const t=l==="B"?CAM_MAJ:CAM_MIN;const
 /* ---------- 画面 ---------- */
 let ac=null,buf=null,src=null,clickTimer=0,res=null,curBpm=0,phase=0,playing=false,t0=0;
 function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();}if(ac.state!=="running")ac.resume();return ac;}
-function busy(on,txt){$("busy").hidden=!on;if(txt)$("busyTxt").textContent=txt;}
+let promoOn=false;
+function busy(on,txt){if(on!==promoOn){promoOn=on;window.ngPromo&&(on?ngPromo.start():ngPromo.stop())}$("busy").hidden=!on;if(txt)$("busyTxt").textContent=txt;}
 function err(msg){$("err").hidden=!msg;$("err").textContent=msg||"";}
 async function analyze(file){
   stop();err("");$("result").hidden=true;busy(true,"読み込み中…");
@@ -509,6 +510,7 @@ document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.targ
 <script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
 if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
+<script src="https://namigroove.github.io/namigroove-site/linePromo.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
 <script>addEventListener("load",function(){setTimeout(function(){var i=document.querySelector(".logo img[data-anim]");if(!i)return;var a=new Image();a.onload=function(){i.src=a.src};a.src=i.getAttribute("data-anim")},600)})</script>

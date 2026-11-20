@@ -1083,7 +1083,7 @@ async function encVideo(out,fps){
 }
 $("saveBtn").addEventListener("click",async()=>{
   if(!orig)return;if(vid&&vid.live){$("saveMsg").textContent="ライブカメラの間は保存できません。「撮影」か「録画」を使ってください。";return}
-  const b=$("saveBtn");b.disabled=true;$("saveMsg").textContent="作っています…";
+  const b=$("saveBtn");b.disabled=true;$("saveMsg").textContent="作っています…";window.ngPromo&&ngPromo.start();
   try{
     const f=$("ofmt").value;let blob,ext,dim;
     if(f==="png"||f==="jpg"){
@@ -1102,7 +1102,7 @@ $("saveBtn").addEventListener("click",async()=>{
     a.href=URL.createObjectURL(blob);a.download=name+"_"+cur+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
     $("saveMsg").textContent=a.download+"("+dim+"px・"+(blob.size>=1048576?(blob.size/1048576).toFixed(1)+" MB":Math.max(1,Math.round(blob.size/1024))+" KB")+")を保存しました";
   }catch(e){console.error(e);$("saveMsg").textContent=e.message==="norec"?"このブラウザは、動画の書き出しに対応していません。GIFかAPNGで保存してください。":"保存できませんでした"}
-  b.disabled=false;
+  b.disabled=false;window.ngPromo&&ngPromo.stop();
   if(vid||FX[cur].anim)render();
 });
 async function setImage(blob,nm,sample,full){
@@ -1217,6 +1217,7 @@ document.addEventListener("click",e=>{for(const [sel,name] of T){const el=e.targ
 <script>/* オフライン対応(一度開いたツールは電波がなくても使える) */
 if("serviceWorker" in navigator&&!/translate\.goog$/.test(location.hostname)){addEventListener("load",()=>{const gh=/github\.io$/.test(location.hostname);navigator.serviceWorker.register(gh?"sw.js":"/tools/sw.js",{scope:gh?"./":"/tools/"}).catch(()=>{});});}
 </script>
+<script src="https://namigroove.github.io/namigroove-site/linePromo.js?v=1"></script>
 <script src="https://namigroove.github.io/namigroove-site/favs.js?v=4"></script>
 <script src="https://namigroove.github.io/namigroove-site/nami-i18n.js?v=6"></script>
 <script>addEventListener("load",function(){setTimeout(function(){var i=document.querySelector(".logo img[data-anim]");if(!i)return;var a=new Image();a.onload=function(){i.src=a.src};a.src=i.getAttribute("data-anim")},600)})</script>
