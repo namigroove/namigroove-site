@@ -117,14 +117,18 @@ function parse(raw) {
     .replace(/\((?:Official|Original)[^)]*\)/gi, " ")
     .replace(/\s+/g, " ").trim();
   const [head, ...rest] = clean.split(/\s+(?:\/|／)\s+|／/);
-  let by = rest.join(" / ").replace(/なみぐる|namigroove/gi, "").replace(/^[\s\-–&]+|[\s\-–&]+$/g, "").trim();
+  let by = rest.join(" / ").replace(/(?:なみぐる|namigroove)(?!\s*remix)/gi, "").replace(/^[\s\-–&]+|[\s\-–&]+$/g, "").trim();
   if (!by && /EP|Album|Single/i.test(tags)) by = tags.replace(/_/g, " ");
   return { title: tidyTitle(head.replace(/\s+なみぐる\s+feat\..*$/, "").trim(), type), by: tidyBy(by), type };
 }
 
 function thumb(p) {
   const fm = (((p._embedded || {})["wp:featuredmedia"]) || [])[0];
-  if (fm && fm.source_url) return fm.source_url;
+  if (fm && fm.source_url) {
+    // サムネURL欄にYouTubeの動画URLを入れた記事は、動画のサムネ画像に直す
+    const y = fm.source_url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
+    return y ? `https://i.ytimg.com/vi/${y[1]}/hqdefault.jpg` : fm.source_url;
+  }
   const html = (p.content && p.content.rendered) || "";
   const yt = html.match(/(?:youtube\.com\/embed\/|youtu\.be\/|youtube\.com\/watch\?v=)([\w-]{11})/);
   return yt ? `https://i.ytimg.com/vi/${yt[1]}/hqdefault.jpg` : undefined;
@@ -147,7 +151,12 @@ for (const p of posts) {
   // すでに一覧にある曲なら、WordPressのページへのリンクと画像だけ補う
   const same = works.find((w) => sameSong(key(w.title), k));
   if (same) {
-    if (!same.wp) {
+    if (same.auto && same.wp && same.wp !== p.id && p._yt && same.yt === p._yt) {
+      // 記事のURL(識別名)を後から直したとき、一覧のリンクも新しいものに合わせる
+      same.wp = p.id;
+      same.url = p.link;
+      linked.push(same.title);
+    } else if (!same.wp) {
       same.wp = p.id;
       if (!same.url) same.url = p.link;
       if (!same.img) { const t = thumb(p); if (t) same.img = t; }
