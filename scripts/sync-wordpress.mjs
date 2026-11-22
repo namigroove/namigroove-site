@@ -136,7 +136,7 @@ function thumb(p) {
 
 const data = JSON.parse(readFileSync(WORKS_PATH, "utf8"));
 const works = data.works;
-const added = [], linked = [];
+const added = [], linked = [], fresh = [];
 
 // 新しい投稿から順に処理(同じ曲がミュージックとムービーにある場合は先に来た方を採用)
 posts.sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -177,10 +177,11 @@ for (const p of posts) {
   if (p._yt) item.yt = p._yt; // YouTube取り込みで同じ動画が二重に載らないように
   const t = thumb(p);
   if (t) item.img = t;
-  works.push(item);
+  fresh.push(item); // 新しい記事は、その年の先頭に並べる
   added.push(item.title);
 }
 
+works.unshift(...fresh);
 // 年の新しい順に並べ直す(同じ年の中は元の順番のまま)
 const order = new Map(works.map((w, i) => [w, i]));
 works.sort((a, b) => (b.year - a.year) || (order.get(a) - order.get(b)));
