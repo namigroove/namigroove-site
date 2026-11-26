@@ -77,6 +77,22 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,5vw,40px);l
 .go[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .go svg{width:18px;height:18px;fill:currentColor}
 .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.mode{display:flex;flex-direction:column;align-items:center;gap:6px;margin:0 0 16px}
+.mode .seg button small{display:block;font-size:11px;opacity:.75;line-height:1.35}
+.mode .seg button{padding:7px 16px;border-radius:14px}
+.chsec{margin-top:22px;border-top:1px dashed var(--line);padding-top:16px}
+.chsec h2{font-size:15px;margin:0 0 2px}
+.chctl{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin:10px 0 12px}
+.chctl select{font:500 13px var(--f-body);padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+.chart{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:8px;max-height:440px;overflow:auto;padding:2px}
+.bar{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:10px;background:var(--chip);overflow:hidden}
+.bar button{font:500 14px var(--f-body);border:0;border-left:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 0;min-height:42px;cursor:pointer;white-space:nowrap;overflow:hidden}
+.bar button:first-child{border-left:0}
+.bar button.d{color:var(--ink-soft);opacity:.45}
+.bar button.pad{visibility:hidden;pointer-events:none}
+.bar button.now{background:var(--head);color:#fff;opacity:1}
+.bar .bn{position:absolute}
+.chnote{font-size:12px;color:var(--ink-soft);margin:10px 0 0}
 .note-s{font-size:12px;color:var(--ink-soft);text-align:center;margin:14px 0 0}
 .err{color:var(--warn);font-size:13px;text-align:center;margin:10px 0 0}
 details.opts{margin-top:16px;border-top:1px dashed var(--line);padding-top:6px}
@@ -289,6 +305,12 @@ header.top .logo{flex:none}
   </div>
 
   <section class="panel" aria-label="ファイルを選ぶ">
+    <div class="mode">
+      <div class="seg" id="modeSeg" role="group" aria-label="解析のしかた">
+        <button type="button" data-m="simple" aria-pressed="true">かんたん<small>BPMとキー</small></button>
+        <button type="button" data-m="detail" aria-pressed="false">くわしく<small>コード進行つき</small></button>
+      </div>
+    </div>
     <label class="drop" id="drop">
       <input type="file" id="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.flac,.ogg,.aif,.aiff" hidden>
       <span class="drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
@@ -324,6 +346,19 @@ header.top .logo{flex:none}
     <p class="note-s">クリックを重ねて、拍がずれていないか耳で確かめてみてね。ずれていたら BPM の候補(半分・倍)を切り替えられます。</p>
     <div class="mix" id="mix"></div>
     <p class="res-sub mix-cap" id="mixCap"></p>
+    <div class="chsec" id="chSec" hidden>
+      <h2>コード進行</h2>
+      <p class="res-sub">小節ごとのコードです。マスを押すと、そこから再生します。</p>
+      <div class="chctl">
+        <label class="ctl">移調 <select id="chTr" aria-label="移調"></select></label>
+        <label class="chk"><input type="checkbox" id="ch7"> 7thも判定</label>
+        <label class="chk"><input type="checkbox" id="chSnd"> コードを重ねて鳴らす</label>
+        <label class="ctl">小節の頭 <select id="chOff" aria-label="小節の頭"><option value="0">1拍目</option><option value="1">2拍目</option><option value="2">3拍目</option><option value="3">4拍目</option></select></label>
+        <button type="button" class="btn" id="chCopy">コピー</button>
+      </div>
+      <div class="chart" id="chart"></div>
+      <p class="chnote" id="chNote"></p>
+    </div>
   </section>
 
   <section class="how">
@@ -333,6 +368,7 @@ header.top .logo{flex:none}
       <li>キーは、曲全体で鳴っている音の割合から、いちばん近い長調・短調を選んでいます。平行調(C と Am など)は取り違えやすいので、2番目の候補もあわせて見てください。</li>
       <li>「カメロット」は DJ でよく使うキーの番号です。同じ番号・となりの番号(±1)・同じ番号のA/Bはきれいにつながります。</li>
       <li>テンポが途中で変わる曲や、転調が多い曲は、全体の平均に近い値が出ます。</li>
+      <li>「くわしく」では、拍ごとの音の重なりからコードを推定して、小節ごとに並べます。4拍子の曲向けで、あくまで目安です。「小節の頭」で、小節の区切りの位置を直せます。</li>
       <li>BPMからディレイやリバーブの時間を出すなら <a href="bpmms.html">BPMmsCalculator</a>、キーのスケールを鍵盤で確かめるなら <a href="piano.html">ピアノ</a> もどうぞ。</li>
     </ul>
   </section>
@@ -427,6 +463,7 @@ const cam=(k,maj)=>(maj?CAM_MAJ[k]+"B":CAM_MIN[k]+"A");
 function fromCam(n,l){n=((n-1)%12+12)%12+1;const t=l==="B"?CAM_MAJ:CAM_MIN;const k=+Object.keys(t).find(x=>t[x]===n);return {k,maj:l==="B"};}
 
 /* ---------- 画面 ---------- */
+let mode="simple";try{if(localStorage.getItem("ng_an_mode")==="detail")mode="detail"}catch(_){}
 let ac=null,buf=null,src=null,clickTimer=0,res=null,curBpm=0,phase=0,playing=false,t0=0;
 function audio(){if(!ac){const AC=window.AudioContext||window.webkitAudioContext;ac=new AC();}if(ac.state!=="running")ac.resume();return ac;}
 let promoOn=false;
@@ -444,7 +481,8 @@ async function analyze(file){
     const on=await onsetEnv(x,p=>busy(true,"テンポを解析中… "+Math.round(p*100)+"%"));
     const tp=tempo(on.env,on.fps);
     const ky=await keyOf(x,p=>busy(true,"キーを解析中… "+Math.round(p*100)+"%"));
-    res={tp,ky,off:on.off};curBpm=tp.bpm;phase=tp.phase+on.off;
+    res={tp,ky,off:on.off,x};curBpm=tp.bpm;phase=tp.phase+on.off;
+    if(mode==="detail"){res.cf=await chordFrames(x,p=>busy(true,"コードを解析中… "+Math.round(p*100)+"%"));}
     show(file.name);
     if(window.ngTrack)ngTrack("analyze_done",{bpm:Math.round(tp.bpm),key:keyName(ky.list[0].k,ky.list[0].maj)});
   }catch(e){console.error(e);err("このファイルは読み込めませんでした。MP3・WAV・M4A などの音声ファイルを選んでください。");}
@@ -469,17 +507,167 @@ function show(name){
   const mix=[[n,o,"平行調"],[n-1,l,"−1"],[n+1,l,"+1"]].map(([nn,ll,t])=>{const kk=fromCam(nn,ll);return `<span><b>${cam(kk.k,kk.maj)}</b>${keyName(kk.k,kk.maj)}<small style="color:var(--ink-soft)"> ${t}</small></span>`;});
   $("mix").innerHTML=mix.join("");$("mixCap").textContent="この曲となめらかにつながるキー(カメロット)";
   $("result").hidden=false;
+  res.chOff=null;res.segs=null;if(typeof chRefresh==="function")chRefresh();
 }
 $("bpmAlt").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;curBpm=+b.dataset.b;show($("fname").textContent.replace(/(最初の7分を解析)$/,""));});
 
 /* ---------- 再生とクリック ---------- */
 function beep(t){const o=ac.createOscillator(),g=ac.createGain();o.type="sine";o.frequency.value=1320;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.35,t+0.002);g.gain.exponentialRampToValueAtTime(0.0001,t+0.05);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+0.06);}
 let nextBeat=0;
-function sched(){const p=60/curBpm,now=ac.currentTime-t0;while(nextBeat*p+phase<now+0.15){const bt=nextBeat*p+phase;if(bt>=now-0.01&&$("clickOn").checked)beep(t0+bt);nextBeat++;}}
-function play(){const a=audio();src=a.createBufferSource();src.buffer=buf;const g=a.createGain();g.gain.value=0.8;src.connect(g);g.connect(a.destination);t0=a.currentTime+0.05;src.start(t0);
-  nextBeat=Math.max(0,Math.ceil(-phase/(60/curBpm)));clickTimer=setInterval(sched,40);playing=true;$("playBtn").textContent="■ 止める";src.onended=()=>{if(playing)stop();};}
+function sched(){const p=60/curBpm,now=ac.currentTime-t0;if(typeof chSched==="function")chSched(now);while(nextBeat*p+phase<now+0.15){const bt=nextBeat*p+phase;if(bt>=now-0.01&&$("clickOn").checked)beep(t0+bt);nextBeat++;}}
+function play(off){off=off||0;const a=audio();src=a.createBufferSource();src.buffer=buf;const g=a.createGain();g.gain.value=0.8;src.connect(g);g.connect(a.destination);const st=a.currentTime+0.05;t0=st-off;src.start(st,off);
+  nextBeat=Math.max(0,Math.ceil((off-phase)/(60/curBpm)));if(typeof chSeek==="function")chSeek(off);clickTimer=setInterval(sched,40);playing=true;$("playBtn").textContent="■ 止める";src.onended=()=>{if(playing)stop();};cancelAnimationFrame(raf);if(typeof chLoop==="function")raf=requestAnimationFrame(chLoop);}
 function stop(){playing=false;clearInterval(clickTimer);if(src){try{src.stop()}catch(e){}src=null;}$("playBtn").textContent="▶ 再生";}
 $("playBtn").onclick=()=>{if(!buf)return;playing?stop():play();};
+
+
+/* ---------- コード(拍ごとのクロマ → テンプレート照合 → ビタビで平滑化) ---------- */
+const CH_T=[
+  {s:"",  iv:[0,4,7],    w:[1,.85,.75],     q:"maj"},
+  {s:"m", iv:[0,3,7],    w:[1,.85,.75],     q:"min"},
+  {s:"7", iv:[0,4,7,10], w:[1,.8,.7,.6],    q:"maj",sev:1},
+  {s:"M7",iv:[0,4,7,11], w:[1,.8,.7,.6],    q:"maj",sev:1},
+  {s:"m7",iv:[0,3,7,10], w:[1,.8,.7,.6],    q:"min",sev:1},
+];
+const CH_N=1024*8, CH_H=2048;
+async function chordFrames(x,prog){
+  const N=CH_N,H=CH_H,w=hann(N),nf=Math.max(1,Math.floor((x.length-N)/H)+1),re=new Float64Array(N),im=new Float64Array(N);
+  const map=new Int8Array(N/2).fill(-1),wt=new Float64Array(N/2),kind=new Uint8Array(N/2); /* 1=上もの 2=ベース 3=両方 */
+  for(let k=1;k<N/2;k++){const f=k*SR/N;if(f<50||f>2000)continue;const m=69+12*Math.log2(f/440),d=Math.abs(m-Math.round(m));if(d>0.35)continue;
+    map[k]=((Math.round(m)%12)+12)%12;wt[k]=(1-d)*(f>1000?Math.max(.3,1-(f-1000)/1430):1);kind[k]=(f>=130?1:0)|(f<=260?2:0);}
+  const out=new Float32Array(nf*25);
+  for(let f=0;f<nf;f++){
+    const o=f*H;for(let i=0;i<N;i++){re[i]=(x[o+i]||0)*w[i];im[i]=0;}fft(re,im);
+    const b=f*25;let en=0;
+    for(let k=1;k<N/2;k++){const p=map[k];if(p<0)continue;const v=Math.sqrt(Math.hypot(re[k],im[k]))*wt[k];if(kind[k]&1){out[b+p]+=v;en+=v;}if(kind[k]&2)out[b+12+p]+=v;}
+    out[b+24]=en;
+    if(f%150===0){prog(f/nf);await tick();}
+  }
+  return {a:out,nf,dur:x.length/SR};
+}
+function diatonic(k,maj){
+  const sc=maj?[0,2,4,5,7,9,11]:[0,2,3,5,7,8,10],q=maj?["maj","min","min","maj","maj","min","dim"]:["min","dim","maj","min","min","maj","maj"],m=new Map();
+  sc.forEach((s,i)=>m.set((k+s)%12,{q:q[i],i}));
+  if(!maj)m.set((k+7)%12,{q:"maj",i:4}); /* 短調のV(和声的短音階) */
+  return m;
+}
+const CH_K=10, CH_LAM=2.4;
+function buildChords(){
+  const cf=res.cf,p=60/curBpm,nb=Math.max(0,Math.floor((cf.dur-phase)/p));
+  if(nb<4){res.ch=null;return;}
+  const use7=$("ch7").checked,types=CH_T.filter(t=>use7||!t.sev),S=12*types.length+1,NC=S-1;
+  const T=[];types.forEach(t=>{const nn=Math.sqrt(t.w.reduce((s,v)=>s+v*v,0));for(let r=0;r<12;r++){const v=new Float64Array(12);t.iv.forEach((x,i)=>v[(r+x)%12]=t.w[i]/nn);T.push(v);}});
+  const top=res.ky.list[0],dia=diatonic(top.k,top.maj),E=new Float64Array(nb*S);
+  /* 全体の音量の中央値(無音の判定用) */
+  const ens=[];for(let f=0;f<cf.nf;f++)ens.push(cf.a[f*25+24]);const med=ens.slice().sort((a,b)=>a-b)[ens.length>>1]||1;
+  const bv=[];
+  for(let i=0;i<nb;i++){
+    const t0=phase+(i+0.1)*p,t1=phase+(i+1)*p,f0=Math.max(0,Math.ceil((t0*SR-CH_N/2)/CH_H)),f1=Math.min(cf.nf-1,Math.floor((t1*SR-CH_N/2)/CH_H));
+    const mid=new Float64Array(12),bas=new Float64Array(12);let en=0,c=0;
+    for(let f=f0;f<=f1;f++){const b=f*25;for(let q=0;q<12;q++){mid[q]+=cf.a[b+q];bas[q]+=cf.a[b+12+q];}en+=cf.a[b+24];c++;}
+    if(!c){const f=Math.min(cf.nf-1,Math.max(0,Math.round((t0*SR-CH_N/2)/CH_H))),b=f*25;for(let q=0;q<12;q++){mid[q]=cf.a[b+q];bas[q]=cf.a[b+12+q];}en=cf.a[b+24];c=1;}
+    en/=c;let nm=0,bm=0;for(let q=0;q<12;q++){nm+=mid[q]*mid[q];bm=Math.max(bm,bas[q]);}nm=Math.sqrt(nm)||1;
+    const v=Array.from(mid,y=>y/nm),b=Array.from(bas,y=>y/(bm||1));bv.push({v,b,en});
+    for(let j=0;j<S-1;j++){
+      const ti=Math.floor(j/12),r=j%12,tp=types[ti],tv=T[j];let s=0;for(let q=0;q<12;q++)s+=v[q]*tv[q];
+      s+=0.22*b[r];if(tp.sev)s-=0.03;
+      const d=dia.get(r);if(d&&d.q===tp.q){let bonus=0.05;if(tp.s==="7")bonus=(d.i===4)?0.05:0;else if(tp.s==="M7")bonus=(top.maj?(d.i===0||d.i===3):(d.i===2||d.i===5))?0.05:0;if(tp.s==="")bonus=0.05;E[i*S+j]=CH_K*(s+bonus);continue;}
+      E[i*S+j]=CH_K*s;
+    }
+    E[i*S+NC]=CH_K*(en<0.15*med?0.9:0.1);
+  }
+  /* ビタビ:同じコードに留まるほうを有利にして、細かい揺れを均す */
+  const L=CH_K*CH_LAM/10*4,from=new Int16Array(nb*S);let d=new Float64Array(S),nd=new Float64Array(S);
+  for(let j=0;j<S;j++)d[j]=E[j];
+  for(let i=1;i<nb;i++){let bi=0;for(let j=1;j<S;j++)if(d[j]>d[bi])bi=j;const bv0=d[bi];
+    for(let j=0;j<S;j++){const stay=d[j],sw=bv0-L;if(stay>=sw){nd[j]=stay+E[i*S+j];from[i*S+j]=j;}else{nd[j]=sw+E[i*S+j];from[i*S+j]=bi;}}
+    const t=d;d=nd;nd=t;}
+  let bj=0;for(let j=1;j<S;j++)if(d[j]>d[bj])bj=j;
+  const path=new Int16Array(nb);for(let i=nb-1;i>=0;i--){path[i]=bj;bj=from[i*S+bj];}
+  const beats=Array.from(path,j=>j===NC?null:{r:j%12,t:types[Math.floor(j/12)]});
+  /* 小節の頭:コードが変わる位置がいちばん多い拍(4拍で1周)を自動で選ぶ */
+  const hist=[0,0,0,0];for(let i=1;i<nb;i++)if(path[i]!==path[i-1])hist[i%4]++;
+  const auto=hist.indexOf(Math.max(...hist));
+  res.ch={beats,nb,auto};
+  if(res.chOff==null)res.chOff=auto;
+}
+const chName=(c,tr,sharp)=>c?((sharp?SHARPS:FLATS)[(c.r+tr+12)%12]+c.t.s):"N.C.";
+function chRender(){
+  const sec=$("chSec");
+  if(!res||!res.ch){sec.hidden=!(res&&mode==="detail");if(!sec.hidden){$("chart").innerHTML="";$("chNote").textContent="コードを読み取れる長さがありませんでした。";}return;}
+  sec.hidden=false;
+  const tr=+$("chTr").value,top=res.ky.list[0],k2=(top.k+tr+12)%12,sharp=top.maj?[7,2,9,4,11,6].includes(k2):[4,11,6,1,8,3].includes(k2);
+  const {beats,nb}=res.ch,off=res.chOff,pad=(4-off)%4,cells=[];
+  for(let i=-pad;i<nb;i++){
+    if(i<0){cells.push('<button type="button" class="pad" tabindex="-1" aria-hidden="true"></button>');continue;}
+    const c=beats[i],pv=i>0?beats[i-1]:undefined,chg=i===0||!(c&&pv?c.r===pv.r&&c.t===pv.t:c===pv);
+    cells.push(`<button type="button" data-i="${i}" class="${chg?"":"d"}">${chg?chName(c,tr,sharp):"·"}</button>`);
+  }
+  while(cells.length%4)cells.push('<button type="button" class="pad" tabindex="-1" aria-hidden="true"></button>');
+  let html="";for(let b=0;b<cells.length;b+=4)html+=`<div class="bar" role="group" aria-label="${b/4+1}小節目">${cells.slice(b,b+4).join("")}</div>`;
+  $("chart").innerHTML=html;
+  $("chNote").textContent="コードは音の鳴り方からの推定です。4拍子の曲向けで、転調や複雑なコードは外れることがあります。";
+  chBarsMap=null;
+}
+let chBarsMap=null,nowCell=null;
+function chSegs(){ /* 再生用:コードの区間(秒) */
+  if(!res||!res.ch)return [];
+  const p=60/curBpm,{beats,nb}=res.ch,segs=[];let s=0;
+  for(let i=1;i<=nb;i++){const a=beats[i-1],b=beats[i];if(i===nb||!(a&&b?a.r===b.r&&a.t===b.t:a===b)){if(beats[s])segs.push({t:phase+s*p,e:phase+i*p,c:beats[s]});s=i;}}
+  return segs;
+}
+async function chRefresh(){
+  const sec=$("chSec");
+  if(!res||mode!=="detail"){sec.hidden=true;return;}
+  if(!res.cf){
+    busy(true,"コードを解析中…");
+    try{res.cf=await chordFrames(res.x,p=>busy(true,"コードを解析中… "+Math.round(p*100)+"%"));}catch(e){console.error(e);}
+    busy(false);
+    if(!res.cf)return;
+  }
+  /* 7thの有無・BPMの切り替えのたびに作り直す */
+  buildChords();
+  const tr=$("chTr");if(!tr.options.length){for(let v=-6;v<=6;v++){const o=document.createElement("option");o.value=v;o.textContent=v===0?"なし":(v>0?"+":"")+v;tr.appendChild(o);}tr.value="0";}
+  $("chOff").value=String(res.chOff||0);
+  chRender();
+  segPtr=0;
+}
+$("modeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.dataset.m===mode)return;
+  mode=b.dataset.m;try{localStorage.setItem("ng_an_mode",mode)}catch(_){}
+  $("modeSeg").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.m===mode)));
+  if(mode==="detail"&&window.ngTrack)ngTrack("analyze_detail_on");
+  chRefresh();});
+["ch7","chTr"].forEach(id=>$(id).addEventListener("change",()=>{if(id==="ch7"){res&&(res.chOff=null);chRefresh();}else chRender();}));
+$("chOff").addEventListener("change",()=>{if(!res)return;res.chOff=+$("chOff").value;chRender();});
+$("chart").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b||!buf)return;
+  const pos=Math.max(0,phase+(+b.dataset.i)*60/curBpm);if(playing)stop();play(pos);});
+$("chCopy").addEventListener("click",async()=>{
+  if(!res||!res.ch)return;const tr=+$("chTr").value,top=res.ky.list[0],k2=(top.k+tr+12)%12,sharp=top.maj?[7,2,9,4,11,6].includes(k2):[4,11,6,1,8,3].includes(k2);
+  const {beats,nb}=res.ch,off=res.chOff,bars=[];
+  for(let s=off;s<nb;s+=4){const names=[];for(let i=s;i<Math.min(nb,s+4);i++){const c=beats[i],pv=i>s?beats[i-1]:undefined;if(i===s||!(c&&pv?c.r===pv.r&&c.t===pv.t:c===pv))names.push(chName(c,tr,sharp));}bars.push(names.join(" "));}
+  let t="";for(let i=0;i<bars.length;i+=4)t+="| "+bars.slice(i,i+4).join(" | ")+" |\n";
+  try{await navigator.clipboard.writeText(t.trim());const d=document.createElement("div");d.className="ng-toast";d.textContent="コード進行をコピーしました";document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));setTimeout(()=>{d.classList.remove("show");setTimeout(()=>d.remove(),300)},1800);}catch(_){}
+});
+/* 再生中の位置表示と、検出コードの音出し */
+let segPtr=0,raf=0;
+function chTone(seg,at,len){
+  const a=ac,{r,t}=seg.c,g=a.createGain();g.connect(a.destination);
+  const end=at+len;g.gain.setValueAtTime(0.0001,at);g.gain.exponentialRampToValueAtTime(0.5,at+0.02);g.gain.setValueAtTime(0.5,Math.max(at+0.03,end-0.06));g.gain.exponentialRampToValueAtTime(0.0001,end);
+  const mk=(m,type,vol)=>{const o=a.createOscillator(),v=a.createGain();o.type=type;o.frequency.value=440*Math.pow(2,(m-69)/12);v.gain.value=vol;o.connect(v);v.connect(g);o.start(at);o.stop(end+0.02);};
+  mk(36+r,"triangle",0.16);t.iv.forEach(x=>mk(60+(r+x)%12,"triangle",0.05));
+}
+function chSched(now){
+  const segs=res&&res.ch?(res.segs||(res.segs=chSegs())):[];
+  while(segPtr<segs.length&&segs[segPtr].t<now+0.15){const s=segs[segPtr++];if(!$("chSnd").checked)continue;const st=Math.max(s.t,now);const len=Math.min(8,s.e-st);if(len>0.05)chTone(s,t0+st,len);}
+}
+function chSeek(pos){segPtr=0;const segs=res&&res.ch?(res.segs=chSegs()):[];while(segPtr<segs.length&&segs[segPtr].e<=pos)segPtr++;}
+function chLoop(){
+  if(!playing){if(nowCell){nowCell.classList.remove("now");nowCell=null;}return;}
+  if(res&&res.ch&&!$("chSec").hidden){const i=Math.floor((ac.currentTime-t0-phase)/(60/curBpm));
+    const cell=i>=0?$("chart").querySelector(`button[data-i="${i}"]`):null;
+    if(cell!==nowCell){if(nowCell)nowCell.classList.remove("now");nowCell=cell;if(cell){cell.classList.add("now");const ch=$("chart"),bar=cell.parentNode;if(bar.offsetTop<ch.scrollTop||bar.offsetTop+bar.offsetHeight>ch.scrollTop+ch.clientHeight)ch.scrollTop=bar.offsetTop-ch.clientHeight/2+bar.offsetHeight/2;}}}
+  raf=requestAnimationFrame(chLoop);
+}
 
 /* ---------- ファイル入力 ---------- */
 $("file").addEventListener("change",e=>{const f=e.target.files[0];if(f)analyze(f);e.target.value="";});
@@ -488,7 +676,7 @@ const dz=$("drop");
 ["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("over");}));
 dz.addEventListener("drop",e=>{const f=e.dataTransfer.files[0];if(f)analyze(f);});
 document.addEventListener("dragover",e=>e.preventDefault());document.addEventListener("drop",e=>e.preventDefault());
-window.__analyze=analyze;window.__res=()=>res&&{bpm:curBpm,key:keyName(res.ky.list[0].k,res.ky.list[0].maj),cam:cam(res.ky.list[0].k,res.ky.list[0].maj),alt:res.ky.list.slice(1,3).map(x=>keyName(x.k,x.maj)),phase};
+window.__chords=()=>res&&res.ch&&res.ch.beats.map(c=>c?c.r+":"+c.t.s:"N");window.__setMode=m=>{mode=m;};window.__analyze=analyze;window.__res=()=>res&&{bpm:curBpm,key:keyName(res.ky.list[0].k,res.ky.list[0].maj),cam:cam(res.ky.list[0].k,res.ky.list[0].maj),alt:res.ky.list.slice(1,3).map(x=>keyName(x.k,x.maj)),phase};
 
 const sb=$("shareBtn");
 if(sb) sb.addEventListener("click",async()=>{
